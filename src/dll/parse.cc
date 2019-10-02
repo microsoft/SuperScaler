@@ -65,7 +65,7 @@ section read_cfg(std::string filename)
 void parse_plan(std::vector<std::string> context, plan& plan_)
 {
     //std::vector<std::vector<std::string>> context_pre;
-    for (int i = 0 ; i < context.size(); i++)
+    for (size_t i = 0 ; i < context.size(); i++)
     {
         //LOG(INFO, 0) << context[i];
         switch(context[i][0]){
@@ -85,7 +85,7 @@ void parse_plan(std::vector<std::string> context, plan& plan_)
                 }
                 else if (vec[0] == "tensor_size")
                 {
-                    plan_.set_tensor_size(stoi(vec[1]));
+                    plan_.set_tensor_size(stoul(vec[1]));
                     break;                    
                 }
                 else if (vec[0] == "ip")
@@ -112,11 +112,11 @@ void CfgTable::parse_excution_plan()
     if (env_value != nullptr )
         cfg_path = std::string(env_value);
     else
-        cfg_path = std::string("/home/v-cheluo/SuperScaler/src/dll/configure.cfg");
+        cfg_path = std::string("configure.cfg");
     
     section options = read_cfg(cfg_path);
 
-    for (int i = 0; i < options.size(); i++)
+    for (size_t i = 0; i < options.size(); i++)
     {
         if(options[i].first == "plan")
         {
@@ -133,7 +133,7 @@ void CfgTable::parse_excution_plan(std::string cfg_path)
 {
     section options = read_cfg(cfg_path);
 
-    for (int i = 0; i < options.size(); i++)
+    for (size_t i = 0; i < options.size(); i++)
     {
         if(options[i].first == "plan")
         {

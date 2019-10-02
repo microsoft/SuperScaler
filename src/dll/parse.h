@@ -39,9 +39,18 @@ public:
     {
         std::vector<std::string> vec = split(context, ",");
 
-        for (int i = 0; i < vec.size(); i++)
+        for (size_t i = 0; i < vec.size(); i++)
         {
             target.push_back( std::stoi(vec[i]));
+        }
+    }
+    void set_context_value(std::string context, std::vector<size_t> &target)
+    {
+        std::vector<std::string> vec = split(context, ",");
+
+        for (size_t i = 0; i < vec.size(); i++)
+        {
+            target.push_back(std::stoul(vec[i]));
         }
     }
     void set_average(std::string context)
@@ -74,27 +83,27 @@ public:
     void show_context()
     {
         std::cout << "    " << "operation_type = " << operation_type << "\n";
-        for(int i = 0; i < send_target.size(); i++)
+        for(size_t i = 0; i < send_target.size(); i++)
             std::cout << "        " << "send_target[" << i << "] = " << send_target[i] << "\n";
-        for(int i = 0; i < send_address.size(); i++)
+        for(size_t i = 0; i < send_address.size(); i++)
             std::cout << "        " << "send_address[" << i << "] = " << send_address[i] << "\n";
-        for(int i = 0; i < send_length.size(); i++)
+        for(size_t i = 0; i < send_length.size(); i++)
             std::cout << "        " << "send_length[" << i << "] = " << send_length[i] << "\n";
-        for(int i = 0; i < receive_target.size(); i++)
+        for(size_t i = 0; i < receive_target.size(); i++)
             std::cout << "        " << "receive_target[" << i << "] = " << receive_target[i] << "\n";
-        for(int i = 0; i < receive_address.size(); i++)
+        for(size_t i = 0; i < receive_address.size(); i++)
             std::cout << "        " << "receive_address[" << i << "] = " << receive_address[i] << "\n";
-        for(int i = 0; i < receive_length.size(); i++)
+        for(size_t i = 0; i < receive_length.size(); i++)
             std::cout << "        " << "receive_length[" << i << "] = " << receive_length[i] << "\n";
     }
     
     std::string operation_type;
     std::vector<int> send_target;
-    std::vector<int> send_address;
-    std::vector<int> send_length;
+    std::vector<size_t> send_address;
+    std::vector<size_t> send_length;
     std::vector<int> receive_target;
-    std::vector<int> receive_address;
-    std::vector<int> receive_length;
+    std::vector<size_t> receive_address;
+    std::vector<size_t> receive_length;
     bool average;
 };
 
@@ -103,7 +112,7 @@ class plan{
 public:
 
     void set_tensor_name(std::string name) {tensor_name = name;}
-    void set_tensor_size(int size) {tensor_size = size;}
+    void set_tensor_size(size_t size) {tensor_size = size;}
     void set_ip(std::vector<std::string> ip) {host_ip = ip;}
     void set_port(std::vector<std::string> port) {host_port = port;}
     void add_operation(std::string name){
@@ -133,14 +142,14 @@ public:
         }
         std::cout << "\n";
         
-        for(int i = 0; i < operation.size(); i++)
+        for(size_t i = 0; i < operation.size(); i++)
         {
             operation[i].show_context();
         }
     }
 
     std::string tensor_name;
-    int tensor_size;
+    size_t tensor_size;
     std::vector<excution_operation> operation;
     std::vector<std::string> host_ip;
     std::vector<std::string> host_port;

@@ -18,7 +18,7 @@
 #include <chrono>
 #include <vector>
 
-void set_cfg_RDMA(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, float *gradients_gpu, float *buf_gpu, int size);
-void RDMA_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank);
-void RDMA_scaler_all_reduce_device(float *gradients, int size, int myRank, int nRanks, int localRank);
+void set_cfg_RDMA(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, float *gradients_gpu, float *buf_gpu, size_t size);
+void RDMA_scaler_all_reduce_host(float *gradients, size_t size, int myRank, int nRanks, int localRank);
+void RDMA_scaler_all_reduce_device(float *gradients, size_t size, int myRank, int nRanks, int localRank);
 #endif
