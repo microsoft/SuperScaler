@@ -377,7 +377,7 @@ int main()
 
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_rdma at " << myRank << std::endl;
-    test_rdma(myRank, nRanks, localRank, 256*1024*1024);
+    test_rdma(myRank, nRanks, localRank, 16*1024*1024);
     //test_rdma(myRank, nRanks, localRank, 1*1024*1024*1024);
 
     // std::cout << "=======================================================================" << std::endl;
