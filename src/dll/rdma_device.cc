@@ -9,7 +9,7 @@ enum ctx_device ib_dev_name(struct ibv_context *context)
 	enum ctx_device dev_fname = UNKNOWN;
 	struct ibv_device_attr attr;
 
-	if (ibv_query_device(context,&attr)) {
+	if (ibv_query_device(context, &attr)) {
 		dev_fname = DEVICE_ERROR;
 	}
 
@@ -60,7 +60,7 @@ enum ctx_device ib_dev_name(struct ibv_context *context)
 void dump_device_attr(struct ibv_context *context) {
 	struct ibv_device_attr attr;
 
-	if (ibv_query_device(context,&attr)) {
+	if (ibv_query_device(context, &attr)) {
 		fprintf(stderr, "[%s:%d] Failed to query device attributes\n", __FILE__, __LINE__);
 		abort();
 	}

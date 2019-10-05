@@ -197,7 +197,7 @@ class RDMADevice {
 		sin.sin_family = PF_INET;
 		sin.sin_port = htons((unsigned short)port_);
 
-		if (rdma_bind_addr(control_cm_id_, (struct sockaddr *)&sin)) {
+		if (rdma_bind_addr(control_cm_id_, (struct sockaddr *) &sin)) {
 			fprintf(stderr," rdma_bind_addr failed\n");
 			abort();
 		}
@@ -253,7 +253,9 @@ class RDMADevice {
 		}
 		spinlock_release(&dev_lock_);
 
-		if (addr) free(addr);
+		if (addr){
+			free(addr)
+		};
 	}
 
 	// Not thread-safe

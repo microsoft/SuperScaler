@@ -66,7 +66,7 @@ void test_host(int myRank, int nRanks, int localRank, size_t size)
 	 
 
     //freeing device memory
-    for (int i = 0; i < nDev; i++)
+    for (int i = 0; i < nDev; i++) //why collect memory from cpu but free memory from gpu??
     {
         CUDACHECK(cudaFree(sendbuff[i]));
         CUDACHECK(cudaFree(recvbuff[i]));
@@ -88,26 +88,100 @@ void test_host(int myRank, int nRanks, int localRank, size_t size)
             break;
         }
     }
+
+    delete [] gradients;
 }
 
-inline void print_cpu_array(float* array, std::string name = "", size_t size = 10){
-    std::cout << "print_gpu_array (" << name << "): ";
-    for (size_t i = 0; i < size; i++)
-        std::cout << ", " << array[i];
+void test_device(int myRank, int nRanks, int localRank, size_t size)
+{
+    float *gradients = new float[size];
+    for (int i = 0; i < size; i++)
+    {
+        gradients[i] = i ;
+    }
+/*
+    std::cout << "Before all reduce" << std::endl;
+    for (int i = 0; i < size; i++)
+    {
+        std::cout << gradients[i] << " ";
+    }
     std::cout << std::endl;
+*/
+    //initializing GPU memery based on localRank
+    float **sendbuff = (float **)malloc(1 * sizeof(float *));
+
+    CUDACHECK(cudaSetDevice(localRank * 1 + 0));
+    CUDACHECK(cudaMalloc(sendbuff, size * sizeof(float)));
+    CUDACHECK(cudaMemset(sendbuff[0], 1, size * sizeof(float)));
+    CUDACHECK(cudaMemcpy(sendbuff[0], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
+    //each process use 1 GPU
+    int nDev = 1;
+
+    //initializing GPU memery based on localRank
+    cudaStream_t *s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
+
+    for (int i = 0; i < nDev; ++i)
+    {
+        CUDACHECK(cudaSetDevice(localRank * nDev + i));
+        CUDACHECK(cudaStreamCreate(s + i));
+    }
+
+    //generating NCCL unique ID at one process and broadcasting it to all
+    ncclUniqueId id;
+    if (myRank == 0)
+    {
+        ncclGetUniqueId(&id);
+    }
+    MPICHECK(MPI_Bcast((void *)&id, sizeof(id), MPI_BYTE, 0, MPI_COMM_WORLD));
+
+    //initializing NCCL, group API is required around ncclCommInitRank as it is called across multiple GPUs in each thread/process
+    ncclComm_t comms[nDev];
+    NCCLCHECK(ncclGroupStart());
+    for (int i = 0; i < nDev; i++)
+    {
+        CUDACHECK(cudaSetDevice(localRank * nDev + i));
+        NCCLCHECK(ncclCommInitRank(comms + i, nRanks * nDev, id, myRank * nDev + i));
+    }
+    NCCLCHECK(ncclGroupEnd());
+
+    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
+    auto start_time = std::chrono::system_clock::now();
+    for(int i = 0; i < 10; i++)
+        super_scaler_all_reduce_device(sendbuff[0], size, myRank, nRanks, localRank, comms, s);
+    std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / 10;
+	std::cout << "test_device_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
+	
+    //get gradients after allreduce
+    for (int i = 0; i < size; i++)
+    {
+        gradients[i] = 0;
+    }
+    CUDACHECK(cudaMemcpy(gradients, sendbuff[0], sizeof(float) * size, cudaMemcpyDeviceToHost));
+
+    
+    //finalizing NCCL
+    for (int i = 0; i < nDev; i++)
+    {
+        ncclCommDestroy(comms[i]);
+    }
+
+    //freeing device memory
+    CUDACHECK(cudaFree(sendbuff[0]));
+
+    std::cout << "After all reduce" << std::endl;
+    for (int i = 0; i < size; i++)
+    {
+        if(gradients[i] != i )
+        {
+            std::cout <<  "test_host fail " <<gradients[i] << " " << (nRanks)*(nRanks-1)/2 << "\n" ;
+            break;
+        }
+    }
+
+    delete [] gradients;
 }
 
-inline void print_gpu_array(float* array, std::string name = "", size_t size = 10){
-    float *tmp = (float *)malloc(sizeof(float) * size);
-    CUDACHECK(cudaMemcpy(tmp, array, sizeof(float) * size, cudaMemcpyDeviceToHost));
-    std::cout << "print_gpu_array (" << name << "): ";
-    for (size_t i = 0; i < size; i++)
-        std::cout << ", " << tmp[i];
-    std::cout << std::endl;
-    free(tmp);
-}
-
-void test_rdma(int myRank, int nRanks, int localRank, size_t size)
+void test_rdma(int myRank, int nRanks, int localRank, size_t size) //test_rdma by interface
 {
     float *gradients = new float[size];
     //float *gradients = nullptr; cudaMallocHost(&gradients, sizeof(float) * size);
@@ -226,9 +300,11 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
             break;
         }
     }
+    
+    delete [] gradients;
 }
 
-void test_USR_host(int myRank, int nRanks, int localRank, size_t size)
+void test_USR_host(int myRank, int nRanks, int localRank, size_t size) // test mpi by user specified reduce
 {
     float *gradients = new float[size];
     for (int i = 0; i < size; i++)
@@ -257,97 +333,29 @@ void test_USR_host(int myRank, int nRanks, int localRank, size_t size)
     {
         if(gradients[i] != i*2 )
         {
-            std::cout <<  "test_host fail " <<gradients[i] << " " << i*2 << "\n" ;
+            std::cout <<  "test_host fail " << gradients[i] << " " << i*2 << "\n" ;
             break;
         }
     }
+
+    delete [] gradients;
 }
 
-void test_device(int myRank, int nRanks, int localRank, size_t size)
-{
-    float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i ;
-    }
-/*
-    std::cout << "Before all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << gradients[i] << " ";
-    }
+inline void print_cpu_array(float* array, std::string name = "", size_t size = 10){
+    std::cout << "print_cpu_array (" << name << "): ";
+    for (size_t i = 0; i < size; i++)
+        std::cout << ", " << array[i];
     std::cout << std::endl;
-*/
-    //initializing GPU memery based on localRank
-    float **sendbuff = (float **)malloc(1 * sizeof(float *));
+}
 
-    CUDACHECK(cudaSetDevice(localRank * 1 + 0));
-    CUDACHECK(cudaMalloc(sendbuff, size * sizeof(float)));
-    CUDACHECK(cudaMemset(sendbuff[0], 1, size * sizeof(float)));
-    CUDACHECK(cudaMemcpy(sendbuff[0], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
-        //each process use 1 GPU
-    int nDev = 1;
-
-    //initializing GPU memery based on localRank
-    cudaStream_t *s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
-
-    for (int i = 0; i < nDev; ++i)
-    {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
-        CUDACHECK(cudaStreamCreate(s + i));
-    }
-
-    //generating NCCL unique ID at one process and broadcasting it to all
-    ncclUniqueId id;
-    if (myRank == 0)
-    {
-        ncclGetUniqueId(&id);
-    }
-    MPICHECK(MPI_Bcast((void *)&id, sizeof(id), MPI_BYTE, 0, MPI_COMM_WORLD));
-
-    //initializing NCCL, group API is required around ncclCommInitRank as it is called across multiple GPUs in each thread/process
-    ncclComm_t comms[nDev];
-    NCCLCHECK(ncclGroupStart());
-    for (int i = 0; i < nDev; i++)
-    {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
-        NCCLCHECK(ncclCommInitRank(comms + i, nRanks * nDev, id, myRank * nDev + i));
-    }
-    NCCLCHECK(ncclGroupEnd());
-
-    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
-    auto start_time = std::chrono::system_clock::now();
-    for(int i = 0; i < 10; i++)
-        super_scaler_all_reduce_device(sendbuff[0], size, myRank, nRanks, localRank, comms, s);
-    std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / 10;
-	std::cout << "test_device_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-	
-    //get gradients after allreduce
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = 0;
-    }
-    CUDACHECK(cudaMemcpy(gradients, sendbuff[0], sizeof(float) * size, cudaMemcpyDeviceToHost));
-
-    
-    //finalizing NCCL
-    for (int i = 0; i < nDev; i++)
-    {
-        ncclCommDestroy(comms[i]);
-    }
-
-    //freeing device memory
-    CUDACHECK(cudaFree(sendbuff[0]));
-
-    std::cout << "After all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        if(gradients[i] != i )
-        {
-            std::cout <<  "test_host fail " <<gradients[i] << " " << (nRanks)*(nRanks-1)/2 << "\n" ;
-            break;
-        }
-    }
+inline void print_gpu_array(float* array, std::string name = "", size_t size = 10){
+    float *tmp = (float *)malloc(sizeof(float) * size);
+    CUDACHECK(cudaMemcpy(tmp, array, sizeof(float) * size, cudaMemcpyDeviceToHost));
+    std::cout << "print_gpu_array (" << name << "): ";
+    for (size_t i = 0; i < size; i++)
+        std::cout << ", " << tmp[i];
+    std::cout << std::endl;
+    free(tmp);
 }
 
 int main()

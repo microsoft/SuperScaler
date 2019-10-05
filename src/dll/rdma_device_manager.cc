@@ -46,7 +46,7 @@ bool RDMADeviceManager::DiscoverDevices() {
 	device_vec_.clear(); //miao resize(num_of_device);
 	fprintf(stdout, "Discovered %d RDMA devices:\n", num_of_device);
 	for (int i = 0; i < num_of_device; i++) {
-                if(i != 3) //miao
+                if(i != 3) //miao ? shamao: what's the meaning of i!=3?
                    continue;
 		ib_dev = dev_list[i];
 		std::string dev_name = ibv_get_device_name(ib_dev);

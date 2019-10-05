@@ -23,7 +23,7 @@ inline dim3 cuda_gridsize(int n){
         x = ceil(sqrt(k));
         y = (n-1)/(x*BLOCK) + 1;
     }
-    dim3 d = {(uint)x,(uint) y, 1};
+    dim3 d = {(uint) x,(uint) y, 1};
     return d;
 }
 
