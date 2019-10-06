@@ -406,9 +406,9 @@ int main()
     // std::cout << "test_host mpi at " << myRank << std::endl;
     // test_mpi_host(myRank, nRanks, localRank, 64*1024*1024);
 
-    // std::cout << "=======================================================================" << std::endl;
-    // std::cout << "test_host USR" << std::endl;
-    // test_mpi_USR_host(myRank, nRanks, localRank, 64*1024*1024);
+     std::cout << "=======================================================================" << std::endl;
+     std::cout << "test_host USR" << std::endl;
+     test_mpi_USR_host(myRank, nRanks, localRank, 64*1024*1024);
 
     // std::cout << "=======================================================================" << std::endl;
     // std::cout << "test_host nccl" << std::endl;
@@ -418,9 +418,9 @@ int main()
     // std::cout << "test_device nccl" << std::endl;
     // test_nccl_device(myRank, nRanks, localRank, 64*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_rdma_host at " << myRank << std::endl;
-    test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
+    //std::cout << "=======================================================================" << std::endl; here is the begining
+    //std::cout << "test_rdma_host at " << myRank << std::endl;
+    //test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
     //test_rdma_host(myRank, nRanks, localRank, 1*1024*1024*1024);
 
     //std::cout << "=======================================================================" << std::endl;

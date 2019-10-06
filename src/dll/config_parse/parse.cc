@@ -112,7 +112,7 @@ void CfgTable::parse_excution_plan()
     if (env_value != nullptr )
         cfg_path = std::string(env_value);
     else
-        cfg_path = std::string("../config/configure.cfg");
+        cfg_path = std::string("config/configure.cfg");
     
     section options = read_cfg(cfg_path);
 
