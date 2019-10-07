@@ -22,13 +22,13 @@ EXES := $(SRCS:.cc=)
 
 all: super_scaler_all_reduce lib_super_scaler_all_reduce final_test
 
-super_scaler_all_reduce: super_scaler_all_reduce.cu ./config_parse/parse.cc blas/blas.cu
+super_scaler_all_reduce: super_scaler_all_reduce.cu config_parse/parse.cc blas/blas.cu
 	$(NVCC) $(MPI_LIB) $(CPP11) $^ -c
 
 lib_super_scaler_all_reduce: super_scaler_all_reduce.o
 	$(NVCC) $(CPP11) -shared $^ -o $@.so
 
-final_test: test_lib.cc ./rdma/rdma_common.cc ./rdma/rdma_device.cc ./rdma/rdma_device_manager.cc ./rdma/rdma_thread.cc ./rdma/rdma.cc ./config_parse/parse.cc ./blas/blas.cu
+final_test: test_lib.cc rdma/rdma_common.cc rdma/rdma_device.cc rdma/rdma_device_manager.cc rdma/rdma_thread.cc rdma/rdma.cc config_parse/parse.cc blas/blas.cu primitive_operation/comm_primitive.cc
 	$(NVCC) $(CXXFLAGS) $(CPPFLAGS) $(MPI_LIB) $(LDFLAGS) -o $@ $^ $(LIBS) -L. -l_super_scaler_all_reduce
 
 clean:
