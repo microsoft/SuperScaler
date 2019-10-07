@@ -189,18 +189,8 @@ void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_r
     {
         gradients[i] = i;
     }
-
-    float *sendbuff = nullptr; //(float **)malloc(1 * sizeof(float *));
-    float *recvbuff = nullptr; //(float **)malloc(1 * sizeof(float *));
-
-    CUDACHECK(cudaSetDevice(localRank * 1 + 0)); //TODO
-    CUDACHECK(cudaMalloc(&sendbuff, size * sizeof(float)));
-    CUDACHECK(cudaMalloc(&recvbuff, size * sizeof(float)));
-    CUDACHECK(cudaMemset(sendbuff, 1, size * sizeof(float)));
-    CUDACHECK(cudaMemset(recvbuff, 2, size * sizeof(float)));
-    CUDACHECK(cudaMemcpy(sendbuff, gradients, size * sizeof(float), cudaMemcpyHostToDevice));
     
-    set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, gradients, sendbuff, recvbuff, size);
+    set_cfg_RDMA_host(global_cfg, myRank, nRanks, localRank, gradients, size);
 
     // std::cout << "Before all reduce" << std::endl;
     // for (int i = 0; i < size; i++)
@@ -223,8 +213,8 @@ void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_r
         RDMA_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank);
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
     std::cout << "test_rdma_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-
     std::cout << "After all reduce" << std::endl;
+
     size_t errcount = 0;
     for (int i = 0; i < size; i++)
     {
@@ -254,13 +244,13 @@ void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test
     float *recvbuff = nullptr; //(float **)malloc(1 * sizeof(float *));
 
     CUDACHECK(cudaSetDevice(localRank * 1 + 0)); //TODO
-    CUDACHECK(cudaMalloc(&sendbuff, size * sizeof(float)));
+    CUDACHECK(cudaMalloc(&sendbuff, size * sizeof(float))); //should free sendbuff & recvbuff
     CUDACHECK(cudaMalloc(&recvbuff, size * sizeof(float)));
     CUDACHECK(cudaMemset(sendbuff, 1, size * sizeof(float)));
     CUDACHECK(cudaMemset(recvbuff, 2, size * sizeof(float)));
-    CUDACHECK(cudaMemcpy(sendbuff, gradients, size * sizeof(float), cudaMemcpyHostToDevice));
+    CUDACHECK(cudaMemcpy(sendbuff, gradients, size * sizeof(float), cudaMemcpyHostToDevice)); //now sendbuff get values in gradients and saved in device
     
-    set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, gradients, sendbuff, recvbuff, size);
+    set_cfg_RDMA_device(global_cfg, myRank, nRanks, localRank, sendbuff, recvbuff, size);
 
     // std::cout << "Before all reduce" << std::endl;
     // for (int i = 0; i < size; i++)
@@ -283,7 +273,7 @@ void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
     std::cout << "test_rdma_device, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 
-    CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));
+    CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));//copy values in sendbuff back to gradients
     std::cout << "After all reduce" << std::endl;
     size_t errcount = 0;
     for (int i = 0; i < size; i++)
@@ -355,7 +345,7 @@ void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size) // te
     std::cout << std::endl;
 */
     auto plan = global_cfg.cfg_table["allreduce.classifier.6.bias"];
-    void* output_ptr = malloc(size*sizeof(float));
+    void* output_ptr = malloc(size*sizeof(float)); //what's the meaning of this sentence?
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < 10; i++)
