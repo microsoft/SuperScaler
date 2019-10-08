@@ -149,7 +149,7 @@ void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int 
     //(*callback)();
 }
 
-void super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
+void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
                                   float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s)
 {
     //each process use 1 GPU
@@ -184,7 +184,7 @@ void super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nR
     //(*callback)();
 }
 
-void super_scaler_all_reduce_device(float *gradients, int size, int myRank, int nRanks, int localRank,
+void nccl_super_scaler_all_reduce_device(float *gradients, int size, int myRank, int nRanks, int localRank,
                                     ncclComm_t* comms, cudaStream_t *s)
 {
     //each process use 1 GPU
