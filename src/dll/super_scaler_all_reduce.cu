@@ -8,7 +8,7 @@ void initialization(int &myRank, int &nRanks, int &localRank)
     MPICHECK(MPI_Comm_rank(MPI_COMM_WORLD, &myRank));
     MPICHECK(MPI_Comm_size(MPI_COMM_WORLD, &nRanks));
 
-    global_cfg.parse_excution_plan("configure/configure.cfg");
+    global_cfg.parse_excution_plan("config/configure.cfg");
 
     //calculating localRank which is used in selecting a GPU
     uint64_t hostHashs[nRanks];

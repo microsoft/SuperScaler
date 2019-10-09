@@ -3,7 +3,7 @@ NVCC=nvcc
 
 CUDA ?= /usr/local/cuda-10
 
-MPI_LIB := -I/usr/mpi/gcc/openmpi-4.0.0rc5/include/ -L/usr/mpi/gcc/openmpi-4.0.0rc5/ -lmpi -lnccl -Xcompiler "-fPIC"
+MPI_LIB := -I/usr/mpi/gcc/openmpi-2.0.2a1/include/ -L/usr/mpi/gcc/openmpi-2.0.2a1/ -lmpi -lnccl -Xcompiler "-fPIC"
 CUDA_LIB := -L./ -L$(CUDA)/lib64 -L/var/drivers/nvidia/367.55/lib64  -L/usr/lib
 CUDA_INC += -I./ -I$(CUDA)/include -I/var/drivers/nvidia/367.55/include -I/usr/include
 
