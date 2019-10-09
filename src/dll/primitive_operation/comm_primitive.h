@@ -15,7 +15,9 @@ struct remote_region {
 
 class CommPrimitive{
 public:
-    CommPrimitive() {}
+    CommPrimitive() {
+        lib_type = "uncertain";
+    }
     ~CommPrimitive() {}
     virtual void run_send_recieve_host(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_) {}
@@ -47,9 +49,8 @@ protected:
 
 class RdmaCommPrimitive : public CommPrimitive{
 public:
-    RdmaCommPrimitive(){
+    RdmaCommPrimitive() {
         lib_type = "rdma";
-        //stage_ = 0;
     }
     ~RdmaCommPrimitive() {}
     void set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, size_t size);
@@ -59,7 +60,9 @@ public:
 
     void run_write_device(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_);
-
+    CfgTable get_rdma_cfg(){
+        return this->RDMA_cfg;
+    }
 
 protected:
     std::vector<wolong::RDMAChannel*> channels;
@@ -84,8 +87,11 @@ class MpiCommPrimitive : public CommPrimitive{
 public:
     MpiCommPrimitive(){
         lib_type = "mpi";
+        buffer_ptr = malloc(64*1024*1024*sizeof(float)); //TO DO
     }
-    ~MpiCommPrimitive() {}
+    ~MpiCommPrimitive() {
+        free(buffer_ptr);
+    }
     void run_send_recieve_host(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_);
 
@@ -94,6 +100,8 @@ public:
 
     void run_recieve_host(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_);
+protected:
+    void* buffer_ptr;
 };
 
 class CommPrimitiveFactory{
