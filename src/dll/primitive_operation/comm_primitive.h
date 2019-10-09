@@ -1,10 +1,10 @@
 #include <string>
 #include <iostream>
 #include <mpi.h>
-#include "./config_parse/parse.h"
-#include "./rdma/rdma.h"
+#include "../config_parse/parse.h"
+#include "../rdma/rdma.h"
 
-std::atomic<uint32_t> stage_;
+// static std::atomic<uint32_t> stage_;
 
 
 struct remote_region {
@@ -49,7 +49,7 @@ class RdmaCommPrimitive : public CommPrimitive{
 public:
     RdmaCommPrimitive(){
         lib_type = "rdma";
-        stage_ = 0;
+        //stage_ = 0;
     }
     ~RdmaCommPrimitive() {}
     void set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, size_t size);
@@ -59,6 +59,7 @@ public:
 
     void run_write_device(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_);
+
 
 protected:
     std::vector<wolong::RDMAChannel*> channels;
@@ -74,6 +75,8 @@ protected:
     struct ibv_mr *gpu_lmr;
     struct ibv_mr *lmr;
     struct ibv_mr *lmr2;
+
+    std::atomic<uint32_t> stage_;
 
 };
 

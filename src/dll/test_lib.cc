@@ -307,6 +307,7 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
     }
     std::cout << std::endl;
 */
+    
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < 10; i++)
@@ -348,15 +349,18 @@ void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size) // te
     void* output_ptr = malloc(size*sizeof(float)); //what's the meaning of this sentence?
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
-    for(int i = 0; i < 10; i++)
-        MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan, output_ptr);
+    //for(int i = 0; i < 10; i++)
+    MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan, output_ptr);
+    
+    std::cout << "finish communication" << std::endl;
+    
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / 10;
 	std::cout << "test_mpi_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 	free(output_ptr);
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-        if(gradients[i] != i*2 )
+        if(gradients[i] != i )
         {
             std::cout <<  "test_host fail " << gradients[i] << " " << i*2 << "\n" ;
             break;
@@ -388,6 +392,8 @@ int main()
     int myRank = 0, nRanks = 0, localRank = 0;
     initialization(myRank, nRanks, localRank);
 
+    std::cout << "MyRank:" << myRank << "\tLocalRank:" << localRank
+              << "\tnRanks:" << nRanks << std::endl;
     //char hostname[1024];int length[1024];
     //MPI_Get_address(hostname);
     //std::cout << myRank << " " << hostname << std::endl;

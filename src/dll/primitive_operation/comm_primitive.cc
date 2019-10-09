@@ -1,10 +1,14 @@
 #include "comm_primitive.h"
- 
+
+std::atomic<uint32_t> stage_;
+
 void memcpy_cb_(void *arg, enum ibv_wc_status status) {
-	stage_ ++;
+	    stage_ ++;
 }
 
 void RdmaCommPrimitive::set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, size_t size){
+    stage_ = 0;
+    
     RDMA_cfg.parse_excution_plan("config/RDMA_configure.cfg");
     auto plan = RDMA_cfg.cfg_table["allreduce.classifier.6.bias"];
     std::vector<std::string> host_ip = plan.host_ip;
@@ -38,6 +42,8 @@ void RdmaCommPrimitive::set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, 
 }
 
 void RdmaCommPrimitive::set_cfg_RDMA_device(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients_gpu, float *buf_gpu, size_t size){
+    stage_ = 0;
+    
     RDMA_cfg.parse_excution_plan("config/RDMA_configure.cfg");
     auto plan = RDMA_cfg.cfg_table["allreduce.classifier.6.bias"];
     std::vector<std::string> host_ip = plan.host_ip;
@@ -146,6 +152,8 @@ void RdmaCommPrimitive::run_write_device(float *gradients, int size, int myRank,
 
 void MpiCommPrimitive::run_send_recieve_host(float *gradients, int size, int myRank,
                 int nRanks, int localRank, excution_operation op_) {
+    std::cout<< myRank << ":run_send&recieve_host" << std::endl;
+
     MPI_Status recv_status;
     MPI_Request recv_req;
         
@@ -166,8 +174,11 @@ void MpiCommPrimitive::run_send_recieve_host(float *gradients, int size, int myR
 
         MPI_Wait(&recv_req, &recv_status);
 
-        for(int i = 0 ; i < op_.receive_length[myRank]; i++)
+        for(int i = 0 ; i < op_.receive_length[myRank]; i++){
             segment_receive[i] += segment_receive2[i];
+        }
+
+        free(output_ptr);
     }
     else{
         float* segment_send = (float*)gradients + op_.send_address[myRank];
@@ -184,6 +195,8 @@ void MpiCommPrimitive::run_send_recieve_host(float *gradients, int size, int myR
 
 void MpiCommPrimitive::run_send_host(float *gradients, int size, int myRank,
                 int nRanks, int localRank, excution_operation op_) {
+    std::cout<< myRank << "run_send_host" << std::endl;
+
     if(op_.send_target[myRank] == -1)
         return;
     else{
@@ -196,6 +209,8 @@ void MpiCommPrimitive::run_send_host(float *gradients, int size, int myRank,
 
 void MpiCommPrimitive::run_recieve_host(float *gradients, int size, int myRank,
                 int nRanks, int localRank, excution_operation op_) {
+    std::cout<< myRank << "run_recieve_host" << std::endl;
+
     MPI_Status recv_status;
     MPI_Request recv_req;
 
@@ -211,8 +226,11 @@ void MpiCommPrimitive::run_recieve_host(float *gradients, int size, int myRank,
                     MPI_FLOAT, 
                     op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_req);
             MPI_Wait(&recv_req, &recv_status);
-            for(int i = 0 ; i < op_.receive_length[myRank]; i++)
+            for(int i = 0 ; i < op_.receive_length[myRank]; i++){
                 segment_receive[i] += segment_receive2[i];
+            }
+            
+            free(output_ptr);
         }
         else{
             float* segment_receive = (float*)gradients + op_.receive_address[myRank];
