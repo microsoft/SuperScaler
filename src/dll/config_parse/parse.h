@@ -82,6 +82,8 @@ public:
             set_context_value(context,receive_address);
         else if(context_name == "receive_length")
             set_context_value(context,receive_length);
+        else if(context_name == "reduce_type")
+            set_context_value(context,reduce_type);
         else if(context_name == "average")
             set_average(context);
         else 
@@ -112,6 +114,7 @@ public:
     std::vector<int> receive_target;
     std::vector<size_t> receive_address;
     std::vector<size_t> receive_length;
+    std::vector<size_t> reduce_type;
     bool average;
 };
 
