@@ -85,9 +85,10 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-        if(gradients[i] != i )
+	float target_value = i;
+        if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
-            std::cout <<  "test_host fail " <<gradients[i] << " " << (nRanks)*(nRanks-1)/2 << "\n" ;
+            std::cout <<  "test_host fail " <<gradients[i] << " != " << target_value << "\n" ;
             break;
         }
     }
@@ -178,9 +179,10 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-        if(gradients[i] != i )
+	float target_value = i;
+        if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
-            std::cout <<  "test_host fail " <<gradients[i] << " " << (nRanks)*(nRanks-1)/2 << "\n" ;
+            std::cout <<  "test_host fail " <<gradients[i] << " != " << target_value << "\n" ;
             break;
         }
     }
@@ -326,9 +328,10 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-        if(gradients[i] != i )
+	float target_value = i;
+        if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
-            std::cout <<  "test_host fail " <<gradients[i] << " " << (nRanks)*(nRanks-1)/2 << "\n" ;
+            std::cout <<  "test_host fail " <<gradients[i] << "!= " << target_value << "\n" ;
             break;
         }
     }
@@ -366,9 +369,10 @@ void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size) // te
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-        if(gradients[i] != i )
+	float target_value = i;
+        if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
-            std::cout <<  "test_host fail " << gradients[i] << " " << i << "\n" ;
+            std::cout <<  "test_host fail " << gradients[i] << " !=  " << target_value << "\n" ;
             break;
         }
     }
