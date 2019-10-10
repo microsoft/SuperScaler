@@ -53,28 +53,16 @@ void MPI_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRan
     //(*callback)();
 }
 
-void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                    plan plan)
+void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank, plan plan)
 {
-
     MpiCommPrimitive* mpicommprimitive_ = new MpiCommPrimitive();
-    mpicommprimitive_->getinfo();
-    for(auto op_ :plan.operation)
+    //mpicommprimitive_->getinfo();
+
+    for (auto op_:plan.operation)
     {
-        if(op_.operation_type == "send_receive"){
-            mpicommprimitive_->run_send_recieve_host(gradients, size, myRank,
-                                                        nRanks, localRank, op_);
-        }
-        else if(op_.operation_type == "send"){
-            mpicommprimitive_->run_send_host(gradients, size, myRank,
-                                                nRanks, localRank, op_);
-        }
-          else if(op_.operation_type == "receive"){
-            mpicommprimitive_->run_recieve_host(gradients, size, myRank,
-                                                nRanks, localRank, op_);
-        }
+        mpicommprimitive_->execute(gradients, size, myRank, nRanks, localRank, op_);
     }
-    
+
     for (int i = 0; i < size; i++)
     {
         gradients[i] /= nRanks;
@@ -84,7 +72,7 @@ void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int 
 }
 
 void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                  float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s)
+                                       float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s)
 {
     //each process use 1 GPU
     int nDev = 1;
@@ -119,7 +107,7 @@ void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, i
 }
 
 void nccl_super_scaler_all_reduce_device(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                    ncclComm_t* comms, cudaStream_t *s)
+                                         ncclComm_t* comms, cudaStream_t *s)
 {
     //each process use 1 GPU
     int nDev = 1;

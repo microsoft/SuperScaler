@@ -109,10 +109,10 @@ void MPI_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRan
 void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank, plan plan);
 
 void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                  float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s);
+                                       float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s);
 
 void nccl_super_scaler_all_reduce_device(float *gradients, int size, int myRank, int nRanks, int localRank, 
-                                    ncclComm_t* comms, cudaStream_t *s);
+                                         ncclComm_t* comms, cudaStream_t *s);
 
 
 #endif // SUPER_SCALAR_H_
