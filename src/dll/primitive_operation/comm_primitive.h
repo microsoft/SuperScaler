@@ -42,9 +42,14 @@ public:
     void getinfo(){
         std::cout<< "Communication Lib type: "<< lib_type << std::endl;
     }
+    CfgTable get_rdma_cfg(){
+        return this->RDMA_cfg;
+    }
 
 protected:
     std::string lib_type;
+    CfgTable RDMA_cfg;
+
 };
 
 class RdmaCommPrimitive : public CommPrimitive{
@@ -60,15 +65,15 @@ public:
 
     void run_write_device(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_);
-    CfgTable get_rdma_cfg(){
-        return this->RDMA_cfg;
-    }
 
 protected:
     std::vector<wolong::RDMAChannel*> channels;
     std::vector<remote_region> local_comm_ranks_;
     std::vector<remote_region> gpu_comm_ranks_;
-    CfgTable RDMA_cfg;
+
+    // lock_t lmr_lock;
+    // std::vector<std::vector<lock_t>> send_enable;
+    // std::vector<std::vector<lock_t>> receive_enable;
 
     wolong::RDMADeviceManager *rdm;
     wolong::RDMADevice *rdma_dev;

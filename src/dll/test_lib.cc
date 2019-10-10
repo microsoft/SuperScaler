@@ -8,6 +8,12 @@
 const int test_times = 1;
 const size_t maxerrcount = 10;
 
+void gradients_init(float* &gradients, const size_t &size){
+    for (int i = 0; i < size; i++){
+        gradients[i] = i;
+    }
+}
+
 void callBackFunction()
 {
     std::cout << "Call Back Success!" << std::endl;
@@ -16,10 +22,7 @@ void callBackFunction()
 void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
 
     //each process use 1 GPU
     int nDev = 1;
@@ -98,18 +101,8 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i ;
-    }
-/*
-    std::cout << "Before all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << gradients[i] << " ";
-    }
-    std::cout << std::endl;
-*/
+    gradients_init(gradients, size);
+
     //initializing GPU memery based on localRank
     float **sendbuff = (float **)malloc(1 * sizeof(float *));
 
@@ -188,11 +181,9 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
 void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_rdma by interface
 {
     float *gradients = new float[size];
-    RdmaCommPrimitive * rdmaCommPrimitive_ = new RdmaCommPrimitive();
+    gradients_init(gradients,size);
 
-    for (int i = 0; i < size; i++){
-        gradients[i] = i;
-    }
+    RdmaCommPrimitive * rdmaCommPrimitive_ = new RdmaCommPrimitive();
     
     rdmaCommPrimitive_->set_cfg_RDMA_host(global_cfg, myRank, nRanks, localRank, gradients, size);
 
@@ -237,11 +228,8 @@ void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_r
 void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test_rdma by interface
 {
     float *gradients = new float[size];
+    gradients_init(gradients,size);
 
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
 
     float *sendbuff = nullptr;
 
@@ -292,10 +280,8 @@ void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test
 void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
+
 /*
     std::cout << "Before all reduce" << std::endl;
     for (int i = 0; i < size; i++)
@@ -331,22 +317,20 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
 void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size) // test mpi by user specified reduce
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
+
     auto plan = global_cfg.cfg_table["allreduce.classifier.6.bias"];
-    void* output_ptr = malloc(size*sizeof(float)); //what's the meaning of this sentence?
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     //for(int i = 0; i < test_times; i++)
-    MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan, output_ptr);
+    std::cout << "start communication" << std::endl;
+
+    MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan);
     
     std::cout << "finish communication" << std::endl;
     
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_mpi_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-	free(output_ptr);
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
@@ -389,27 +373,27 @@ int main()
 
     // std::cout << "=======================================================================" << std::endl;
     // std::cout << "test_host USR" << std::endl;
-    // test_mpi_USR_host(myRank, nRanks, localRank, 64*1024*1024);
+    // test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_host nccl" << std::endl;
-    test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
+    // std::cout << "=======================================================================" << std::endl;
+    // std::cout << "test_host nccl" << std::endl;
+    // test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_device nccl" << std::endl;
-    test_nccl_device(myRank, nRanks, localRank, 16*1024*1024);
+    // std::cout << "=======================================================================" << std::endl;
+    // std::cout << "test_device nccl" << std::endl;
+    // test_nccl_device(myRank, nRanks, localRank, 16*1024*1024);
 																  
-    set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
+    // set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_rdma at " << myRank << std::endl;
-    test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
+     std::cout << "=======================================================================" << std::endl;
+     std::cout << "test_rdma at " << myRank << std::endl;
+     test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_rdma at " << myRank << std::endl;
-    test_rdma_device(myRank, nRanks, localRank, 16*1024*1024);
+    // std::cout << "=======================================================================" << std::endl;
+    // std::cout << "test_rdma at " << myRank << std::endl;
+    // test_rdma_device(myRank, nRanks, localRank, 16*1024*1024);
 
-    finallize_RDMA(myRank, nRanks, localRank);
+    // finallize_RDMA(myRank, nRanks, localRank);
 
     finalization();
 

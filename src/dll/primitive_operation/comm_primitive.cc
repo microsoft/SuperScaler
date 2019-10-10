@@ -87,33 +87,33 @@ void RdmaCommPrimitive::set_cfg_RDMA_device(CfgTable cfg, int myRank, int nRanks
 
 void RdmaCommPrimitive::run_write_host(float *gradients, int size, int myRank,
                  int nRanks, int localRank, excution_operation op_) {
-    std::cout << "rdma run write host" << std::endl;
-
-
+    std::cout << "rdma run write device" << std::endl;
+ 
+    
     if(op_.send_target[myRank] != -1){
-        channels[op_.send_target[myRank]]->Memcpy(lmr->addr + op_.send_address[myRank] * sizeof(float), lmr, 
-                                                (void *)local_comm_ranks_[op_.send_target[myRank]].remote_addr + op_.send_address[myRank] * sizeof(float), 
-                                                local_comm_ranks_[op_.send_target[myRank]].remote_key, 
-                                                op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, memcpy_cb_, nullptr);
+            channels[op_.send_target[myRank]]->Memcpy(lmr2->addr + op_.send_address[myRank] * sizeof(float), lmr2,
+                                                        (void *)gpu_comm_ranks_[op_.send_target[myRank]].remote_addr + op_.send_address[myRank] * sizeof(float),
+                                                        gpu_comm_ranks_[op_.send_target[myRank]].remote_key,
+                                                        op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, memcpy_cb_, nullptr);
         count ++;
     }
-    std::cout << "stage:" << stage_ << "\tcount:" << count << std::endl;
-
-    while (stage_ != count);
+    while (stage_ != count); //wait for memcpy finish
+    
     stage_ = 0;
     count = 0;
+
     MPI_Barrier(MPI_COMM_WORLD);
-    if(op_.receive_target[myRank] != -1){
-        float *buf = (float *)cpu_lmr->addr + op_.receive_address[myRank];
+    if (op_.receive_target[myRank] != -1){
+        float *buf = (float *)gpu_lmr->addr + op_.receive_address[myRank];
         float *grad = gradients + op_.receive_address[myRank];
-        if(op_.average)
-            for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                grad[i] += buf[i];
-        else
-            for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                grad[i] = buf[i];
+        if (op_.average){
+            gradients_Reduce(grad, buf, op_.receive_length[myRank]);
+            cudaDeviceSynchronize();
+        }
+        else{
+            cudaMemcpy(grad, buf, op_.receive_length[myRank] * sizeof(float), cudaMemcpyDeviceToDevice);
+        }
     }
-    MPI_Barrier(MPI_COMM_WORLD);
 }
 
 void RdmaCommPrimitive::run_write_device(float *gradients, int size, int myRank,
@@ -126,48 +126,23 @@ void RdmaCommPrimitive::run_write_device(float *gradients, int size, int myRank,
                                                         (void *)gpu_comm_ranks_[op_.send_target[myRank]].remote_addr + op_.send_address[myRank] * sizeof(float),
                                                         gpu_comm_ranks_[op_.send_target[myRank]].remote_key,
                                                         op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, memcpy_cb_, nullptr);
-                // if (verbose)
-                // {
-                //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                //     std::cout << "\t [rdma_Memcpy][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                // }
         count ++;
     }
     while (stage_ != count); //wait for memcpy finish
     
     stage_ = 0;
     count = 0;
-            // if (verbose)
-            // {
-            //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-            //     std::cout << "\t [rdma_Memcpy-while][" << i <<"], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-            // }
     MPI_Barrier(MPI_COMM_WORLD);
-            // if (verbose)
-            // {
-            //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-            //     std::cout << "\t [rdma_Memcpy-while-barrier][" << i <<"], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-            // }
+
     if (op_.receive_target[myRank] != -1){
         float *buf = (float *)gpu_lmr->addr + op_.receive_address[myRank];
         float *grad = gradients + op_.receive_address[myRank];
         if (op_.average){
             gradients_Reduce(grad, buf, op_.receive_length[myRank]);
-            cudaDeviceSynchronize(); //TODO check necessary w.r.t. loop
-                    // if (verbose)
-                    // {
-                    //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                    //     std::cout << "\t [rdma_Memcpy-barrier-while-reduce][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                    // }
+            cudaDeviceSynchronize(); 
         }
         else{
             cudaMemcpy(grad, buf, op_.receive_length[myRank] * sizeof(float), cudaMemcpyDeviceToDevice);
-                    //cudaDeviceSynchronize();
-                    // if (verbose)
-                    // {
-                    //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                    //     std::cout << "\t [rdma_Memcpy-barrier-while-cudamemcpy][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                    // }
         }
     }
 }
