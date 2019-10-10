@@ -14,7 +14,7 @@
 #include <cmath>
 
 #include "blas/blas.h"
-
+#include "primitive_operation/comm_primitive.h"
 #include "config_parse/parse.h"
 
 CfgTable global_cfg;

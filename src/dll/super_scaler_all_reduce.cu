@@ -57,96 +57,33 @@ void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int 
                                     plan plan, void* output_ptr)
 {
 
-    //auto plan = global_cfg.cfg_table["allreduce.classifier.6.bias"];
-
-    MPI_Status recv_status;
-    MPI_Request recv_req;
-    //void* output_ptr = malloc(size*sizeof(float));
-    float* output = (float*)output_ptr;
-
+    MpiCommPrimitive* mpicommprimitive_ = new MpiCommPrimitive();
+    mpicommprimitive_->getinfo();
     for(auto op_ :plan.operation)
     {
         if(op_.operation_type == "send_receive")
         {
-            if(op_.average)
-            {
-                float* segment_send = (float*)gradients + op_.send_address[myRank];
-                float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-                float* segment_receive2 = output + op_.receive_address[myRank];
-                MPI_Irecv(segment_receive2, op_.receive_length[myRank],
-                        MPI_FLOAT, 
-                        op_.receive_target[myRank], 
-                        0, MPI_COMM_WORLD, &recv_req);
-                MPI_Send(segment_send, op_.send_length[myRank],
-                        MPI_FLOAT, 
-                        op_.send_target[myRank], 
-                        0, MPI_COMM_WORLD);
-
-                MPI_Wait(&recv_req, &recv_status);
-
-                for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                    segment_receive[i] += segment_receive2[i];
-            }
-            else
-            {
-                float* segment_send = (float*)gradients + op_.send_address[myRank];
-                float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-                MPI_Sendrecv(segment_send, op_.send_length[myRank],
-                             MPI_FLOAT,
-                             op_.send_target[myRank], 0,
-                             segment_receive, op_.receive_length[myRank],
-                             MPI_FLOAT,
-                             op_.receive_target[myRank], 
-                             0, MPI_COMM_WORLD, &recv_status);
-            }
+            mpicommprimitive_->run_send_recieve_host(gradients, size, myRank,
+                                                        nRanks, localRank, op_);
         }
         else if(op_.operation_type == "send")
           {
-            if(op_.send_target[myRank] == -1)
-              continue;
-            else
-            {
-              float* segment_send = (float*)gradients + op_.send_address[myRank];
-              MPI_Send(segment_send, op_.send_length[myRank],
-                       MPI_FLOAT, 
-                       op_.send_target[myRank], 0, MPI_COMM_WORLD);
-            }
+            mpicommprimitive_->run_send_host(gradients, size, myRank,
+                                                nRanks, localRank, op_);
           }
           else if(op_.operation_type == "receive")
           {
-            if(op_.receive_target[myRank] == -1)
-              continue;
-            else
-            {
-              if(op_.average){
-                float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-                float* segment_receive2 = output + op_.receive_address[myRank];
-                MPI_Irecv(segment_receive2, op_.receive_length[myRank],
-                          MPI_FLOAT, 
-                          op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_req);
-                MPI_Wait(&recv_req, &recv_status);
-                for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                    segment_receive[i] += segment_receive2[i];
-              }
-              else
-              {
-                float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-                MPI_Recv(segment_receive, op_.receive_length[myRank],
-                         MPI_FLOAT, 
-                         op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_status);
-              }
-              
-            }
+            mpicommprimitive_->run_recieve_host(gradients, size, myRank,
+                                                nRanks, localRank, op_);
           }
     }
-    //delete[] output;
     
     for (int i = 0; i < size; i++)
     {
         gradients[i] /= nRanks;
     }
-    //call back
-    //(*callback)();
+
+    delete mpicommprimitive_;
 }
 
 void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
