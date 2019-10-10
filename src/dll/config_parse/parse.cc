@@ -16,6 +16,8 @@ std::string string_to_operation_type(std::string line)
         return "write";
     else if (line.find("(read)", 0) != std::string::npos)
         return "read";
+    else if (line.find("(reduce)", 0) != std::string::npos)
+        return "reduce";
     else
         return "None";
 }
@@ -126,7 +128,7 @@ void CfgTable::parse_excution_plan()
             cfg_table[plan_.tensor_name] = plan_;
         }
     }
-    show_context();
+    //show_context();
 }
 
 void CfgTable::parse_excution_plan(std::string cfg_path)
@@ -143,5 +145,5 @@ void CfgTable::parse_excution_plan(std::string cfg_path)
             cfg_table[plan_.tensor_name] = plan_;
         }
     }
-    show_context();
+    //show_context();
 }
