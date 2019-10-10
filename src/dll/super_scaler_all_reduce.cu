@@ -54,7 +54,7 @@ void MPI_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRan
 }
 
 void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                    plan plan, void* output_ptr)
+                                    plan plan)
 {
 
     MpiCommPrimitive* mpicommprimitive_ = new MpiCommPrimitive();
