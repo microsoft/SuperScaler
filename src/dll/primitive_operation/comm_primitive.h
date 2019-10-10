@@ -87,7 +87,7 @@ class MpiCommPrimitive : public CommPrimitive{
 public:
     MpiCommPrimitive(){
         lib_type = "mpi";
-        buffer_ptr = malloc(64*1024*1024*sizeof(float)); //TO DO
+        buffer_ptr = malloc(16*1024*1024*sizeof(float)); //TO DO
     }
     ~MpiCommPrimitive() {
         free(buffer_ptr);
