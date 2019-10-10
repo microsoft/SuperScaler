@@ -61,21 +61,18 @@ void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int 
     mpicommprimitive_->getinfo();
     for(auto op_ :plan.operation)
     {
-        if(op_.operation_type == "send_receive")
-        {
+        if(op_.operation_type == "send_receive"){
             mpicommprimitive_->run_send_recieve_host(gradients, size, myRank,
                                                         nRanks, localRank, op_);
         }
-        else if(op_.operation_type == "send")
-          {
+        else if(op_.operation_type == "send"){
             mpicommprimitive_->run_send_host(gradients, size, myRank,
                                                 nRanks, localRank, op_);
-          }
-          else if(op_.operation_type == "receive")
-          {
+        }
+          else if(op_.operation_type == "receive"){
             mpicommprimitive_->run_recieve_host(gradients, size, myRank,
                                                 nRanks, localRank, op_);
-          }
+        }
     }
     
     for (int i = 0; i < size; i++)
