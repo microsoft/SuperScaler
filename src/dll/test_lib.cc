@@ -369,11 +369,11 @@ int main()
     // std::cout << "=======================================================================" << std::endl;
     // std::cout << "test_host mpi at " << myRank << std::endl;
     // test_mpi_host(myRank, nRanks, localRank, 64*1024*1024);
-/*
+
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_host USR" << std::endl;
     test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
-
+/*
     // std::cout << "=======================================================================" << std::endl;
     // std::cout << "test_host nccl" << std::endl;
     // test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);

@@ -42,18 +42,10 @@ public:
     void getinfo(){
         std::cout << "Communication Lib type: " << lib_type << std::endl;
     }
-    CfgTable get_rdma_cfg(){
-        return this->RDMA_cfg;
-    }
 
 protected:
     std::string lib_type;
-<<<<<<< HEAD
-    CfgTable RDMA_cfg;
-
-=======
     std::atomic<uint32_t> stage_;
->>>>>>> 4c30ce038838ab9b78b7c8c19cc6962492963583
 };
 
 class RdmaCommPrimitive : public CommPrimitive{
@@ -63,15 +55,6 @@ public:
         stage_ = 0;
     }
     ~RdmaCommPrimitive() {}
-<<<<<<< HEAD
-    void set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, size_t size);
-    void set_cfg_RDMA_device(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients_gpu, float *buf_gpu, size_t size);
-    void run_write_host(float *gradients, int size, int myRank,
-                 int nRanks, int localRank, excution_operation op_);
-
-    void run_write_device(float *gradients, int size, int myRank,
-                 int nRanks, int localRank, excution_operation op_);
-=======
     void set_cfg_RDMA(CfgTable cfg, int myRank, int nRanks, int localRank, size_t size);
     void RDMA_Register_CPU_MemRegion(float *gradients, size_t size);
     void RDMA_Register_GPU_MemRegion(float *gradients, size_t size);
@@ -86,16 +69,12 @@ public:
     {
         return RDMA_cfg;
     }
->>>>>>> 4c30ce038838ab9b78b7c8c19cc6962492963583
 
 protected:
     std::vector<wolong::RDMAChannel*> channels;
     std::vector<remote_region> local_comm_ranks_;
     std::vector<remote_region> gpu_comm_ranks_;
-
-    // lock_t lmr_lock;
-    // std::vector<std::vector<lock_t>> send_enable;
-    // std::vector<std::vector<lock_t>> receive_enable;
+    CfgTable RDMA_cfg;
 
     wolong::RDMADeviceManager *rdm;
     wolong::RDMADevice *rdma_dev;
