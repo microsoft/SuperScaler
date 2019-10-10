@@ -78,9 +78,6 @@ protected:
     struct ibv_mr *gpu_lmr;
     struct ibv_mr *lmr;
     struct ibv_mr *lmr2;
-
-    std::atomic<uint32_t> stage_;
-
 };
 
 class MpiCommPrimitive : public CommPrimitive{
