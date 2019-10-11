@@ -15,25 +15,19 @@
 #include <unordered_map>
 #include <utility>
 
-inline std::vector<std::string> split(const std::string& str, const std::string& delim) //what's the meaning of delim?
+inline std::vector<std::string> split(const std::string& str, const std::string& delim)
 {
     std::vector<std::string> tokens;
     size_t prev = 0, pos = 0;
-
     do
     {
         pos = str.find(delim, prev);
-        if (pos == std::string::npos){
-            pos = str.length();
-        } 
+        if (pos == std::string::npos) pos = str.length();
         std::string token = str.substr(prev, pos-prev);
-        if (!token.empty()){
-            tokens.push_back(token);
-        } 
+        if (!token.empty()) tokens.push_back(token);
         prev = pos + delim.length();
     }
     while (pos < str.length() && prev < str.length());
-
     return tokens;
 }
 
@@ -47,7 +41,7 @@ public:
 
         for (size_t i = 0; i < vec.size(); i++)
         {
-            target.push_back(std::stoi(vec[i]));
+            target.push_back( std::stoi(vec[i]));
         }
     }
     void set_context_value(std::string context, std::vector<size_t> &target)
@@ -61,12 +55,10 @@ public:
     }
     void set_average(std::string context)
     {
-        if (context == "true"){
+        if (context == "true")
             average = true;
-        }
-        else{
-            average = false; 
-        }       
+        else
+            average = false;        
     }
     void set_context(std::string context_name, std::string context)
     {
@@ -118,7 +110,7 @@ public:
     bool average;
 };
 
-class plan{ //why this class is named as PLAN?
+class plan{
 
 public:
 
@@ -132,7 +124,7 @@ public:
         operation.push_back(new_operation);
     }
     void set_last_operation_contest(std::string context_name, std::string context) {
-        operation.back().set_context(context_name, context);
+        operation.back().set_context(context_name,context);
     }
 
     void show_context()

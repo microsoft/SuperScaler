@@ -1,44 +1,33 @@
 #include "comm_primitive.h"
- 
-void memcpy_cb_(void *arg, enum ibv_wc_status status) {
-	stage_ ++;
+
+void cb(void *arg, enum ibv_wc_status status) 
+{
+    (*((uint32_t*)arg))++;
 }
 
-void RdmaCommPrimitive::set_cfg_RDMA_host(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients, size_t size){
-    RDMA_cfg.parse_excution_plan("config/RDMA_configure.cfg");
-    auto plan = RDMA_cfg.cfg_table["allreduce.classifier.6.bias"];
-    std::vector<std::string> host_ip = plan.host_ip;
-    std::vector<std::string> host_port = plan.host_port;
-
-    rdm = new wolong::RDMADeviceManager(2, 2, host_ip[myRank], std::stoi(host_port[myRank]));
-    rdm->Init();
-
-    std::cout << host_ip[myRank] << ":" <<std::stoi(host_port[myRank])<<"\n";
-
-    rdma_dev = rdm->GetDevice(0);
-
-    sending_lmr = rdma_dev->AllocateMemRegion(1*1024*1024);
-	cpu_lmr = rdma_dev->AllocateMemRegion(size * 4);
-    lmr = rdma_dev->RegisterMemRegion(gradients, size * 4);
-  
-    local_comm_ranks_ = std::vector<remote_region>(nRanks);
-    local_comm_ranks_[myRank].remote_addr = cpu_lmr->addr;
-    local_comm_ranks_[myRank].remote_key  = cpu_lmr->rkey;
-
-    MPI_Allgather(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL, local_comm_ranks_.data(), sizeof(remote_region) / 4,
-            MPI_INT, MPI_COMM_WORLD);
-
-
-    channels = std::vector<wolong::RDMAChannel *>(nRanks);
-    for(int i = 0; i < nRanks; i++){
-        if(i!=myRank){
-            channels[i] = rdma_dev->GetRDMAChannelWithIdx(host_ip[i], std::stoi(host_port[i]), 1);
-        }
+void RdmaCommPrimitive::execute(float *gradients, int size, 
+                 int myRank, int nRanks, int localRank, excution_operation op_) {
+    if(op_.operation_type == "write") {
+        run_write_host(gradients, size, 
+                    myRank, nRanks, localRank, op_);
     }
+    else {
+        return;
+    }
+                    
 }
 
-void RdmaCommPrimitive::set_cfg_RDMA_device(CfgTable cfg, int myRank, int nRanks, int localRank, float *gradients_gpu, float *buf_gpu, size_t size){
-    RDMA_cfg.parse_excution_plan("config/RDMA_configure.cfg");
+void RdmaCommPrimitive::set_cfg_RDMA(CfgTable cfg, int myRank, int nRanks, int localRank, size_t size)
+{
+    stage_ = 0;
+    count = 0;
+
+    std::cout << "set config for host communication based on rdma" << std::endl;
+
+    myRank_ = myRank;
+    nRanks_ = nRanks;
+
+    RDMA_cfg.parse_excution_plan("config/RDMA_configure.cfg");    
     auto plan = RDMA_cfg.cfg_table["allreduce.classifier.6.bias"];
     std::vector<std::string> host_ip = plan.host_ip;
     std::vector<std::string> host_port = plan.host_port;
@@ -51,174 +40,203 @@ void RdmaCommPrimitive::set_cfg_RDMA_device(CfgTable cfg, int myRank, int nRanks
     rdma_dev = rdm->GetDevice(0);
 
     sending_lmr = rdma_dev->AllocateMemRegion(1*1024*1024);
-    gpu_lmr = rdma_dev->RegisterMemRegion(buf_gpu, size * 4);
+    cpu_lmr = std::vector<struct ibv_mr *>(nRanks * nRanks);
+    gpu_lmr = std::vector<struct ibv_mr *>(nRanks * nRanks);
+    local_comm_ranks_ = std::vector<remote_region>(nRanks * nRanks);
+    gpu_comm_ranks_ = std::vector<remote_region>(nRanks * nRanks);
 
-    lmr2 = rdma_dev->RegisterMemRegion(gradients_gpu, size * 4);
+    sending_buf = (uint32_t*)sending_lmr->addr;
 
-    gpu_comm_ranks_ = std::vector<remote_region>(nRanks);
-    gpu_comm_ranks_[myRank].remote_addr = gpu_lmr->addr;
-    gpu_comm_ranks_[myRank].remote_key  = gpu_lmr->rkey;
+    for (int i = 0; i < nRanks; i++)
+    {
+        cudaSetDevice(localRank * 1 + 0); //TODO
+        cudaMalloc(buf_gpu + i, size * sizeof(float));
+        cudaMemset(buf_gpu[i], 0, size * sizeof(float));
+        if (i != myRank)
+        {
+            cpu_lmr[myRank*nRanks + i] = rdma_dev->AllocateMemRegion(size * 4);
+            gpu_lmr[myRank*nRanks + i] = rdma_dev->RegisterMemRegion(buf_gpu[i], size * 4);
 
-    MPI_Allgather(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL, gpu_comm_ranks_.data(), sizeof(remote_region) / 4,
-            MPI_INT, MPI_COMM_WORLD);
+            local_comm_ranks_[myRank*nRanks + i].remote_addr = cpu_lmr[myRank*nRanks + i]->addr;
+            local_comm_ranks_[myRank*nRanks + i].remote_key  = cpu_lmr[myRank*nRanks + i]->rkey;
+
+            gpu_comm_ranks_[myRank*nRanks + i].remote_addr = gpu_lmr[myRank*nRanks + i]->addr;
+            gpu_comm_ranks_[myRank*nRanks + i].remote_key  = gpu_lmr[myRank*nRanks + i]->rkey;
+        }
+
+    }
+
+    MPI_Allgather(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL, local_comm_ranks_.data(), sizeof(remote_region) / 4 * nRanks,
+                  MPI_INT, MPI_COMM_WORLD);
+    MPI_Allgather(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL, gpu_comm_ranks_.data(), sizeof(remote_region) / 4 * nRanks,
+                  MPI_INT, MPI_COMM_WORLD);
 
     channels = std::vector<wolong::RDMAChannel *>(nRanks);
-
     for(int i = 0; i < nRanks; i++)
     {
-        if(i!=myRank){
-            channels[i] = rdma_dev->GetRDMAChannelWithIdx(host_ip[i], std::stoi(host_port[i]), 1);
-        }
+        if(i!=myRank)
+        channels[i] = rdma_dev->GetRDMAChannelWithIdx(host_ip[i], std::stoi(host_port[i]), 1);
     }
 }
 
-void RdmaCommPrimitive::run_write_host(float *gradients, int size, int myRank,
-                 int nRanks, int localRank, excution_operation op_) {
-    int i = 0;
-    if(op_.send_target[myRank] != -1)
-    channels[op_.send_target[myRank]]->Memcpy(lmr->addr + op_.send_address[myRank] * sizeof(float), lmr, 
-                                                (void *)local_comm_ranks_[op_.send_target[myRank]].remote_addr + op_.send_address[myRank] * sizeof(float), 
-                                                local_comm_ranks_[op_.send_target[myRank]].remote_key, 
-                                                op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, memcpy_cb_, nullptr);
-    while (stage_ != i);
+void RdmaCommPrimitive::RDMA_Register_CPU_MemRegion(float *gradients, size_t size)
+{
+    lmr_cpu = rdma_dev->RegisterMemRegion(gradients, size * sizeof(float));
+}
+
+void RdmaCommPrimitive::RDMA_Register_GPU_MemRegion(float *gradients, size_t size)
+{
+    lmr_gpu = rdma_dev->RegisterMemRegion(gradients, size * sizeof(float));
+}
+
+void RdmaCommPrimitive::run_write_host(float *gradients, int size, 
+                 int myRank, int nRanks, int localRank, excution_operation op_)
+{
+    if(op_.send_target[myRank] != -1) {
+        channels[op_.send_target[myRank]]->Memcpy((void *)((uint8_t*)lmr_cpu->addr + op_.send_address[myRank] * sizeof(float)), lmr_cpu, 
+                                                    (void *)((uint8_t*)local_comm_ranks_[op_.send_target[myRank]*nRanks + myRank].remote_addr + op_.send_address[myRank] * sizeof(float)), 
+                                                    local_comm_ranks_[op_.send_target[myRank]*nRanks + myRank].remote_key, 
+                                                    op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, cb, &stage_);
+        while(!stage_);
+        stage_ = 0;
+    }
     MPI_Barrier(MPI_COMM_WORLD);
-    if(op_.receive_target[myRank] != -1){
-        float *buf = (float *)cpu_lmr->addr + op_.receive_address[myRank];
+    if(op_.receive_target[myRank] != -1)
+    {
+        float *buf = (float *)cpu_lmr[myRank*nRanks + op_.receive_target[myRank]]->addr + op_.receive_address[myRank];
         float *grad = gradients + op_.receive_address[myRank];
-        if(op_.average)
+        if (op_.reduce_type[myRank] == 0)
+        {
             for(int i = 0 ; i < op_.receive_length[myRank]; i++)
+            {
                 grad[i] += buf[i];
-        else
+            }
+        }
+        else if (op_.reduce_type[myRank] == 1)
+        {
             for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                grad[i] = buf[i];
+            {
+                grad[i] = buf[i];        
+            }
+        }
     }
 }
 
-void RdmaCommPrimitive::run_write_device(float *gradients, int size, int myRank,
-                int nRanks, int localRank, excution_operation op_) {
-    int i = 0;
-    if(op_.send_target[myRank] != -1){
-            channels[op_.send_target[myRank]]->Memcpy(lmr2->addr + op_.send_address[myRank] * sizeof(float), lmr2,
-                                                        (void *)gpu_comm_ranks_[op_.send_target[myRank]].remote_addr + op_.send_address[myRank] * sizeof(float),
-                                                        gpu_comm_ranks_[op_.send_target[myRank]].remote_key,
-                                                        op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, memcpy_cb_, nullptr);
-                // if (verbose)
-                // {
-                //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                //     std::cout << "\t [rdma_Memcpy][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                // }
+void RdmaCommPrimitive::run_write_device(float *gradients, int size, 
+                 int myRank, int nRanks, int localRank, excution_operation op_)
+{
+    if(op_.send_target[myRank] != -1) {
+        channels[op_.send_target[myRank]]->Memcpy((void *)((uint8_t*)lmr_gpu->addr + op_.send_address[myRank] * sizeof(float)), lmr_gpu, 
+                                                    (void *)((uint8_t*)gpu_comm_ranks_[op_.send_target[myRank]*nRanks + myRank].remote_addr + op_.send_address[myRank] * sizeof(float)), 
+                                                    gpu_comm_ranks_[op_.send_target[myRank]*nRanks + myRank].remote_key, 
+                                                    op_.send_length[myRank] * sizeof(float), MEMCPY_LOCAL_TO_REMOTE, cb, &stage_);
+        while(!stage_);
+        stage_ = 0;
     }
-    while (stage_ != i); //wait for memcpy finish
-            // if (verbose)
-            // {
-            //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-            //     std::cout << "\t [rdma_Memcpy-while][" << i <<"], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-            // }
     MPI_Barrier(MPI_COMM_WORLD);
-            // if (verbose)
-            // {
-            //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-            //     std::cout << "\t [rdma_Memcpy-while-barrier][" << i <<"], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-            // }
-    if (op_.receive_target[myRank] != -1){
-        float *buf = (float *)gpu_lmr->addr + op_.receive_address[myRank];
+    if(op_.receive_target[myRank] != -1)
+    {
+        float *buf = (float *)gpu_lmr[myRank*nRanks + op_.receive_target[myRank]]->addr + op_.receive_address[myRank];
         float *grad = gradients + op_.receive_address[myRank];
-        if (op_.average){
+        if (op_.reduce_type[myRank] == 0)
+        {
             gradients_Reduce(grad, buf, op_.receive_length[myRank]);
-            cudaDeviceSynchronize(); //TODO check necessary w.r.t. loop
-                    // if (verbose)
-                    // {
-                    //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                    //     std::cout << "\t [rdma_Memcpy-barrier-while-reduce][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                    // }
         }
-        else{
+        else if (op_.reduce_type[myRank] == 1)
+        {
             cudaMemcpy(grad, buf, op_.receive_length[myRank] * sizeof(float), cudaMemcpyDeviceToDevice);
-                    //cudaDeviceSynchronize();
-                    // if (verbose)
-                    // {
-                    //     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time);
-                    //     std::cout << "\t [rdma_Memcpy-barrier-while-cudamemcpy][" << i << "], elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-                    // }
         }
     }
+    cudaDeviceSynchronize();
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 
-void MpiCommPrimitive::run_send_recieve_host(float *gradients, int size, int myRank,
-                int nRanks, int localRank, excution_operation op_) {
+void MpiCommPrimitive::execute(float *gradients, int size, 
+                 int myRank, int nRanks, int localRank, excution_operation op_) {
+    if(op_.operation_type == "send_receive") {
+        run_send_recieve_host(gradients, size, 
+                        myRank, nRanks, localRank, op_);
+    }
+    else if(op_.operation_type == "send") {
+        run_send_host(gradients, size, 
+                        myRank, nRanks, localRank, op_);
+    }
+    else if(op_.operation_type == "receive") {
+        run_recieve_host(gradients, size, 
+                        myRank, nRanks, localRank, op_);
+    }
+    else {
+        return;
+    }
+                    
+}
+
+void MpiCommPrimitive::run_send_recieve_host(float *gradients, int size, 
+                    int myRank, int nRanks, int localRank, excution_operation op_) {
     MPI_Status recv_status;
     MPI_Request recv_req;
+
+    if(op_.average) {
+        float* segment_send = (float *)gradients + op_.send_address[myRank];
+        float* segment_receive = (float *)gradients + op_.receive_address[myRank];
+        float* segment_buffer = (float *)buffer + op_.receive_address[myRank];
         
-    if(op_.average){
-        void* output_ptr = malloc(size*sizeof(float));
-        float* output = (float*)output_ptr;
-        float* segment_send = (float*)gradients + op_.send_address[myRank];
-        float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-        float* segment_receive2 = output + op_.receive_address[myRank];
-        MPI_Irecv(segment_receive2, op_.receive_length[myRank],
-                MPI_FLOAT, 
-                op_.receive_target[myRank], 
-                0, MPI_COMM_WORLD, &recv_req);
-        MPI_Send(segment_send, op_.send_length[myRank],
-                MPI_FLOAT, 
-                op_.send_target[myRank], 
-                0, MPI_COMM_WORLD);
+        MPI_Irecv(segment_buffer, op_.receive_length[myRank], MPI_FLOAT, 
+                  op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_req);
+        MPI_Send(segment_send, op_.send_length[myRank], MPI_FLOAT, 
+                 op_.send_target[myRank], 0, MPI_COMM_WORLD);
 
         MPI_Wait(&recv_req, &recv_status);
 
         for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-            segment_receive[i] += segment_receive2[i];
+            segment_receive[i] += segment_buffer[i];
     }
-    else{
+    else {
         float* segment_send = (float*)gradients + op_.send_address[myRank];
         float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-        MPI_Sendrecv(segment_send, op_.send_length[myRank],
-                    MPI_FLOAT,
-                    op_.send_target[myRank], 0,
-                    segment_receive, op_.receive_length[myRank],
-                    MPI_FLOAT,
-                    op_.receive_target[myRank], 
-                    0, MPI_COMM_WORLD, &recv_status);
+
+        MPI_Sendrecv(segment_send, op_.send_length[myRank], MPI_FLOAT,
+                     op_.send_target[myRank], 0,
+                     segment_receive, op_.receive_length[myRank], MPI_FLOAT,
+                     op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_status);
+
     }
 }
 
-void MpiCommPrimitive::run_send_host(float *gradients, int size, int myRank,
-                int nRanks, int localRank, excution_operation op_) {
+void MpiCommPrimitive::run_send_host(float *gradients, int size, 
+                    int myRank, int nRanks, int localRank, excution_operation op_) {
     if(op_.send_target[myRank] == -1)
         return;
-    else{
+    else {
         float* segment_send = (float*)gradients + op_.send_address[myRank];
-        MPI_Send(segment_send, op_.send_length[myRank],
-                MPI_FLOAT, 
+        MPI_Send(segment_send, op_.send_length[myRank], MPI_FLOAT, 
                 op_.send_target[myRank], 0, MPI_COMM_WORLD);
     }
 }
 
-void MpiCommPrimitive::run_recieve_host(float *gradients, int size, int myRank,
-                int nRanks, int localRank, excution_operation op_) {
+void MpiCommPrimitive::run_recieve_host(float *gradients, int size, 
+                    int myRank, int nRanks, int localRank, excution_operation op_) {
     MPI_Status recv_status;
     MPI_Request recv_req;
 
     if(op_.receive_target[myRank] == -1)
         return;
-    else{
+    else {
         if(op_.average){
-            void* output_ptr = malloc(size*sizeof(float));
-            float* output = (float*)output_ptr;
             float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-            float* segment_receive2 = output + op_.receive_address[myRank];
-            MPI_Irecv(segment_receive2, op_.receive_length[myRank],
-                    MPI_FLOAT, 
-                    op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_req);
+            float* segment_buffer = buffer + op_.receive_address[myRank];
+            MPI_Irecv(segment_buffer, op_.receive_length[myRank], MPI_FLOAT, 
+                      op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_req);
             MPI_Wait(&recv_req, &recv_status);
             for(int i = 0 ; i < op_.receive_length[myRank]; i++)
-                segment_receive[i] += segment_receive2[i];
+                segment_receive[i] += segment_buffer[i];
         }
-        else{
+        else {
             float* segment_receive = (float*)gradients + op_.receive_address[myRank];
-            MPI_Recv(segment_receive, op_.receive_length[myRank],
-                    MPI_FLOAT, 
-                    op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_status);
-            }
+            MPI_Recv(segment_receive, op_.receive_length[myRank], MPI_FLOAT, 
+                     op_.receive_target[myRank], 0, MPI_COMM_WORLD, &recv_status);
+        }
+
     }
+
 }

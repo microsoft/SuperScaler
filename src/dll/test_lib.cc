@@ -3,6 +3,18 @@
 #include <chrono>
 #include "super_scaler.h"
 #include "rdma/rdma.h"
+#include "config_parse/parse.h"
+
+const int test_times = 1;
+const size_t maxerrcount = 10;
+
+RdmaCommPrimitive * rdmaCommPrimitive_ = new RdmaCommPrimitive();
+
+void gradients_init(float* &gradients, const size_t &size){
+    for (int i = 0; i < size; i++){
+        gradients[i] = i;
+    }
+}
 
 void callBackFunction()
 {
@@ -12,17 +24,10 @@ void callBackFunction()
 void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
 
     //each process use 1 GPU
     int nDev = 1;
-    
-    const int test_times = 10;
-    const size_t maxerrcount = 10;
-
 
     //initializing GPU memery based on localRank
     float **sendbuff = (float **)malloc(nDev * sizeof(float *));
@@ -69,7 +74,7 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 	 
 
     //freeing device memory
-    for (int i = 0; i < nDev; i++) //why collect memory from cpu but free memory from gpu??
+    for (int i = 0; i < nDev; i++)
     {
         CUDACHECK(cudaFree(sendbuff[i]));
         CUDACHECK(cudaFree(recvbuff[i]));
@@ -85,7 +90,7 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-	float target_value = i;
+	    float target_value = i;
         if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
             std::cout <<  "test_host fail " <<gradients[i] << " != " << target_value << "\n" ;
@@ -99,18 +104,8 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i ;
-    }
-/*
-    std::cout << "Before all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << gradients[i] << " ";
-    }
-    std::cout << std::endl;
-*/
+    gradients_init(gradients, size);
+
     //initializing GPU memery based on localRank
     float **sendbuff = (float **)malloc(1 * sizeof(float *));
 
@@ -120,10 +115,6 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
     CUDACHECK(cudaMemcpy(sendbuff[0], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
     //each process use 1 GPU
     int nDev = 1;
-
-    const int test_times = 10;
-    const size_t maxerrcount = 10;
-
 
     //initializing GPU memery based on localRank
     cudaStream_t *s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
@@ -179,7 +170,7 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-	float target_value = i;
+	    float target_value = i;
         if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
             std::cout <<  "test_host fail " <<gradients[i] << " != " << target_value << "\n" ;
@@ -187,44 +178,34 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
         }
     }
 
-    delete [] gradients;
+	delete [] gradients;
 }
 
-void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_rdma by interface
+void test_rdma_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    //float *gradients = nullptr; cudaMallocHost(&gradients, sizeof(float) * size);
-
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
-    						  
-    RDMA_Register_CPU_MemRegion(gradients, size);
-
-    // std::cout << "Before all reduce" << std::endl;
-    // for (int i = 0; i < size; i++)
-    // {
-    //     if(gradients[i] != i * (myRank + 1))
-    //     {
-    //         std::cout <<  "test_rdma fail " <<gradients[i] << " " << i << "\n" ;
-    //         break;
-    //     }
-    // }
-    // std::cout << "OK" << std::endl;
-
-    const int test_times = 1;
-
-    const size_t maxerrcount = 10;
+    gradients_init(gradients,size);
+    rdmaCommPrimitive_->RDMA_Register_CPU_MemRegion(gradients, size);
 
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for (int i = 0; i < test_times; i++)
-        RDMA_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank);
+    {
+        auto plan = rdmaCommPrimitive_->get_rdma_cfg().cfg_table["allreduce.classifier.6.bias"];
+
+        for(auto op_:plan.operation)
+        {										  
+            rdmaCommPrimitive_->execute(gradients, size, myRank, nRanks, localRank, op_);
+        }
+        for (int k = 0; k < size; k++){
+            gradients[k] /= nRanks;
+        }
+    }
+    //    RDMA_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank);
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
     std::cout << "test_rdma_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
     std::cout << "After all reduce" << std::endl;
-
+																   
     size_t errcount = 0;
     for (int i = 0; i < size; i++)
     {
@@ -244,44 +225,38 @@ void test_rdma_host(int myRank, int nRanks, int localRank, size_t size) //test_r
 void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test_rdma by interface
 {
     float *gradients = new float[size];
-
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
 
     float *sendbuff = nullptr; 
-																	   
 
     CUDACHECK(cudaSetDevice(localRank * 1 + 0)); //TODO
-    CUDACHECK(cudaMalloc(&sendbuff, size * sizeof(float)));														   
-    CUDACHECK(cudaMemset(sendbuff, 0, size * sizeof(float)));															 
+    CUDACHECK(cudaMalloc(&sendbuff, size * sizeof(float)));
+    CUDACHECK(cudaMemset(sendbuff, 0, size * sizeof(float)));
     CUDACHECK(cudaMemcpy(sendbuff, gradients, size * sizeof(float), cudaMemcpyHostToDevice));
 
-    RDMA_Register_GPU_MemRegion(sendbuff, size);    
-
-    // std::cout << "Before all reduce" << std::endl;
-    // for (int i = 0; i < size; i++)
-    // {
-    //     if(gradients[i] != i * (myRank + 1))
-    //     {
-    //         std::cout <<  "test_rdma fail " <<gradients[i] << " " << i << "\n" ;
-    //         break;
-    //     }
-    // }
-    // std::cout << "OK" << std::endl;
-
-    const int test_times = 1;
-    const size_t maxerrcount = 10;
-
+    rdmaCommPrimitive_->RDMA_Register_GPU_MemRegion(sendbuff, size);    
+    
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for (int i = 0; i < test_times; i++)
-        RDMA_scaler_all_reduce_device(sendbuff, size, myRank, nRanks, localRank);
+    {
+        auto plan = rdmaCommPrimitive_->get_rdma_cfg().cfg_table["allreduce.classifier.6.bias"];
+
+        for(auto op_:plan.operation)
+        {
+            if(op_.operation_type == "write")
+            {
+                rdmaCommPrimitive_->run_write_device(sendbuff, size, myRank, nRanks, localRank, op_);
+            }
+        }
+        gradients_Average(sendbuff, size, nRanks);
+        cudaDeviceSynchronize();
+    }
+    //    RDMA_scaler_all_reduce_device(sendbuff, size, myRank, nRanks, localRank);
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
     std::cout << "test_rdma_device, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 
-    CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));//copy values in sendbuff back to gradients
+    CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));
     std::cout << "After all reduce" << std::endl;
     size_t errcount = 0;
     for (int i = 0; i < size; i++)
@@ -304,10 +279,8 @@ void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test
 void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
+    gradients_init(gradients,size);
+
 /*
     std::cout << "Before all reduce" << std::endl;
     for (int i = 0; i < size; i++)
@@ -316,6 +289,7 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
     }
     std::cout << std::endl;
 */
+	
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < 10; i++)
@@ -328,7 +302,7 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-	float target_value = i;
+	    float target_value = i;
         if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
             std::cout <<  "test_host fail " <<gradients[i] << "!= " << target_value << "\n" ;
@@ -336,40 +310,30 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
         }
     }
     
-    delete [] gradients;
+    delete [] gradients;				
 }
 
-void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size) // test mpi by user specified reduce
+void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = i;
-    }
-/*
-    std::cout << "Before all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << gradients[i] << " ";
-    }
-    std::cout << std::endl;
-*/
-    const int test_times = 10;
-    const size_t maxerrcount = 10;
-    
+    gradients_init(gradients,size);
+
     auto plan = global_cfg.cfg_table["allreduce.classifier.6.bias"];
-    void* output_ptr = malloc(size*sizeof(float)); //what's the meaning of this sentence?
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
-    for(int i = 0; i < test_times; i++)
-        MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan, output_ptr);
+    //for(int i = 0; i < test_times; i++)
+    std::cout << "start communication" << std::endl;
+
+    MPI_usr_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank, plan);
+    
+    std::cout << "finish communication" << std::endl;
+    
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_mpi_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-	free(output_ptr);
     std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
-	float target_value = i;
+	    float target_value = i;
         if (std::fabs(gradients[i] - target_value) > 0.0001)
         {
             std::cout <<  "test_host fail " << gradients[i] << " !=  " << target_value << "\n" ;
@@ -406,30 +370,30 @@ int main()
     // std::cout << "test_host mpi at " << myRank << std::endl;
     // test_mpi_host(myRank, nRanks, localRank, 64*1024*1024);
 
-    // std::cout << "=======================================================================" << std::endl;
-    // std::cout << "test_host USR" << std::endl;
-    // test_mpi_USR_host(myRank, nRanks, localRank, 64*1024*1024);
-
     std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_host nccl" << std::endl;
-    test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
+    std::cout << "test_host USR" << std::endl;
+    test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
+/*
+    // std::cout << "=======================================================================" << std::endl;
+    // std::cout << "test_host nccl" << std::endl;
+    // test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
 
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_device nccl" << std::endl;
     test_nccl_device(myRank, nRanks, localRank, 16*1024*1024);
-																  
-    set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
+*/															
+    rdmaCommPrimitive_->set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
-    std::cout << "test_rdma at " << myRank << std::endl;
-    test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
+     std::cout << "=======================================================================" << std::endl;
+     std::cout << "test_rdma at " << myRank << std::endl;
+     test_rdma_host(myRank, nRanks, localRank, 16*1024*1024);
 
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_rdma at " << myRank << std::endl;
     test_rdma_device(myRank, nRanks, localRank, 16*1024*1024);
-
+/*
     finallize_RDMA(myRank, nRanks, localRank);
-
+*/
     finalization();
 
     return 0;
