@@ -16,7 +16,7 @@ struct remote_region {
 class CommPrimitive{
 public:
     CommPrimitive() {}
-    ~CommPrimitive() {}
+    virtual ~CommPrimitive() {}
     virtual void run_send_recieve_host(float *gradients, int size, 
                  int myRank, int nRanks, int localRank, excution_operation op_) {}
     virtual void run_send_host(float *gradients, int size, 

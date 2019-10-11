@@ -4,6 +4,7 @@
 #include "super_scaler.h"
 #include "rdma/rdma.h"
 #include "config_parse/parse.h"
+#include "nccl/nccl.h"
 
 const int test_times = 1;
 const size_t maxerrcount = 10;
@@ -32,45 +33,6 @@ void gradients_check(float* &gradients, const size_t &size){
     std::cout << "all reduce success!" << std::endl;
 }
 
-void nccl_init(const int &myRank, const int &nRanks, const int &localRank, const size_t &size,
-                const int &nDev, float ** &sendbuff, float ** &recvbuff, cudaStream_t *s, ncclComm_t *comms){
-
-    for (int i = 0; i < nDev; ++i)
-    {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
-        CUDACHECK(cudaMalloc(sendbuff + i, size * sizeof(float)));
-        CUDACHECK(cudaMemset(sendbuff[i], 1, size * sizeof(float)));
-        CUDACHECK(cudaMalloc(recvbuff + i, size * sizeof(float)));
-        CUDACHECK(cudaMemset(recvbuff[i], 0, size * sizeof(float)));
-        CUDACHECK(cudaStreamCreate(s + i));
-    }
-
-    ncclUniqueId id;
-    if (myRank == 0){
-        ncclGetUniqueId(&id);
-    }
-    MPICHECK(MPI_Bcast((void *)&id, sizeof(id), MPI_BYTE, 0, MPI_COMM_WORLD));
-
-    NCCLCHECK(ncclGroupStart());
-    for (int i = 0; i < nDev; i++)
-    {
-        NCCLCHECK(ncclCommInitRank(comms + i, nRanks * nDev, id, myRank * nDev + i));
-    }
-    NCCLCHECK(ncclGroupEnd());
-
-    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
-}
-
-void nccl_finalization(float ** &sendbuff, float ** &recvbuff, ncclComm_t *comms, const int &nDev){
-    //freeing device memory
-    for (int i = 0; i < nDev; i++)
-    {
-        CUDACHECK(cudaFree(sendbuff[i]));
-        CUDACHECK(cudaFree(recvbuff[i]));
-        ncclCommDestroy(comms[i]);
-    }
-}
-
 void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
@@ -85,8 +47,10 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
 
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
-        nccl_super_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank,
-                                     sendbuff, recvbuff, comms, s, nDev);
+    {
+        execute_nccl_all_reduce("host", sendbuff, recvbuff, size, myRank, nRanks, localRank,
+                                        comms, s, nDev, gradients);
+    }
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_host_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 
@@ -116,7 +80,11 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
 
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
-        nccl_super_scaler_all_reduce_device(sendbuff, recvbuff, size, myRank, nRanks, localRank, comms, s, nDev);
+    {
+        execute_nccl_all_reduce("device", sendbuff, recvbuff, size, myRank, nRanks, localRank,
+                                        comms, s, nDev, gradients);
+    }
+
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_device_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 
@@ -260,14 +228,14 @@ int main()
     // std::cout << "test_host USR" << std::endl;
     // test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
 
- /*   std::cout << "=======================================================================" << std::endl;
+   std::cout << "=======================================================================" << std::endl;
     std::cout << "test_host nccl" << std::endl;
     test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
-*/
+ /*
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_device nccl" << std::endl;
     test_nccl_device(myRank, nRanks, localRank, 16*1024*1024);
-															
+*/															
 /*    rdmaCommPrimitive_->set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
 
      std::cout << "=======================================================================" << std::endl;

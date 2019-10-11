@@ -6,7 +6,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <mpi.h>
-#include <nccl.h>
 #include <cuda_runtime.h>
 #include <chrono>
 #include <stdio.h>
@@ -16,6 +15,7 @@
 #include "blas/blas.h"
 #include "primitive_operation/comm_primitive.h"
 #include "config_parse/parse.h"
+#include "tools/check.h"
 
 CfgTable global_cfg;
 
@@ -40,41 +40,7 @@ void show_time(std::string s)
 	std::cout << s << "------------elapsed time: " << elapsed_seconds.count() <<'\n';	
 }
 
-#define MPICHECK(cmd)                                \
-    do                                               \
-    {                                                \
-        int e = cmd;                                 \
-        if (e != MPI_SUCCESS)                        \
-        {                                            \
-            printf("Failed: MPI error %s:%d '%d'\n", \
-                   __FILE__, __LINE__, e);           \
-            exit(EXIT_FAILURE);                      \
-        }                                            \
-    } while (0)
 
-#define CUDACHECK(cmd)                                         \
-    do                                                         \
-    {                                                          \
-        cudaError_t e = cmd;                                   \
-        if (e != cudaSuccess)                                  \
-        {                                                      \
-            printf("Failed: Cuda error %s:%d '%s'\n",          \
-                   __FILE__, __LINE__, cudaGetErrorString(e)); \
-            exit(EXIT_FAILURE);                                \
-        }                                                      \
-    } while (0)
-
-#define NCCLCHECK(cmd)                                         \
-    do                                                         \
-    {                                                          \
-        ncclResult_t r = cmd;                                  \
-        if (r != ncclSuccess)                                  \
-        {                                                      \
-            printf("Failed, NCCL error %s:%d '%s'\n",          \
-                   __FILE__, __LINE__, ncclGetErrorString(r)); \
-            exit(EXIT_FAILURE);                                \
-        }                                                      \
-    } while (0)
 
 static uint64_t getHostHash(const char *string)
 {
@@ -107,12 +73,6 @@ void finalization();
 void MPI_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank);
 
 void MPI_usr_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank, plan plan);
-
-void nccl_super_scaler_all_reduce_host(float *gradients, int size, int myRank, int nRanks, int localRank,
-                                       float **sendbuff, float **recvbuff, ncclComm_t* comms, cudaStream_t *s, const int & nDev);
-                                       
-void nccl_super_scaler_all_reduce_device(float **sendbuff, float **recvbuff, int size, int myRank, int nRanks, int localRank, 
-                                         ncclComm_t* comms, cudaStream_t *s, const int & nDev);
 
 
 #endif // SUPER_SCALAR_H_
