@@ -7,6 +7,7 @@
 
 const int test_times = 1;
 const size_t maxerrcount = 10;
+const int nDev = 1;
 
 RdmaCommPrimitive * rdmaCommPrimitive_ = new RdmaCommPrimitive();
 
@@ -15,7 +16,9 @@ void gradients_init(float* &gradients, const size_t &size){
         gradients[i] = i;
     }
 }
+
 void gradients_check(float* &gradients, const size_t &size){
+    std::cout << "After all reduce" << std::endl;
     for (int i = 0; i < size; i++)
     {
 	    float target_value = i;
@@ -30,35 +33,27 @@ void gradients_check(float* &gradients, const size_t &size){
 }
 
 void nccl_init(const int &myRank, const int &nRanks, const int &localRank, const size_t &size,
-                const int &nDev, float ** &sendbuff,float ** &recvbuff, cudaStream_t *s, ncclComm_t *comms){
-    //initializing GPU memery based on localRank
-    sendbuff = (float **)malloc(nDev * sizeof(float *));
-    recvbuff = (float **)malloc(nDev * sizeof(float *));
-    s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
+                const int &nDev, float ** &sendbuff, float ** &recvbuff, cudaStream_t *s, ncclComm_t *comms){
 
     for (int i = 0; i < nDev; ++i)
     {
         CUDACHECK(cudaSetDevice(localRank * nDev + i));
         CUDACHECK(cudaMalloc(sendbuff + i, size * sizeof(float)));
-        CUDACHECK(cudaMalloc(recvbuff + i, size * sizeof(float)));
         CUDACHECK(cudaMemset(sendbuff[i], 1, size * sizeof(float)));
+        CUDACHECK(cudaMalloc(recvbuff + i, size * sizeof(float)));
         CUDACHECK(cudaMemset(recvbuff[i], 0, size * sizeof(float)));
-
         CUDACHECK(cudaStreamCreate(s + i));
     }
 
     ncclUniqueId id;
-    if (myRank == 0)
-    {
+    if (myRank == 0){
         ncclGetUniqueId(&id);
     }
     MPICHECK(MPI_Bcast((void *)&id, sizeof(id), MPI_BYTE, 0, MPI_COMM_WORLD));
 
     NCCLCHECK(ncclGroupStart());
-
     for (int i = 0; i < nDev; i++)
     {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
         NCCLCHECK(ncclCommInitRank(comms + i, nRanks * nDev, id, myRank * nDev + i));
     }
     NCCLCHECK(ncclGroupEnd());
@@ -72,11 +67,6 @@ void nccl_finalization(float ** &sendbuff, float ** &recvbuff, ncclComm_t *comms
     {
         CUDACHECK(cudaFree(sendbuff[i]));
         CUDACHECK(cudaFree(recvbuff[i]));
-    }
-
-    //finalizing NCCL
-    for (int i = 0; i < nDev; i++)
-    {
         ncclCommDestroy(comms[i]);
     }
 }
@@ -86,26 +76,19 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
     float *gradients = new float[size];
     gradients_init(gradients,size);
 
-    //each process use 1 GPU
-    
-    //generating NCCL unique ID at one process and broadcasting it to all
-    int nDev = 1;
-    float **sendbuff = nullptr;
-    float **recvbuff = nullptr;
-    cudaStream_t *s = nullptr;
+    float **sendbuff = (float **)malloc(nDev * sizeof(float *));
+    float **recvbuff = (float **)malloc(nDev * sizeof(float *));
+    cudaStream_t *s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
     ncclComm_t comms[nDev];
 
-    //initializing NCCL, group API is required around ncclCommInitRank as it is called across multiple GPUs in each thread/process
-
     nccl_init(myRank, nRanks, localRank, size, nDev, sendbuff, recvbuff, s, comms);
-    
+
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
         nccl_super_scaler_all_reduce_host(gradients, size, myRank, nRanks, localRank,
-                                     sendbuff, recvbuff, comms, s);
+                                     sendbuff, recvbuff, comms, s, nDev);
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_host_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-    std::cout << "After all reduce" << std::endl;
 
     nccl_finalization(sendbuff, recvbuff, comms, nDev);
     gradients_check(gradients, size);
@@ -118,70 +101,33 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
     float *gradients = new float[size];
     gradients_init(gradients, size);
     
-    int nDev = 1;
+    float **sendbuff = (float **)malloc(nDev * sizeof(float *));
+    float **recvbuff = (float **)malloc(nDev * sizeof(float *));
 
-    //initializing GPU memery based on localRank
-    float **sendbuff = (float **)malloc(1 * sizeof(float *));
-
-    CUDACHECK(cudaSetDevice(localRank * 1 + 0));
-    CUDACHECK(cudaMalloc(sendbuff, size * sizeof(float)));
-    CUDACHECK(cudaMemset(sendbuff[0], 1, size * sizeof(float)));
-    CUDACHECK(cudaMemcpy(sendbuff[0], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
-    //each process use 1 GPU
-
-    //initializing GPU memery based on localRank
     cudaStream_t *s = (cudaStream_t *)malloc(sizeof(cudaStream_t) * nDev);
+    ncclComm_t comms[nDev];
 
+    nccl_init(myRank, nRanks, localRank, size, nDev, sendbuff, recvbuff, s, comms);
+     
     for (int i = 0; i < nDev; ++i)
     {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
-        CUDACHECK(cudaStreamCreate(s + i));
+        CUDACHECK(cudaMemcpy(sendbuff[i], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
     }
 
-    //generating NCCL unique ID at one process and broadcasting it to all
-    ncclUniqueId id;
-    if (myRank == 0)
-    {
-        ncclGetUniqueId(&id);
-    }
-    MPICHECK(MPI_Bcast((void *)&id, sizeof(id), MPI_BYTE, 0, MPI_COMM_WORLD));
-
-    //initializing NCCL, group API is required around ncclCommInitRank as it is called across multiple GPUs in each thread/process
-    ncclComm_t comms[nDev];
-    NCCLCHECK(ncclGroupStart());
-    for (int i = 0; i < nDev; i++)
-    {
-        CUDACHECK(cudaSetDevice(localRank * nDev + i));
-        NCCLCHECK(ncclCommInitRank(comms + i, nRanks * nDev, id, myRank * nDev + i));
-    }
-    NCCLCHECK(ncclGroupEnd());
-
-    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
-        nccl_super_scaler_all_reduce_device(sendbuff[0], size, myRank, nRanks, localRank, comms, s);
+        nccl_super_scaler_all_reduce_device(sendbuff, recvbuff, size, myRank, nRanks, localRank, comms, s, nDev);
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_device_nccl, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-	
-    //get gradients after allreduce
-    for (int i = 0; i < size; i++)
-    {
-        gradients[i] = 0;
-    }
-    CUDACHECK(cudaMemcpy(gradients, sendbuff[0], sizeof(float) * size, cudaMemcpyDeviceToHost));
 
-    
-    //finalizing NCCL
     for (int i = 0; i < nDev; i++)
     {
-        ncclCommDestroy(comms[i]);
+        CUDACHECK(cudaMemcpy(gradients, recvbuff[i], sizeof(float) * size, cudaMemcpyDeviceToHost));
     }
 
-    //freeing device memory
-    CUDACHECK(cudaFree(sendbuff[0]));
-
-    std::cout << "After all reduce" << std::endl;
+    nccl_finalization(sendbuff, recvbuff, comms, nDev);
     gradients_check(gradients, size);
+
 	delete [] gradients;
 }
 
@@ -210,17 +156,7 @@ void test_rdma_host(int myRank, int nRanks, int localRank, size_t size)
     std::cout << "test_rdma_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
     std::cout << "After all reduce" << std::endl;
 																   
-    size_t errcount = 0;
-    for (int i = 0; i < size; i++)
-    {
-        float target_value = i;
-        if (std::fabs(gradients[i] - target_value) > 0.0001)
-        {
-            std::cout << "###  test_rdma_host fail " << gradients[i] << " != " << target_value << "\n";
-            if (++errcount > maxerrcount)
-                break;
-        }
-    }
+    gradients_check(gradients, size);
 
     delete [] gradients;
     //cudaFreeHost(gradients); //TODO fixme
@@ -261,19 +197,7 @@ void test_rdma_device(int myRank, int nRanks, int localRank, size_t size) //test
     std::cout << "test_rdma_device, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size * 4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 
     CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));
-    std::cout << "After all reduce" << std::endl;
-    size_t errcount = 0;
-    for (int i = 0; i < size; i++)
-    {
-        float target_value = i;
-        if (std::fabs(gradients[i] - target_value) > 0.0001)
-        {
-            std::cout << "### test_rdma_device fail " << gradients[i] << " != " << target_value << "\n";
-            if (++errcount > maxerrcount)
-                break;
-        }
-    }
-
+    gradients_check(gradients, size);
     CUDACHECK(cudaFree(sendbuff));
     delete [] gradients;
     //cudaFreeHost(gradients); //TODO fixme
@@ -284,15 +208,6 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
 {
     float *gradients = new float[size];
     gradients_init(gradients,size);
-
-/*
-    std::cout << "Before all reduce" << std::endl;
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << gradients[i] << " ";
-    }
-    std::cout << std::endl;
-*/
 	
     MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
     auto start_time = std::chrono::system_clock::now();
@@ -303,7 +218,6 @@ void test_mpi_host(int myRank, int nRanks, int localRank, size_t size)
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / 10;
 	std::cout << "test_mpi_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
 	
-    std::cout << "After all reduce" << std::endl;
     gradients_check(gradients, size);
    
     delete [] gradients;				
@@ -326,7 +240,7 @@ void test_mpi_USR_host(int myRank, int nRanks, int localRank, size_t size)
     
     std::chrono::duration<double> elapsed_seconds = (std::chrono::system_clock::now() - start_time) / test_times;
 	std::cout << "test_mpi_host, gradient size: " << std::to_string(size) << ", elapsed time: " << elapsed_seconds.count() << "s, Throughput: " << std::to_string(size*4 / elapsed_seconds.count() / 1024 / 1024 / 1024) << "GB/s\n";
-    std::cout << "After all reduce" << std::endl;
+
     gradients_check(gradients, size);
     delete [] gradients;
 }
@@ -346,14 +260,14 @@ int main()
     // std::cout << "test_host USR" << std::endl;
     // test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
 
-    std::cout << "=======================================================================" << std::endl;
+ /*   std::cout << "=======================================================================" << std::endl;
     std::cout << "test_host nccl" << std::endl;
     test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
-/*
+*/
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_device nccl" << std::endl;
     test_nccl_device(myRank, nRanks, localRank, 16*1024*1024);
-*/															
+															
 /*    rdmaCommPrimitive_->set_cfg_RDMA(global_cfg, myRank, nRanks, localRank, 16*1024*1024);
 
      std::cout << "=======================================================================" << std::endl;
