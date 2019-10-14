@@ -44,6 +44,7 @@ void test_nccl_host(int myRank, int nRanks, int localRank, size_t size)
     ncclComm_t comms[nDev];
 
     nccl_init(myRank, nRanks, localRank, size, nDev, sendbuff, recvbuff, s, comms);
+    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
 
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
@@ -72,11 +73,12 @@ void test_nccl_device(int myRank, int nRanks, int localRank, size_t size)
     ncclComm_t comms[nDev];
 
     nccl_init(myRank, nRanks, localRank, size, nDev, sendbuff, recvbuff, s, comms);
-     
+
     for (int i = 0; i < nDev; ++i)
     {
         CUDACHECK(cudaMemcpy(sendbuff[i], gradients, size * sizeof(float), cudaMemcpyHostToDevice));
     }
+    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
 
     auto start_time = std::chrono::system_clock::now();
     for(int i = 0; i < test_times; i++)
@@ -228,7 +230,7 @@ int main()
     // std::cout << "test_host USR" << std::endl;
     // test_mpi_USR_host(myRank, nRanks, localRank, 16*1024*1024);
 
-   std::cout << "=======================================================================" << std::endl;
+    std::cout << "=======================================================================" << std::endl;
     std::cout << "test_host nccl" << std::endl;
     test_nccl_host(myRank, nRanks, localRank, 16*1024*1024);
  /*
