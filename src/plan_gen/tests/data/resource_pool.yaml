@@ -1,0 +1,19 @@
+# Servers
+hostname1:
+    CPU:
+        0:
+            links:
+                - "/hostname1/CPU/1/":
+                    type: "RDMA"
+        1:
+        2:
+        3:
+    GPU:
+        0:
+            links:
+                - "/hostname1/GPU/1/":
+                    type: "PCIE"
+        1:
+        2:
+        3:
+
