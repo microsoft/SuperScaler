@@ -8,8 +8,9 @@ import resource
 
 
 class Operator(object):
-    def __init__(self, op, device):
+    def __init__(self, op, graph_id, device):
         self.op = op
+        self.graph_id = graph_id
         self.device = device
         self.name = op.name
         self.tensor = op.tensor
@@ -30,8 +31,8 @@ class Operator(object):
     
 
 class Operator2P2Communication(Operator):
-    def __init__(self, op, device):
-        super().__init__(op, device)
+    def __init__(self, op, graph_id, device):
+        super().__init__(op, graph_id, device)
         self.type = "PCIE"
 
     def assign(self, peer_operators):
@@ -56,8 +57,8 @@ class OperatorSend(Operator2P2Communication):
 
 
 class OperatorAllReduce(Operator):
-    def __init__(self, op, device):
-        super().__init__(op, device)
+    def __init__(self, op, graph_id, device):
+        super().__init__(op, graph_id, device)
         self.type = "DEFAULT"
 
     def assign(self, peer_operators):
@@ -81,7 +82,7 @@ class OperatorManager(object):
         self.op_groups = {}
         self.assigned_ops = set()
 
-    def add_op(self, op, device):
+    def add_op(self, op, graph_id, device):
         op_name = op.name.lower()
         if op_name not in OperatorManager.operator_factory:
             return
@@ -91,7 +92,7 @@ class OperatorManager(object):
         if op.tensor not in self.op_groups:
             self.op_groups[op.tensor] = []
         self.op_groups[op.tensor].append(
-            OperatorManager.operator_factory[op_name](op, device)
+            OperatorManager.operator_factory[op_name](op, graph_id, device)
         )
 
     def get_op_iterator(self):
