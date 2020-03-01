@@ -1,0 +1,9 @@
+*.pyc
+*.so
+*.o
+*.a
+.idea
+.eggs
+
+.vscode/
+.idea/

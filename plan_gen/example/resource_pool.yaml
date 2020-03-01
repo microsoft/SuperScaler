@@ -1,0 +1,8 @@
+# Servers
+hostname1:
+    GPU:
+        0:
+        1:
+        2:
+        3:
+
