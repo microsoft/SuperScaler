@@ -314,6 +314,17 @@ void MpiCommPrimitive::run_send_host(float *gradients, int size,
     }
 }
 
+void MpiCommPrimitive::send(unsigned char *data, int sendTarget, int sendAddress, int sendLength)
+{
+    MPI_Send(data + sendAddress, sendLength, MPI_UNSIGNED_CHAR, sendTarget, 0, MPI_COMM_WORLD);
+}
+
+void MpiCommPrimitive::recieve(unsigned char *data, int receiveTarget, int receiveAddress, int receiveLength)
+{
+    MPI_Status recv_status;
+    MPI_Recv(data + receiveAddress, receiveLength, MPI_UNSIGNED_CHAR, receiveTarget, 0, MPI_COMM_WORLD, &recv_status);
+}
+
 void MpiCommPrimitive::run_recieve_host(float *gradients, int size,
                                         int myRank, int nRanks, int localRank, excution_operation op_)
 {

@@ -16,7 +16,7 @@ for root, dirs, files in os.walk(model_test_dir):
         # DataParallelismPlan2GPUsIn2Hosts  21 25
         # DataParallelismPlan4GPUsIn2Hosts  21 25
         # DataParallelismPlan4GPUsIn4Hosts  21 22 24 25
-        if dir_name == "DataParallelismPlan4GPUsIn4Hosts":
+        if dir_name == "ModelParallelismPlan2GPUsIn2Hosts":
             plan_dir = os.path.join(root, dir_name)
             json_file_path = os.path.join(plan_dir, "exec_plan", "run.json")
 

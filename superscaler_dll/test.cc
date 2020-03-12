@@ -1,13 +1,80 @@
 #include "super_scaler.h"
 
+void copyMemeryD2H_Display(float *host, float *device, size_t size, int displaySize = 16)
+{
+    for (int i = 0; i < size; i++)
+    {
+        host[i] = 0;
+    }
+    CUDACHECK(cudaMemcpy(host, device, size * sizeof(float), cudaMemcpyDeviceToHost));
+    for (int i = 0; i < displaySize; i++)
+    {
+        std::cout << host[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void allReduceTest(int testTimes, float *gradients, float *sendbuff, size_t size, std::string tensorName)
+{
+    double testSecond = 0;
+    for (int testi = 0; testi < testTimes; testi++)
+    {
+        std::cout << "Before allReduce: ";
+        copyMemeryD2H_Display(gradients, sendbuff, size);
+
+        auto startTime = std::chrono::system_clock::now();
+        int ret = allReduce(sendbuff, size, tensorName);
+        auto endTime = std::chrono::system_clock::now();
+
+        std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+        testSecond += elapsed_seconds.count();
+
+        if (ret == 0)
+        {
+            std::cout << "AllReduce Error" << std::endl;
+            return;
+        }
+
+        std::cout << "After allReduce: ";
+        copyMemeryD2H_Display(gradients, sendbuff, size);
+    }
+    testSecond /= testTimes;
+    std::cout << "allReduceTest, gradient size: " << std::to_string(size) << ", elapsed time: " << testSecond << "s, Throughput: " << std::to_string(size * 4 / testSecond / 1024 / 1024 / 1024) << "GB/s\n";
+}
+
+void sendRecvTest(int testTimes, float *gradients, size_t size, std::string tensorName)
+{
+    std::cout << "Before sendRecv: ";
+    unsigned char *data = new unsigned char[size];
+    for (int i = 0; i < size; i++)
+    {
+        data[i] = gradients[1] + 'A';
+    }
+    for (int i = 0; i < 16; i++)
+    {
+        std::cout << data[i] << " ";
+    }
+    std::cout << std::endl;
+
+    int ret = sendReceive(data, size, tensorName);
+
+    std::cout << "After sendRecv: ";
+    for (int i = 0; i < 16; i++)
+    {
+        std::cout << data[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     int myRank = 0, nRanks = 0, localRank = 0;
-    PlanTable table;
-    initialization(myRank, nRanks, localRank, table);
+    initialization(myRank, nRanks, localRank);
 
     // prepare tensor data (CUDA memery)
-    std::string tensorName = "For_gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency_1";
+    // std::string tensorName = "allReduceTestTensorname";
+    // std::string tensorName = "sendRecvTestTensorname";
+    std::string tensorName = "read_SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv1/norm1_gradients/SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv2/conv2_matmul_grad/ShapeN";
     size_t size = 16 * 1024 * 1024;
     float *gradients = new float[size];
     for (int i = 0; i < size; i++)
@@ -20,49 +87,10 @@ int main()
     CUDACHECK(cudaMemset(sendbuff, 0, size * sizeof(float)));
     CUDACHECK(cudaMemcpy(sendbuff, gradients, size * sizeof(float), cudaMemcpyHostToDevice));
 
+    // test begin
     int testTimes = 10;
-    double testSecond = 0;
-    while (testTimes--)
-    {
-        // all reduce
-        std::cout << "Before allReduce: ";
-        for (int i = 0; i < size; i++)
-        {
-            gradients[i] = 0;
-        }
-        CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));
-        for (int i = 0; i < 16; i++)
-        {
-            std::cout << gradients[i] << " ";
-        }
-        std::cout << std::endl;
-
-        auto startTime = std::chrono::system_clock::now();
-        int ret = allReduce(sendbuff, size, tensorName, table);
-        auto endTime = std::chrono::system_clock::now();
-        std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-        testSecond += elapsed_seconds.count();
-
-        if (ret == 0)
-        {
-            std::cout << "AllReduce Error" << std::endl;
-            return 0;
-        }
-
-        std::cout << "After allReduce: ";
-        for (int i = 0; i < size; i++)
-        {
-            gradients[i] = 0;
-        }
-        CUDACHECK(cudaMemcpy(gradients, sendbuff, size * sizeof(float), cudaMemcpyDeviceToHost));
-        for (int i = 0; i < 16; i++)
-        {
-            std::cout << gradients[i] << " ";
-        }
-        std::cout << std::endl;
-    }
-    testSecond /= 10;
-    std::cout << "test_device_rdma, gradient size: " << std::to_string(size) << ", elapsed time: " << testSecond << "s, Throughput: " << std::to_string(size * 4 / testSecond / 1024 / 1024 / 1024) << "GB/s\n";
+    // allReduceTest(testTimes, gradients, sendbuff, size, tensorName);
+    sendRecvTest(testTimes, gradients, size, tensorName);
 
     // release memery
     CUDACHECK(cudaFree(sendbuff));

@@ -4,11 +4,11 @@ Plan::Plan(std::string tensor, std::string tensorOT, std::string tensorCT)
 {
     tensorName = tensor;
 
-    if (tensorOT == "recv")
+    if (tensorOT == "_SCRecv")
     {
         tensorOperationType = receiveOT;
     }
-    else if (tensorOT == "send")
+    else if (tensorOT == "_SCSend")
     {
         tensorOperationType = sendOT;
     }
