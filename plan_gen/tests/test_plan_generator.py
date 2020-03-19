@@ -1,5 +1,6 @@
 import json
 import pickle
+import copy
 
 import resource
 import ssg_visitor
@@ -18,11 +19,12 @@ def test_plan_generator():
         graph_visitor = ssg_visitor.JsonVisitor,
         resource_pool = rp
         )
-    plans = pg.get_plan(graphs)
+    running_plans, init_plans = pg.get_plan(graphs, copy.deepcopy(graphs))
     # # Dump plans
     # json.dump(
     #     plans,
     #     open("tests/data/plans.json", "w"),
     #     indent=4,
     #     sort_keys=True)
-    assert(plans == plans_expected)
+    assert(running_plans == plans_expected)
+    assert(init_plans == plans_expected)
