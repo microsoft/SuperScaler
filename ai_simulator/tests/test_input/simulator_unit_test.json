@@ -1,0 +1,41 @@
+{
+    "node_list": [
+        {
+            "dependency_ids": [],
+            "device": "cpu: 0",
+            "execution_time": 1.0,
+            "index": 0,
+            "input_ids": [],
+            "name": "op_no_1",
+            "op": "Const",
+            "successor_ids": [
+                1,
+                2
+            ]
+        },
+        {
+            "dependency_ids": [],
+            "device": "cpu: 0",
+            "execution_time": 2.0,
+            "index": 1,
+            "input_ids": [
+                0
+            ],
+            "name": "op_no_2",
+            "op": "Add",
+            "successor_ids": []
+        },
+        {
+            "dependency_ids": [],
+            "device": "cpu: 1",
+            "execution_time": 1.0,
+            "index": 2,
+            "input_ids": [
+                0
+            ],
+            "name": "op_no_2",
+            "op": "Sub",
+            "successor_ids": []
+        }
+    ]
+}
