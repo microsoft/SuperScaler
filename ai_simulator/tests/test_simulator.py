@@ -2,7 +2,7 @@ import json
 import os
 from pprint import pprint
 from collections import namedtuple
-from simulator.simulator import Simulator
+from simulator import Simulator
 
 def test_simulator():
     # Mock the input data (node_list)
