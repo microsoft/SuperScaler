@@ -1,4 +1,5 @@
-from simulator.device import Device,FIFODevice
+from simulator.device import Device
+from simulator.fifo_device import FIFODevice
 from simulator.node import Node,NodeMetadata
 
 def test_device_module():

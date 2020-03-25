@@ -1,30 +1,33 @@
 import pytest
 from simulator.node import *
-from simulator.device import FIFODevice
+from simulator.tensor import *
+from simulator.fifo_device import FIFODevice
 
 
 def test_node_module():
-    # Test node initialization failure
+    # Initialize output_tensors
+    o_tensors = [Tensor('int32',5),Tensor('int16', 6)]
+    # Test node initialization failure   
     # The input_ids has duplicated elements
-    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0",
+    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[0, 1, 1], dependency_ids=[], successor_ids=[4, 5])
     device = FIFODevice("GPU:0")
     with pytest.raises(NodeException):
         Node(node_metadata, device)
     # The dependency_ids has duplicated elements
-    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0",
+    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[], dependency_ids=[0, 1, 1], successor_ids=[4, 5])
     device = FIFODevice("GPU:0")
     with pytest.raises(NodeException):
         Node(node_metadata, device)
-    # The conflict between input_ids and dependecy_ids in metadata
-    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0",
+    # The conflict between input_ids and dependency_ids in metadata
+    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[0, 1], dependency_ids=[1], successor_ids=[4, 5])
     device = FIFODevice("GPU:0")
     with pytest.raises(NodeException):
         Node(node_metadata, device)
     # The mismatch between metadata and device
-    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0",
+    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[], dependency_ids=[], successor_ids=[4, 5])
     device = FIFODevice("GPU:1")
     with pytest.raises(NodeException):
@@ -32,13 +35,13 @@ def test_node_module():
 
     testnodes = {}
     # Generate independent node
-    node_metadata = NodeMetadata(index=3, op="add_op", name="add_2", device_name="GPU:0",
+    node_metadata = NodeMetadata(index=3, op="add_op", name="add_2", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[], dependency_ids=[], successor_ids=[4, 5])
     node = Node(node_metadata, FIFODevice("GPU:0"))
     testnodes['independency'] = node
 
     # Generate dependent node
-    node_metadata = NodeMetadata(index=3, op="add_op", name="add_1", device_name="GPU:0",
+    node_metadata = NodeMetadata(index=3, op="add_op", name="add_1", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[0, 1], dependency_ids=[2], successor_ids=[4, 5])
     node = Node(node_metadata, FIFODevice("GPU:0"))
     testnodes['dependency'] = node

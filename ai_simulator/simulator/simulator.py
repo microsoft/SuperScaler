@@ -14,7 +14,8 @@ Defined in node_define.py
 '''
 from .node import NodeMetadata
 from .node import Node
-from .device import FIFODevice
+from .device import Device
+from .fifo_device import FIFODevice
 import copy
 
 RET_SIMULATION_FINISH = -1

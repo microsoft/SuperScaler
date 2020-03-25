@@ -15,6 +15,7 @@ name                String          Name of node
 Execution info:
 device              String          Device to run this node
 execution_time      Float           Execution time of node
+output_tensors      List of Tensor  Output tensors of node
 
 Dependency info:
 input_ids           List of int     Node ID of dataflow input
@@ -38,6 +39,7 @@ class NodeMetadata():
                  name='',
                  device_name='',
                  execution_time=0.0,
+                 output_tensors=[],
                  input_ids=[],
                  dependency_ids=[],
                  successor_ids=[]
@@ -57,6 +59,9 @@ class NodeMetadata():
         self.device_name = device_name
         # Float. The estimated execution time. In microsecond.
         self.execution_time = execution_time
+        # Tensor, the list of output tensors
+        self.output_tensors=output_tensors
+
 
         #==============================
         # Attributes of edge
@@ -126,24 +131,24 @@ class Node():
         self.__device = device
         # List of Node ref. Node of successor nodes depends on this node.
         self.__successor_nodes = []
-
+        
         # Check the input_node and dependency_node
         input_ids_set = set(self.__metadata.input_ids)
         dependency_ids_set = set(self.__metadata.dependency_ids)
         if not len(input_ids_set) == len(self.__metadata.input_ids):
             raise NodeException(
-                '[ERROR] Node initailization failure because input_ids has duplicate elements: %s' % self.__metadata.name)             
+                '[ERROR] Node initialization failure because input_ids has duplicate elements: %s' % self.__metadata.name)             
         if not len(dependency_ids_set) == len(self.__metadata.dependency_ids):
             raise NodeException(
-                '[ERROR] Node initailization failure because dependency_ids has duplicate elements: %s' % self.__metadata.name)         
+                '[ERROR] Node initialization failure because dependency_ids has duplicate elements: %s' % self.__metadata.name)         
         if not len(input_ids_set & dependency_ids_set) == 0:
             raise NodeException(
-                '[ERROR] Node initailization failure because input_ids and dependency_ids has same elements: %s' % self.__metadata.name)
+                '[ERROR] Node initialization failure because input_ids and dependency_ids has same elements: %s' % self.__metadata.name)
 
         # Check the device name
         if not self.__device.name() == self.__metadata.device_name:
             raise NodeException(
-                '[ERROR] Node initailization failure because device_name not matach: %s' % self.__metadata.name)            
+                '[ERROR] Node initialization failure because device_name not match: %s' % self.__metadata.name)            
 
     def reset(self):
         metadata = self.__metadata
@@ -159,6 +164,9 @@ class Node():
 
     def get_execution_time(self):
         return self.__metadata.execution_time
+
+    def get_tensors(self):
+        return self.__metadata.output_tensors
 
     def get_status(self):
         return self.__status

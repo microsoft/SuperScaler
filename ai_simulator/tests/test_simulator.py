@@ -13,7 +13,7 @@ def test_simulator():
     with open(simulator_unit_test_file_absolute_path) as f:
         test_input_data = json.load(f)
     
-    # Iterate the json object, convert each josn object to node object
+    # Iterate the json object, convert each json object to node object
     for node_json_item in test_input_data["node_list"]:
         node_obj = json.loads(json.dumps(node_json_item), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
         node_list.append(node_obj)
