@@ -29,9 +29,10 @@ device              String          Device to run this node
 op_attributes       List of kwarg   Special attributes belong to OP      
 '''
 
+import json
 import tensorflow as tf
 from google.protobuf import text_format
-import json
+from .adapter import GraphAdapter
 
 class TFNode():
     def __init__(self, index = 0, 
@@ -81,66 +82,71 @@ class TFNode():
         # self.raw_inputs = []
         
 
-def load_pbtxt_file(input_filename):
-    with open(input_filename) as f:
-        txt = f.read()
-    graph_def = text_format.Parse(txt, tf.GraphDef())
-    return graph_def
+class TFAdapter(GraphAdapter):
+    def __init__(self):
+        super().__init__()
 
-def parse_protobuf_graph(graph_def):
-    # The list of all nodes in a graph.
-    node_list = []
-    # Name_list is used to inquire node id by name.
-    name_list = []
-    # The counter of nodes.
-    node_idx = 0
+    def load_pbtxt_file(self,input_filename):
+        with open(input_filename) as f:
+            txt = f.read()
+        graph_def = text_format.Parse(txt, tf.GraphDef())
+        return graph_def
 
-    # Read all nodes, assign their node attributes
-    for node in graph_def.node:
-        name = str(node.name)
-        inputs = list(node.input)
-        op = str(node.op)
-        
-        new_node = TFNode()
-        new_node.index = node_idx
-        new_node.name = name
-        new_node.op = op
-        new_node.raw_inputs = inputs
-        
-        node_idx+=1
-        node_list.append(new_node)
-        name_list.append(name)
+    def parse_protobuf_graph(self,graph_def):
+        # The list of all nodes in a graph.
+        node_list = []
+        # Name_list is used to inquire node id by name.
+        name_list = []
+        # The counter of nodes.
+        node_idx = 0
 
-    # Analyze edges and assign edge attributes.
-    for node in node_list:
-        for input_name in node.raw_inputs:
-            input_idx = name_list.index(input_name) if (input_name in name_list) else -1
-            # These logic is same as TensorFlow source code
-            # https://github.com/tensorflow/tensorflow/blob/r1.13/tensorflow/python/framework/importer.py
-            # '^op_name' means control input
-            # 'op_name:output_index' means get the id-th output of an op
-            if input_name.startswith('^'):
-                real_input_name = input_name[1:]
-                input_idx = name_list.index(real_input_name) if \
-                    (real_input_name in name_list) else -1
-            if ':' in input_name:
-                components = input_name.split(':')
-                if len(components) == 2:
-                    real_input_name = components[0]
+        # Read all nodes, assign their node attributes
+        for node in graph_def.node:
+            name = str(node.name)
+            inputs = list(node.input)
+            op = str(node.op)
+            
+            new_node = TFNode()
+            new_node.index = node_idx
+            new_node.name = name
+            new_node.op = op
+            new_node.raw_inputs = inputs
+            
+            node_idx+=1
+            node_list.append(new_node)
+            name_list.append(name)
+
+        # Analyze edges and assign edge attributes.
+        for node in node_list:
+            for input_name in node.raw_inputs:
+                input_idx = name_list.index(input_name) if (input_name in name_list) else -1
+                # These logic is same as TensorFlow source code
+                # https://github.com/tensorflow/tensorflow/blob/r1.13/tensorflow/python/framework/importer.py
+                # '^op_name' means control input
+                # 'op_name:output_index' means get the id-th output of an op
+                if input_name.startswith('^'):
+                    real_input_name = input_name[1:]
                     input_idx = name_list.index(real_input_name) if \
                         (real_input_name in name_list) else -1
+                if ':' in input_name:
+                    components = input_name.split(':')
+                    if len(components) == 2:
+                        real_input_name = components[0]
+                        input_idx = name_list.index(real_input_name) if \
+                            (real_input_name in name_list) else -1
+                    else:
+                        raise ValueError('Cannot convert %r to a tensor name.' 
+                                    % (input_name))
+                if input_idx >= 0:
+                    node_list[input_idx].successor_ids.append(node.index)
+                    if input_name.startswith('^'):
+                        node.dependency_ids.append(input_idx)
+                    else:
+                        node.input_ids.append(input_idx)
                 else:
-                    raise ValueError('Cannot convert %r to a tensor name.' 
-                                % (input_name))
-            if input_idx >= 0:
-                node_list[input_idx].successor_ids.append(node.index)
-                if input_name.startswith('^'):
-                    node.dependency_ids.append(input_idx)
-                else:
-                    node.input_ids.append(input_idx)
-            else:
-                print('[ERROR] Input tensor of a node not found in list!')
-                print('Node name: ', node['name'])
-                print('Error input: ', input_name)
-                print('[HANDLE] Discard this input tensor')
-    return node_list
+                    print('[ERROR] Input tensor of a node not found in list!')
+                    print('Node name: ', node['name'])
+                    print('Error input: ', input_name)
+                    print('[HANDLE] Discard this input tensor')
+        return node_list
+

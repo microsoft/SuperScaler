@@ -135,9 +135,6 @@ class Node():
         # Check the input_node and dependency_node
         input_ids_set = set(self.__metadata.input_ids)
         dependency_ids_set = set(self.__metadata.dependency_ids)
-        if not len(input_ids_set) == len(self.__metadata.input_ids):
-            raise NodeException(
-                '[ERROR] Node initialization failure because input_ids has duplicate elements: %s' % self.__metadata.name)             
         if not len(dependency_ids_set) == len(self.__metadata.dependency_ids):
             raise NodeException(
                 '[ERROR] Node initialization failure because dependency_ids has duplicate elements: %s' % self.__metadata.name)         

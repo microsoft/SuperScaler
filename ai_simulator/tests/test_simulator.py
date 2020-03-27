@@ -8,7 +8,7 @@ def test_simulator():
     # Mock the input data (node_list)
     node_list = []
     simulator_unit_test_file_relative_path = os.path.join(
-        os.path.dirname(__file__), "test_input","simulator_unit_test.json")
+        os.path.dirname(__file__), "test_simulator_input","simulator_unit_test.json")
     simulator_unit_test_file_absolute_path = os.path.abspath(os.path.expanduser(simulator_unit_test_file_relative_path))
     with open(simulator_unit_test_file_absolute_path) as f:
         test_input_data = json.load(f)

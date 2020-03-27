@@ -8,12 +8,6 @@ def test_node_module():
     # Initialize output_tensors
     o_tensors = [Tensor('int32',5),Tensor('int16', 6)]
     # Test node initialization failure   
-    # The input_ids has duplicated elements
-    node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
-                                 execution_time=10, input_ids=[0, 1, 1], dependency_ids=[], successor_ids=[4, 5])
-    device = FIFODevice("GPU:0")
-    with pytest.raises(NodeException):
-        Node(node_metadata, device)
     # The dependency_ids has duplicated elements
     node_metadata = NodeMetadata(index=0, op="add_op", name="add", device_name="GPU:0", output_tensors=o_tensors,
                                  execution_time=10, input_ids=[], dependency_ids=[0, 1, 1], successor_ids=[4, 5])
