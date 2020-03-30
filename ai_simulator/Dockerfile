@@ -13,7 +13,7 @@ COPY . /AISimulator
 RUN \
     python3 -m pip install -r requirements.txt && \
     python3 -m pytest -v
-CMD ["python3","-m","ai_simulator.experiment"]
+ 
 
 
 
