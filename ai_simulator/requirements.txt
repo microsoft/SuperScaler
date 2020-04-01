@@ -1,3 +1,4 @@
 tensorflow==1.15
 protobuf==3.8
 pytest==5.3.2
+setuptools==41.0.0
