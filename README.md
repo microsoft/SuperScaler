@@ -8,6 +8,15 @@
   
   SuperScaler aims to provide a comprehensive solution to scaling deep learning training. SuperScaler introduces a unified flexible framework that could integrate high-performance training techniques including auto-parallelization and communication compression etc. With SuperScaler, users could easily scale their deep learning models with only little changes on the code.
 
+- ## Installation
+
+
+- ## Example
+
+
+- ## FAQ
+
+
 - ## Microsoft Open Source Code of Conduct
 
   This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
