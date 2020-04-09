@@ -1,14 +1,18 @@
+# SuperScaler
 
-# Contributing
+- ## What is SuperScaler
+  SuperScaler is a framework that helps you to distribute your single device deep learning model into multi-device and multi-machines for efficient paralell-training.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+- ## Introduction
+  Most state-of-the-art deep learning models leverage parallel training on multiple devices/servers to process complicated computation on large volume of data. Scaling a deep learning model for parallel training is challenging as it combining the complexities of different parallelization strategies, consistencies, communication strategies, underlying data links and various optimizations methods. 
+  
+  SuperScaler aims to provide a comprehensive solution to scaling deep learning training. SuperScaler introduces a unified flexible framework that could integrate high-performance training techniques including auto-parallelization and communication compression etc. With SuperScaler, users could easily scale their deep learning models with only little changes on the code.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+- ## Microsoft Open Source Code of Conduct
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+  This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+
+  Resources:
+  - [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/)
+  - [Microsoft Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
+  - Contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with questions or concerns
