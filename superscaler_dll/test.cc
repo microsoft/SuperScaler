@@ -11,15 +11,20 @@ void copyMemeryD2H_Display(float *host, float *device, size_t size, int displayS
     {
         std::cout << host[i] << " ";
     }
+    std::cout << "......";
+    for (int i = size - displaySize; i < size; i++)
+    {
+        std::cout << host[i] << " ";
+    }
     std::cout << std::endl;
 }
 
-void allReduceTest(int testTimes, float *gradients, float *sendbuff, size_t size, std::string tensorName)
+void allReduceTest(int testTimes, float *gradients, float *sendbuff, size_t size, std::string tensorName, int myRank)
 {
     double testSecond = 0;
     for (int testi = 0; testi < testTimes; testi++)
     {
-        std::cout << "Before allReduce: ";
+        std::cout << "Rank " << myRank << ": Before allReduce: ";
         copyMemeryD2H_Display(gradients, sendbuff, size);
 
         auto startTime = std::chrono::system_clock::now();
@@ -35,30 +40,43 @@ void allReduceTest(int testTimes, float *gradients, float *sendbuff, size_t size
             return;
         }
 
-        std::cout << "After allReduce: ";
+        std::cout << "Rank " << myRank << ": After allReduce: ";
         copyMemeryD2H_Display(gradients, sendbuff, size);
     }
     testSecond /= testTimes;
     std::cout << "allReduceTest, gradient size: " << std::to_string(size) << ", elapsed time: " << testSecond << "s, Throughput: " << std::to_string(size * 4 / testSecond / 1024 / 1024 / 1024) << "GB/s\n";
 }
 
-void sendRecvTest(int testTimes, float *gradients, size_t size, std::string tensorName)
+void sendRecvTest(int testTimes, float *gradients, size_t size, std::string tensorName, int myRank)
 {
-    std::cout << "Before sendRecv: ";
-    unsigned char *data = new unsigned char[size];
-    for (int i = 0; i < size; i++)
+    // Before
+    unsigned char *data = NULL;
+    int sendRecvSize = 0;
+    if (myRank == 0)
     {
-        data[i] = gradients[1] + 'A';
+        sendRecvSize = size;
+        data = new unsigned char[sendRecvSize];
+        for (int i = 0; i < sendRecvSize; i++)
+        {
+            data[i] = gradients[1] + 'A';
+        }
+        std::cout << "Before sendRecv: Rank " << myRank << ", Size: " << sendRecvSize << ", data: ";
+        for (int i = 0; i < 16; i++)
+        {
+            std::cout << data[i] << " ";
+        }
+        std::cout << std::endl;
     }
-    for (int i = 0; i < 16; i++)
+    else if (myRank == 1)
     {
-        std::cout << data[i] << " ";
+        std::cout << "Before sendRecv: Rank " << myRank << ", Size: " << sendRecvSize << ", data == NULL " << std::endl;
     }
-    std::cout << std::endl;
+    
+    // Process
+    int ret = sendReceive(&data, sendRecvSize, tensorName);
 
-    int ret = sendReceive(data, size, tensorName);
-
-    std::cout << "After sendRecv: ";
+    // After
+    std::cout << "After sendRecv: Rank " << myRank << ", Size: " << sendRecvSize << ", data: ";
     for (int i = 0; i < 16; i++)
     {
         std::cout << data[i] << " ";
@@ -72,14 +90,14 @@ int main()
     initialization(myRank, nRanks, localRank);
 
     // prepare tensor data (CUDA memery)
-    // std::string tensorName = "allReduceTestTensorname";
+    std::string tensorName = "allReduceTestTensorname";
     // std::string tensorName = "sendRecvTestTensorname";
-    std::string tensorName = "read_SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv1/norm1_gradients/SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv2/conv2_matmul_grad/ShapeN";
-    size_t size = 16 * 1024 * 1024;
+    // std::string tensorName = "read_SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv1/norm1_gradients/SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv2/conv2_matmul_grad/ShapeN";
+    size_t size = 16 * 1024;
     float *gradients = new float[size];
     for (int i = 0; i < size; i++)
     {
-        gradients[i] = (myRank + 1) * 2 * i;
+        gradients[i] = (myRank + 1) * 2;
     }
     float *sendbuff = nullptr;
     CUDACHECK(cudaSetDevice(localRank));
@@ -89,8 +107,8 @@ int main()
 
     // test begin
     int testTimes = 10;
-    // allReduceTest(testTimes, gradients, sendbuff, size, tensorName);
-    sendRecvTest(testTimes, gradients, size, tensorName);
+    allReduceTest(testTimes, gradients, sendbuff, size, tensorName, myRank);
+    // sendRecvTest(testTimes, gradients, size, tensorName, myRank);
 
     // release memery
     CUDACHECK(cudaFree(sendbuff));
@@ -103,6 +121,8 @@ int main()
 }
 // make clean
 // make
+// ftp://scaler:scaler@MSRAGPUM21/files/users/v-guanx/models_test/
 // /usr/bin/mpirun -n 2 -H 10.0.0.21,10.0.0.21 ./test_atomic_operations
 // /usr/bin/mpirun -n 2 -H 10.0.0.21,10.0.0.21 ./test
+// scp -r seliang@10.0.0.21:/usr/local/include/superscaler_dll /usr/local/include/
 // /usr/bin/mpirun -n 2 -H 10.0.0.21,10.0.0.25 -bind-to none -map-by slot -x CUDA_VISIBLE_DEVICES=2 -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH -x PATH -mca pml ob1 -mca btl ^openib ./test

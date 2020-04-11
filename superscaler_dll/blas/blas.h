@@ -28,9 +28,9 @@ inline dim3 cuda_gridsize(int n){
 }
 
 
-void gradients_Average(float *gradients, int size, int nRanks);
+void gradients_Average(float *gradients, int size, int nRanks, cudaStream_t cudaStream = 0);
 
-void gradients_Reduce(float *gradients, float *buf, int size);
+void gradients_Reduce(float *gradients, float *buf, int size, cudaStream_t cudaStream = 0);
 
 
 #endif // BLAS_H_

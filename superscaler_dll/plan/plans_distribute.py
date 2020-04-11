@@ -11,7 +11,7 @@ def split_hostname_gpu(str, mapping_hostname_dict, mapping_port_dict):
     host_port = mapping_port_dict[gpu_name]
     return host_name, gpu_name, host_port
 
-def plans_distribute(mapping_hostname_file_path, mapping_port_file_path, plans_file_path, plan_out_dir):
+def plans_distribute(mapping_hostname_file_path, mapping_port_file_path, plans_file_path1, plans_file_path2, plan_out_dir):
     # create hostname-ip mapping, like: hostname1 10.0.0.21
     mapping_hostname_dict = {}
     with open(mapping_hostname_file_path, 'r') as mapping:
@@ -35,8 +35,10 @@ def plans_distribute(mapping_hostname_file_path, mapping_port_file_path, plans_f
             mapping_port_dict[host_gpu] = host_port
 
     # read plan_josn
-    with open(plans_file_path, 'r') as plans:
-        all_plans = json.load(plans)
+    with open(plans_file_path1, 'r') as plans1:
+        all_plans = json.load(plans1)
+    with open(plans_file_path2, 'r') as plans2:
+        init_plans = json.load(plans2)
 
     # # create hostname_mpirank mapping, like: {0: '10.0.0.21 1 10001', 1: '10.0.0.21 0 8001'}
     # mapping_mpi_dict = {}
@@ -66,8 +68,25 @@ def plans_distribute(mapping_hostname_file_path, mapping_port_file_path, plans_f
             plan_file.write(gpu_name + "\n")
             plan_file.write(host_port + "\n")
 
-            plan_file.write(str(len(device_value)) + "\n")
+            # try to read init plans
+            device_value2 = {}
+            if (len(init_plans) != 0):
+                device_value2 = init_plans[host_key][device_key]
+            
+            plan_file.write(str(len(device_value) + len(device_value2)) + "\n")
             for tensor_key, tensor_value in device_value.items():
+
+                # write tensor name and operation info
+                plan_file.write(tensor_key + "\n")
+                plan_file.write(tensor_value["name"] + "\n")
+                plan_file.write(tensor_value["type"] + "\n")
+
+                plan_file.write(str(len(tensor_value["endpoints"])) + "\n")
+                for endpoints in tensor_value["endpoints"]:
+                    host_name, gpu_name, host_port = split_hostname_gpu(endpoints, mapping_hostname_dict, mapping_port_dict)
+                    plan_file.write(host_name + " " + gpu_name + " " + host_port + "\n")
+            
+            for tensor_key, tensor_value in device_value2.items():
 
                 # write tensor name and operation info
                 plan_file.write(tensor_key + "\n")
@@ -86,10 +105,11 @@ if __name__ == "__main__":
     mapping_hostname_file_path = "./mapping_hostname.cfg"
     mapping_port_file_path = "./mapping_port.cfg"
 
-    plans_file_path = "./execution_plan/run.json"
+    run_plans_file_path = "./execution_plan/run.json"
+    init_plans_file_path = "./execution_plan/init.json"
     plan_out_dir = "./execution_plan"
 
-    plans_distribute(mapping_hostname_file_path, mapping_port_file_path, plans_file_path, plan_out_dir)
+    plans_distribute(mapping_hostname_file_path, mapping_port_file_path, run_plans_file_path, init_plans_file_path, plan_out_dir)
 
     print("Distribute Done")
 

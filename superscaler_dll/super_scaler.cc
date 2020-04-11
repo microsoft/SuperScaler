@@ -2,6 +2,8 @@
 #include <map>
 
 static RdmaCommPrimitive *rdmaCommPrimitive = NULL;
+float *rdmaSendBuff = nullptr;
+cudaStream_t cudaStream;
 static MpiCommPrimitive *mpiCommPrimitive = NULL;
 static PlanTable table;
 static std::map<std::string, int> mpiRankListHostRank;
@@ -63,7 +65,6 @@ void initialization(int &myRank, int &nRanks, int &localRank)
 
     // mpiCommPrimitive initialization
     mpiCommPrimitive = new MpiCommPrimitive();
-    MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
 
     // MPI rank list initialization
     int mpiRankDataSize = 20;  // len("0:10.0.0.21 0 12001;") = 20;
@@ -97,8 +98,19 @@ void initialization(int &myRank, int &nRanks, int &localRank)
         ports.push_back(port);
     }
 
+    size_t rdmaInitSize = 512 * 1024 * 1024;
     rdmaCommPrimitive = new RdmaCommPrimitive();
-    rdmaCommPrimitive->initialization(ips, ports, myRank, nRanks, localRank, 512 * 1024 * 1024);
+    rdmaCommPrimitive->initialization(ips, ports, myRank, nRanks, localRank, rdmaInitSize);
+
+    CUDACHECK(cudaSetDevice(localRank));
+    CUDACHECK(cudaMalloc(&rdmaSendBuff, rdmaInitSize * sizeof(float)));
+    CUDACHECK(cudaMemset(rdmaSendBuff, 0, rdmaInitSize * sizeof(float)));
+    rdmaCommPrimitive->RDMA_Register_GPU_MemRegion(rdmaSendBuff, rdmaInitSize);
+
+    cudaDeviceSynchronize();
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    cudaStreamCreate(&cudaStream);
 }
 
 void MPIRankListInitialization(unsigned char *mpiRankData, int mpiRankDataSize, int myRank, int nRanks)
@@ -201,6 +213,7 @@ void MPIRankListInitialization(unsigned char *mpiRankData, int mpiRankDataSize, 
 
 void finalization()
 {
+    cudaStreamDestroy(cudaStream);
     MPICHECK(MPI_Finalize());
 }
 
@@ -221,7 +234,21 @@ int allReduce(float *gradients, size_t size, std::string tensorName)
     {
         if (true) // algorithm == Ring, describe in plan
         {
-            allReduce_Ring(gradients, size, selfName, plan);
+            bool debugMode = false;
+            std::chrono::_V2::system_clock::time_point startTime, endTime;
+            if (debugMode)
+            {
+                startTime = std::chrono::system_clock::now();
+            }
+
+            allReduce_Ring(gradients, size, selfName, plan, debugMode);
+
+            if (debugMode)
+            {
+                endTime = std::chrono::system_clock::now();
+                std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+                std::cout << "allReduce_Ring Time: " << elapsed_seconds.count() << std::endl;
+            }
         }
     }
     else
@@ -233,7 +260,7 @@ int allReduce(float *gradients, size_t size, std::string tensorName)
     return 1;
 }
 
-int sendReceive(unsigned char *data, size_t size, std::string tensorName)
+int sendReceive(unsigned char **data, int &size, std::string tensorName)
 {
     if (!table.hasPlan(tensorName))
     {
@@ -263,7 +290,7 @@ int sendReceive(unsigned char *data, size_t size, std::string tensorName)
     return 1;
 }
 
-void send_MPI(unsigned char *data, size_t size, std::string selfName, Plan plan)
+void send_MPI(unsigned char **data, int size, std::string selfName, Plan plan)
 {
     std::vector<std::string> endPoints = plan.getEndPoints();
     int endPointsCount = endPoints.size();
@@ -275,7 +302,7 @@ void send_MPI(unsigned char *data, size_t size, std::string selfName, Plan plan)
     }
 }
 
-void receive_MPI(unsigned char *data, size_t size, std::string selfName, Plan plan)
+void receive_MPI(unsigned char **data, int &size, std::string selfName, Plan plan)
 {
     std::vector<std::string> endPoints = plan.getEndPoints();
     int endPointsCount = endPoints.size();
@@ -287,8 +314,16 @@ void receive_MPI(unsigned char *data, size_t size, std::string selfName, Plan pl
     }
 }
 
-void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan plan)
+void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan plan, bool debugMode)
 {
+    // for time debug
+    std::chrono::_V2::system_clock::time_point time1, time2, time3, time4, time5, time6, time7;
+
+    if (debugMode)
+    {
+        time1 = std::chrono::system_clock::now();
+    }
+
     std::vector<std::string> endPoints = plan.getEndPoints();
     int endPointsCount = endPoints.size();
     int rank = 0;
@@ -301,13 +336,32 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         rank++;
     }
 
-    CommunicationType CT = plan.getCommunicationType();
+    if (debugMode)
+    {
+        time2 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds21 = time2 - time1;
+        std::cout << "getEndPoints Time: " << elapsed_seconds21.count() << std::endl;
+        time2 = std::chrono::system_clock::now();
+    }
 
+    CommunicationType CT = plan.getCommunicationType();
     if (CT == DefaultCT || CT == RdmaCT)
     {
-        rdmaCommPrimitive->RDMA_Register_GPU_MemRegion(gradients, size);
+        // CUDACHECK(cudaMemcpy(rdmaSendBuff, gradients, size * sizeof(float), cudaMemcpyDeviceToDevice));
+        // cudaDeviceSynchronize();
 
-        MPICHECK(MPI_Barrier(MPI_COMM_WORLD));
+        cudaMemcpyAsync(rdmaSendBuff, gradients, size * sizeof(float), cudaMemcpyDeviceToDevice, cudaStream);
+        cudaStreamSynchronize(cudaStream);
+
+        MPI_Barrier(MPI_COMM_WORLD);
+    }
+
+    if (debugMode)
+    {
+        time3 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds32 = time3 - time2;
+        std::cout << "cudaMemcpy Time: " << elapsed_seconds32.count() << std::endl;
+        time3 = std::chrono::system_clock::now();
     }
 
     int sendTarget = (rank + 1) % endPointsCount;
@@ -343,9 +397,17 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         float *receiveBuffer;
         if (CT == DefaultCT || CT == RdmaCT)
         {
-            receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, gradients, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize);
+            receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, rdmaSendBuff, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, debugMode);
         }
-        allReduce_Gradients_SumOrCover(gradients, receiveAddress, receiveBuffer, chunkSize, 0);
+        allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 0);
+    }
+
+    if (debugMode)
+    {
+        time4 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds43 = time4 - time3;
+        std::cout << "scatter Time: " << elapsed_seconds43.count() << std::endl;
+        time4 = std::chrono::system_clock::now();
     }
 
     // allgather
@@ -374,18 +436,63 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         float *receiveBuffer;
         if (CT == DefaultCT || CT == RdmaCT)
         {
-            receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, gradients, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize);
+            receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, rdmaSendBuff, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, debugMode);
         }
-        allReduce_Gradients_SumOrCover(gradients, receiveAddress, receiveBuffer, chunkSize, 1);
+        allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 1);
     }
 
-    gradients_Average(gradients, size, endPointsCount);
+    if (debugMode)
+    {
+        time5 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds54 = time5 - time4;
+        std::cout << "allgather Time: " << elapsed_seconds54.count() << std::endl;
+        time5 = std::chrono::system_clock::now();
+    }
+
+    gradients_Average(rdmaSendBuff, size, endPointsCount, cudaStream);
+    cudaStreamSynchronize(cudaStream);
+
+    if (debugMode)
+    {
+        time6 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds65 = time6 - time5;
+        std::cout << "gradients_Average Time: " << elapsed_seconds65.count() << std::endl;
+        time6 = std::chrono::system_clock::now();
+    }
+
+    // CUDACHECK(cudaMemcpy(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice));
+    cudaMemcpyAsync(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice, cudaStream);
+    cudaStreamSynchronize(cudaStream);
+
+    if (debugMode)
+    {
+        time7 = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds76 = time7 - time6;
+        std::cout << "cudaMemcpy Time: " << elapsed_seconds76.count() << std::endl;
+    }
+
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 
-float *allReduce_Transmit_RDMA(RdmaCommPrimitive *rdmaCommPrimitive, float *gradients, int sendTarget, int sendAddress, int sendLength, int receiveTarget, int receiveAddress, int receiveLength)
+float *allReduce_Transmit_RDMA(RdmaCommPrimitive *rdmaCommPrimitive, float *gradients, int sendTarget, int sendAddress, int sendLength, int receiveTarget, int receiveAddress, int receiveLength, bool debugMode)
 {
+    // for time debug
+    std::chrono::_V2::system_clock::time_point startTime, endTime;
+
+    if (debugMode)
+    {
+        startTime = std::chrono::system_clock::now();
+    }
+
     float *receiveBuffer = rdmaCommPrimitive->send_receive(gradients, sendTarget, sendAddress, sendLength, receiveTarget, receiveAddress, receiveLength);
-    cudaDeviceSynchronize();
+
+    if (debugMode)
+    {
+        endTime = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+        std::cout << "*******send_receive Time: " << elapsed_seconds.count() << std::endl;
+    }
+
     return receiveBuffer;
 }
 
@@ -394,13 +501,16 @@ void allReduce_Gradients_SumOrCover(float *gradients, int receiveAddress, float 
     float *gradientsOffset = gradients + receiveAddress;
     if (type == 0)
     {
-        gradients_Reduce(gradientsOffset, receiveBuffer, receiveLength);
+        gradients_Reduce(gradientsOffset, receiveBuffer, receiveLength, cudaStream);
     }
     else if (type == 1)
     {
-        cudaMemcpy(gradientsOffset, receiveBuffer, receiveLength * sizeof(float), cudaMemcpyDeviceToDevice);
+        // cudaMemcpy(gradientsOffset, receiveBuffer, receiveLength * sizeof(float), cudaMemcpyDeviceToDevice);
+        cudaMemcpyAsync(gradientsOffset, receiveBuffer, receiveLength * sizeof(float), cudaMemcpyDeviceToDevice, cudaStream);
     }
 
-    cudaDeviceSynchronize();
+    // cudaDeviceSynchronize();
+    cudaStreamSynchronize(cudaStream);
+
     MPI_Barrier(MPI_COMM_WORLD);
 }
