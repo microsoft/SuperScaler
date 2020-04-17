@@ -90,10 +90,11 @@ int main()
     initialization(myRank, nRanks, localRank);
 
     // prepare tensor data (CUDA memery)
-    std::string tensorName = "allReduceTestTensorname";
+    // std::string tensorName = "allReduceTestTensorname";
+    std::string tensorName = "allReduceIPCTestTensorname";
     // std::string tensorName = "sendRecvTestTensorname";
     // std::string tensorName = "read_SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv1/norm1_gradients/SuperScaler_SubgraphConvs/SuperScaler_Backward_SubgraphBpConvs/SuperScaler_Backward_SubgraphBpConv2/conv2_matmul_grad/ShapeN";
-    size_t size = 16 * 1024;
+    size_t size = 128 * 1024 * 1024;
     float *gradients = new float[size];
     for (int i = 0; i < size; i++)
     {

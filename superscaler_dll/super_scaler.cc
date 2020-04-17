@@ -1,13 +1,20 @@
-#include "super_scaler.h"
 #include <map>
+#include "super_scaler.h"
+
+static PlanTable table;
+cudaStream_t cudaStream;
+
+static MpiCommPrimitive *mpiCommPrimitive = NULL;
+static std::map<std::string, int> mpiRankListHostRank;
+static std::map<int, std::string> mpiRankListRankHost;
 
 static RdmaCommPrimitive *rdmaCommPrimitive = NULL;
 float *rdmaSendBuff = nullptr;
-cudaStream_t cudaStream;
-static MpiCommPrimitive *mpiCommPrimitive = NULL;
-static PlanTable table;
-static std::map<std::string, int> mpiRankListHostRank;
-static std::map<int, std::string> mpiRankListRankHost;
+
+const char * pipe_name = "test_cuda_comm_primitive";
+static SharedPipe * sharedPipe = NULL;
+static CudaIPCCommPrimitive * cudaIPCCommPrimitive = NULL;
+float *cudaIpcRevBuff = nullptr;
 
 static uint64_t getHostHash(const char *string)
 {
@@ -35,12 +42,12 @@ static void getHostName(char *hostname, int maxlen)
 
 void initialization(int &myRank, int &nRanks, int &localRank)
 {
-    // initializing MPI
+    // MPI initialization -- myRank, nRanks
     MPICHECK(MPI_Init(NULL, NULL));
     MPICHECK(MPI_Comm_rank(MPI_COMM_WORLD, &myRank));
     MPICHECK(MPI_Comm_size(MPI_COMM_WORLD, &nRanks));
 
-    //calculating localRank which is used in selecting a GPU
+    // MPI initialization -- localRank
     uint64_t hostHashs[nRanks];
     char hostname[1024];
     getHostName(hostname, 1024);
@@ -59,7 +66,7 @@ void initialization(int &myRank, int &nRanks, int &localRank)
         }
     }
 
-    // load plan
+    // Plan initialization
     std::string planPath = "plan/execution_plan/" + std::to_string(myRank) + ".cfg";
     table.readConfig(planPath);
 
@@ -107,10 +114,27 @@ void initialization(int &myRank, int &nRanks, int &localRank)
     CUDACHECK(cudaMemset(rdmaSendBuff, 0, rdmaInitSize * sizeof(float)));
     rdmaCommPrimitive->RDMA_Register_GPU_MemRegion(rdmaSendBuff, rdmaInitSize);
 
+    // Cuda Stream initialization
+    cudaStreamCreate(&cudaStream);
+
+    // Cuda IPC initialization
+    if (localRank == 0)
+    {
+        sharedPipe = new SharedPipe(pipe_name, 2, std::vector<int>({0, 1})); // to do
+        cudaIPCCommPrimitive = new CudaIPCCommPrimitive(*sharedPipe);
+    }
+    else
+    {
+        sharedPipe = new SharedPipe(pipe_name, 2);
+        cudaIPCCommPrimitive = new CudaIPCCommPrimitive(*sharedPipe);
+    }
+
+    CUDACHECK(cudaMalloc(&cudaIpcRevBuff, rdmaInitSize * sizeof(float)));
+    CUDACHECK(cudaMemset(cudaIpcRevBuff, 0, rdmaInitSize * sizeof(float)));
+
+    // Synchronize
     cudaDeviceSynchronize();
     MPI_Barrier(MPI_COMM_WORLD);
-
-    cudaStreamCreate(&cudaStream);
 }
 
 void MPIRankListInitialization(unsigned char *mpiRankData, int mpiRankDataSize, int myRank, int nRanks)
@@ -398,8 +422,13 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         if (CT == DefaultCT || CT == RdmaCT)
         {
             receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, rdmaSendBuff, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, debugMode);
+            allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 0);
         }
-        allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 0);
+        else if (CT == PcieCT)
+        {
+            receiveBuffer = allReduce_Transmit_CUDAIPC(gradients, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, rank);
+            allReduce_Gradients_SumOrCover(gradients, receiveAddress, receiveBuffer, chunkSize, 0);
+        }
     }
 
     if (debugMode)
@@ -437,8 +466,13 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         if (CT == DefaultCT || CT == RdmaCT)
         {
             receiveBuffer = allReduce_Transmit_RDMA(rdmaCommPrimitive, rdmaSendBuff, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, debugMode);
+            allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 1);
         }
-        allReduce_Gradients_SumOrCover(rdmaSendBuff, receiveAddress, receiveBuffer, chunkSize, 1);
+        else if (CT == PcieCT)
+        {
+            receiveBuffer = allReduce_Transmit_CUDAIPC(gradients, sendTarget, sendAddress, chunkSize, receiveTarget, receiveAddress, chunkSize, rank);
+            allReduce_Gradients_SumOrCover(gradients, receiveAddress, receiveBuffer, chunkSize, 1);
+        }
     }
 
     if (debugMode)
@@ -449,7 +483,15 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         time5 = std::chrono::system_clock::now();
     }
 
-    gradients_Average(rdmaSendBuff, size, endPointsCount, cudaStream);
+
+    if (CT == DefaultCT || CT == RdmaCT)
+    {
+        gradients_Average(rdmaSendBuff, size, endPointsCount, cudaStream);
+    }
+    else if (CT == PcieCT)
+    {
+        gradients_Average(gradients, size, endPointsCount, cudaStream);
+    }
     cudaStreamSynchronize(cudaStream);
 
     if (debugMode)
@@ -460,9 +502,12 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         time6 = std::chrono::system_clock::now();
     }
 
-    // CUDACHECK(cudaMemcpy(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice));
-    cudaMemcpyAsync(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice, cudaStream);
-    cudaStreamSynchronize(cudaStream);
+    if (CT == DefaultCT || CT == RdmaCT)
+    {
+        // CUDACHECK(cudaMemcpy(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice));
+        cudaMemcpyAsync(gradients, rdmaSendBuff, size * sizeof(float), cudaMemcpyDeviceToDevice, cudaStream);
+        cudaStreamSynchronize(cudaStream);
+    }
 
     if (debugMode)
     {
@@ -513,4 +558,27 @@ void allReduce_Gradients_SumOrCover(float *gradients, int receiveAddress, float 
     cudaStreamSynchronize(cudaStream);
 
     MPI_Barrier(MPI_COMM_WORLD);
+}
+
+float *allReduce_Transmit_CUDAIPC(float *gradients, int sendTarget, int sendAddress, int sendLength, int receiveTarget, int receiveAddress, int receiveLength, int myRank)
+{
+    // if (sendTarget == 0) {
+    //     sendTarget = 0;
+    //     receiveTarget = 1;
+    // } else {
+    //     sendTarget = 1;
+    //     receiveTarget = 0;
+    // }
+
+
+    // std::cout << "=======================allReduce_Transmit_CUDAIPC1==========================" << std::endl;
+    // std::cout << sendAddress << " " << sendLength << " " << sendTarget << std::endl;
+
+
+    cudaIPCCommPrimitive->run_write_device(gradients + sendAddress, sendLength, 0, 2, sendTarget);
+    // std::cout << "=======================allReduce_Transmit_CUDAIPC2==========================" << std::endl;
+    cudaIPCCommPrimitive->run_read_device(cudaIpcRevBuff, receiveLength, 0, 2, myRank);
+    // std::cout << "=======================allReduce_Transmit_CUDAIPC3==========================" << std::endl;
+
+    return cudaIpcRevBuff;
 }
