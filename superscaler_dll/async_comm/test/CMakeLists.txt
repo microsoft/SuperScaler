@@ -1,0 +1,43 @@
+# Copyright (c) Microsoft Corporation. All rights reserved. 
+# Licensed under the MIT License.
+
+cmake_minimum_required(VERSION 3.5.0)
+
+set(TEST_PROJECT test_${PROJECT_NAME})
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+include(${TEST_DIR}/googletest.cmake)
+include(${TEST_DIR}/gtest-parallel.cmake)
+
+get_directory_property(PARENT_DIRECTORY PARENT_DIRECTORY)
+set(TEST_INCLUDE_DIRS
+    ${INCLUDE_DIRS}
+    ${PARENT_DIRECTORY}
+    ${TEST_INCLUDE_DIRS}
+)
+include_directories(${TEST_INCLUDE_DIRS})
+
+set(TEST_LIBRARIES
+    ${TEST_LIBRARIES}
+    ${LIBRARIES}
+    ${PROJECT_NAME}
+)
+file(GLOB TEST_SOURCES ${TEST_DIR}/*.cpp)
+
+add_executable(${TEST_PROJECT} ${TEST_SOURCES})
+target_link_libraries(${TEST_PROJECT} ${TEST_LIBRARIES})
+
+set_target_properties(${TEST_PROJECT} PROPERTIES
+    CMAKE_CXX_STANDARD 11
+    CMAKE_CXX_STANDARD_REQUIRED ON
+)
+
+target_compile_options(${TEST_PROJECT}
+    PRIVATE
+    -Wall
+    -Werror
+    -Wextra
+)
+
+add_custom_target(g_test COMMAND ${TEST_PROJECT})
+add_dependencies(g_test ${TEST_PROJECT})
