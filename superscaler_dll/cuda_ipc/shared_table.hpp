@@ -324,8 +324,10 @@ void SharedTable<SharedBlockMetadata>::clear_up_shared_memory() {
         if (open_files.find(active_shared_memory) == std::string::npos) {
             std::stringstream command;
             command << "rm -f " << std::quoted(active_shared_memory) << " 2>/dev/null ";
+            // Try to remove shared memory that wasn't occupied by any process 
             if (system(command.str().c_str()) != 0) {
-                throw std::runtime_error(std::string() + " Cannot remove unused shared memory" + __FUNCTION_NAME__);
+                // Ignore rm error because rm will fail if this shared memory was created by other user,
+                // throw std::runtime_error(std::string() + " Cannot remove unused shared memory" + __FUNCTION_NAME__);
             }
         }
     }
