@@ -173,9 +173,6 @@ make gtest_parallel
 
 * Worker test
 
-## Existing issues
-
-* RecursiveAddTask may not pass and compiler throw an exception said "resource deadlock avoid". This does'n happen every time. Environment: docker + ubuntu18.04 + g++-7 + google test 1.10.x
 
 ## TODO
 
