@@ -60,7 +60,7 @@ class NodeMetadata():
         # Float. The estimated execution time. In microsecond.
         self.execution_time = execution_time
         # Tensor, the list of output tensors
-        self.output_tensors=output_tensors
+        self.output_tensors = output_tensors
 
 
         #==============================
@@ -159,8 +159,20 @@ class Node():
     def get_index(self):
         return self.__metadata.index
 
+    def get_op(self):
+        return self.__metadata.op
+
+    def get_name(self):
+        return self.__metadata.name
+
+    def get_device_name(self):
+        return self.__metadata.device_name
+
     def get_execution_time(self):
         return self.__metadata.execution_time
+
+    def set_execution_time(self, execution_time):
+        self.__metadata.execution_time = execution_time
 
     def get_tensors(self):
         return self.__metadata.output_tensors

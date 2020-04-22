@@ -1,4 +1,6 @@
 from .device import Device
+
+
 class FIFODevice(Device):
     def __init__(self, name):
         super().__init__(name)

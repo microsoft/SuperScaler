@@ -25,4 +25,3 @@ class Device():
     # Do not modify the attribute of the node, just modify info of device.
     def dequeue_node(self):
         return
-
