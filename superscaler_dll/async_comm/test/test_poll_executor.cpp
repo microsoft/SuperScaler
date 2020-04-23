@@ -5,8 +5,8 @@
 #include <worker.hpp>
 #include <poll_executor.hpp>
 
-
-TEST(PollExecutor, AddTask) {
+TEST(PollExecutor, AddTask)
+{
     bool success = false;
     PollExecutor exec;
     auto t = std::make_shared<Task>(&exec, [&success] { success = true; });
@@ -15,13 +15,12 @@ TEST(PollExecutor, AddTask) {
     ASSERT_TRUE(success);
 }
 
-TEST(PollExecutor, RecursiveAddTask) {
+TEST(PollExecutor, RecursiveAddTask)
+{
     bool success = false;
     PollExecutor exec;
     auto t = std::make_shared<Task>(&exec, [&exec, &success] {
-        auto it = std::make_shared<Task>(&exec, [&success]{
-            success = true;
-        });
+        auto it = std::make_shared<Task>(&exec, [&success] { success = true; });
         exec.add_task(it, true);
         it->wait();
     });

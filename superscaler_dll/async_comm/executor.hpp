@@ -6,10 +6,12 @@ class Task;
 
 class Executor {
 public:
-    Executor(){}
+    Executor()
+    {
+    }
     Executor(const Executor &) = delete;
-    Executor & operator=(const Executor &) = delete;
-    
-    virtual ~Executor() {};
+    Executor &operator=(const Executor &) = delete;
+
+    virtual ~Executor(){};
     virtual void add_task(std::shared_ptr<Task> t, bool thread_safe = true) = 0;
 };
