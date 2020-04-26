@@ -9,7 +9,8 @@ TEST(PollExecutor, AddTask)
 {
     bool success = false;
     PollExecutor exec;
-    auto t = std::make_shared<Task>(&exec, [&success] { success = true; });
+    auto t = std::make_shared<Task>(&exec,
+                                    [&success](TaskState) { success = true; });
     exec.add_task(t);
     t->wait();
     ASSERT_TRUE(success);
@@ -19,8 +20,11 @@ TEST(PollExecutor, RecursiveAddTask)
 {
     bool success = false;
     PollExecutor exec;
-    auto t = std::make_shared<Task>(&exec, [&exec, &success] {
-        auto it = std::make_shared<Task>(&exec, [&success] { success = true; });
+    auto t = std::make_shared<Task>(&exec, [&exec, &success](TaskState state) {
+        ASSERT_EQ(state, TaskState::e_success);
+        auto it = std::make_shared<Task>(&exec, [&success](TaskState) {
+            success = true;
+        });
         exec.add_task(it, true);
         it->wait();
     });

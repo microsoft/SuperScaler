@@ -8,6 +8,7 @@
 #include <functional>
 
 class Task;
+enum class TaskState;
 
 class Worker {
 public:
@@ -16,7 +17,7 @@ public:
     Worker(const Worker &) = delete;
     Worker &operator=(const Worker &) = delete;
 
-    void add_task(std::function<void(void)> t);
+    void add_task(std::function<void(TaskState)> t);
     void add_task(std::shared_ptr<Task> t);
     void exit();
     bool is_idle() const;

@@ -6,7 +6,7 @@
 
 class MockTask : public Task {
 public:
-    MockTask(bool &success, std::function<void(void)> callback)
+    MockTask(bool &success, std::function<void(TaskState)> callback)
         : Task(nullptr, callback), m_success(success)
     {
     }
@@ -14,9 +14,10 @@ public:
 private:
     bool &m_success;
 
-    void execute(Executor *)
+    TaskState execute(Executor *)
     {
         m_success = true;
+        return TaskState::e_success;
     }
 };
 
@@ -24,7 +25,7 @@ TEST(Task, ExecuteAndCallback)
 {
     bool execute_success = false, callback_success = false;
     MockTask task(execute_success,
-                  [&callback_success] { callback_success = true; });
+                  [&callback_success](TaskState) { callback_success = true; });
     task();
     task.wait();
     ASSERT_TRUE(execute_success);

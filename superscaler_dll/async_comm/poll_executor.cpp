@@ -65,20 +65,21 @@ void PollExecutor::release_worker(std::weak_ptr<Worker> worker)
     auto &idle_workers = m_idle_workers;
     auto &busy_workers = m_busy_workers;
     auto &idle_mutex = m_mutex;
-    real_worker->add_task([&idle_workers, &busy_workers, &idle_mutex, worker] {
-        auto real_worker = worker.lock();
-        if (!real_worker) {
-            return;
-        }
-        std::lock_guard<std::mutex> lock(idle_mutex);
-        // Remove worker from busy list
-        busy_workers.remove_if([real_worker](std::weak_ptr<Worker> ptr) {
-            if (auto real_ptr = ptr.lock()) {
-                return real_worker == real_ptr;
+    real_worker->add_task(
+        [&idle_workers, &busy_workers, &idle_mutex, worker](TaskState) {
+            auto real_worker = worker.lock();
+            if (!real_worker) {
+                return;
             }
-            return false;
+            std::lock_guard<std::mutex> lock(idle_mutex);
+            // Remove worker from busy list
+            busy_workers.remove_if([real_worker](std::weak_ptr<Worker> ptr) {
+                if (auto real_ptr = ptr.lock()) {
+                    return real_worker == real_ptr;
+                }
+                return false;
+            });
+            // Add worker to idle list
+            idle_workers.push_back(worker);
         });
-        // Add worker to idle list
-        idle_workers.push_back(worker);
-    });
 }

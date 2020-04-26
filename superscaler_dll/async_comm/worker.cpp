@@ -13,7 +13,7 @@ Worker::~Worker()
     exit();
 }
 
-void Worker::add_task(std::function<void(void)> t)
+void Worker::add_task(std::function<void(TaskState)> t)
 {
     add_task(std::make_shared<Task>(nullptr, t));
 }
@@ -31,7 +31,7 @@ void Worker::exit()
 {
     if (m_worker_thread.joinable()) {
         bool &is_activated = m_is_activated;
-        add_task([&is_activated] { is_activated = false; });
+        add_task([&is_activated](TaskState) { is_activated = false; });
         if (std::this_thread::get_id() != m_worker_thread.get_id()) {
             m_worker_thread.join();
         }
