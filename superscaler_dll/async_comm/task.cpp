@@ -1,42 +1,43 @@
 #include "task.hpp"
 
-Task::Task(Executor *exec, std::function<void(void)> callback)
-    : m_exec(exec), m_callback(callback), m_finished(false)
+Task::Task(Executor *exec, std::function<void(TaskState)> callback)
+    : m_state(TaskState::e_unfinished), m_exec(exec), m_callback(callback)
 {
 }
 
 Task::~Task()
 {
-    if (!is_finished()) {
+    if (m_state == TaskState::e_unfinished) {
         wait();
     }
 }
 
 void Task::operator()()
 {
-    execute(m_exec);
-    if (m_callback) {
-        m_callback();
-    }
+    TaskState state = execute(m_exec);
+    if (m_callback)
+        m_callback(state);
     {
-        std::lock_guard<std::mutex> guard(m_mutex);
-        m_finished = true;
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_state = state;
     }
     m_condition.notify_all();
 }
 
-bool Task::is_finished() const
+TaskState Task::get_state() const
 {
-    return m_finished;
+    return m_state;
 }
 
 void Task::wait()
 {
     std::unique_lock<std::mutex> m_lock(m_mutex);
-    bool &finished = m_finished;
-    m_condition.wait(m_lock, [&finished] { return finished; });
+    TaskState &state = m_state;
+    m_condition.wait(m_lock,
+                     [&state] { return state != TaskState::e_unfinished; });
 }
 
-void Task::execute(Executor *)
+TaskState Task::execute(Executor *)
 {
+    return TaskState::e_success;
 }
