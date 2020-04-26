@@ -9,6 +9,8 @@ SET(CMAKE_CXX_FLAGS "-std=c++11")
 # Generate parser
 # Include directories
 set(INCLUDE_DIRS
+    ${INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/channel
 )
 include_directories(${INCLUDE_DIRS})
 
