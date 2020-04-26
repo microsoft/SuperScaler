@@ -1,0 +1,14 @@
+# For pycache
+**/__pycache__/
+
+# For pytest cache
+.pytest_cache/
+
+# For logs in unit tests
+/tests/gpu_simulator_tests/logs/
+
+# For mac
+.DS_Store
+
+# For vscode
+.vscode/
