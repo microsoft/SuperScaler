@@ -40,12 +40,12 @@ bool Task::commit()
 
 TaskState Task::wait()
 {
-    std::unique_lock<std::mutex> m_lock(m_state_mutex);
+    std::unique_lock<std::mutex> lock(m_state_mutex);
     // Task should be commit to executor first, or it will wait forever
     if (m_state == TaskState::e_uncommited)
         return m_state;
     TaskState &state = m_state;
-    m_condition.wait(m_lock, [&state] {
+    m_condition.wait(lock, [&state] {
         return state == TaskState::e_success || state == TaskState::e_failed;
     });
     return m_state;
