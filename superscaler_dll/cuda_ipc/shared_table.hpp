@@ -5,7 +5,6 @@
 #include <memory>
 #include <stdexcept>
 #include <sstream>
-#include <iomanip>
 #include <mutex>
 
 #include <stdio.h>
@@ -269,7 +268,7 @@ bool SharedTable<SharedBlockMetadata>::is_exclusively_occupied() const {
 
     command 
         << " lsof 2>/dev/null "
-        << " | awk " << std::quoted( std::string() + " /" + m_shared_buffer_name +  "/ {print $2} " ,'\'')
+        << " | awk " << ( std::string() + "' /" + m_shared_buffer_name +  "/ {print $2} '" )
         << " | sort --unique "
         << " | wc -l ";
     FILE * fp = popen(command.str().c_str(), "r");
@@ -323,7 +322,7 @@ void SharedTable<SharedBlockMetadata>::clear_up_shared_memory() {
     while(std::getline(active_shared_memories, active_shared_memory, '\n')) {
         if (open_files.find(active_shared_memory) == std::string::npos) {
             std::stringstream command;
-            command << "rm -f " << std::quoted(active_shared_memory) << " 2>/dev/null ";
+            command << "rm -f '" << (active_shared_memory) << "' 2>/dev/null ";
             // Try to remove shared memory that wasn't occupied by any process 
             if (system(command.str().c_str()) != 0) {
                 // Ignore rm error because rm will fail if this shared memory was created by other user,
