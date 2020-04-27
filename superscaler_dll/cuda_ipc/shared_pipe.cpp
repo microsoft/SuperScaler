@@ -1,7 +1,7 @@
 #include "shared_pipe.hpp"
 
 #ifndef TEST
-constexpr size_t PIPE_BUFFER_SIZE = 512 * 1024 * 1024; // 128MB
+constexpr size_t PIPE_BUFFER_SIZE = 512 * 1024 * 1024; // 512MB
 #else
 constexpr size_t PIPE_BUFFER_SIZE = 1 * 1024; // 1KB
 #endif
