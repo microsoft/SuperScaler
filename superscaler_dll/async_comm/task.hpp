@@ -7,7 +7,7 @@
 
 class Executor;
 
-enum class TaskState { e_unfinished, e_success, e_failed };
+enum class TaskState { e_uncommited, e_unfinished, e_success, e_failed };
 
 class Task : public std::enable_shared_from_this<Task> {
 public:
@@ -19,9 +19,22 @@ public:
     virtual ~Task();
 
     void operator()();
+
+    /**
+     * @brief Change state from uncommitted to unfinished
+     * 
+     * @return true 
+     * @return false state!=uncommited 
+     */
+    bool commit();
     TaskState get_state() const;
     bool is_finished() const;
-    void wait();
+    /**
+     * @brief Wait until Task finished, will return directly when uncommitted
+     * 
+     * @return TaskState 
+     */
+    TaskState wait();
 
 protected:
     /**
@@ -33,7 +46,7 @@ protected:
     virtual TaskState execute(Executor *exec);
 
 private:
-    std::mutex m_mutex;
+    std::mutex m_state_mutex;
     std::condition_variable m_condition;
     TaskState m_state;
     Executor *m_exec;

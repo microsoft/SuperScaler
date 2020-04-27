@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "poll_executor.hpp"
+#include "task.hpp"
 
 PollExecutor::PollExecutor(size_t max_worker_count)
     : m_max_worker_count(max_worker_count)
@@ -14,14 +15,17 @@ PollExecutor::~PollExecutor()
     }
 }
 
-void PollExecutor::add_task(std::shared_ptr<Task> task, bool thread_safe)
+bool PollExecutor::add_task(std::shared_ptr<Task> task, bool thread_safe)
 {
+    if (!task->commit())
+        return false;
     if (thread_safe) {
         std::lock_guard<std::mutex> guard(m_mutex);
         assign_task(task);
     } else {
         assign_task(task);
     }
+    return true;
 }
 
 void PollExecutor::assign_task(std::shared_ptr<Task> t, bool thread_safe)

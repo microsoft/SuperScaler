@@ -16,7 +16,7 @@ public:
     PollExecutor(size_t m_max_worker_count = std::numeric_limits<size_t>::max());
     ~PollExecutor();
 
-    void add_task(std::shared_ptr<Task> t, bool thread_safe = true);
+    bool add_task(std::shared_ptr<Task> t, bool thread_safe = true) override;
 
 private:
     void assign_task(std::shared_ptr<Task> t, bool thread_safe = true);
