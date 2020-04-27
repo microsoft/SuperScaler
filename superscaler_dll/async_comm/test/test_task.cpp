@@ -31,3 +31,20 @@ TEST(Task, ExecuteAndCallback)
     ASSERT_TRUE(execute_success);
     ASSERT_TRUE(callback_success);
 }
+
+TEST(Task, WaitBeforeCommit)
+{
+    bool execute_success = false, callback_success = false;
+    MockTask task(execute_success,
+                  [&callback_success](TaskState) { callback_success = true; });
+    TaskState state;
+    // Wait before commit
+    state = task.wait();
+    ASSERT_EQ(state, TaskState::e_uncommited);
+    task.commit();
+    task();
+    state = task.wait();
+    ASSERT_TRUE(execute_success);
+    ASSERT_TRUE(callback_success);
+    ASSERT_EQ(state, TaskState::e_success);
+}
