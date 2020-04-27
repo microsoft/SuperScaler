@@ -6,8 +6,8 @@ MPI_LIB := -I/usr/mpi/gcc/openmpi-2.0.2a1/include/ -L/usr/mpi/gcc/openmpi-2.0.2a
 CUDA_LIB := -L./ -L$(CUDA)/lib64 -L/var/drivers/nvidia/367.55/lib64  -L/usr/lib
 CUDA_INC += -I./ -I$(CUDA)/include -I/var/drivers/nvidia/367.55/include -I/usr/include
 
-CPP11 := -std=c++14 -D_GLIBCXX_USE_CXX11_ABI=0
-CPPFLAGS := -std=c++14 $(CUDA_INC)
+CPP11 := -std=c++11 -D_GLIBCXX_USE_CXX11_ABI=0
+CPPFLAGS := -std=c++11 $(CUDA_INC)
 LDFLAGS  := $(CUDA_LIB)
 
 ifeq ($(BUILD),debug)   

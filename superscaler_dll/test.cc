@@ -71,7 +71,7 @@ void sendRecvTest(int testTimes, float *gradients, size_t size, std::string tens
     {
         std::cout << "Before sendRecv: Rank " << myRank << ", Size: " << sendRecvSize << ", data == NULL " << std::endl;
     }
-    
+
     // Process
     int ret = sendReceive(&data, sendRecvSize, tensorName);
 

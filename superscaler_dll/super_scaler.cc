@@ -11,9 +11,9 @@ static std::map<int, std::string> mpiRankListRankHost;
 static RdmaCommPrimitive *rdmaCommPrimitive = NULL;
 float *rdmaSendBuff = nullptr;
 
-const char * pipe_name = "test_cuda_comm_primitive";
-static SharedPipe * sharedPipe = NULL;
-static CudaIPCCommPrimitive * cudaIPCCommPrimitive = NULL;
+const char *pipe_name = "test_cuda_comm_primitive";
+static SharedPipe *sharedPipe = NULL;
+static CudaIPCCommPrimitive *cudaIPCCommPrimitive = NULL;
 float *cudaIpcRevBuff = nullptr;
 
 static uint64_t getHostHash(const char *string)
@@ -74,17 +74,15 @@ void initialization(int &myRank, int &nRanks, int &localRank)
     mpiCommPrimitive = new MpiCommPrimitive();
 
     // MPI rank list initialization
-    int mpiRankDataSize = 20;  // len("0:10.0.0.21 0 12001;") = 20;
+    int mpiRankDataSize = 20; // len("0:10.0.0.21 0 12001;") = 20;
     unsigned char *mpiRankData = new unsigned char[mpiRankDataSize * nRanks];
     MPIRankListInitialization(mpiRankData, mpiRankDataSize, myRank, nRanks);
-    // for(auto iter = mpiRankListHostRank.begin(); iter != mpiRankListHostRank.end(); iter++) 
+    // for(auto iter = mpiRankListHostRank.begin(); iter != mpiRankListHostRank.end(); iter++)
     // {
     //     std::cout << iter->first << " : " << iter->second << std::endl;
     // }
 
     // RDMA initialization
-    // Plan plan = table.getFirstAllreducePlan();
-    // std::vector<std::string> endPoints = plan.getEndPoints();
     std::vector<std::string> endPoints;
     for (int i = 0; i < nRanks; i++)
     {
@@ -118,14 +116,37 @@ void initialization(int &myRank, int &nRanks, int &localRank)
     cudaStreamCreate(&cudaStream);
 
     // Cuda IPC initialization
+    int localTotalRank = 0;
+
+    std::string selfName = table.getSelfName();
+    int selfNameBlankIndex = selfName.find(" ");
+    std::string selfNameIp = selfName.substr(0, selfNameBlankIndex);
+    for (int i = 0; i < endPointsCount; i++)
+    {
+        std::string endPoint = endPoints[i];
+        int blankIndex = endPoint.find(" ");
+        std::string ip = endPoint.substr(0, blankIndex);
+
+        if (selfNameIp == ip)
+        {
+            localTotalRank++;
+        }
+    }
+
+    std::vector<int> localTotalRankList;
+    for (int i = 0; i < localTotalRank; i++)
+    {
+        localTotalRankList.push_back(i);
+    }
+
     if (localRank == 0)
     {
-        sharedPipe = new SharedPipe(pipe_name, 2, std::vector<int>({0, 1})); // to do
+        sharedPipe = new SharedPipe(pipe_name, localTotalRank, localTotalRankList);
         cudaIPCCommPrimitive = new CudaIPCCommPrimitive(*sharedPipe);
     }
     else
     {
-        sharedPipe = new SharedPipe(pipe_name, 2);
+        sharedPipe = new SharedPipe(pipe_name, localTotalRank);
         cudaIPCCommPrimitive = new CudaIPCCommPrimitive(*sharedPipe);
     }
 
@@ -214,12 +235,12 @@ void MPIRankListInitialization(unsigned char *mpiRankData, int mpiRankDataSize, 
         MPI_Recv(mpiRankData + receiveAddress, mpiRankDataSize, MPI_UNSIGNED_CHAR, receiveTarget, 0, MPI_COMM_WORLD, &recv_status);
     }
 
-    std::string mpiRankDataResult(reinterpret_cast<char*>(mpiRankData));
+    std::string mpiRankDataResult(reinterpret_cast<char *>(mpiRankData));
     for (int i = 0; i < nRanks; i++)
     {
         int startIndex = mpiRankDataSize * i;
         int rank = mpiRankData[startIndex] - '0';
-        startIndex += 2;  // for "0:"
+        startIndex += 2; // for "0:"
 
         int endIndex = startIndex;
         while (mpiRankData[endIndex] != ';')
@@ -227,7 +248,7 @@ void MPIRankListInitialization(unsigned char *mpiRankData, int mpiRankDataSize, 
             endIndex++;
         }
 
-        int length = endIndex - startIndex;  // except for ';'
+        int length = endIndex - startIndex; // except for ';'
         std::string tmpStr = mpiRankDataResult.substr(startIndex, length);
 
         mpiRankListHostRank[tmpStr] = rank;
@@ -483,7 +504,6 @@ void allReduce_Ring(float *gradients, size_t size, std::string selfName, Plan pl
         time5 = std::chrono::system_clock::now();
     }
 
-
     if (CT == DefaultCT || CT == RdmaCT)
     {
         gradients_Average(rdmaSendBuff, size, endPointsCount, cudaStream);
@@ -562,23 +582,7 @@ void allReduce_Gradients_SumOrCover(float *gradients, int receiveAddress, float 
 
 float *allReduce_Transmit_CUDAIPC(float *gradients, int sendTarget, int sendAddress, int sendLength, int receiveTarget, int receiveAddress, int receiveLength, int myRank)
 {
-    // if (sendTarget == 0) {
-    //     sendTarget = 0;
-    //     receiveTarget = 1;
-    // } else {
-    //     sendTarget = 1;
-    //     receiveTarget = 0;
-    // }
-
-
-    // std::cout << "=======================allReduce_Transmit_CUDAIPC1==========================" << std::endl;
-    // std::cout << sendAddress << " " << sendLength << " " << sendTarget << std::endl;
-
-
     cudaIPCCommPrimitive->run_write_device(gradients + sendAddress, sendLength, 0, 2, sendTarget);
-    // std::cout << "=======================allReduce_Transmit_CUDAIPC2==========================" << std::endl;
     cudaIPCCommPrimitive->run_read_device(cudaIpcRevBuff, receiveLength, 0, 2, myRank);
-    // std::cout << "=======================allReduce_Transmit_CUDAIPC3==========================" << std::endl;
-
     return cudaIpcRevBuff;
 }
