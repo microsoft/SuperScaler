@@ -1,0 +1,24 @@
+#pragma once
+#include <mutex>
+#include <condition_variable>
+#include <functional>
+#include <memory>
+
+#include "task.hpp"
+#include "channel.hpp"
+
+class SendTask : public Task {
+public:
+    SendTask(Executor *exec, task_callback_t callback,
+             std::shared_ptr<Channel> channel, rank_t peer_rank,
+             const void *buffer, size_t buffer_length);
+
+protected:
+    TaskState execute(Executor *exec) override;
+
+private:
+    std::shared_ptr<Channel> m_channel;
+    rank_t m_peer_rank;
+    const void *m_buffer;
+    size_t m_buffer_length;
+};
