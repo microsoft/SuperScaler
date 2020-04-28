@@ -1,0 +1,40 @@
+Server:
+    hostname1:
+        CPU:
+            0:
+                properties:
+                    average_performance: "12Gibps"
+                links:
+                    -   
+                        dest: "/server/hostname1/CPU/1"
+                        type: "RDMA"
+                        rate: "100Gibps"
+                        propagation_latency: "20us"
+            1:
+                properties:
+                    average_performance: "12bps"
+                links:
+                    -   
+                        dest: "/server/hostname1/CPU/0"
+                        type: "RDMA"
+                        rate: "100bps"
+                        propagation_latency: "20us"                
+            2:
+            3:
+        GPU:
+            0:
+                properties:
+                    average_performance: "12Tibps"
+                links:
+                    - 
+                        dest: "/switch/switch0"
+                        type: "PCIE"
+                        rate: "124Gibit/s"
+                        propagation_latency: "2us"
+            1:
+            2:
+            3:
+Switch:
+    switch0:
+        properties:
+            scheduler: "FairSharing"
