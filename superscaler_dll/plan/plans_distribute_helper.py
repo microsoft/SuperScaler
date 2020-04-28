@@ -16,12 +16,13 @@ for root, dirs, files in os.walk(model_test_dir):
         # DataParallelismPlan2GPUsIn2Hosts  21 25
         # DataParallelismPlan4GPUsIn2Hosts  21 25
         # DataParallelismPlan4GPUsIn4Hosts  21 22 24 25
-        if dir_name == "DataParallelismPlan4GPUsIn4Hosts":
+        if dir_name == "ModelParallelismPlan2GPUsIn1Hosts":
             plan_dir = os.path.join(root, dir_name)
-            json_file_path = os.path.join(plan_dir, "exec_plan", "run.json")
+            run_json_file_path = os.path.join(plan_dir, "exec_plan", "run.json")
+            init_json_file_path = os.path.join(plan_dir, "exec_plan", "init.json")
 
             print (plan_dir)
-            plans_distribute.plans_distribute(mapping_hostname_file_path, mapping_port_file_path, json_file_path, plan_dir)
+            plans_distribute.plans_distribute(mapping_hostname_file_path, mapping_port_file_path, run_json_file_path, init_json_file_path, plan_dir)
 
 print ("plan distribute Done")
 # cd path/to/plan

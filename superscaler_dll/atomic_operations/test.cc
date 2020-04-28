@@ -324,7 +324,7 @@ int main()
  
     std::cout << "=======================================================================" << std::endl;
     std::cout << "test_device nccl" << std::endl;
-    test_nccl_device(myRank, nRanks, localRank, 512 * 1024 * 1024);
+    test_nccl_device(myRank, nRanks, localRank, 128 * 1024 * 1024);
 															
     // rdmaCommPrimitive_->set_cfg_RDMA(myRank, nRanks, localRank, 16*1024*1024);
 

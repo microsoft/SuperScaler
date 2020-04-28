@@ -107,6 +107,8 @@ public:
         buffer = new float[64 * 1024 * 1024];
     }
     ~MpiCommPrimitive() {}
+    void send(unsigned char **data, int sendTarget, int sendAddress, int sendLength);
+    void recieve(unsigned char **data, int receiveTarget, int receiveAddress, int &receiveLength);
     void run_send_recieve_host(float *gradients, int size,
                                int myRank, int nRanks, int localRank, excution_operation op_);
 

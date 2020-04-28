@@ -88,7 +88,9 @@ float *RdmaCommPrimitive::send_receive(float *gradients, int sendTarget, int sen
         ;
     stage_ = 0;
 
+    // cudaDeviceSynchronize();
     MPI_Barrier(MPI_COMM_WORLD);
+
     float *buf = (float *)gpu_lmr[myRank_ * nRanks_ + receiveTarget]->addr + receiveAddress;
 
     // float *grad = gradients + receiveAddress;
@@ -100,8 +102,6 @@ float *RdmaCommPrimitive::send_receive(float *gradients, int sendTarget, int sen
     // {
     //     cudaMemcpy(grad, buf, receiveLength * sizeof(float), cudaMemcpyDeviceToDevice);
     // }
-    // cudaDeviceSynchronize();
-    // MPI_Barrier(MPI_COMM_WORLD);
 
     return buf;
 }
@@ -312,6 +312,21 @@ void MpiCommPrimitive::run_send_host(float *gradients, int size,
         MPI_Send(segment_send, op_.send_length[myRank], MPI_FLOAT,
                  op_.send_target[myRank], 0, MPI_COMM_WORLD);
     }
+}
+
+void MpiCommPrimitive::send(unsigned char **data, int sendTarget, int sendAddress, int sendLength)
+{
+    MPI_Send(*data + sendAddress, sendLength, MPI_UNSIGNED_CHAR, sendTarget, 0, MPI_COMM_WORLD);
+}
+
+void MpiCommPrimitive::recieve(unsigned char **data, int receiveTarget, int receiveAddress, int &receiveLength)
+{
+    MPI_Status recv_status;
+    MPI_Probe(receiveTarget, 0, MPI_COMM_WORLD, &recv_status);
+    MPI_Get_count(&recv_status, MPI_UNSIGNED_CHAR, &receiveLength);
+    
+    *data = new unsigned char[receiveLength];
+    MPI_Recv(*data + receiveAddress, receiveLength, MPI_UNSIGNED_CHAR, receiveTarget, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
 void MpiCommPrimitive::run_recieve_host(float *gradients, int size,
