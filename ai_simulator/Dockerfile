@@ -19,5 +19,7 @@ WORKDIR /AISimulator
 COPY . /AISimulator
 # Install AISimulator
 RUN \
+    python3 -m pip install flake8 && \
+    python3 -m flake8 && \
     python3 -m pip install -r requirements.txt && \
     python3 -m pytest -v
