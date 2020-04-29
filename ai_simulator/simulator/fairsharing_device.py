@@ -2,8 +2,6 @@ from queue import PriorityQueue
 
 from .utility import transfer_rate_to_bps, data_size_to_bit
 from .device import Device
-from .node import Node
-from .tensor import Tensor
 
 
 class FairSharingDeviceException(Exception):

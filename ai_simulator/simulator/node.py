@@ -27,7 +27,6 @@ dependency_ids      List of int     Node ID of dependency input
 successor_ids       List of int     Node ID of successors
 
 '''
-import json
 import copy
 from enum import Enum
 
@@ -44,9 +43,9 @@ class NodeMetadata():
                  dependency_ids=[],
                  successor_ids=[]
                  ):
-        #==============================
+        # ==============================
         # Attributes of node
-        #==============================
+        # ==============================
 
         # Int. The ID of node.
         self.index = index
@@ -61,30 +60,29 @@ class NodeMetadata():
         self.execution_time = execution_time
         # Tensor, the list of output tensors
         self.output_tensors = output_tensors
-
-
-        #==============================
+        # ==============================
         # Attributes of edge
-        #==============================
+        # ==============================
         # These attributes is initialized by adapter outside this function.
 
         # List of int. Node of dataflow inputs
         self.input_ids = copy.deepcopy(input_ids)
         # List of int. Read which one of the input node's output.
         # Current version does not use this attribute
-        # In most cases, this attribute is 0. Read the first output of given node.
+        # In most cases, this attribute is 0.
+        # Read the first output of given node.
         # self.input_data_ids = []
         # List of int. Node of dependency inputs
         self.dependency_ids = copy.deepcopy(dependency_ids)
         # List of int. Node of successor nodes depends on this node.
         self.successor_ids = copy.deepcopy(successor_ids)
 
-        #==============================
+        # ==============================
         # Attributes for debugging and testing
-        #==============================
+        # ==============================
         # List of string. The raw input list in .pbtxt file.
-        # The raw input name contains ':1' to indicate which output of a node is
-        # the input.
+        # The raw input name contains ':1' to indicate which output of a node
+        # is the input.
         # self.raw_inputs = []
 
     def to_dict(self):
@@ -110,7 +108,7 @@ class NodeException(Exception):
 
 
 '''
-This class define a dynamic running node in simulator. While the NodeMetadata() 
+This class define a dynamic running node in simulator. While the NodeMetadata()
 is a static definition of a node.
 '''
 
@@ -131,21 +129,25 @@ class Node():
         self.__device = device
         # List of Node ref. Node of successor nodes depends on this node.
         self.__successor_nodes = []
-        
+
         # Check the input_node and dependency_node
         input_ids_set = set(self.__metadata.input_ids)
         dependency_ids_set = set(self.__metadata.dependency_ids)
         if not len(dependency_ids_set) == len(self.__metadata.dependency_ids):
             raise NodeException(
-                '[ERROR] Node initialization failure because dependency_ids has duplicate elements: %s' % self.__metadata.name)         
+                '[ERROR] Node initialization failure because dependency_ids '
+                + 'has duplicate elements: %s' % self.__metadata.name)
         if not len(input_ids_set & dependency_ids_set) == 0:
             raise NodeException(
-                '[ERROR] Node initialization failure because input_ids and dependency_ids has same elements: %s' % self.__metadata.name)
+                '[ERROR] Node initialization failure because input_ids and '
+                + 'dependency_ids has same elements: %s'
+                % self.__metadata.name)
 
         # Check the device name
         if not self.__device.name() == self.__metadata.device_name:
             raise NodeException(
-                '[ERROR] Node initialization failure because device_name not match: %s' % self.__metadata.name)            
+                '[ERROR] Node initialization failure because device_name not '
+                + 'match: %s' % self.__metadata.name)
 
     def reset(self):
         metadata = self.__metadata
@@ -188,9 +190,9 @@ class Node():
             self.__remain_dependency_cnt -= cnt
         else:
             raise NodeException(
-                '[ERROR] node (%s) reduce an unexpected remain_dependency_cnt (reduce: %s, current: %s)' %
-                (self.__metadata.name,
-                 cnt,
+                '[ERROR] node (%s) reduce an unexpected' % self.__metadata.name
+                + ' remain_dependency_cnt (reduce: %s, current: %s)' %
+                (cnt,
                  self.__remain_dependency_cnt))
 
     def renew_successor_nodes(self, node_list):

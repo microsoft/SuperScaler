@@ -1,7 +1,6 @@
-import pytest
-from simulator.tensor import *
+from simulator.tensor import Tensor
 from simulator.fifo_device import FIFODevice
-from simulator.fairsharing_device import *
+from simulator.fairsharing_device import FairSharingDevice, Flow
 from simulator.node import Node, NodeMetadata
 
 
@@ -119,7 +118,7 @@ def test_fairsharing_device_complex():
         nodes_enqueue_time.append(arrival_time)
 
     node_index = 0
-    t_now = nodes_enqueue_time[node_index]
+    # t_now = nodes_enqueue_time[node_index]
     device.enqueue_node(nodes[node_index], nodes_enqueue_time[node_index])
     node_index += 1
 

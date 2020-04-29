@@ -16,7 +16,7 @@ def transfer_rate_to_bps(rate_str):
     '''
     # It is a little tricky here
     # In packet humanreadable, the hr.BitPerSecond(rate_str).bps is an int,
-    # and the result is wrong if using this int value. Therefore, we need to 
+    # and the result is wrong if using this int value. Therefore, we need to
     # get an float value first (.kibi_bps), then manually convert it to bps
     return hr.BitPerSecond(rate_str).kibi_bps*1024
 

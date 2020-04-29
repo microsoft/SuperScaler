@@ -1,8 +1,8 @@
-import os
-from .database_backend import *
+from .database_backend import DatabaseBackendLocalFile
 
 DB_RETVAL_OK = 0
 DB_RETVAL_KEY_NOT_FOUND = None
+
 
 class DatabaseLoader():
     '''
@@ -10,19 +10,22 @@ class DatabaseLoader():
     The database is a key-value structure database.
     The key is made up with op, input shapes, and sorted attributes.
     Elements in the key is separated by '%'
-    Key format: "op%input%input0_shape%...%input%inputN_shape%attr0_key%attr0_value..."
+    Key format:
+        "op%input%input0_shape%...%input%inputN_shape%attr0_key%attr0_value..."
     op: the string of op.
-    input_shape: the string format of input shapt list. E.g. '[3,64,64,3]'
+    input_shape: the string format of input shape list. E.g. '[3,64,64,3]'
     attr_key: the string of attribute name. E.g. 'dtype'
     attr_value: the string of attribute value. E.g. 'DT: TF_FLOAT'
     '''
+
     def __init__(self, db_type=DatabaseBackendLocalFile, **kwargs):
         self.__db_backend = db_type(**kwargs)
 
     def __gen_input_shape_string(self, input_shape):
         '''
         Transform input shape from list format to string.
-        Do not use str() because different environment may cause different transform result.
+        Do not use str() because different environment may cause different
+        transform result.
         '''
         final_str = '['
         if len(input_shape) > 0:
@@ -35,16 +38,22 @@ class DatabaseLoader():
     def __gen_universal_key(self, op, input_shape_list, attr_list):
         '''
         Generate the universal key.
-        input_shape_list: list of all input shape. Each element is a list, means the shape.
-        attr_list: list of all attributes. Each element is a pair of two string, (key, value)
+
+        Args:
+            input_shape_list: list of all input shape. Each element is a list,
+                means the shape.
+            attr_list: list of all attributes. Each element is a pair of two
+                string, (key, value)
         '''
         '''
-        Ignored attribute list. These attributes will not affect op execution performance.
-        _class: This attribute means the op should be put into the same device with another op.
+        Ignored attribute list. These attributes will not affect op execution
+        performance.
+        _class: This attribute means the op should be put into the same device
+            with another op.
         experimental_debug_info: Debug info.
-        E.g. in a graph, a conv2d node 'conv0', its '_class' attr is 'const0'. This means this
-        conv2d node should be placed into the same device with node 'const0'. This will not 
-        affect its execution time.
+        E.g. in a graph, a conv2d node 'conv0', its '_class' attr is 'const0'.
+        This means this conv2d node should be placed into the same device with
+        node 'const0'. This will not affect its execution time.
         '''
         IGNORE_ATTR_LIST = ['_class', 'experimental_debug_info']
         sorted_attr_list = sorted(attr_list, key=lambda key: key[0])
@@ -58,36 +67,38 @@ class DatabaseLoader():
             key = key + '%%%s%%%s' % (attr_name, str(attr_value))
         return key
 
-    
     def search_record(self, op, input_shape_list, attr_list):
         '''
-        Search record in database, given key_list, return profiling result in dict format
-        If not found, return DB_RETVAL_KEY_NOT_FOUND
-        op: string, the op.
-        input_shape_list: list of all input shape. Each element is a list, means the shape.
-        attr_list: list of all attributes. Each element is a pair of two string, (key, value)
+        Search record in database, given key_list, return profiling result in
+        dict format. If not found, return DB_RETVAL_KEY_NOT_FOUND
+
+        Args:
+            op: string, the op.
+            input_shape_list: list of all input shape. Each element is a list,
+                means the shape.
+            attr_list: list of all attributes. Each element is a pair of two
+                string, (key, value)
         '''
         key = self.__gen_universal_key(op, input_shape_list, attr_list)
         value = self.__db_backend.get(key)
-        if value == None:
+        if value is None:
             return DB_RETVAL_KEY_NOT_FOUND
         return value
-    
+
     def add_record(self, op, input_shape_list, attr_list, result_dict):
         '''
-        Add a record into the database. If same key exists, overwrite the old record.
-        op: string, the op.
-        input_shape_list: list of all input shape. Each element is a list, means the shape.
-        attr_list: list of all attributes. Each element is a pair of two string, (key, value)
-        result_dict: the dict store profiling result.
+        Add a record into the database. If same key exists, overwrite the old
+        record.
+
+        Args:
+            op: string, the op.
+            input_shape_list: list of all input shape. Each element is a list,
+                means the shape.
+            attr_list: list of all attributes. Each element is a pair of two
+                string, (key, value)
+            result_dict: the dict store profiling result.
         '''
         key = self.__gen_universal_key(op, input_shape_list, attr_list)
         value = result_dict
         self.__db_backend.put(key, value)
         return DB_RETVAL_OK
-
-    
-
-    
-    
-    
