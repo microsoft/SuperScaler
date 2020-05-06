@@ -1,7 +1,7 @@
 #include "task.hpp"
 
 Task::Task(Executor *exec, std::function<void(TaskState)> callback)
-    : m_state(TaskState::e_uncommited), m_exec(exec), m_callback(callback)
+    : m_state(TaskState::e_uncommitted), m_exec(exec), m_callback(callback)
 {
 }
 
@@ -32,7 +32,7 @@ TaskState Task::get_state() const
 bool Task::commit()
 {
     std::lock_guard<std::mutex> lock(m_state_mutex);
-    if (m_state != TaskState::e_uncommited)
+    if (m_state != TaskState::e_uncommitted)
         return false;
     m_state = TaskState::e_unfinished;
     return true;
@@ -42,7 +42,7 @@ TaskState Task::wait()
 {
     std::unique_lock<std::mutex> lock(m_state_mutex);
     // Task should be commit to executor first, or it will wait forever
-    if (m_state == TaskState::e_uncommited)
+    if (m_state == TaskState::e_uncommitted)
         return m_state;
     TaskState &state = m_state;
     m_condition.wait(lock, [&state] {

@@ -40,7 +40,7 @@ TEST(Task, WaitBeforeCommit)
     TaskState state;
     // Wait before commit
     state = task.wait();
-    ASSERT_EQ(state, TaskState::e_uncommited);
+    ASSERT_EQ(state, TaskState::e_uncommitted);
     task.commit();
     task();
     state = task.wait();

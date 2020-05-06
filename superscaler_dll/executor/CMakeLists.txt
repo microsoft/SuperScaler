@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 cmake_minimum_required(VERSION 3.5.0)
-project(async_comm)
+project(executor)
 
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 

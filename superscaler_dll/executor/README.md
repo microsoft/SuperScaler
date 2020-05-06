@@ -1,4 +1,4 @@
-# Asynchronous common lib
+# Executor lib
 
 This is a library providing asynchronous interface for message passing tasks.
 

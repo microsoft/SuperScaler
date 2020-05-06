@@ -7,7 +7,7 @@
 
 class Executor;
 
-enum class TaskState { e_uncommited, e_unfinished, e_success, e_failed };
+enum class TaskState { e_uncommitted, e_unfinished, e_success, e_failed };
 
 class Task : public std::enable_shared_from_this<Task> {
 public:

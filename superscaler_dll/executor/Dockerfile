@@ -8,8 +8,8 @@ RUN apt-get update \
     make \
     python
 
-WORKDIR /async_common_lib
-COPY . /async_common_lib
+WORKDIR /executor
+COPY . /executor
 RUN rm -rf build \
     && mkdir build \
     && cd build \
