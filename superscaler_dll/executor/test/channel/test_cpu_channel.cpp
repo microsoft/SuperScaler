@@ -75,7 +75,6 @@ TEST(CPUChannel, ReceiveOutBound)
         }
         condition.notify_all();
     } };
-    th.detach();
     {
         std::unique_lock<std::mutex> lock(mutex);
         auto wait_result =
@@ -83,6 +82,8 @@ TEST(CPUChannel, ReceiveOutBound)
         ASSERT_EQ(wait_result, std::cv_status::timeout);
         ASSERT_FALSE(success);
     }
+    channel.send("123", 3, 1, nullptr);
+    th.join();
 }
 
 TEST(CPUChannelDeathTest, InvalidSendBuffer)
