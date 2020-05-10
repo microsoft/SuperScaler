@@ -21,9 +21,16 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Run Test for AISimulator
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/ai_simulator/Dockerfile'
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Run Test for SuperScaler Executor
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/superscaler_dll/executor/Dockerfile'
         tags: |
           $(tag)
