@@ -1,0 +1,14 @@
+node {
+  attr {
+    key: "T"
+    value {
+      list{
+        shape{
+          dim {
+            size: None
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+node {
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: 
+      }
+    }
+  }
+}

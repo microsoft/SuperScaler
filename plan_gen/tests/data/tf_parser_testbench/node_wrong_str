@@ -1,0 +1,8 @@
+node {
+  attr {
+    key: "test"
+    value {
+      s: 0
+    }
+  }
+}

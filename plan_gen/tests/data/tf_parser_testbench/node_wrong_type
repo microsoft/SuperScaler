@@ -1,0 +1,8 @@
+node {
+  attr {
+    key: "T"
+    value {
+      type: error
+    }
+  }
+}

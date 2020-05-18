@@ -1,0 +1,50 @@
+node {
+  name: "gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency_1_allreduce"
+  op: "_SCAllReduce"
+  input: "gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 5
+          }
+          dim {
+            size: 64
+          }
+          dim {
+            size: 64
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "num_devices"
+    value {
+      s: "2"
+    }
+  }
+  attr {
+    key: "reduction"
+    value {
+      s: "sum"
+    }
+  }
+  attr {
+    key: "tensor_name"
+    value {
+      s: "For_gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency_1"
+    }
+  }
+}
