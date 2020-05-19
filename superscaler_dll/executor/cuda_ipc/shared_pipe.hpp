@@ -2,6 +2,8 @@
 
 #include "shared_table.hpp"
 
+constexpr size_t PIPE_BUFFER_SIZE = 512 * 1024 * 1024; // 512MB
+
 struct PipeData {
     volatile size_t m_start;
     volatile size_t m_end;
@@ -12,11 +14,13 @@ public:
     SharedPipe(
         const std::string & unique_name
         , size_t device_count
+        , size_t pipe_size = PIPE_BUFFER_SIZE
     );
     SharedPipe(
         const std::string & unique_name
         , size_t device_count
         , const std::vector<int> & devices
+        , size_t pipe_size = PIPE_BUFFER_SIZE
     );
 
     size_t write(const void * data, size_t size, int device);

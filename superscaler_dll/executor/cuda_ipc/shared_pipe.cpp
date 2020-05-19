@@ -1,11 +1,5 @@
 #include "shared_pipe.hpp"
 
-#ifndef TEST
-constexpr size_t PIPE_BUFFER_SIZE = 512 * 1024 * 1024; // 512MB
-#else
-constexpr size_t PIPE_BUFFER_SIZE = 1 * 1024; // 1KB
-#endif
-
 size_t SharedPipe::get_available_size(size_t start, size_t end, size_t buffer_size) {
     if (end >= start) {
         return end - start;
@@ -20,16 +14,18 @@ size_t SharedPipe::get_rest_size(size_t start, size_t end, size_t buffer_size) {
 
 SharedPipe::SharedPipe(
     const std::string & unique_name
-    , size_t device_count) 
-: SharedTable<PipeData>(unique_name, PIPE_BUFFER_SIZE, device_count) {
+    , size_t device_count
+    , size_t pipe_size) 
+: SharedTable<PipeData>(unique_name, pipe_size, device_count) {
 }
 
 SharedPipe::SharedPipe(
     const std::string & unique_name
     , size_t device_count
     , const std::vector<int> & devices
+    , size_t pipe_size
 ) 
-: SharedTable<PipeData>(unique_name, PIPE_BUFFER_SIZE, device_count, devices) {
+: SharedTable<PipeData>(unique_name, pipe_size, device_count, devices) {
 }
 
 size_t SharedPipe::write(const void * data, size_t size, int device) {
