@@ -163,6 +163,16 @@ SharedTable<SharedBlockMetadata>::SharedTable(
             );
         }
     }
+    size_t gpu_count = m_shared_blocks.size();
+    if(device_count > gpu_count){
+        throw std::invalid_argument(
+            std::string()
+            + "CUDA device count (" + std::to_string(gpu_count)
+            + ") is less than the target device count (" + std::to_string(device_count)
+            +") at "
+            + __FUNCTION_NAME__
+        );
+    }
     size_t available_device = 0;
     while (available_device < device_count) {
         available_device = 0;
@@ -256,6 +266,10 @@ void * SharedTable<SharedBlockMetadata>::get_buffer(int device) {
 
 template<typename SharedBlockMetadata>
 SharedBlockMetadata & SharedTable<SharedBlockMetadata>::get_shared_block_metadata(int device) {
+    if (static_cast<unsigned int>(device) >= m_shared_blocks.size()) {
+        // Device number is out of range
+        throw std::invalid_argument(std::string() + "The device number is out of range at " + __FUNCTION_NAME__);
+    }
     if (!m_shared_blocks[device]) {
         add_device(device);
     }

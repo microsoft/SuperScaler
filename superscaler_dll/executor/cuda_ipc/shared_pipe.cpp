@@ -112,5 +112,6 @@ size_t SharedPipe::transfer(void * dst, const void * src, size_t size, int devic
     checkCudaErrors(cudaStreamCreate(&stream));
     checkCudaErrors(cudaMemcpyAsync(dst, src, size, cudaMemcpyDefault, stream));
     checkCudaErrors(cudaStreamSynchronize(stream));
+    checkCudaErrors(cudaStreamDestroy(stream));
     return size;
 }
