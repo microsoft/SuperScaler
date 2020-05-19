@@ -34,12 +34,11 @@ class TFParser(DAGParser):
     def parse_graphs(self, graph_paths, devices):
         '''
         Parse all nodes from tensorflow DAG.
-        Return the plan that contains all parsed nodes as a list
+        Return the node_list that contains all parsed nodes
         graph_paths: path to tensorflow DAG
         devices: virtual device_id
         '''
-        plan = {}
-        plan["node_list"] = []
+        node_list = []
 
         if len(graph_paths) != len(devices):
             raise ValueError("Devices count %s is not same as graph count %s" % (
@@ -54,26 +53,25 @@ class TFParser(DAGParser):
                 attrs['input'] = node.input
                 attrs['device'] = device_id
                 attrs['name'] = node.name
-                plan["node_list"].append(attrs)
+                node_list.append(attrs)
 
         #return self.__plan
-        filtered_plan = self.__filter_plan(plan)
-        return filtered_plan
+        filtered_node_list = self.__filter_node_list(node_list)
+        return filtered_node_list
 
-    def __filter_plan(self, plan):
+    def __filter_node_list(self, node_list):
         '''
-        Filter all nodes in plan
-        Return the filtered plan
+        Filter all nodes in node_list
+        Return the filtered node_list
         '''
-        filtered_plan = {}
-        filtered_plan["node_list"] = []
+        filtered_node_list = []
 
-        for node in plan["node_list"]:
-            filtered_plan["node_list"].append(self.__filter_node(node))
+        for node in node_list:
+            filtered_node_list.append(self.__filter_node(node))
 
-        self.__unify_dependency(filtered_plan["node_list"])
+        self.__unify_dependency(filtered_node_list)
         
-        return filtered_plan
+        return filtered_node_list
 
     def __filter_node(self, node):
         '''
@@ -386,3 +384,4 @@ class TFNodeAttrParser():
         shape = self.__parse_shape_attr(raw_tensor_value.tensor_shape)
         value.append(shape)
         return value
+

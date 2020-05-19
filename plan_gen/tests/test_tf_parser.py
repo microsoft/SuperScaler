@@ -98,7 +98,7 @@ def test_TFParser():
         devices = get_device(2)
         graph_paths = get_graph_paths("data/DataParallelismPlan2GPUsIn2Hosts", 3)
         parser = TFParser()
-        plans = parser.parse_graphs(graph_paths, devices)
+        plan = parser.parse_graphs(graph_paths, devices)
 
     with pytest.raises(Exception):
         "Test benchmark using 3 devices and 2 graphs, raise Exception"
@@ -106,7 +106,7 @@ def test_TFParser():
         devices = get_device(3)
         graph_paths = get_graph_paths("data/DataParallelismPlan2GPUsIn2Hosts", 2)
         parser = TFParser()
-        plans = parser.parse_graphs(graph_paths, devices)
+        plan = parser.parse_graphs(graph_paths, devices)
 
     "Test benchmark using 2 devices and 2 graphs, pass pytest"
     device_count = 2
@@ -114,10 +114,8 @@ def test_TFParser():
     devices = get_device(device_count)
     graph_paths = get_graph_paths("data/DataParallelismPlan2GPUsIn2Hosts", device_count)
     parser = TFParser()
-    plans = parser.parse_graphs(graph_paths, devices)
-
+    plan = parser.parse_graphs(graph_paths, devices)
 
     ref_path = os.path.join( os.path.join(os.path.dirname(__file__),"data/DataParallelismPlan2GPUsIn2Hosts"), "Nodes.json")
-    ref_plans = json.load(open(ref_path, "r"))
-    assert(plans == ref_plans)
-
+    ref_plan = json.load(open(ref_path, "r"))
+    assert(plan == ref_plan)
