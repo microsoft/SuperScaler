@@ -4,14 +4,17 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(executor)
 
+find_package(CUDA)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
+
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 
-# Generate parser
 # Include directories
 set(INCLUDE_DIRS
     ${INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/channel
 )
+
 include_directories(${INCLUDE_DIRS})
 
 # Get number of processors
@@ -26,6 +29,7 @@ endif()
 set(LINK_DIRS
 )
 link_directories(${LINK_DIRS})
+
 set(LIBRARIES
     ${LIBRARIES}
 )
@@ -33,6 +37,7 @@ set(LIBRARIES
 # SRC
 file(GLOB CPP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 set(SOURCES
+    ${SOURCES}
     ${CPP_SOURCES}
 )
 
@@ -62,8 +67,6 @@ if(NOT DEFINED TEST_WORKERS)
 endif()
 message(STATUS "REPEAT_TIMES = ${REPEAT_TIMES}")
 message(STATUS "TEST_WORKERS = ${TEST_WORKERS}")
-
-
 
 if(${DO_TEST})
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
