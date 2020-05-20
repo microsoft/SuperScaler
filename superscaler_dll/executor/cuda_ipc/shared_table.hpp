@@ -236,9 +236,15 @@ bool SharedTable<SharedBlockMetadata>::add_device(int device, void * buffer) {
     for (size_t i = 0; i < m_shared_blocks.size(); i++) {
         if (i != static_cast<unsigned int>(device) && m_shared_blocks[i]) {
             checkCudaErrors(cudaSetDevice(device));
-            checkCudaErrors(cudaDeviceEnablePeerAccess(i, 0));
+            // Cannot enable an enabled device, check it first
+            int access_ability;
+            checkCudaErrors(cudaDeviceCanAccessPeer(&access_ability, device, i));
+            if(!access_ability)
+                checkCudaErrors(cudaDeviceEnablePeerAccess(i, 0));
             checkCudaErrors(cudaSetDevice(i));
-            checkCudaErrors(cudaDeviceEnablePeerAccess(device, 0));
+            checkCudaErrors(cudaDeviceCanAccessPeer(&access_ability, i, device));
+            if(!access_ability)
+                checkCudaErrors(cudaDeviceEnablePeerAccess(device, 0));
         }
     }
     checkCudaErrors(cudaSetDevice(current_device));
