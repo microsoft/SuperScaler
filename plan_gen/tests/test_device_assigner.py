@@ -8,7 +8,7 @@ def test_gpu_round_robin_assign():
     rp = pickle.load(open("tests/data/resource_pool.data", "rb"))
     assigner = device_assigner.GPURoundRobin(rp)
     target_gpu_count = 4
-    running_graphs = [ {"Test" : "Graph"} for i in range(target_gpu_count) ]
+    running_graphs = [{"Test": "Graph"} for i in range(target_gpu_count)]
     for graph in running_graphs:
         assigner.add_graph(graph)
     gpus = set()

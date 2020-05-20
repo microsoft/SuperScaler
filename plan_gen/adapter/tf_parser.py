@@ -1,9 +1,9 @@
-import abc
 import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format
-from enum import Enum
+
 from adapter.DAG_parser import DAGParser
+
 
 class ParserError(Exception):
     """Exception raised for errors in the input.
@@ -16,6 +16,7 @@ class ParserError(Exception):
     def __init__(self, expression):
         self.expression = expression
 
+
 '''
 Plan nodelist def:
     device <string>
@@ -26,11 +27,12 @@ Plan nodelist def:
     T <int>
 '''
 
+
 class TFParser(DAGParser):
     def __init__(self):
         super().__init__("TFParser")
         self.__NodeAttrParser = TFNodeAttrParser()
-    
+
     def parse_graphs(self, graph_paths, devices):
         '''
         Parse all nodes from tensorflow DAG.
@@ -41,9 +43,10 @@ class TFParser(DAGParser):
         node_list = []
 
         if len(graph_paths) != len(devices):
-            raise ValueError("Devices count %s is not same as graph count %s" % (
-                                len(devices),
-                                len(graph_paths)))
+            raise ValueError("Devices count %s is not same as graph count %s"
+                             % (
+                                 len(devices),
+                                 len(graph_paths)))
 
         for graph_path, device_id in zip(graph_paths, devices):
             graph = self.__load_protobuf_from_file(graph_path)
@@ -55,7 +58,7 @@ class TFParser(DAGParser):
                 attrs['name'] = node.name
                 node_list.append(attrs)
 
-        #return self.__plan
+        # return self.__plan
         filtered_node_list = self.__filter_node_list(node_list)
         return filtered_node_list
 
@@ -70,7 +73,7 @@ class TFParser(DAGParser):
             filtered_node_list.append(self.__filter_node(node))
 
         self.__unify_dependency(filtered_node_list)
-        
+
         return filtered_node_list
 
     def __filter_node(self, node):
@@ -97,7 +100,7 @@ class TFParser(DAGParser):
             filtered_node['tensor_type'] = node['T']
         if 'input' in node:
             filtered_node['input'] = node['input']
-        
+
         return filtered_node
 
     @staticmethod
@@ -109,9 +112,9 @@ class TFParser(DAGParser):
         for node in node_list:
             inputs = []
             for input_str in node['input']:
-                #remove ^ character in the begining
-                input_str = input_str.replace('^','')
-                #remove :1 in the end
+                # remove ^ character in the begining
+                input_str = input_str.replace('^', '')
+                # remove :1 in the end
                 if ':' in input_str:
                     input_str = input_str[0:input_str.index(':')]
                 inputs.append(input_str)
@@ -128,11 +131,12 @@ class TFParser(DAGParser):
         with open(filename, 'r') as f:
             file_content = f.read()
             try:
-                graph_def = text_format.Parse(file_content, tf.compat.v1.GraphDef())
+                graph_def = text_format.Parse(
+                    file_content, tf.compat.v1.GraphDef())
                 return graph_def
             except text_format.ParseError as e:
-                raise ParserError("Cannot parse file %s: %s." 
-                                % (filename, str(e)))
+                raise ParserError("Cannot parse file %s: %s."
+                                  % (filename, str(e)))
         return graph_def
 
     @staticmethod
@@ -151,6 +155,7 @@ class TFParser(DAGParser):
         else:
             return op
 
+
 '''
 Node Message def:
     name <string>
@@ -167,9 +172,10 @@ AttrValue Message def:
         f <float>
         b <bool> // trans into 1/0
         type <DataType> // DataType is a enum Message, trans into integer
-        shape <TensorShapeProto> // trans into list of int, expand all shape to 4-d
+        shape <TensorShapeProto> // trans into list of int,
+                                 // expand all shape to 4-d
         tensor <TensorProto>
-        list <ListValue> // trans into list of object 
+        list <ListValue> // trans into list of object
         func <NameAttrList> // trans into list of object, ignore
         placeholder <string> // ignore
 
@@ -178,7 +184,8 @@ TensorShapeProto Message def:
         size <int64>
         name <string> // optimal member, ignore
     dim <repeated><Dim>
-    unknown_rank <bool> // if true, dimensions are unknown, trans into [1,1,1,1]
+    unknown_rank <bool> // if true, dimensions are unknown,
+                        // trans into [1,1,1,1]
 
 TensorProto Message def:
     dtype <DataType>
@@ -235,8 +242,9 @@ class DataType(Enum):
     DT_UINT64 = 23
 '''
 
+
 class TFNodeAttrParser():
-    
+
     def parse_node(self, node, in_str_format=False):
         '''
         Parse all attributes for a node.
@@ -246,22 +254,24 @@ class TFNodeAttrParser():
 
         if not isinstance(node, node_def_pb2.NodeDef):
             raise ParserError(
-                'Node initialization failure for wrong input foramt: %s' % str(type(node)))   
+                'Node initialization failure for wrong input foramt: %s' %
+                str(type(node)))
 
         attrs = {}
         if not hasattr(node, 'attr'):
             raise ParserError("Faild to find attr from node")
         for attr_name in node.attr:
-            attr_value = self.__parse_attr_value(node.attr[attr_name], 
-                                in_str_format=in_str_format)
+            attr_value = self.__parse_attr_value(node.attr[attr_name],
+                                                 in_str_format=in_str_format)
             attrs[attr_name] = attr_value
 
         return attrs
 
-    def __parse_attr_value(self, raw_attr_value, in_str_format=False, value_list=False):
+    def __parse_attr_value(self, raw_attr_value, in_str_format=False,
+                           value_list=False):
         '''
         Parse all attribute value.
-        For attr_value Message class, should use HasField() to check the 
+        For attr_value Message class, should use HasField() to check the
         existance of an attribute.
         raw_attr_value: original attribute value object
         in_str_format:  If True, parse into string forat for database key.
@@ -269,7 +279,7 @@ class TFNodeAttrParser():
         value_list:  If True, treat raw_attr_value as a list.
                      If False, treat raw_attr_value as a attr.
         '''
-        if value_list == True:
+        if value_list is True:
             value = []
         else:
             value = None
@@ -282,76 +292,77 @@ class TFNodeAttrParser():
             fields_name.append(name)
 
         if 's' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.s:
                     str_value = itr
-                    if type(itr) == type(b'bytes'):
+                    if isinstance(itr, bytes):
                         str_value = itr.decode()
                     value.append(str_value)
             else:
                 value = raw_attr_value.s
-                if type(value) == type(b'bytes'):
+                if isinstance(value, bytes):
                     value = value.decode()
         elif 'i' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.i:
                     value.append(itr)
             else:
                 value = raw_attr_value.i
         elif 'f' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.f:
                     value.append(itr)
             else:
                 value = raw_attr_value.f
         elif 'b' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.b:
-                    if itr == True:
+                    if itr is True:
                         value.append(1)
                     else:
                         value.append(0)
             else:
-                if raw_attr_value.b == True:
+                if raw_attr_value.b is True:
                     value = 1
                 else:
                     value = 0
         elif 'type' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.type:
                     value.append(itr)
             else:
                 value = raw_attr_value.type
         elif 'shape' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.shape:
                     value.append(self.__parse_shape_attr(itr))
             else:
                 value = self.__parse_shape_attr(raw_attr_value.shape)
         elif 'tensor' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.tensor:
                     value.append(self.__parse_tensor_attr(itr))
             else:
                 value = self.__parse_tensor_attr(raw_attr_value.tensor)
         elif 'list' in fields_name:
-            if value_list == True:
+            if value_list is True:
                 for itr in raw_attr_value.list:
                     value.append(self.__parse_attr_value(itr), value_list=True)
             else:
-                value = self.__parse_attr_value(raw_attr_value.list, value_list = True)
+                value = self.__parse_attr_value(
+                    raw_attr_value.list, value_list=True)
 
         # Ignore func and placeholder feature
-        if value_list == True:
-            if in_str_format == True and len(value) > 0:
+        if value_list is True:
+            if in_str_format is True and len(value) > 0:
                 for i in range(len(value)):
                     value[i] = str(value[i])
         else:
-            if in_str_format == True and value != None:
+            if in_str_format is True and value is not None:
                 value = str(value)
-        
-        return value 
-    
+
+        return value
+
     def __parse_shape_attr(self, raw_shape_value):
         '''
         Parse the Shape message. Return a list of int.
@@ -368,7 +379,7 @@ class TFNodeAttrParser():
 
     def __parse_tensor_attr(self, raw_tensor_value):
         '''
-        Parse the Tensor massage. 
+        Parse the Tensor massage.
         Return value: [<dtype>, [<int list of shape>]]
         raw_tensor_value: the tensor message object
         '''
@@ -380,8 +391,7 @@ class TFNodeAttrParser():
                 break
         if not value:
             return None
-            
+
         shape = self.__parse_shape_attr(raw_tensor_value.tensor_shape)
         value.append(shape)
         return value
-

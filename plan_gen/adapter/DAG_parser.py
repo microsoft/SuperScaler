@@ -4,4 +4,3 @@ class DAGParser():
 
     def get_parser_type(self):
         return self.type
-

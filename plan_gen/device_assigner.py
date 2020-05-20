@@ -12,7 +12,7 @@ class DeviceAssigner(abc.ABC):
         self.resource_pool = resource_pool
         self.graphs = []
 
-    def add_graph(self, running_graph, init_graph = None):
+    def add_graph(self, running_graph, init_graph=None):
         self.graphs.append((running_graph, init_graph))
 
     @abc.abstractmethod
@@ -35,14 +35,13 @@ class GPURoundRobin(DeviceAssigner):
             return None
         if len(self.gpus) < len(self.graphs):
             raise ValueError("GPU count %s is less than graph count %s" % (
-                                len(self.gpus),
-                                len(self.graphs)))
+                len(self.gpus),
+                len(self.graphs)))
         if len(self.gpus) < 1:
             raise ValueError("Resource Pool is empty")
         for i in range(len(self.graphs)):
             if id(graph) in (id(i) for i in self.graphs[i]):
                 return self.gpus[i]
         raise ValueError("Graph %s isn't registered in graph set %s" % (
-                            str(graph),
-                            str(self.graphs)))
-        
+            str(graph),
+            str(self.graphs)))

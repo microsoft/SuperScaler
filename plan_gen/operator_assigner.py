@@ -4,7 +4,6 @@ Operator Assigner
 
 
 import abc
-import resource
 
 
 class Operator(object):
@@ -23,12 +22,12 @@ class Operator(object):
 
     def dump(self):
         return {
-            "name" : self.name,
-            "type" : self.type,
-            "tensor" : self.tensor,
-            "endpoints" : self.endpoints
+            "name": self.name,
+            "type": self.type,
+            "tensor": self.tensor,
+            "endpoints": self.endpoints
         }
-    
+
 
 class Operator2P2Communication(Operator):
     def __init__(self, op, graph_id, device):
@@ -38,7 +37,8 @@ class Operator2P2Communication(Operator):
     def assign(self, peer_operators):
         if len(peer_operators) != 2 or self not in peer_operators:
             raise ValueError("%s is not met requirement" % (peer_operators,))
-        peer_operator = peer_operators[1] if peer_operators[0] is self else peer_operators[0]
+        peer_operator = peer_operators[1] if peer_operators[0] is self \
+            else peer_operators[0]
         if self.device.host == peer_operator.device.host:
             self.type = "PCIE"
         else:
@@ -75,7 +75,7 @@ class OperatorManager(object):
     operator_factory = {
         "_screcv": OperatorReceive,
         "_scsend": OperatorSend,
-        "_scallreduce" : OperatorAllReduce,
+        "_scallreduce": OperatorAllReduce,
     }
 
     def __init__(self):
@@ -86,7 +86,7 @@ class OperatorManager(object):
         op_name = op.name.lower()
         if op_name not in OperatorManager.operator_factory:
             return
-        
+
         # op.tensor is the unique key to identify a group of op
         # Group these ops according to the tensor name
         if op.tensor not in self.op_groups:
@@ -108,4 +108,3 @@ class OperatorManager(object):
                     continue
                 op.assign(op_group)
                 self.assigned_ops.add(op)
-

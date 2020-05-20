@@ -8,7 +8,6 @@ import abc
 import yaml
 
 
-
 '''
 # Servers
 hostname1:
@@ -25,6 +24,8 @@ hostname1:
                     type: "PCIE"
         1:
 '''
+
+
 class ResourcePool(object):
     def __init__(self, path):
         self.metadata = yaml.load(open(path, "r"), Loader=yaml.FullLoader)
@@ -43,21 +44,23 @@ class ResourcePool(object):
             self.__create_server(hostname, server)
         # for _, cluster in self.metadata.items():
         #     self.create_cluster(cluster)
-    
+
     # def create_cluster(self, cluster_metadata):
     #     for hostname, server in cluster_metadata.items():
     #         self.__create_server(hostname, server)
 
     def __create_server(self, hostname, server_metadata):
         server = Server(hostname)
-        for device_id, device_metadata in server_metadata.get("CPU", {}).items():
+        for device_id, device_metadata in \
+                server_metadata.get("CPU", {}).items():
             cpu = CPU(device_id)
             server.add_cpu(cpu)
             if not device_metadata:
                 server_metadata["CPU"][device_id] = {}
                 device_metadata = server_metadata["CPU"][device_id]
             self.__create_device(cpu, device_metadata)
-        for device_id, device_metadata in server_metadata.get("GPU", {}).items():
+        for device_id, device_metadata in \
+                server_metadata.get("GPU", {}).items():
             gpu = GPU(device_id)
             server.add_gpu(gpu)
             if not device_metadata:
@@ -86,7 +89,7 @@ class ResourcePool(object):
                 })
             for link in device.metadata["links"]:
                 self.__create_link(device, link)
-    
+
     def __create_link(self, device, link_metadata):
         if len(link_metadata) != 1:
             raise ValueError("Error link format")
@@ -127,7 +130,7 @@ class Server(Resource):
 
     def get_id(self):
         return self.hostname
-    
+
     def __str__(self):
         return "hostname : %s\ncpus : %s\ngpus : %s\n" % \
             (self.hostname, str(self.cpus), str(self.gpus))
@@ -135,7 +138,7 @@ class Server(Resource):
 
 class Device(Resource):
     def __init__(self, device_id):
-        self.id  = device_id
+        self.id = device_id
         self.neighbors = {}
 
     def add_link(self, device, link):
@@ -178,7 +181,7 @@ class Link(Resource):
         self.device = device
         self.target_device = target_device
         self.device.add_link(self.target_device, self)
-    
+
     def get_id(self):
         return (self.device.get_id(), self.target_device.get_id())
 
