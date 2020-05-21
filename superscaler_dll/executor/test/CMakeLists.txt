@@ -13,6 +13,7 @@ get_directory_property(PARENT_DIRECTORY PARENT_DIRECTORY)
 set(TEST_INCLUDE_DIRS
     ${INCLUDE_DIRS}
     ${PARENT_DIRECTORY}
+    ${TEST_DIR}/utils
     ${TEST_INCLUDE_DIRS}
 )
 include_directories(${TEST_INCLUDE_DIRS})
@@ -23,11 +24,18 @@ set(TEST_LIBRARIES
     ${PROJECT_NAME}
 )
 
+if(CUDA_FOUND)
+    file(GLOB TEST_CUDA_IPC_SOURCES ${TEST_DIR}/cuda_ipc/*.cpp)
+endif()
+
 file(GLOB TEST_MAIN_SOURCES ${TEST_DIR}/*.cpp)
 file(GLOB TEST_CHANNEL_SOURCES ${TEST_DIR}/channel/*.cpp)
+file(GLOB TEST_UTILS_SOURCES ${TEST_DIR}/utils/*.cpp)
 
 set(TEST_SOURCES
+    ${TEST_CUDA_IPC_SOURCES}
     ${TEST_CHANNEL_SOURCES}
+    ${TEST_UTILS_SOURCES}
     ${TEST_MAIN_SOURCES})
 
 add_executable(${TEST_PROJECT} ${TEST_SOURCES})

@@ -64,7 +64,14 @@ endif()
 if(NOT DEFINED TEST_WORKERS)
     set(TEST_WORKERS 
         ${CPU_NUM})
+    # Too much test workers will lead to OOM and test failed,
+    # because cuda context takes a lot of memory
+    if(TEST_WORKERS GREATER 32)
+        set(TEST_WORKERS 32)
+    endif()
 endif()
+
+
 message(STATUS "REPEAT_TIMES = ${REPEAT_TIMES}")
 message(STATUS "TEST_WORKERS = ${TEST_WORKERS}")
 
