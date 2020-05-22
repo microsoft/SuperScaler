@@ -1,8 +1,8 @@
 class Plan(object):
 
-    def __init__(self, plan_name="Default_Plan"):
+    def __init__(self, plan_type="Default", plan_name="Default_Plan"):
         # The type of plan
-        self.plan_type = "Default"
+        self.plan_type = plan_type
         # The name of plan
         self.plan_name = plan_name
 
