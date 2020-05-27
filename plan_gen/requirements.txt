@@ -3,3 +3,4 @@ protobuf==3.8
 setuptools==41.0.0
 PyYAML==5.1.2
 pytest==5.3.2
+humanreadable==0.1.0
