@@ -44,7 +44,7 @@ TEST(Worker, RandomAddTask)
 {
     Worker w;
     size_t counter = 0;
-    size_t target = 1024;
+    size_t target = 256;
     std::vector<std::thread> threads;
     for (size_t i = 0; i < target; ++i) {
         threads.push_back(std::thread([&counter, &w] {
