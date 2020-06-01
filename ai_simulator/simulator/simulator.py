@@ -15,18 +15,21 @@ Defined in node_define.py
 
 from .node import NodeMetadata
 from .node import Node
+from .device import Device
+from .device_factory import DeviceFactory
 
 
 RET_SIMULATION_FINISH = -1
 
 
 class Simulator():
-    def __init__(self, nodemetadata_list, device_list):
+    def __init__(self, nodemetadata_list, device_info):
         '''Init Simulator with nodemetadata namedtuples and a device list
 
         Args:
             nodemetadata_list: a list of namedtuple, storing nodemetadata
-            device_list: a list of Device, storing all device needed
+            device_info: a list of tuple (device_type, spec_list) containing
+                device info, or a list of class Device, storing all Device
         '''
         # List of NodeMetadata. All nodes in the graph
         self.__nodes_metadata = []
@@ -57,15 +60,15 @@ class Simulator():
             self.__nodes_metadata.append(metadata)
 
         # Init devices list
-        for device in device_list:
-            self.__devices[device.name()] = device
-        # Check the coherence of nodemetadata_list and device_list
+        self.__init_device(device_info)
+
+        # Check the coherence of nodemetadata_list and device_info
         for node_metadata in self.__nodes_metadata:
             device_name = node_metadata.device_name
             if device_name not in self.__devices:
                 raise TypeError(
-                        device_name + " in nodemetadata_list doesn't exist on"
-                        + " device_list")
+                    device_name + " in nodemetadata_list doesn't exist on"
+                    + " device_info")
             new_node = Node(node_metadata, self.__devices[device_name])
             self.__nodes.append(new_node)
 
@@ -156,3 +159,22 @@ class Simulator():
     def get_nodes(self):
         '''Get the all nodes'''
         return self.__nodes
+
+    def __init_device(self, device_info):
+        '''Init self.__devices via device_info
+        '''
+        if not isinstance(device_info, list):
+            raise ValueError("Input device_info should be a list.")
+        if isinstance(device_info[0], Device):
+            # device_info is a list of class Device
+            for device in device_info:
+                self.__devices[device.name()] = device
+        elif isinstance(device_info[0], tuple):
+            device_factory = DeviceFactory()
+            # device_info is a list of (type, spec) tuple
+            for device_type, spec_list in device_info:
+                device = device_factory.generate_device(
+                    device_type, *spec_list)
+                self.__devices[device.name()] = device
+        else:
+            raise ValueError("Invalid input device_info parameter.")

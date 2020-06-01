@@ -2,6 +2,7 @@ from pprint import pprint
 from collections import namedtuple
 import os
 import json
+import pytest
 
 from simulator import Simulator
 from simulator.tensor import Tensor
@@ -87,19 +88,66 @@ def test_simulator():
         final_obj = node_obj._replace(output_tensors=tensor_list)
         node_list.append(final_obj)
 
+    # device_list incoherence, node_list needs 3 device:
+    # "/server/hostname1/CPU/0", "/server/hostname1/CPU/1" and
+    # "/server/hostname1/GPU/0". However, in wrong_device_list there are only
+    # 2 devices
+    wrong_device_list = [
+        GPU("/server/hostname1/GPU/0"),
+        CPU("/server/hostname1/CPU/0"),
+    ]
+    with pytest.raises(TypeError):
+        Simulator(node_list, wrong_device_list)
+    # device_list wrong format: device_info should not be a dict
+    wrong_device_info = {'GPU': GPU("/server/hostname1/GPU/0")}
+    with pytest.raises(ValueError):
+        Simulator(node_list, wrong_device_info)
+    # device_list wrong format: device_info should be a list of ***tuple***
+    wrong_device_info = [
+        {'GPU': ["/server/hostname1/GPU/0"]}
+    ]
+    with pytest.raises(ValueError):
+        Simulator(node_list, wrong_device_info)
+    # Test wrong device_type
+    wrong_device_list = [
+        ('WRONG_DEVICE_TYPE', ["/server/hostname1/GPU/0"])
+    ]
+    with pytest.raises(ValueError):
+        Simulator(node_list, wrong_device_list)
+
     device_list = [
         GPU("/server/hostname1/GPU/0"),
         CPU("/server/hostname1/CPU/0"),
         CPU("/server/hostname1/CPU/1")
     ]
-    # Call simulator
-    sim = Simulator(node_list, device_list)
-    timeuse, start_time, finish_time = sim.run()
-
+    sim = {}
+    timeuse = {}
+    start_time = {}
+    finish_time = {}
+    # Call simulator with class Device
+    sim['class_input'] = Simulator(node_list, device_list)
+    timeuse['class_input'], start_time['class_input'], \
+        finish_time['class_input'] = sim['class_input'].run()
     # To display the debug information, please use `python -m pytest -s`
-    pprint(start_time)
-    assert start_time == [(0, 0.0), (1, 1.0), (2, 1.0)]
-    pprint(finish_time)
-    assert finish_time == [(0, 1.0), (2, 2.0), (1, 3.0)]
-    pprint(timeuse)
-    assert timeuse == 3
+    pprint(start_time['class_input'])
+    pprint(finish_time['class_input'])
+    pprint(timeuse['class_input'])
+    assert start_time['class_input'] == [(0, 0.0), (1, 1.0), (2, 1.0)]
+    assert finish_time['class_input'] == [(0, 1.0), (2, 2.0), (1, 3.0)]
+    assert timeuse['class_input'] == 3
+
+    device_tuple_list = [
+        ('GPU', ["/server/hostname1/GPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/1"])
+    ]
+
+    # Call simulator with device tuple info
+    sim['param_input'] = Simulator(node_list, device_tuple_list)
+    timeuse['param_input'], start_time['param_input'], \
+        finish_time['param_input'] = sim['param_input'].run()
+    # The 'param_input' and 'class_input' denote the same devices, so
+    # the results should be the same
+    assert start_time['param_input'] == [(0, 0.0), (1, 1.0), (2, 1.0)]
+    assert finish_time['param_input'] == [(0, 1.0), (2, 2.0), (1, 3.0)]
+    assert timeuse['param_input'] == 3
