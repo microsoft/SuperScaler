@@ -1,0 +1,20 @@
+[
+    {
+        "device": "device_0",
+        "name": "test",
+        "op": "Allreduce",
+        "output_shapes": [[1, 100]],
+        "tensor_name": "test",
+        "tensor_type": 1,
+        "input": []
+    },
+    {
+        "device": "device_1",
+        "name": "test",
+        "op": "Allreduce",
+        "output_shapes": [[1, 100]],
+        "tensor_name": "test",
+        "tensor_type": 1,
+        "input": []
+    }
+]
