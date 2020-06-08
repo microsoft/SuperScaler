@@ -1,0 +1,218 @@
+[
+    {
+        "dependency_ids": [],
+        "device": "device_0",
+        "index": 0,
+        "input_ids": [],
+        "name": "test_Send_0",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "",
+        "related_id": 5,
+        "size": 50,
+        "successor_ids": [
+            1
+        ],
+        "target": "device_1",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [
+            4
+        ],
+        "device": "device_0",
+        "index": 1,
+        "input_ids": [
+            0
+        ],
+        "name": "test_Recv_1",
+        "offset": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "sum",
+        "related_id": 4,
+        "size": 50,
+        "successor_ids": [
+            2
+        ],
+        "target": "device_1",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [],
+        "device": "device_0",
+        "index": 2,
+        "input_ids": [
+            1
+        ],
+        "name": "test_Send_2",
+        "offset": 50,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "",
+        "related_id": 7,
+        "size": 50,
+        "successor_ids": [
+            3
+        ],
+        "target": "device_1",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [
+            6
+        ],
+        "device": "device_0",
+        "index": 3,
+        "input_ids": [
+            2
+        ],
+        "name": "test_Recv_3",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "copy",
+        "related_id": 6,
+        "size": 50,
+        "successor_ids": [],
+        "target": "device_1",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [],
+        "device": "device_1",
+        "index": 4,
+        "input_ids": [],
+        "name": "test_Send_0",
+        "offset": 50,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "",
+        "related_id": 1,
+        "size": 50,
+        "successor_ids": [
+            5
+        ],
+        "target": "device_0",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [
+            0
+        ],
+        "device": "device_1",
+        "index": 5,
+        "input_ids": [
+            4
+        ],
+        "name": "test_Recv_1",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "sum",
+        "related_id": 0,
+        "size": 50,
+        "successor_ids": [
+            6
+        ],
+        "target": "device_0",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [],
+        "device": "device_1",
+        "index": 6,
+        "input_ids": [
+            5
+        ],
+        "name": "test_Send_2",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "",
+        "related_id": 3,
+        "size": 50,
+        "successor_ids": [
+            7
+        ],
+        "target": "device_0",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    },
+    {
+        "dependency_ids": [
+            2
+        ],
+        "device": "device_1",
+        "index": 7,
+        "input_ids": [
+            6
+        ],
+        "name": "test_Recv_3",
+        "offset": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "reduction": "copy",
+        "related_id": 2,
+        "size": 50,
+        "successor_ids": [],
+        "target": "device_0",
+        "tensor_name": "test",
+        "execution_time":0.0,
+        "tensor_type": 1
+    }
+]
