@@ -4,11 +4,14 @@ from resources.resource_pool import ResourcePool
 
 
 class PlanMapper(abc.ABC):
+    """ An mapper class maps nodes on actual devices
+    """
     def __init__(self, resource_pool):
+
         if not isinstance(resource_pool, ResourcePool):
-            raise ValueError("PlanMapper only accept ResourcePool input")
+            raise ValueError(
+                "Input resource_pool must be ResourcePool instance")
         self.__resource_pool = resource_pool
-        self.__plan = []
 
     @property
     def resource_pool(self):
@@ -20,8 +23,7 @@ class PlanMapper(abc.ABC):
 
 
 class GPURoundRobinMapper(PlanMapper):
-    """
-    assign device as GPURoundRobin
+    """ Assign device as GPURoundRobin
     """
     def __init__(self, resource_pool):
         super().__init__(resource_pool)
@@ -38,17 +40,17 @@ class GPURoundRobinMapper(PlanMapper):
                 return mapped_plan
 
     def __assign_device(self, plan):
-        ''' This function assign the virtual devices of plan
+        ''' This function assigns the virtual devices of plan
             as the real devices of resource_pool
         '''
-        # record all devices of plan
+        # Record all devices of plan
         devices = []
 
         for node in plan:
             if 'device' in node and node['device'] not in devices:
                 devices.append(node['device'])
 
-        # check whether the plan can be assigned into resource_pool
+        # Check whether the plan can be assigned into resource_pool
         if len(self.gpus) < 1:
             # Resource Pool is empty
             return False
@@ -56,7 +58,7 @@ class GPURoundRobinMapper(PlanMapper):
             # GPU count in resource_pool can't meet the requirement of plan
             return False
 
-        # assign_device by RoundRobin order
+        # Assign devices by RoundRobin order
         for node in plan:
             if 'device' in node:
                 gpu = self.gpus[devices.index(node['device'])]

@@ -3,7 +3,7 @@ import copy
 
 class Plan(object):
     """ An class that generate optimized plan from nodelist.
-        target for nodes whose op equal to plan_type
+        target for nodes whose ops equal to plan_type
     """
 
     def __init__(self,
@@ -30,13 +30,18 @@ class Plan(object):
         '''
         return self.__plan_name
 
+    def get_plan_info(self):
+        ''' Get the plan_type and plan_name attrs
+        '''
+        return self.get_plan_type(), self.get_plan_name()
+
     def reset_plan(self, node_list):
         ''' Set self.__plan from a node_list
         Args:
             node_list: list
         '''
-        if node_list is None:
-            self.__plan = []
+        if not isinstance(node_list, list):
+            self.__plan = None
         else:
             self.__plan = copy.deepcopy(node_list)
 
@@ -46,7 +51,9 @@ class Plan(object):
         return self._get_plan()
 
     def _add_node(self, node, index=None):
-        ''' add new node into plan
+        ''' Add new node into plan.
+            If the index is correct, insert node to where index is.
+            Otherwise, append node to the end of plan
         Args:
             node: dict
             index: int or None
@@ -57,22 +64,22 @@ class Plan(object):
             self.__plan.append(node)
 
     def _remove_node(self, node):
-        ''' remove node from plan
+        ''' Remove node from plan
         Args:
             node: dict
         '''
         if node in self.__plan:
             self.__plan.remove(node)
         else:
-            return
+            return None
 
     def _get_plan(self):
-        ''' get plan
+        ''' Get plan
         '''
         return self.__plan
 
     def _get_node_index(self, node):
-        ''' remove node from plan
+        ''' Get the index of a node
         Args:
             node: dict
         '''
@@ -81,15 +88,26 @@ class Plan(object):
         else:
             return None
 
+    def _get_node(self, index):
+        ''' Get node by index
+            If the index is correct, return the node of given index.
+            Otherwise, return None as a warning.
+        Args:
+            index: int
+        '''
+        if isinstance(index, int) and index >= 0 and index < len(self.__plan):
+            return self.__plan[index]
+        else:
+            return None
+
 
 class AllreducePlan(Plan):
-    """ An class that generate optimized plan from nodelist.
-        target for nodes with Allreduce op
+    """ An class that generates a optimized plan from nodelist.
+        Targeting for nodes with Allreduce op.
     """
 
     def __init__(self, plan_name):
-        ''' Init a plan with name,
-            and internal settings plan_type as Allreduce
+        ''' Init a plan with name and set plan_type as Allreduce internally
         Args:
             name: string, e.g. Allreduce_Plan
             type: string, e.g. Allreduce

@@ -10,10 +10,14 @@ class RingAllreducePlan(AllreducePlan):
     def generate_plan(self):
         '''
         Generating plan includes three step:
-        1. find all allreudce nodes as allreduce_node_list
+        1. Find all allreudce nodes as allreduce_node_list
         2. For a specific node, find its related nodes as endpoints
-        3. separate all allreduce node to ring allreduce nodes
+        3. Separate all allreduce node to ring allreduce nodes
         '''
+
+        # Check input plan
+        if not isinstance(self._get_plan(), list):
+            return None
 
         # record original node_list for plan generator
         node_list_ref = copy.deepcopy(self._get_plan())
@@ -21,14 +25,14 @@ class RingAllreducePlan(AllreducePlan):
         allreduce_node_list = self.find_all_allreduce_nodes(node_list_ref)
         for node in allreduce_node_list:
             endpoint = self.find_endpoints(node, node_list_ref)
-            self.separate_allreduce_node_to_ring_allreudce_nodes(node,
-                                                                 endpoint)
+            self.separate_allreduce_node(node,
+                                         endpoint)
 
         node_list_ref.clear()
         return self._get_plan()
 
     def find_all_allreduce_nodes(self, node_list):
-        ''' return a allreduce_node_list with allreduce op
+        ''' Return a allreduce_node_list with allreduce op
         Args:
             node_list: list, the input nodelist
         '''
@@ -39,7 +43,7 @@ class RingAllreducePlan(AllreducePlan):
         return allreduce_node_list
 
     def find_endpoints(self, node, node_list):
-        ''' return a endpoints where all nodes have same op and tensor_name
+        ''' Return a endpoints where all nodes have same op and tensor_name
         Args:
             node: dict, the node with allreduce op
             node_list: list, the input nodelist
@@ -51,18 +55,18 @@ class RingAllreducePlan(AllreducePlan):
                 endpoints.append(node_itr)
         return endpoints
 
-    def separate_allreduce_node_to_ring_allreudce_nodes(self, node, endpoint):
+    def separate_allreduce_node(self, node, endpoint):
         '''
         Separating allreduce node includes three step:
-        1. generate new primitives nodes of ring allreduce
-        2. insert primitives nodes into plan
-        3. remove original allreduce node from plan
+        1. Generate new primitives nodes of ring allreduce
+        2. Insert primitives nodes into plan
+        3. Remove the original allreduce node from plan
 
         Args:
             node: dict, the node with allreduce op
             endpoint: list, all node enrolled in the same allreduce operator
         '''
-        # all generated nodes are inserted into the index of orignal
+        # All generated nodes are inserted into the index of orignal
         # allreduce node in order
         node_index = self._get_node_index(node)
 
@@ -71,10 +75,10 @@ class RingAllreducePlan(AllreducePlan):
         for shape in node['output_shapes'][0]:
             numElements *= shape
 
-        # get node device
+        # Get node device
         device = node['device']
 
-        # get myRank and nRanks in ring allreduce
+        # Get myRank and nRanks in ring allreduce
         nRanks = len(endpoint)
         myRank = endpoint.index(node)
 
@@ -97,14 +101,14 @@ class RingAllreducePlan(AllreducePlan):
         sendIndex = myRank
         receiveIndex = (myRank + nRanks - 1) % nRanks
 
-        # the generated nodes id
+        # The generated nodes id
         prim_index = 0
 
-        # scatter-reduce: each gpu sends gradients to the next gpu,
+        # Scatter-reduce: each gpu sends gradients to the next gpu,
         # and receives gradients from the previous gpu in ring.
         # Finally each GPU will contain a part of reduced gradients
         for _ in range(nRanks - 1):
-            # generate sr_send_node
+            # Generate sr_send_node
             sendAddress = offsets[sendIndex]
             nelem = chunkSizes[sendIndex]
             sendIndex = (sendIndex + nRanks - 1) % nRanks
@@ -119,7 +123,7 @@ class RingAllreducePlan(AllreducePlan):
             self._add_node(sr_send_node, node_index + prim_index)
             prim_index += 1
 
-            # generate sr_recv_node
+            # Generate sr_recv_node
             receiveAddress = offsets[receiveIndex]
             nelem = chunkSizes[receiveIndex]
             receiveIndex = (receiveIndex + nRanks - 1) % nRanks
@@ -133,10 +137,10 @@ class RingAllreducePlan(AllreducePlan):
             self._add_node(sr_recv_node, node_index + prim_index)
             prim_index += 1
 
-        # allgather: GPUs will gather gradients from ring.
+        # Allgather: GPUs will gather gradients from ring.
         # Finally all GPUs will get reduced gradients
         for _ in range(nRanks - 1):
-            # generate ag_send_node
+            # Generate ag_send_node
             sendAddress = offsets[sendIndex]
             nelem = chunkSizes[sendIndex]
             sendIndex = (sendIndex + nRanks - 1) % nRanks
@@ -150,7 +154,7 @@ class RingAllreducePlan(AllreducePlan):
             self._add_node(ag_send_node, node_index + prim_index)
             prim_index += 1
 
-            # generate ag_recv_node
+            # Generate ag_recv_node
             receiveAddress = offsets[receiveIndex]
             nelem = chunkSizes[receiveIndex]
             receiveIndex = (receiveIndex + nRanks - 1) % nRanks
