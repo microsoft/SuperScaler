@@ -4,7 +4,7 @@ import pytest
 from resources.resource_pool import ResourcePool
 from plan.plan_mapper import GPURoundRobinMapper
 from plan.plan_pool import PlanPool
-from plan.ring_allreduce_plan import RingAllreducePlan
+from plan.plan import Plan
 from plan.plan_manager import PlanManager
 
 
@@ -24,8 +24,8 @@ def test_plan_manager():
     def Init_PlanPool():
         # Init PlanPool by resouce_pool
         pool = PlanPool()
-        ring = RingAllreducePlan(plan_name='ring')
-        pool.add_plan(ring)
+        plan_test = Plan(plan_type='Default', plan_name='Default_plan')
+        pool.add_plan(plan_test)
         return pool
 
     # Init PlanMapper and PlanPool
@@ -48,27 +48,27 @@ def test_plan_manager():
     # Test wrong input of get_execution_plan function
     # wrong node_list
     None_output = planmanager.get_execution_plan(node_list=None,
-                                                 plan_type='Allreduce',
-                                                 plan_name='ring')
+                                                 plan_type='Default',
+                                                 plan_name='Default_plan')
     assert(None_output is None)
 
     # wrong plan_type
     None_output = planmanager.get_execution_plan(node_list=plans,
                                                  plan_type='wrong_type',
-                                                 plan_name='ring')
+                                                 plan_name='Default_plan')
     assert(None_output is None)
 
     # wrong plan_name
     None_output = planmanager.get_execution_plan(node_list=plans,
-                                                 plan_type='Allreduce',
+                                                 plan_type='Default',
                                                  plan_name='wrong_name')
     assert(None_output is None)
 
-    # Get generated plan and compare
-    plan_ring = planmanager.get_execution_plan(node_list=plans,
-                                               plan_type='Allreduce',
-                                               plan_name='ring')
+    # Get execution plan and compare
+    plan_output = planmanager.get_execution_plan(plans,
+                                                 'Default',
+                                                 'Default_plan')
     output_path = os.path.join(
-        os.path.dirname(__file__), os.path.join(path, "ring.json"))
-    plan_ring_ref = json.load(open(output_path, "r"))
-    assert(plan_ring == plan_ring_ref)
+        os.path.dirname(__file__), os.path.join(path, "Default.json"))
+    plan_output_ref = json.load(open(output_path, "r"))
+    assert(plan_output == plan_output_ref)

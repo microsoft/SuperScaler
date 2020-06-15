@@ -457,89 +457,15 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1"
         ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "offset": 0,
-        "op": "Send",
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "op": "Allreduce",
         "output_shapes": [
             [
                 3072,
                 10
             ]
         ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "offset": 15360,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
         "reduction": "sum",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "offset": 15360,
-        "op": "Send",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "offset": 0,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "copy",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/1/",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
         "tensor_type": 1
     },
@@ -589,85 +515,14 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1"
         ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "offset": 0,
-        "op": "Send",
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "op": "Allreduce",
         "output_shapes": [
             [
                 10
             ]
         ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "size": 5,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "offset": 5,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
         "reduction": "sum",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "size": 5,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "offset": 5,
-        "op": "Send",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "size": 5,
-        "target": "/server/hostname1/GPU/1/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/0/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "offset": 0,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "copy",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "size": 5,
-        "target": "/server/hostname1/GPU/1/",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
         "tensor_type": 1
     },
@@ -1187,89 +1042,15 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1"
         ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "offset": 15360,
-        "op": "Send",
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "op": "Allreduce",
         "output_shapes": [
             [
                 3072,
                 10
             ]
         ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "offset": 0,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
         "reduction": "sum",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_1"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "offset": 0,
-        "op": "Send",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "offset": 15360,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                3072,
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "copy",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "size": 15360,
-        "target": "/server/hostname1/GPU/0/",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
         "tensor_type": 1
     },
@@ -1319,85 +1100,14 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1"
         ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "offset": 5,
-        "op": "Send",
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "op": "Allreduce",
         "output_shapes": [
             [
                 10
             ]
         ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "size": 5,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1",
-        "offset": 0,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
         "reduction": "sum",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_0",
-        "size": 5,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_1"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "offset": 0,
-        "op": "Send",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "size": 5,
-        "target": "/server/hostname1/GPU/0/",
-        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
-    },
-    {
-        "device": "/server/hostname1/GPU/1/",
-        "input": [
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-            "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2"
-        ],
-        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Recv_3",
-        "offset": 5,
-        "op": "Recv",
-        "output_shapes": [
-            [
-                10
-            ]
-        ],
-        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
-        "reduction": "copy",
-        "related_op": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_Send_2",
-        "size": 5,
-        "target": "/server/hostname1/GPU/0/",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
         "tensor_type": 1
     },
