@@ -99,18 +99,3 @@ class Plan(object):
             return self.__plan[index]
         else:
             return None
-
-
-class AllreducePlan(Plan):
-    """ An class that generates a optimized plan from nodelist.
-        Targeting for nodes with Allreduce op.
-    """
-
-    def __init__(self, plan_name):
-        ''' Init a plan with name and set plan_type as Allreduce internally
-        Args:
-            name: string, e.g. Allreduce_Plan
-            type: string, e.g. Allreduce
-        '''
-        super().__init__(plan_type="Allreduce",
-                         plan_name=plan_name)
