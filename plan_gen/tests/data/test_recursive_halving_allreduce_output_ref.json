@@ -1,0 +1,174 @@
+[
+    {
+        "device": "device_0",
+        "input": [],
+        "name": "test_scatter_send_0",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "",
+        "related_op": "test_scatter_recv_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_0",
+        "input": [
+            "test_scatter_send_0"
+        ],
+        "name": "test_scatter_recv_0",
+        "offset": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "sum",
+        "related_op": "test_scatter_send_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_0",
+        "input": [
+            "test_scatter_recv_0"
+        ],
+        "name": "test_allgather_send_0",
+        "offset": 50,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "",
+        "related_op": "test_allgather_recv_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_0",
+        "input": [
+            "test_allgather_send_0"
+        ],
+        "name": "test_allgather_recv_0",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "sum",
+        "related_op": "test_allgather_send_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_1",
+        "input": [],
+        "name": "test_scatter_send_0",
+        "offset": 50,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "",
+        "related_op": "test_scatter_recv_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_1",
+        "input": [
+            "test_scatter_send_0"
+        ],
+        "name": "test_scatter_recv_0",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "sum",
+        "related_op": "test_scatter_send_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_1",
+        "input": [
+            "test_scatter_recv_0"
+        ],
+        "name": "test_allgather_send_0",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "",
+        "related_op": "test_allgather_recv_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
+    },
+    {
+        "device": "device_1",
+        "input": [
+            "test_allgather_send_0"
+        ],
+        "name": "test_allgather_recv_0",
+        "offset": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
+        "reduction": "sum",
+        "related_op": "test_allgather_send_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
+    }
+]
