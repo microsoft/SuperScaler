@@ -19,7 +19,7 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             endpoint: list, all node enrolled in the same allreduce operator
         '''
         # all generated nodes are inserted into the location of node_index
-        # node_index increase by 1 when new node is generated
+        # node_index increase by 1 after any new node is generated
         node_index = self._get_node_index(node)
 
         # numElements of gradients
@@ -44,6 +44,7 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
 
         # input_name is the input_dependency_name for each node
         # input_name is initialized as None for the first generated node
+        # When a new node generated, the input_name is assigned by node_name
         input_name = None
 
         # Handling the last r gpus
@@ -52,11 +53,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             # Create a send node for reduce operator
             target = endpoint[myRank - allreduceRanks]['device']
             node_name = node['name'] + '_reduce_send'
-            related_name = node['name'] + '_reduce_recv'
+            target_name = node['name'] + '_reduce_recv'
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
-                                related_name=related_name,
+                                target_name=target_name,
                                 op='Send',
                                 reduction='',
                                 offset=0,
@@ -68,11 +69,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
 
             # Create a recv node for broadcast operator
             node_name = node['name'] + '_broadcast_recv'
-            related_name = node['name'] + '_broadcast_send'
+            target_name = node['name'] + '_broadcast_send'
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
-                                related_name=related_name,
+                                target_name=target_name,
                                 op='Recv',
                                 reduction='sum',
                                 offset=0,
@@ -88,11 +89,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 # Create a recv node for reduce operator
                 target = endpoint[myRank - allreduceRanks]['device']
                 node_name = node['name'] + '_reduce_recv'
-                related_name = node['name'] + '_reduce_send'
+                target_name = node['name'] + '_reduce_send'
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Recv',
                                     reduction='sum',
                                     offset=0,
@@ -130,11 +131,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 target = endpoint[targetRank]['device']
 
                 node_name = node['name'] + '_scatter_send_' + str(index)
-                related_name = node['name'] + '_scatter_recv_' + str(index)
+                target_name = node['name'] + '_scatter_recv_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Send',
                                     reduction='',
                                     offset=offsets[stepRank],
@@ -145,11 +146,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 node_index += 1
 
                 node_name = node['name'] + '_scatter_recv_' + str(index)
-                related_name = node['name'] + '_scatter_send_' + str(index)
+                target_name = node['name'] + '_scatter_send_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Recv',
                                     reduction='sum',
                                     offset=offsets[targetRank],
@@ -179,11 +180,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 target = endpoint[targetRank]['device']
 
                 node_name = node['name'] + '_allgather_send_' + str(index)
-                related_name = node['name'] + '_allgather_recv_' + str(index)
+                target_name = node['name'] + '_allgather_recv_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Send',
                                     reduction='',
                                     offset=offsets[targetRank],
@@ -194,11 +195,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 node_index += 1
 
                 node_name = node['name'] + '_allgather_recv_' + str(index)
-                related_name = node['name'] + '_allgather_send_' + str(index)
+                target_name = node['name'] + '_allgather_send_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Recv',
                                     reduction='sum',
                                     offset=offsets[stepRank],
@@ -212,11 +213,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             if myRank < nRanks - allreduceRanks:
                 # broadcast node on the send part
                 node_name = node['name'] + '_broadcast_send'
-                related_name = node['name'] + '_broadcast_recv'
+                target_name = node['name'] + '_broadcast_recv'
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
-                                    related_name=related_name,
+                                    target_name=target_name,
                                     op='Send',
                                     reduction='',
                                     offset=0,
@@ -227,50 +228,3 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 node_index += 1
 
         self._remove_node(node)
-
-    def _generate_node(self,
-                       node_index,
-                       node_name,
-                       input_name,
-                       related_name,
-                       op,
-                       reduction,
-                       offset,
-                       size,
-                       target,
-                       node_info):
-        ''' generate a node and insert it into plan
-        Args:
-            node_index: <int> insert generated to the index of plan
-            node_name: <str> the name of generated node
-            input_name: <str>/<None> the additional input dependency
-            related_name: <str> the related op name
-            op: <str> the op of node
-            reduction: <str> the reduction including "", "sum" and "recv"
-            offset: <int> the offset for comm operator
-            size: <int> the data_size for comm operator
-            target: <str> the target device
-            node_info: <dict> a dict with infomation for generated node
-        return:
-            generated_node: <dict>
-        '''
-        generated_node = {'name': node_name,
-                          'offset': offset,
-                          'size': size,
-                          'op': op,
-                          'reduction': reduction,
-                          'target': target,
-                          'related_op': related_name,
-                          'device': node_info['device'],
-                          'output_shapes': node_info['output_shapes'],
-                          'tensor_name': node_info['tensor_name'],
-                          'tensor_type': node_info['tensor_type'],
-                          'parent': node_info['name'],
-                          'input': node_info['input'].copy()}
-
-        if input_name is not None:
-            generated_node['input'].append(input_name)
-
-        self._add_node(generated_node, node_index)
-
-        return generated_node

@@ -26,9 +26,6 @@ class ReduceBroadcastAllreducePlan(AllreducePlan):
         for shape in node['output_shapes'][0]:
             numElements *= shape
 
-        # get node device
-        device = node['device']
-
         # get myRank and nRanks
         nRanks = len(endpoint)
         myRank = endpoint.index(node)
@@ -37,40 +34,52 @@ class ReduceBroadcastAllreducePlan(AllreducePlan):
         root_node = endpoint[0]
         is_root_node = True if node == root_node else False
 
+        # input_name is the input_dependency_name for each node
+        # input_name is initialized as None for the first generated node
+        # When a new node generated, the input_name is assigned by node_name
+        input_name = None
+
         # root gpu receives gradients from all non-root gpus for reducing,
         # then broadcasts reduced gradient to all non-root gpus
         if is_root_node is True:
 
-            # the generated nodes id
-            prim_index = 0
-
             # reduce: root gpu receives gradients from all non-root gpus
-            for i in range(1, nRanks):
-                non_root_node = endpoint[i]
+            for index in range(1, nRanks):
+                non_root_node = endpoint[index]
                 target = non_root_node['device']
-                self._generate_re_recv_node(node,
-                                            prim_index,
-                                            node_index,
-                                            myRank,
-                                            nRanks,
-                                            target,
-                                            numElements,
-                                            device)
-                prim_index += 1
+                node_name = node['name'] + '_reduce_recv' + str(index-1)
+                target_name = node['name'] + '_reduce_send' + str(index-1)
+                self._generate_node(node_index=node_index,
+                                    node_name=node_name,
+                                    input_name=input_name,
+                                    target_name=target_name,
+                                    op='Recv',
+                                    reduction='sum',
+                                    offset=0,
+                                    size=numElements,
+                                    target=target,
+                                    node_info=node)
+                input_name = node_name
+                node_index += 1
 
             # boradcast: root gpu sends gradients to all non-root gpus
-            for i in range(1, nRanks):
-                non_root_node = endpoint[i]
+            for index in range(1, nRanks):
+                non_root_node = endpoint[index]
                 target = non_root_node['device']
-                self._generate_bc_send_node(node,
-                                            prim_index,
-                                            node_index,
-                                            myRank,
-                                            nRanks,
-                                            target,
-                                            numElements,
-                                            device)
-                prim_index += 1
+                node_name = node['name'] + '_broadcast_send' + str(index-1)
+                target_name = node['name'] + '_broadcast_recv' + str(index-1)
+                self._generate_node(node_index=node_index,
+                                    node_name=node_name,
+                                    input_name=input_name,
+                                    target_name=target_name,
+                                    op='Send',
+                                    reduction='',
+                                    offset=0,
+                                    size=numElements,
+                                    target=target,
+                                    node_info=node)
+                input_name = node_name
+                node_index += 1
 
         # non-root gpus send orginal gradients to root gpus for reducing,
         # then receive reduced gradient from root gpu
@@ -79,153 +88,31 @@ class ReduceBroadcastAllreducePlan(AllreducePlan):
             target = root_node['device']
 
             # reduce: non-root gpu sends gradient to the root gpu
-            self._generate_re_send_node(node,
-                                        0,
-                                        node_index,
-                                        myRank,
-                                        nRanks,
-                                        target,
-                                        numElements,
-                                        device)
+            node_name = node['name'] + '_reduce_send' + str(myRank-1)
+            target_name = node['name'] + '_reduce_recv' + str(myRank-1)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Send',
+                                reduction='',
+                                offset=0,
+                                size=numElements,
+                                target=target,
+                                node_info=node)
 
             # boradcast: non-root gpu receives gradients from the root gpu
-            self._generate_bc_recv_node(node,
-                                        1,
-                                        node_index,
-                                        myRank,
-                                        nRanks,
-                                        target,
-                                        numElements,
-                                        device)
+            node_name = node['name'] + '_broadcast_recv' + str(myRank-1)
+            target_name = node['name'] + '_broadcast_send' + str(myRank-1)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Recv',
+                                reduction='copy',
+                                offset=0,
+                                size=numElements,
+                                target=target,
+                                node_info=node)
 
         self._remove_node(node)
-
-    def _generate_re_recv_node(self,
-                               node,
-                               index,
-                               node_index,
-                               myRank,
-                               nRanks,
-                               recvTarget,
-                               nelem,
-                               device):
-        ''' This function generates the recv node of reduce process
-        '''
-        node_name = node['name'] + '_Recv_' + str(index)
-        related_op = node['name'] + '_Send_' + str(0)
-        re_recv_node = {'name': node_name,
-                        'offset': 0,
-                        'size': nelem,
-                        'op': 'Recv',
-                        'reduction': 'sum',
-                        'target': recvTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The re_recv_node has own dependency on the previous node
-        if index != 0:
-            pre_node = self._get_node(node_index + index - 1)
-            pre_name = pre_node['name']
-            re_recv_node['input'].append(pre_name)
-        self._add_node(re_recv_node, node_index + index)
-
-    def _generate_re_send_node(self,
-                               node,
-                               index,
-                               node_index,
-                               myRank,
-                               nRanks,
-                               sendTarget,
-                               nelem,
-                               device):
-        ''' This function generates the send node of reduce process
-        '''
-        node_name = node['name'] + '_Send_' + str(index)
-        related_op = node['name'] + '_Recv_' + str(myRank - 1)
-        re_send_node = {'name': node_name,
-                        'offset': 0,
-                        'size': nelem,
-                        'op': 'Send',
-                        'reduction': '',
-                        'target': sendTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The re_send_node index should always be zero, no dependency
-        self._add_node(re_send_node, node_index + index)
-
-    def _generate_bc_send_node(self,
-                               node,
-                               index,
-                               node_index,
-                               myRank,
-                               nRanks,
-                               sendTarget,
-                               nelem,
-                               device):
-        ''' This function generates the send node of broadcast process
-        '''
-        node_name = node['name'] + '_Send_' + str(index)
-        related_op = node['name'] + '_Recv_' + str(1)
-        bc_send_node = {'name': node_name,
-                        'offset': 0,
-                        'size': nelem,
-                        'op': 'Send',
-                        'reduction': '',
-                        'target': sendTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The bc_send_node has own dependency on the previous node
-        if index != 0:
-            pre_node = self._get_node(node_index + index - 1)
-            pre_name = pre_node['name']
-            bc_send_node['input'].append(pre_name)
-        self._add_node(bc_send_node, node_index + index)
-
-    def _generate_bc_recv_node(self,
-                               node,
-                               index,
-                               node_index,
-                               myRank,
-                               nRanks,
-                               recvTarget,
-                               nelem,
-                               device):
-        ''' This function generates the recv node of broadcast process
-        '''
-        node_name = node['name'] + '_Recv_' + str(index)
-        related_op = node['name'] + '_Send_' + str(myRank - 1 + nRanks - 1)
-        bc_recv_node = {'name': node_name,
-                        'offset': 0,
-                        'size': nelem,
-                        'op': 'Recv',
-                        'reduction': 'copy',
-                        'target': recvTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The bc_recv_node has own dependency on the previous send node
-        pre = node['name'] + '_Send_' + str(0)
-        bc_recv_node['input'].append(pre)
-        self._add_node(bc_recv_node, node_index + index)

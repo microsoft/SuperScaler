@@ -26,12 +26,14 @@ class RingAllreducePlan(AllreducePlan):
         for shape in node['output_shapes'][0]:
             numElements *= shape
 
-        # Get node device
-        device = node['device']
-
         # Get myRank and nRanks in ring allreduce
         nRanks = len(endpoint)
         myRank = endpoint.index(node)
+
+        # input_name is the input_dependency_name for each node
+        # input_name is initialized as None for the first generated node
+        # When a new node generated, the input_name is assigned by node_name
+        input_name = None
 
         # sendTarget indicates the gpu of the next rank node
         # recvTarget indicates the gpu of the previous rank node
@@ -49,194 +51,79 @@ class RingAllreducePlan(AllreducePlan):
         sendIndex = myRank
         receiveIndex = (myRank + nRanks - 1) % nRanks
 
-        # The generated nodes id
-        prim_index = 0
-
         # Scatter-reduce: each gpu sends gradients to the next gpu,
         # and receives gradients from the previous gpu in ring.
         # Finally each GPU will contain a part of reduced gradients
-        for _ in range(nRanks - 1):
-            # Generate sr_send_node
-            sendAddress = offsets[sendIndex]
-            nelem = chunkSizes[sendIndex]
+        for index in range(nRanks - 1):
+            # Generate send node for scatter-reduce
+
+            node_name = node['name'] + '_scatter_send_' + str(index)
+            target_name = node['name'] + '_scatter_recv_' + str(index)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Send',
+                                reduction='',
+                                offset=offsets[sendIndex],
+                                size=chunkSizes[sendIndex],
+                                target=sendTarget,
+                                node_info=node)
+            input_name = node_name
+            node_index += 1
             sendIndex = (sendIndex + nRanks - 1) % nRanks
 
-            sr_send_node = self._generate_sr_send_node(node,
-                                                       prim_index,
-                                                       sendAddress,
-                                                       sendTarget,
-                                                       nelem,
-                                                       device)
-
-            self._add_node(sr_send_node, node_index + prim_index)
-            prim_index += 1
-
-            # Generate sr_recv_node
-            receiveAddress = offsets[receiveIndex]
-            nelem = chunkSizes[receiveIndex]
+            # Generate recv node for scatter-reduce
+            node_name = node['name'] + '_scatter_recv_' + str(index)
+            target_name = node['name'] + '_scatter_send_' + str(index)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Recv',
+                                reduction='sum',
+                                offset=offsets[receiveIndex],
+                                size=chunkSizes[receiveIndex],
+                                target=recvTarget,
+                                node_info=node)
+            input_name = node_name
+            node_index += 1
             receiveIndex = (receiveIndex + nRanks - 1) % nRanks
-
-            sr_recv_node = self._generate_sr_recv_node(node,
-                                                       prim_index,
-                                                       receiveAddress,
-                                                       recvTarget,
-                                                       nelem,
-                                                       device)
-            self._add_node(sr_recv_node, node_index + prim_index)
-            prim_index += 1
 
         # Allgather: GPUs will gather gradients from ring.
         # Finally all GPUs will get reduced gradients
-        for _ in range(nRanks - 1):
-            # Generate ag_send_node
-            sendAddress = offsets[sendIndex]
-            nelem = chunkSizes[sendIndex]
+        for index in range(nRanks - 1):
+            # Generate send node for allgather
+            node_name = node['name'] + '_allgather_send_' + str(index)
+            target_name = node['name'] + '_allgather_recv_' + str(index)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Send',
+                                reduction='',
+                                offset=offsets[sendIndex],
+                                size=chunkSizes[sendIndex],
+                                target=sendTarget,
+                                node_info=node)
+            input_name = node_name
+            node_index += 1
             sendIndex = (sendIndex + nRanks - 1) % nRanks
 
-            ag_send_node = self._generate_ag_send_node(node,
-                                                       prim_index,
-                                                       sendAddress,
-                                                       sendTarget,
-                                                       nelem,
-                                                       device)
-            self._add_node(ag_send_node, node_index + prim_index)
-            prim_index += 1
-
-            # Generate ag_recv_node
-            receiveAddress = offsets[receiveIndex]
-            nelem = chunkSizes[receiveIndex]
+            # Generate recv node for allgather
+            node_name = node['name'] + '_allgather_recv_' + str(index)
+            target_name = node['name'] + '_allgather_send_' + str(index)
+            self._generate_node(node_index=node_index,
+                                node_name=node_name,
+                                input_name=input_name,
+                                target_name=target_name,
+                                op='Recv',
+                                reduction='copy',
+                                offset=offsets[receiveIndex],
+                                size=chunkSizes[receiveIndex],
+                                target=recvTarget,
+                                node_info=node)
+            input_name = node_name
+            node_index += 1
             receiveIndex = (receiveIndex + nRanks - 1) % nRanks
-
-            ag_recv_node = self._generate_ag_recv_node(node,
-                                                       prim_index,
-                                                       receiveAddress,
-                                                       recvTarget,
-                                                       nelem,
-                                                       device)
-            self._add_node(ag_recv_node, node_index + prim_index)
-            prim_index += 1
         self._remove_node(node)
-
-    @staticmethod
-    def _generate_sr_send_node(node,
-                               index,
-                               sendAddress,
-                               sendTarget,
-                               nelem,
-                               device):
-        ''' This function generates the send node of scatter-reduce process
-        '''
-        node_name = node['name'] + '_Send_' + str(index)
-        related_op = node['name'] + '_Recv_' + str(index + 1)
-        sr_send_node = {'name': node_name,
-                        'offset': sendAddress,
-                        'size': nelem,
-                        'op': 'Send',
-                        'reduction': '',
-                        'target': sendTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The sr_send_node has own dependency on previous recv node
-        if index != 0:
-            pre = node['name'] + '_Recv_' + str(index - 1)
-            sr_send_node['input'].append(pre)
-        return sr_send_node
-
-    @staticmethod
-    def _generate_sr_recv_node(node,
-                               index,
-                               receiveAddress,
-                               recvTarget,
-                               nelem,
-                               device):
-        ''' This function generates the recv node of scatter-reduce process
-        '''
-        node_name = node['name'] + '_Recv_' + str(index)
-        related_op = node['name'] + '_Send_' + str(index - 1)
-        sr_recv_node = {'name': node_name,
-                        'offset': receiveAddress,
-                        'size': nelem,
-                        'op': 'Recv',
-                        'reduction': 'sum',
-                        'target': recvTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The sr_recv_node has own dependency on previous send node
-        if index != 0:
-            pre = node['name'] + '_Send_' + str(index - 1)
-            sr_recv_node['input'].append(pre)
-        return sr_recv_node
-
-    @staticmethod
-    def _generate_ag_send_node(node,
-                               index,
-                               sendAddress,
-                               sendTarget,
-                               nelem,
-                               device):
-        ''' This function generates the send node of allgather process
-        '''
-        node_name = node['name'] + '_Send_' + str(index)
-        related_op = node['name'] + '_Recv_' + str(index + 1)
-        ag_send_node = {'name': node_name,
-                        'offset': sendAddress,
-                        'size': nelem,
-                        'op': 'Send',
-                        'reduction': '',
-                        'target': sendTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The ag_send_node has own dependency on previous recv node
-        if index != 0:
-            pre = node['name'] + '_Recv_' + str(index - 1)
-            ag_send_node['input'].append(pre)
-        return ag_send_node
-
-    @staticmethod
-    def _generate_ag_recv_node(node,
-                               index,
-                               receiveAddress,
-                               recvTarget,
-                               nelem,
-                               device):
-        ''' This function generates the recv node of allgather process
-        '''
-        node_name = node['name'] + '_Recv_' + str(index)
-        related_op = node['name'] + '_Send_' + str(index - 1)
-        ag_recv_node = {'name': node_name,
-                        'offset': receiveAddress,
-                        'size': nelem,
-                        'op': 'Recv',
-                        'reduction': 'copy',
-                        'target': recvTarget,
-                        'related_op': related_op,
-                        'device': device,
-                        'output_shapes': node['output_shapes'],
-                        'tensor_name': node['tensor_name'],
-                        'tensor_type': node['tensor_type'],
-                        'parent': node['name'],
-                        'input': node['input'].copy()}
-
-        # The ag_recv_node has own dependency on previous send node
-        if index != 0:
-            pre = node['name'] + '_Send_' + str(index - 1)
-            ag_recv_node['input'].append(pre)
-        return ag_recv_node

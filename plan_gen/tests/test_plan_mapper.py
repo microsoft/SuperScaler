@@ -1,21 +1,20 @@
 import os
 import json
-
 from plan import plan_mapper
 from resources import resource_pool
 
 
 def test_gpu_round_robin():
+    # Init mapper
     resource_yaml_path = os.path.join(
         os.path.dirname(__file__), 'data', 'resource_pool.yaml')
     rp = resource_pool.ResourcePool()
-    # Test yaml parser
     rp.init_from_yaml(resource_yaml_path)
     mapper = plan_mapper.GPURoundRobinMapper(rp)
 
-    # Test plan_mapping function
+    # Test map function
     path_input = os.path.join(os.path.dirname(__file__),
-                              "data/test_ring_allreduce_output_ref.json")
+                              "data/test_generated_plan.json")
     plan = json.load(open(path_input, 'r'))
 
     mapped_plan = mapper.map(plan)

@@ -1,122 +1,174 @@
 [
     {
         "device": "device_0",
-        "name": "test_Send_0",
-        "op": "Send",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [],
+        "name": "test_scatter_send_0",
         "offset": 0,
-        "size": 50,
-        "reduction": "",
-        "target": "device_1",
-        "related_op": "test_Recv_1",
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
         "parent": "test",
-        "input": []
+        "reduction": "",
+        "related_op": "test_scatter_recv_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_0",
-        "name": "test_Recv_1",
-        "op": "Recv",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_scatter_send_0"
+        ],
+        "name": "test_scatter_recv_0",
         "offset": 50,
-        "size": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
         "reduction": "sum",
+        "related_op": "test_scatter_send_0",
+        "size": 50,
         "target": "device_1",
-        "related_op": "test_Send_0",
-        "parent": "test",
-        "input": ["test_Send_0"]
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_0",
-        "name": "test_Send_2",
-        "op": "Send",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_scatter_recv_0"
+        ],
+        "name": "test_allgather_send_0",
         "offset": 50,
-        "size": 50,
-        "reduction": "",
-        "target": "device_1",
-        "related_op": "test_Recv_3",
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
         "parent": "test",
-        "input": ["test_Recv_1"]
+        "reduction": "",
+        "related_op": "test_allgather_recv_0",
+        "size": 50,
+        "target": "device_1",
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_0",
-        "name": "test_Recv_3",
-        "op": "Recv",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_allgather_send_0"
+        ],
+        "name": "test_allgather_recv_0",
         "offset": 0,
-        "size": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
         "reduction": "copy",
+        "related_op": "test_allgather_send_0",
+        "size": 50,
         "target": "device_1",
-        "related_op": "test_Send_2",
-        "parent": "test",
-        "input": ["test_Send_2"]
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_1",
-        "name": "test_Send_0",
-        "op": "Send",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [],
+        "name": "test_scatter_send_0",
         "offset": 50,
-        "size": 50,
-        "reduction": "",
-        "target": "device_0",
-        "related_op": "test_Recv_1",
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
         "parent": "test",
-        "input": []
+        "reduction": "",
+        "related_op": "test_scatter_recv_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_1",
-        "name": "test_Recv_1",
-        "op": "Recv",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_scatter_send_0"
+        ],
+        "name": "test_scatter_recv_0",
         "offset": 0,
-        "size": 50,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
+        "parent": "test",
         "reduction": "sum",
+        "related_op": "test_scatter_send_0",
+        "size": 50,
         "target": "device_0",
-        "related_op": "test_Send_0",
-        "parent": "test",
-        "input": ["test_Send_0"]
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_1",
-        "name": "test_Send_2",
-        "op": "Send",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_scatter_recv_0"
+        ],
+        "name": "test_allgather_send_0",
         "offset": 0,
-        "size": 50,
-        "reduction": "",
-        "target": "device_0",
-        "related_op": "test_Recv_3",
+        "op": "Send",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
         "parent": "test",
-        "input": ["test_Recv_1"]
+        "reduction": "",
+        "related_op": "test_allgather_recv_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
     },
     {
         "device": "device_1",
-        "name": "test_Recv_3",
-        "op": "Recv",
-        "output_shapes": [[1, 100]],
-        "tensor_name": "test",
-        "tensor_type": 1,
+        "input": [
+            "test_allgather_send_0"
+        ],
+        "name": "test_allgather_recv_0",
         "offset": 50,
-        "size": 50,
-        "reduction": "copy",
-        "target": "device_0",
-        "related_op": "test_Send_2",
+        "op": "Recv",
+        "output_shapes": [
+            [
+                1,
+                100
+            ]
+        ],
         "parent": "test",
-        "input": ["test_Send_2"]
+        "reduction": "copy",
+        "related_op": "test_allgather_send_0",
+        "size": 50,
+        "target": "device_0",
+        "tensor_name": "test",
+        "tensor_type": 1
     }
 ]

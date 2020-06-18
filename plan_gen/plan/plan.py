@@ -99,3 +99,50 @@ class Plan(object):
             return self.__plan[index]
         else:
             return None
+
+    def _generate_node(self,
+                       node_index,
+                       node_name,
+                       input_name,
+                       target_name,
+                       op,
+                       reduction,
+                       offset,
+                       size,
+                       target,
+                       node_info):
+        ''' generate a node and insert it into plan
+        Args:
+            node_index: <int> insert generated to the index of plan
+            node_name: <str> the name of generated node
+            input_name: <str>/<None> the additional input dependency
+            target_name: <str> the related op name
+            op: <str> the op of node
+            reduction: <str> the reduction including "", "sum" and "recv"
+            offset: <int> the offset for comm operator
+            size: <int> the data_size for comm operator
+            target: <str> the target device
+            node_info: <dict> a dict with infomation for generated node
+        return:
+            generated_node: <dict>
+        '''
+        generated_node = {'name': node_name,
+                          'offset': offset,
+                          'size': size,
+                          'op': op,
+                          'reduction': reduction,
+                          'target': target,
+                          'related_op': target_name,
+                          'device': node_info['device'],
+                          'output_shapes': node_info['output_shapes'],
+                          'tensor_name': node_info['tensor_name'],
+                          'tensor_type': node_info['tensor_type'],
+                          'parent': node_info['name'],
+                          'input': node_info['input'].copy()}
+
+        if input_name is not None:
+            generated_node['input'].append(input_name)
+
+        self._add_node(generated_node, node_index)
+
+        return generated_node
