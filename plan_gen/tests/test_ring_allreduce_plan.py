@@ -14,9 +14,8 @@ def test_ring_allreduce_plan():
     assert(ring.get_plan_info() == ('Allreduce', 'ring'))
 
     # Test None input
-    ring.reset_plan(None)
-    output_plan = ring.generate_plan()
-    assert(output_plan is None)
+    ring.reset_node_list(None)
+    assert(ring.generate_plan() is None)
 
     # Load input node_list
     path_input = os.path.join(os.path.dirname(__file__),
@@ -24,9 +23,9 @@ def test_ring_allreduce_plan():
     nodes = json.load(open(path_input, 'r'))
 
     # Test generate_plan() function
-    ring.reset_plan(nodes)
+    ring.reset_node_list(nodes)
     output_plan = ring.generate_plan()
     path_output = os.path.join(os.path.dirname(__file__),
                                "data/test_ring_allreduce_output_ref.json")
     output_ref = json.load(open(path_output, 'r'))
-    assert(output_plan == output_ref)
+    assert(output_plan.to_json() == output_ref)

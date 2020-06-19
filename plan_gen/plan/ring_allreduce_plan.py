@@ -10,8 +10,8 @@ class RingAllreducePlan(AllreducePlan):
         '''
         Separating allreduce node includes three step:
         1. Generate new primitives nodes of ring allreduce
-        2. Insert primitives nodes into plan
-        3. Remove the original allreduce node from plan
+        2. Insert primitives nodes into node list
+        3. Remove the original allreduce node from node list
 
         Args:
             node: dict, the node with allreduce op
@@ -19,11 +19,11 @@ class RingAllreducePlan(AllreducePlan):
         '''
         # All generated nodes are inserted into the index of orignal
         # allreduce node in order
-        node_index = self._get_node_index(node)
+        node_index = self._get_node_list().index(node)
 
         # numElements of gradients for ring_allreduce
         numElements = 1
-        for shape in node['output_shapes'][0]:
+        for shape in node.output_shapes[0]:
             numElements *= shape
 
         # Get myRank and nRanks in ring allreduce
@@ -37,8 +37,8 @@ class RingAllreducePlan(AllreducePlan):
 
         # sendTarget indicates the gpu of the next rank node
         # recvTarget indicates the gpu of the previous rank node
-        sendTarget = endpoint[(myRank + 1) % nRanks]['device']
-        recvTarget = endpoint[(myRank + nRanks - 1) % nRanks]['device']
+        sendTarget = endpoint.get_node((myRank + 1) % nRanks).device
+        recvTarget = endpoint.get_node((myRank + nRanks - 1) % nRanks).device
 
         # chunkSizes illustrates the data size for each send/recv
         # offsets illustrates the data address for each send/recv
@@ -57,8 +57,8 @@ class RingAllreducePlan(AllreducePlan):
         for index in range(nRanks - 1):
             # Generate send node for scatter-reduce
 
-            node_name = node['name'] + '_scatter_send_' + str(index)
-            target_name = node['name'] + '_scatter_recv_' + str(index)
+            node_name = node.name + '_scatter_send_' + str(index)
+            target_name = node.name + '_scatter_recv_' + str(index)
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -74,8 +74,8 @@ class RingAllreducePlan(AllreducePlan):
             sendIndex = (sendIndex + nRanks - 1) % nRanks
 
             # Generate recv node for scatter-reduce
-            node_name = node['name'] + '_scatter_recv_' + str(index)
-            target_name = node['name'] + '_scatter_send_' + str(index)
+            node_name = node.name + '_scatter_recv_' + str(index)
+            target_name = node.name + '_scatter_send_' + str(index)
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -94,8 +94,8 @@ class RingAllreducePlan(AllreducePlan):
         # Finally all GPUs will get reduced gradients
         for index in range(nRanks - 1):
             # Generate send node for allgather
-            node_name = node['name'] + '_allgather_send_' + str(index)
-            target_name = node['name'] + '_allgather_recv_' + str(index)
+            node_name = node.name + '_allgather_send_' + str(index)
+            target_name = node.name + '_allgather_recv_' + str(index)
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -111,8 +111,8 @@ class RingAllreducePlan(AllreducePlan):
             sendIndex = (sendIndex + nRanks - 1) % nRanks
 
             # Generate recv node for allgather
-            node_name = node['name'] + '_allgather_recv_' + str(index)
-            target_name = node['name'] + '_allgather_send_' + str(index)
+            node_name = node.name + '_allgather_recv_' + str(index)
+            target_name = node.name + '_allgather_send_' + str(index)
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -126,4 +126,4 @@ class RingAllreducePlan(AllreducePlan):
             input_name = node_name
             node_index += 1
             receiveIndex = (receiveIndex + nRanks - 1) % nRanks
-        self._remove_node(node)
+        self._get_node_list().remove(node)

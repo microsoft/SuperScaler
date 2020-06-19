@@ -1,35 +1,37 @@
 import os
 import json
-from plan import plan_mapper
-from resources import resource_pool
+from plan.node_list import NodeList
+from plan.plan_mapper import GPURoundRobinMapper
+from resources.resource_pool import ResourcePool
 
 
 def test_gpu_round_robin():
     # Init mapper
     resource_yaml_path = os.path.join(
         os.path.dirname(__file__), 'data', 'resource_pool.yaml')
-    rp = resource_pool.ResourcePool()
+    rp = ResourcePool()
     rp.init_from_yaml(resource_yaml_path)
-    mapper = plan_mapper.GPURoundRobinMapper(rp)
+    mapper = GPURoundRobinMapper(rp)
 
     # Test map function
     path_input = os.path.join(os.path.dirname(__file__),
                               "data/test_generated_plan.json")
-    plan = json.load(open(path_input, 'r'))
+    node_list = json.load(open(path_input, 'r'))
+    node_list = NodeList(node_list)
 
-    mapped_plan = mapper.map(plan)
+    mapped_node_list = mapper.map(node_list)
     path_output = os.path.join(os.path.dirname(__file__),
                                "data/test_mapped_plan.json")
 
-    mappeded_plan_ref = json.load(open(path_output, 'r'))
-    assert(mapped_plan == mappeded_plan_ref)
+    mappeded_node_list_ref = json.load(open(path_output, 'r'))
+    assert(mapped_node_list.to_json() == mappeded_node_list_ref)
 
     # None input
-    mapped_plan = mapper.map(None)
-    assert(mapped_plan is None)
+    mapped_node_list = mapper.map(None)
+    assert(mapped_node_list is None)
 
     # Wrong input, assign 5 device into 4 GPUs resource_pool
-    plan = [
+    node_list = [
         {
             "device": "device_0",
             "name": "test",
@@ -76,5 +78,5 @@ def test_gpu_round_robin():
             "input": []
         },
     ]
-    mapped_plan = mapper.map(plan)
-    assert(mapped_plan is None)
+    mapped_node_list = mapper.map(node_list)
+    assert(mapped_node_list is None)

@@ -71,4 +71,4 @@ def test_plan_manager():
     output_path = os.path.join(
         os.path.dirname(__file__), os.path.join(path, "Default.json"))
     plan_output_ref = json.load(open(output_path, "r"))
-    assert(plan_output == plan_output_ref)
+    assert(plan_output.to_json() == plan_output_ref)

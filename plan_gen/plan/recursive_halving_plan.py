@@ -11,8 +11,8 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
         '''
         Separating allreduce node includes three step:
         1. generate new primitives nodes of Recursive_Halving allreduce
-        2. insert primitives nodes into plan
-        3. remove original allreduce node from plan
+        2. insert primitives nodes into node list
+        3. remove original allreduce node from node list
 
         Args:
             node: dict, the node with allreduce op
@@ -20,11 +20,11 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
         '''
         # all generated nodes are inserted into the location of node_index
         # node_index increase by 1 after any new node is generated
-        node_index = self._get_node_index(node)
+        node_index = self._get_node_list().index(node)
 
         # numElements of gradients
         numElements = 1
-        for shape in node['output_shapes'][0]:
+        for shape in node.output_shapes[0]:
             numElements *= shape
 
         # get myRank and nRanks
@@ -51,9 +51,9 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
         if myRank >= allreduceRanks:
 
             # Create a send node for reduce operator
-            target = endpoint[myRank - allreduceRanks]['device']
-            node_name = node['name'] + '_reduce_send'
-            target_name = node['name'] + '_reduce_recv'
+            target = endpoint.get_(myRank - allreduceRanks).device
+            node_name = node.name + '_reduce_send'
+            target_name = node.name + '_reduce_recv'
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -68,8 +68,8 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             node_index += 1
 
             # Create a recv node for broadcast operator
-            node_name = node['name'] + '_broadcast_recv'
-            target_name = node['name'] + '_broadcast_send'
+            node_name = node.name + '_broadcast_recv'
+            target_name = node.name + '_broadcast_send'
             self._generate_node(node_index=node_index,
                                 node_name=node_name,
                                 input_name=input_name,
@@ -87,9 +87,9 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             # Handling the first r gpus
             if myRank < nRanks - allreduceRanks:
                 # Create a recv node for reduce operator
-                target = endpoint[myRank - allreduceRanks]['device']
-                node_name = node['name'] + '_reduce_recv'
-                target_name = node['name'] + '_reduce_send'
+                target = endpoint.get_node(myRank - allreduceRanks).device
+                node_name = node.name + '_reduce_recv'
+                target_name = node.name + '_reduce_send'
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -128,10 +128,10 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                               for i in range(stepRanks)]
                 offsets = [sum(chunkSizes[:i]) for i in range(stepRanks)]
 
-                target = endpoint[targetRank]['device']
+                target = endpoint.get_node(targetRank).device
 
-                node_name = node['name'] + '_scatter_send_' + str(index)
-                target_name = node['name'] + '_scatter_recv_' + str(index)
+                node_name = node.name + '_scatter_send_' + str(index)
+                target_name = node.name + '_scatter_recv_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -145,8 +145,8 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 input_name = node_name
                 node_index += 1
 
-                node_name = node['name'] + '_scatter_recv_' + str(index)
-                target_name = node['name'] + '_scatter_send_' + str(index)
+                node_name = node.name + '_scatter_recv_' + str(index)
+                target_name = node.name + '_scatter_send_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -177,10 +177,10 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                               for i in range(stepRanks)]
                 offsets = [sum(chunkSizes[:i]) for i in range(stepRanks)]
 
-                target = endpoint[targetRank]['device']
+                target = endpoint.get_node(targetRank).device
 
-                node_name = node['name'] + '_allgather_send_' + str(index)
-                target_name = node['name'] + '_allgather_recv_' + str(index)
+                node_name = node.name + '_allgather_send_' + str(index)
+                target_name = node.name + '_allgather_recv_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -194,8 +194,8 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 input_name = node_name
                 node_index += 1
 
-                node_name = node['name'] + '_allgather_recv_' + str(index)
-                target_name = node['name'] + '_allgather_send_' + str(index)
+                node_name = node.name + '_allgather_recv_' + str(index)
+                target_name = node.name + '_allgather_send_' + str(index)
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -212,8 +212,8 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
             # Handling the first r gpus
             if myRank < nRanks - allreduceRanks:
                 # broadcast node on the send part
-                node_name = node['name'] + '_broadcast_send'
-                target_name = node['name'] + '_broadcast_recv'
+                node_name = node.name + '_broadcast_send'
+                target_name = node.name + '_broadcast_recv'
                 self._generate_node(node_index=node_index,
                                     node_name=node_name,
                                     input_name=input_name,
@@ -227,4 +227,4 @@ class RecursiveHalvingAllreducePlan(AllreducePlan):
                 input_name = node_name
                 node_index += 1
 
-        self._remove_node(node)
+        self._get_node_list().remove(node)

@@ -30,7 +30,7 @@ class PlanManager(object):
         # so in these cases, we return None as warning
         if plan is None or not isinstance(node_list, list):
             return None
-        plan.reset_plan(node_list)
+        plan.reset_node_list(node_list)
         output_plan = plan.generate_plan()
         # None output of generate_plan function means something goes wrong
         if output_plan is None:

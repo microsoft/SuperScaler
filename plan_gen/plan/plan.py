@@ -1,4 +1,6 @@
 import copy
+from plan.node_list import NodeList
+from plan.node_list import Node
 
 
 class Plan(object):
@@ -18,7 +20,7 @@ class Plan(object):
         self.__plan_type = plan_type
 
         # The major compoment of the plan class
-        self.__plan = []
+        self.__node_list = NodeList()
 
     def get_plan_type(self):
         ''' Get the plan_type attr
@@ -35,70 +37,25 @@ class Plan(object):
         '''
         return self.get_plan_type(), self.get_plan_name()
 
-    def reset_plan(self, node_list):
-        ''' Set self.__plan from a node_list
+    def reset_node_list(self, node_list):
+        ''' Set self.__node_list
         Args:
             node_list: list
         '''
         if not isinstance(node_list, list):
-            self.__plan = None
+            self.__node_list = None
         else:
-            self.__plan = copy.deepcopy(node_list)
+            self.__node_list = NodeList(node_list)
 
     def generate_plan(self):
         ''' Main function, will be overloadding by child class
         '''
-        return self._get_plan()
+        return self._get_node_list()
 
-    def _add_node(self, node, index=None):
-        ''' Add new node into plan.
-            If the index is correct, insert node to where index is.
-            Otherwise, append node to the end of plan
-        Args:
-            node: dict
-            index: int or None
+    def _get_node_list(self):
+        ''' Get node list
         '''
-        if isinstance(index, int) and index >= 0 and index < len(self.__plan):
-            self.__plan.insert(index, node)
-        else:
-            self.__plan.append(node)
-
-    def _remove_node(self, node):
-        ''' Remove node from plan
-        Args:
-            node: dict
-        '''
-        if node in self.__plan:
-            self.__plan.remove(node)
-        else:
-            return None
-
-    def _get_plan(self):
-        ''' Get plan
-        '''
-        return self.__plan
-
-    def _get_node_index(self, node):
-        ''' Get the index of a node
-        Args:
-            node: dict
-        '''
-        if node in self.__plan:
-            return self.__plan.index(node)
-        else:
-            return None
-
-    def _get_node(self, index):
-        ''' Get node by index
-            If the index is correct, return the node of given index.
-            Otherwise, return None as a warning.
-        Args:
-            index: int
-        '''
-        if isinstance(index, int) and index >= 0 and index < len(self.__plan):
-            return self.__plan[index]
-        else:
-            return None
+        return self.__node_list
 
     def _generate_node(self,
                        node_index,
@@ -111,9 +68,9 @@ class Plan(object):
                        size,
                        target,
                        node_info):
-        ''' generate a node and insert it into plan
+        ''' generate a node and insert it into node list
         Args:
-            node_index: <int> insert generated to the index of plan
+            node_index: <int> insert generated to the index of node list
             node_name: <str> the name of generated node
             input_name: <str>/<None> the additional input dependency
             target_name: <str> the related op name
@@ -133,16 +90,17 @@ class Plan(object):
                           'reduction': reduction,
                           'target': target,
                           'related_op': target_name,
-                          'device': node_info['device'],
-                          'output_shapes': node_info['output_shapes'],
-                          'tensor_name': node_info['tensor_name'],
-                          'tensor_type': node_info['tensor_type'],
-                          'parent': node_info['name'],
-                          'input': node_info['input'].copy()}
+                          'device': node_info.device,
+                          'output_shapes': node_info.output_shapes,
+                          'tensor_name': node_info.tensor_name,
+                          'tensor_type': node_info.tensor_type,
+                          'parent': node_info.name,
+                          'input': copy.deepcopy(node_info.input)}
 
         if input_name is not None:
             generated_node['input'].append(input_name)
 
-        self._add_node(generated_node, node_index)
+        generated_node = Node(generated_node)
+        self.__node_list.insert(node_index, generated_node)
 
         return generated_node

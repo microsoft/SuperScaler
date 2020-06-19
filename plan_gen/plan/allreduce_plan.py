@@ -1,5 +1,6 @@
 import copy
 from plan.plan import Plan
+from plan.node_list import NodeList
 
 
 class AllreducePlan(Plan):
@@ -24,12 +25,12 @@ class AllreducePlan(Plan):
         3. Separate all allreduce node to ring allreduce nodes
         '''
 
-        # Check input plan
-        if not isinstance(self._get_plan(), list):
+        # Check input node list
+        if not isinstance(self._get_node_list(), NodeList):
             return None
 
         # record original node_list for plan generator
-        node_list_ref = copy.deepcopy(self._get_plan())
+        node_list_ref = copy.deepcopy(self._get_node_list())
 
         allreduce_node_list = self.find_all_allreduce_nodes(node_list_ref)
         for node in allreduce_node_list:
@@ -37,17 +38,16 @@ class AllreducePlan(Plan):
             self.separate_allreduce_node(node,
                                          endpoint)
 
-        node_list_ref.clear()
-        return self._get_plan()
+        return self._get_node_list()
 
     def find_all_allreduce_nodes(self, node_list):
         ''' Return a allreduce_node_list with allreduce op
         Args:
             node_list: list, the input nodelist
         '''
-        allreduce_node_list = []
+        allreduce_node_list = NodeList()
         for node in node_list:
-            if node['op'] == self.get_plan_type():
+            if node.op == self.get_plan_type():
                 allreduce_node_list.append(node)
         return allreduce_node_list
 
@@ -57,10 +57,10 @@ class AllreducePlan(Plan):
             node: dict, the node with allreduce op
             node_list: list, the input nodelist
         '''
-        endpoints = []
+        endpoints = NodeList()
         for node_itr in node_list:
-            if(node_itr['op'] == self.get_plan_type() and
-               node_itr['tensor_name'] == node['tensor_name']):
+            if(node_itr.op == self.get_plan_type() and
+               node_itr.tensor_name == node.tensor_name):
                 endpoints.append(node_itr)
         return endpoints
 

@@ -19,10 +19,10 @@ def test_recursive_halving_plan():
     nodes = json.load(open(path_input, 'r'))
 
     # Test generate_plan() function
-    RH.reset_plan(nodes)
+    RH.reset_node_list(nodes)
     output_plan = RH.generate_plan()
     path_output = "data/test_recursive_halving_allreduce_output_ref.json"
     path_output = os.path.join(os.path.dirname(__file__),
                                path_output)
     output_ref = json.load(open(path_output, 'r'))
-    assert(output_plan == output_ref)
+    assert(output_plan.to_json() == output_ref)
