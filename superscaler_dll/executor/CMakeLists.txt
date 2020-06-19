@@ -6,6 +6,7 @@ project(executor)
 
 find_package(CUDA)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
 
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 
