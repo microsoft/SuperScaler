@@ -12,23 +12,23 @@ def test_hardware():
     assert hw_0.get_name() != hw_1.get_name()
     # Add correct link
     hw_0.add_link(PCIE(
-        hw_0.get_name(), hw_1.get_name(), '600bps', '3us'))
+        0, hw_0.get_name(), hw_1.get_name(), '600bps', '3us'))
     assert len(hw_0.get_outbound_links()) == 1
 
     hw_2 = Hardware("/server/wind4/GPU/2/")
     # Add error link
     with pytest.raises(ValueError):
         hw_0.add_link(PCIE(
-            hw_1.get_name(), hw_2.get_name(), '600bps', '5us'))
+            1, hw_1.get_name(), hw_2.get_name(), '600bps', '5us'))
     with pytest.raises(ValueError):
         hw_0.add_link(PCIE(
-            hw_0.get_name(), hw_0.get_name(), '600bps', '5us'))
+            2, hw_0.get_name(), hw_0.get_name(), '600bps', '5us'))
 
     # Add correct 2 links
     hw_0.add_link(PCIE(
-        hw_0.get_name(), hw_2.get_name(), '600bps', '5us'))
+        3, hw_0.get_name(), hw_2.get_name(), '600bps', '5us'))
     hw_0.add_link(PCIE(
-        hw_0.get_name(), hw_2.get_name(), '600bps', '1us'))
+        4, hw_0.get_name(), hw_2.get_name(), '600bps', '1us'))
     assert len(hw_0.get_outbound_links()) == 2
     # Test get_outbound_links() function
     links = hw_0.get_outbound_links()
@@ -36,7 +36,8 @@ def test_hardware():
     assert len(links["/server/wind4/GPU/2/"]) == 2
 
     # Test get_inbound_links() function
-    inbound_pcie_link = PCIE(hw_2.get_name(), hw_0.get_name(), '600bps', '5us')
+    inbound_pcie_link = PCIE(
+        5, hw_2.get_name(), hw_0.get_name(), '600bps', '5us')
     hw_0.add_link(inbound_pcie_link)
     assert hw_0.get_inbound_links() == {
         inbound_pcie_link.source_hardware: [inbound_pcie_link]}

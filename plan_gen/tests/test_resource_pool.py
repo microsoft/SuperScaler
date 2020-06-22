@@ -40,8 +40,11 @@ def test_resource_pool_functionality():
             "/server/hostname1/GPU/{0}/".format(i)) for i in range(4)] \
         + [("/server/hostname1/GPU/0/", "/server/hostname1/GPU/1/"),
            ("/server/hostname1/GPU/1/", "/server/hostname1/GPU/0/")]
+    unique_link_id_set = set()
     for link in links:
         assert (link.source_hardware, link.dest_hardware) in ref_links_src_dest
+        assert link.link_id not in unique_link_id_set
+        unique_link_id_set.add(link.link_id)
 
     # Test get_resource_from_name
     cpu_0 = rp.get_resource_from_name('/server/hostname1/CPU/0/')

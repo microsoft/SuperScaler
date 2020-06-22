@@ -92,6 +92,7 @@ class ResourcePool():
             return new_hardware
 
     def __create_all_links(self, resources_yaml_data):
+        unique_link_id = 0
         for hostname, server_hardware in resources_yaml_data["Server"].items():
             for hardware_type, hardware_pool in server_hardware.items():
                 for hardware_index, hardware_spec in hardware_pool.items():
@@ -101,22 +102,28 @@ class ResourcePool():
                             src_name = "/server/{0}/{1}/{2}/".format(
                                 hostname, hardware_type, hardware_index)
                             new_link = self.__create_link(
-                                src_name, link_info)
+                                src_name, link_info, unique_link_id)
+                            unique_link_id += 1
                             self.__links.append(new_link)
+
         for switch_name, switch_spec in resources_yaml_data["Switch"].items():
             full_switch_name = '/switch/{0}/'.format(switch_name)
             for link_info in switch_spec['links']:
-                new_link = self.__create_link(full_switch_name, link_info)
+                new_link = self.__create_link(
+                    full_switch_name, link_info, unique_link_id)
+                unique_link_id += 1
                 self.__links.append(new_link)
 
-    def __create_link(self, source_hardware_name, link_info):
+    def __create_link(self, source_hardware_name, link_info, link_id):
         '''Create a Link via link_info
 
         Args:
             link_info: a dict
+            link_id: int
         '''
         valid_link_type = {'RDMA': RDMA, 'PCIe': PCIE, 'PCIE': PCIE}
         return valid_link_type[link_info['type']](
+            link_id,
             source_hardware_name, link_info['dest'],
             link_info['rate'], link_info['propagation_latency'],
             link_info['scheduler'])
