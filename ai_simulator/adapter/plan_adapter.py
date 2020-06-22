@@ -31,19 +31,38 @@ class PlanAdapter():
         return self.__plan
 
     def __check_plan_attr(self):
-        ''' Check where the input node follow a correct format. Return False if
-        plan is invalid
+        ''' Check where the input nodes follow a correct format.
+        Return False if plan is invalid
         '''
-        essential_attr_type = {
-            'device': str, 'name': str, 'op': str,
-            'output_shapes': list, 'tensor_name': str,
-            'tensor_type': int, 'input': list}
+        # The computational nodes must have these 4 attributes
+        essential_compute_attr_type = {
+            'device': str, 'name': str, 'op': str, 'input': list}
+        # The communication nodes must have these 7 attributes
+        essential_comm_attr_type = dict(
+            {'output_shapes': list,
+             'tensor_name': str,
+             'tensor_type': int},
+            **essential_compute_attr_type
+        )
+        # These are the valid communication node op's name
+        valid_comm_node_op_name = ['Send', 'Recv', 'Allreduce']
         for node in self.__plan:
-            for attr, var_type in essential_attr_type.items():
-                if attr not in node:
-                    return False
-                if not isinstance(node[attr], var_type):
-                    return False
+            if 'op' not in node:
+                return False
+            elif node['op'] not in valid_comm_node_op_name:
+                # A computational Node
+                for attr, var_type in essential_compute_attr_type.items():
+                    if attr not in node:
+                        return False
+                    if not isinstance(node[attr], var_type):
+                        return False
+            else:
+                # A communication Node
+                for attr, var_type in essential_comm_attr_type.items():
+                    if attr not in node:
+                        return False
+                    if not isinstance(node[attr], var_type):
+                        return False
         return True
 
     def __parse_plan(self):
@@ -141,6 +160,9 @@ class PlanAdapter():
             # For other nodes the dependency_ids is empty list
             if node['op'] == 'Recv':
                 node['dependency_ids'] = [node['related_id']]
+                self.__plan[node['related_id']]['successor_ids'].append(
+                    node['index']
+                )
             else:
                 node['dependency_ids'] = []
         for node in self.__plan:

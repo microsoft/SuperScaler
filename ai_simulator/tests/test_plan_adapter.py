@@ -18,6 +18,16 @@ def test_plan_adapter():
 
     # Test plan_adapter function
     adapted_plan = adapter.get_plan()
+    # Need to make sure the input/dependency and successor_ids are coherent
+    for node in adapted_plan:
+        for check_node in adapted_plan:
+            if check_node["index"] in node['input_ids'] \
+                    or check_node['index'] in node['dependency_ids']:
+                assert node['index'] in check_node['successor_ids']
+            elif check_node["index"] in node['successor_ids']:
+                assert node['index'] in check_node['input_ids'] \
+                    or node['index'] in check_node['dependency_ids']
+
     path_output = os.path.join(
         os.path.dirname(__file__),
         "test_plan_gen_adapter/test_plan_adapter_plan_output.json")
