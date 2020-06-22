@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format
-
 from adapter.DAG_parser import DAGParser
 
 
@@ -43,10 +42,9 @@ class TFParser(DAGParser):
         node_list = []
 
         if len(graph_paths) != len(devices):
-            raise ValueError("Devices count %s is not same as graph count %s"
-                             % (
-                                 len(devices),
-                                 len(graph_paths)))
+            raise ValueError("Devices count %d cannot match graph count %d" % (
+                                len(devices),
+                                len(graph_paths)))
 
         for graph_path, device_id in zip(graph_paths, devices):
             graph = self.__load_protobuf_from_file(graph_path)
@@ -58,7 +56,6 @@ class TFParser(DAGParser):
                 attrs['name'] = node.name
                 node_list.append(attrs)
 
-        # return self.__plan
         filtered_node_list = self.__filter_node_list(node_list)
         return filtered_node_list
 
@@ -131,12 +128,12 @@ class TFParser(DAGParser):
         with open(filename, 'r') as f:
             file_content = f.read()
             try:
-                graph_def = text_format.Parse(
-                    file_content, tf.compat.v1.GraphDef())
+                graph_def = text_format.Parse(file_content,
+                                              tf.compat.v1.GraphDef())
                 return graph_def
             except text_format.ParseError as e:
-                raise ParserError("Cannot parse file %s: %s."
-                                  % (filename, str(e)))
+                raise ParserError("Cannot parse file %s: %s." %
+                                  (filename, str(e)))
         return graph_def
 
     @staticmethod
@@ -172,7 +169,7 @@ AttrValue Message def:
         f <float>
         b <bool> // trans into 1/0
         type <DataType> // DataType is a enum Message, trans into integer
-        shape <TensorShapeProto> // trans into list of int,
+        shape <TensorShapeProto> // trans into list of int
                                  // expand all shape to 4-d
         tensor <TensorProto>
         list <ListValue> // trans into list of object
@@ -349,8 +346,8 @@ class TFNodeAttrParser():
                 for itr in raw_attr_value.list:
                     value.append(self.__parse_attr_value(itr), value_list=True)
             else:
-                value = self.__parse_attr_value(
-                    raw_attr_value.list, value_list=True)
+                value = self.__parse_attr_value(raw_attr_value.list,
+                                                value_list=True)
 
         # Ignore func and placeholder feature
         if value_list is True:
