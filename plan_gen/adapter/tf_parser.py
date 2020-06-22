@@ -50,6 +50,8 @@ class TFParser(DAGParser):
             graph = self.__load_protobuf_from_file(graph_path)
             for node in graph.node:
                 attrs = self.__NodeAttrParser.parse_node(node)
+                metadata = str(node)
+                attrs['metadata'] = metadata
                 attrs['op'] = node.op
                 attrs['input'] = node.input
                 attrs['device'] = device_id
@@ -97,6 +99,8 @@ class TFParser(DAGParser):
             filtered_node['tensor_type'] = node['T']
         if 'input' in node:
             filtered_node['input'] = node['input']
+        if 'metadata' in node:
+            filtered_node['metadata'] = node['metadata']
 
         return filtered_node
 

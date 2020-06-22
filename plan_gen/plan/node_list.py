@@ -66,6 +66,7 @@ class Node(object):
                 reduction: <str> the reduction including "", "sum" and "recv"
                 target: <str> the target device
                 related_op: <str> the related op name
+                metadata: <str> the metadata of DAG node
         '''
 
         self.valid_node_info_type = {
@@ -81,7 +82,8 @@ class Node(object):
             "reduction": str,
             "target": str,
             "related_op": str,
-            "parent": str
+            "parent": str,
+            'metadata': str
             }
 
         if isinstance(node_info, dict):
