@@ -10,3 +10,9 @@ set(INCLUDE_DIRS
     ${INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
     PARENT_SCOPE)
+
+set(LIBRARIES
+    ${LIBRARIES}
+    pthread
+    rt
+    PARENT_SCOPE)
