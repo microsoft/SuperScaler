@@ -70,6 +70,11 @@ class Hardware(Resource):
         description += "]"
         return description
 
+    def to_dict(self):
+        '''Return the dict represtation of Hardware essential data
+        '''
+        return {'name': self.__name}
+
 
 class ComputationHardware(Hardware):
     def __init__(self, name, performance='0bps'):
@@ -109,6 +114,12 @@ class ComputationHardware(Hardware):
         host_name, hardware_type, hardware_index, *extra_info = \
             hardware_description[2:]
         return host_name, hardware_type, hardware_index, extra_info
+
+    def to_dict(self):
+        '''Return the dict represtation of ComputationHardware essential data
+        '''
+        return dict({'performance': str(self.__performance)+'bps'},
+                    **super().to_dict())
 
 
 class CPUHardware(ComputationHardware):

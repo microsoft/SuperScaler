@@ -188,6 +188,22 @@ class ResourcePool():
     def get_links(self):
         return self.__links
 
+    def get_links_as_list(self):
+        '''Return a list of dict, representing links' info
+        '''
+        link_info = []
+        for link in self.__links:
+            link_info.append(link.to_dict())
+        return link_info
+
+    def get_computational_hardware_as_list(self):
+        '''Return [{hardware0_spec}, {hardware1_spec}]
+        '''
+        hardware_info = []
+        for hw in self.__computational_hardware.values():
+            hardware_info.append(hw.to_dict())
+        return hardware_info
+
     def get_resource_from_name(self, resource_name):
         '''Return the resource whose name is resource_name, return None if not
         found

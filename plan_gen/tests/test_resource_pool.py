@@ -68,3 +68,26 @@ def test_resource_pool_functionality():
     server_list = rp.get_resource_list_from_type("Server")
     assert len(server_list) == 1 \
         and server_list[0].get_name() == '/server/hostname1/'
+
+    # Test get_links_as_list()
+    all_links_info = []
+    for link in links:
+        all_links_info.append(link.to_dict())
+    assert rp.get_links_as_list() == all_links_info
+
+    # Test get_computational_hardware_as_list()
+    print(rp.get_computational_hardware_as_list())
+    assert rp.get_computational_hardware_as_list() == [
+        {'performance': '12884901888.0bps',
+         'name': '/server/hostname1/CPU/0/'},
+        {'performance': '12884901888.0bps',
+         'name': '/server/hostname1/CPU/1/'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/0/'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/1/'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/2/'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/3/'}
+    ]

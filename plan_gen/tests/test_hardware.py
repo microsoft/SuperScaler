@@ -43,6 +43,9 @@ def test_hardware():
         inbound_pcie_link.source_hardware: [inbound_pcie_link]}
     # No need to test __str__() function. It only servers for display purpose.
 
+    # Test to_dict()
+    assert hw_0.to_dict() == {'name': "/server/wind4/GPU/0/"}
+
 
 def test_computation_hardware():
     compute_hw = ComputationHardware('/server/my_computer/GPU/0/', '100bps')
@@ -56,6 +59,8 @@ def test_computation_hardware():
             "/switch/wind4/GPU/0/")
     assert ComputationHardware.get_computation_hardware_description(
         "/server/my_computer/GPU/0/") == ("my_computer", "GPU", "0", [''])
+    assert compute_hw.to_dict() == {'name': "/server/my_computer/GPU/0/",
+                                    'performance': '100.0bps'}
 
 
 def test_CPU_hardware():
@@ -68,6 +73,8 @@ def test_CPU_hardware():
         CPUHardware('/not_a_server/hostname/CPU/0/', '100bps')
     with pytest.raises(ValueError):
         CPUHardware('/server/hostname/CPU', '100bps')
+    assert cpu_correct.to_dict() == {'name': "/server/hostname/CPU/0/",
+                                     'performance': '100.0bps'}
 
 
 def test_GPU_hardware():
@@ -80,6 +87,8 @@ def test_GPU_hardware():
         GPUHardware('/not_a_server/hostname/GPU/0/', '100bps')
     with pytest.raises(ValueError):
         GPUHardware('/server/hostname/GPU', '100bps')
+    assert gpu_correct.to_dict() == {'name': "/server/hostname/GPU/0/",
+                                     'performance': '100.0bps'}
 
 
 def test_network_device():
@@ -88,3 +97,4 @@ def test_network_device():
         NetworkSwitchHardware('/not_switch/swname/')
     pcie_sw = NetworkSwitchHardware('/switch/pciesw/')
     assert pcie_sw.get_name() == '/switch/pciesw/'
+    assert pcie_sw.to_dict() == {'name': '/switch/pciesw/'}
