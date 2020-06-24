@@ -69,6 +69,27 @@ def test_resource_pool_functionality():
     assert len(server_list) == 1 \
         and server_list[0].get_name() == '/server/hostname1/'
 
+    # Test get_route_info
+    cpu_1 = rp.get_resource_from_name('/server/hostname1/CPU/1/')
+    cpu_0 = rp.get_resource_from_name('/server/hostname1/CPU/0/')
+    cpu_route = rp.get_route_info(cpu_0.get_name(), cpu_1.get_name())
+    assert cpu_route == [
+        ([cpu_0.get_outbound_links()[cpu_1.get_name()][0]],
+         'RDMA')]
+    gpu_route = rp.get_route_info(
+        '/server/hostname1/GPU/0/', '/server/hostname1/GPU/1/')
+    gpu_0 = rp.get_resource_from_name('/server/hostname1/GPU/0/')
+    switch = rp.get_resource_from_name('/switch/switch0/')
+    assert len(gpu_route) == 2
+    assert gpu_route[0] == (
+        [gpu_0.get_outbound_links()[switch.get_name()][0],
+         switch.get_outbound_links()['/server/hostname1/GPU/1/'][0]],
+        "PCIE"
+    )
+    assert rp.get_route_info(
+        '/server/hostname1/CPU/1/', '/server/hostname1/GPU/0/'
+    ) == []
+
     # Test get_links_as_list()
     all_links_info = []
     for link in links:

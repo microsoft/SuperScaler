@@ -3,6 +3,7 @@ import yaml
 from .hardware import CPUHardware, GPUHardware, NetworkSwitchHardware
 from .server import Server
 from .link import PCIE, RDMA
+from .router import Router
 
 
 class ResourcePool():
@@ -22,6 +23,7 @@ class ResourcePool():
         self.__computational_hardware = {}  # {hardware_name: obj}
         self.__switches = {}  # {switch_name: obj}
         self.__links = []
+        self.__router = None  # A Router object
 
     def init_from_yaml(self, yaml_path):
         '''Reset resource pool and init via input yaml file
@@ -45,6 +47,9 @@ class ResourcePool():
         # Create logical knowledge of server/hardware/link/switch
         self.__add_all_hardware_to_servers()
         self.__add_all_links_to_hardware()
+
+        # Init routing_info
+        self.__init_routing_info()
 
     def __create_servers(self, resources_yaml_data):
         '''Create servers with computational devices and outbound links
@@ -176,6 +181,13 @@ class ResourcePool():
             server_name = '/{0}/{1}/'.format(hw_name_arr[1], hw_name_arr[2])
             self.__servers[server_name].add_hardware(hw_obj)
 
+    def __init_routing_info(self):
+        sw_comput_hardware_dict = {
+            **self.__computational_hardware,
+            **self.__switches}
+        # Init router
+        self.__router = Router(sw_comput_hardware_dict)
+
     def get_servers(self):
         return self.__servers
 
@@ -241,3 +253,17 @@ class ResourcePool():
                     self.__servers[server_name].get_hardware_list_from_type(
                         resource_type)
         return type_hardware_list
+
+    def get_route_info(self, src_hw_name, dest_hw_name):
+        '''Return the routing information from src_hw_name to dest_hw_name,
+        return [] if no route found.
+
+        Args:
+            src_hw_name: string, source hardware name
+            dest_hw_name: string, destination hardware name
+        Returns:
+            a list of tuple (path: list, path_type: string)
+                list: [path0, path1..], each path is a list:[link0, link1]
+                string, indicating the route type, used for SuperScalar
+        '''
+        return self.__router.get_route_info(src_hw_name, dest_hw_name)
