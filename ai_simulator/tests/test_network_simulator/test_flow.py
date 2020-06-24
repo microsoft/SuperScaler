@@ -33,6 +33,10 @@ def test_flow():
         tensor_unit.get_bytes_size() * 8 * 2
     flow_0.set_available_bandwidth(0, 14)
     assert flow_0.get_estimated_finish_time() == float('inf')
+    # Test float precision tolerant
+    assert flow_1.get_estimated_finish_time() == 16.0
+    flow_1.set_available_bandwidth(tensor_unit.get_bytes_size() * 8, 16.0)
+    assert flow_1.get_estimated_finish_time() == 16.0
 
 
 def create_test_flow(index, node_name, device_name, tensor_size, time_now):

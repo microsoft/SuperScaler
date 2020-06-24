@@ -45,17 +45,23 @@ class Flow():
         if time_now < self.__last_start_time:
             raise ValueError(
                 "time_now should not be less than previous start time!")
-
-        executed_bits = (time_now - self.__last_start_time) \
-            * self.__available_bandwidth
-        self.__remain_len -= executed_bits
-        if available_bandwidth == 0:
-            self.__estimated_finish_time = float('inf')
+        if time_now == self.__estimated_finish_time:
+            # If time_now is the time that current flow will finish, then
+            # directly assign remain_len to 0
+            self.__remain_len = 0
+            self.__last_start_time = time_now
+            self.__available_bandwidth = available_bandwidth
         else:
-            self.__estimated_finish_time = time_now \
-                + self.__remain_len / available_bandwidth
-        self.__last_start_time = time_now
-        self.__available_bandwidth = available_bandwidth
+            executed_bits = (time_now - self.__last_start_time) \
+                * self.__available_bandwidth
+            self.__remain_len -= executed_bits
+            if available_bandwidth == 0:
+                self.__estimated_finish_time = float('inf')
+            else:
+                self.__estimated_finish_time = time_now \
+                    + self.__remain_len / available_bandwidth
+            self.__last_start_time = time_now
+            self.__available_bandwidth = available_bandwidth
 
     def __lt__(self, other):
         '''Flow is ordered by estimated_finish_time'''
