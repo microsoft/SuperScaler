@@ -67,6 +67,8 @@ class Node(object):
                 target: <str> the target device
                 related_op: <str> the related op name
                 metadata: <str> the metadata of DAG node
+                route_index: <int> the index of route from device to target
+                route_type: <str> the type of route including "PCIE", "RDMA"
         '''
 
         self.valid_node_info_type = {
@@ -83,8 +85,10 @@ class Node(object):
             "target": str,
             "related_op": str,
             "parent": str,
-            'metadata': str
-            }
+            "metadata": str,
+            "route_index": int,
+            "route_type": str
+        }
 
         if isinstance(node_info, dict):
             for key, info_type in self.valid_node_info_type.items():

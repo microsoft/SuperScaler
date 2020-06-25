@@ -1,0 +1,39 @@
+# Links are unidirectional
+# If wanting to establish a bi-direction link, then need to add two links
+# e.g. GPU0 <----> switch0
+# In GPU0: add a link with dest = switch0
+# In switch0: add a link with dest = GPU0
+
+Server:
+    hostname1:
+        CPU:
+            0:
+                properties:
+                    average_performance: "12Gibps"
+                links: []
+            1:
+                properties:
+                    average_performance: "12Gibps"
+                links: []
+        GPU:
+            0:
+              properties:
+                  average_performance: "12Tibps"
+              links: []         
+            1:
+              properties:
+                  average_performance: "12Tibps"
+              links: []
+                      
+            2:
+              properties:
+                  average_performance: "12Tibps"
+              links: []
+            3:
+              properties:
+                  average_performance: "12Tibps"
+              links: []
+
+Switch:
+    switch0:
+        links: []

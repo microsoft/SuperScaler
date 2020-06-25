@@ -26,6 +26,15 @@ def test_gpu_round_robin():
     mappeded_node_list_ref = json.load(open(path_output, 'r'))
     assert(mapped_node_list.to_json() == mappeded_node_list_ref)
 
+    # Wrong setup: Plan mapper with no-connection resources pool
+    resource_yaml_no_connection = os.path.join(
+        os.path.dirname(__file__), 'data', 'resource_pool_no_connection.yaml')
+    rp_no_connection = ResourcePool()
+    rp_no_connection.init_from_yaml(resource_yaml_no_connection)
+    mapper_no_connection = GPURoundRobinMapper(rp_no_connection)
+
+    assert(mapper_no_connection.map(node_list) is None)
+
     # None input
     mapped_node_list = mapper.map(None)
     assert(mapped_node_list is None)
@@ -78,5 +87,6 @@ def test_gpu_round_robin():
             "input": []
         },
     ]
+    node_list = NodeList(node_list)
     mapped_node_list = mapper.map(node_list)
     assert(mapped_node_list is None)

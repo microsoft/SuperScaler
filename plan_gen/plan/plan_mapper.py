@@ -58,14 +58,36 @@ class GPURoundRobinMapper(PlanMapper):
         if len(self.gpus) < len(devices):
             # GPU count in resource_pool can't meet the requirement
             return False
+        # Check all routes exists for all communication nodes
+        for node in node_list:
+            src_gpu = None
+            dst_gpu = None
+            if node.device is not None and node.target is not None:
+                src_gpu = self.gpus[devices.index(node.device)]
+                dst_gpu = self.gpus[devices.index(node.target)]
+                route_path = self.resource_pool.get_route_info(
+                    src_gpu.get_name(), dst_gpu.get_name())
+                # No route found between src_gpu and dst_gpu
+                if not route_path:
+                    return False
 
         # Assign devices by RoundRobin order
         for node in node_list:
+            src_gpu = None
+            dst_gpu = None
+            # Assign device
             if node.device is not None:
-                gpu = self.gpus[devices.index(node.device)]
-                node.device = gpu.get_name()
+                src_gpu = self.gpus[devices.index(node.device)]
+                node.device = src_gpu.get_name()
+            # Assign target
             if node.target is not None:
-                gpu = self.gpus[devices.index(node.target)]
-                node.target = gpu.get_name()
+                dst_gpu = self.gpus[devices.index(node.target)]
+                node.target = dst_gpu.get_name()
+            # Assign route
+            if node.device is not None and node.target is not None:
+                route_path = self.resource_pool.get_route_info(
+                    src_gpu.get_name(), dst_gpu.get_name())
+                node.route_index = 0
+                node.route_type = route_path[node.route_index][1]
 
         return True

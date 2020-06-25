@@ -12,7 +12,9 @@
         "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Recv_1",
         "parent": "test",
-        "input": []
+        "input": [],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -27,7 +29,9 @@
         "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Send_0",
         "parent": "test",
-        "input": ["test_Send_0"]
+        "input": ["test_Send_0"],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -42,7 +46,9 @@
         "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Recv_3",
         "parent": "test",
-        "input": ["test_Recv_1"]
+        "input": ["test_Recv_1"],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -57,7 +63,9 @@
         "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Send_2",
         "parent": "test",
-        "input": ["test_Send_2"]
+        "input": ["test_Send_2"],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -72,7 +80,9 @@
         "target": "/server/hostname1/GPU/0/",
         "related_op": "test_Recv_1",
         "parent": "test",
-        "input": []
+        "input": [],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -87,7 +97,9 @@
         "target": "/server/hostname1/GPU/0/",
         "related_op": "test_Send_0",
         "parent": "test",
-        "input": ["test_Send_0"]
+        "input": ["test_Send_0"],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -102,7 +114,9 @@
         "target": "/server/hostname1/GPU/0/",
         "related_op": "test_Recv_3",
         "parent": "test",
-        "input": ["test_Recv_1"]
+        "input": ["test_Recv_1"],
+        "route_index": 0,
+        "route_type": "PCIE"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -117,6 +131,8 @@
         "target": "/server/hostname1/GPU/0/",
         "related_op": "test_Send_2",
         "parent": "test",
-        "input": ["test_Send_2"]
+        "input": ["test_Send_2"],
+        "route_index": 0,
+        "route_type": "PCIE"
     }
 ]
