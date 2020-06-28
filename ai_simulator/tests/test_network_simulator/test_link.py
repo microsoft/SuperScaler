@@ -4,13 +4,14 @@ from test_flow import create_test_flow
 
 def test_link():
     # Init link
-    link_0 = Link('/server/hostname/GPU/0/',
+    link_0 = Link(0, '/server/hostname/GPU/0/',
                   '/switch/switch0/',
                   '100bps')
     flow_0 = create_test_flow(0, 'send', '/switch/switch0/', 5, 1)
     flow_1 = create_test_flow(1, 'send', '/switch/switch0/', 5, 1)
 
     # Test link properties
+    assert link_0.link_id == 0
     assert link_0.source_name == '/server/hostname/GPU/0/'
     assert link_0.dest_name == '/switch/switch0/'
     assert link_0.capacity == 100
