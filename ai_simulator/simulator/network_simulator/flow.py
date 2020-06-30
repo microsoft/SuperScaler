@@ -1,4 +1,4 @@
-from simulator.utility import data_size_to_bit
+from ..utility import data_size_to_bit
 
 
 class Flow():

@@ -1,6 +1,6 @@
 from .flow import Flow
 from .link_manager import LinkManager
-from simulator.device import Device
+from ..device import Device
 
 
 class NetworkSimulator(Device):
