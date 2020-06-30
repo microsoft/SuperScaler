@@ -50,6 +50,10 @@ def test_link_manager():
     assert lm.get_routing_path('device0', 'device5', 0) == \
         [all_links[i] for i in range(5)]
 
+    # Test get_routing
+    assert lm.get_routing(":send:device0:device5:1:") == [all_links[5]]
+    # Test get_routing: wrong input format
+    assert lm.get_routing(":send:device0:device5:") is None
     # Test error handling
     with pytest.raises(ValueError):
         # links_spec should be a list

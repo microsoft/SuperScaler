@@ -42,6 +42,21 @@ class LinkManager():
             return None
         return self.__routing_path[(src_name, dst_name, route_index)]
 
+    def get_routing(self, node_name):
+        '''Parse the node_name string and return routing path
+
+        Args:
+            node_name: string, format:
+                ":send:src_name:dst_name:route_index:"
+        '''
+        # Check the validity of node_name
+        name_split = node_name.split(':')
+        if len(name_split) < 6:
+            return None
+        _, src_name, dst_name, route_index, *__ = name_split[1:]
+        route_index = int(route_index)
+        return self.get_routing_path(src_name, dst_name, route_index)
+
     def get_link(self, link_id):
         '''Return a Link with specific link_id
         '''
