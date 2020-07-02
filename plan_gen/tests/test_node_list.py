@@ -25,7 +25,7 @@ def test_node_list():
         "op": "Allreduce",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "input": []
     }
     Node_example = Node(node_example)
@@ -63,7 +63,7 @@ def test_node():
         "op": "Allreduce",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "input": []
     }
 
@@ -77,7 +77,7 @@ def test_node():
         "op": "Allreduce",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "input": []
     }
 

@@ -17,7 +17,7 @@
         "size": 100,
         "target": "device_1",
         "tensor_name": "test",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "device_0",
@@ -39,7 +39,7 @@
         "size": 100,
         "target": "device_1",
         "tensor_name": "test",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "device_1",
@@ -59,7 +59,7 @@
         "size": 100,
         "target": "device_0",
         "tensor_name": "test",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "device_1",
@@ -79,6 +79,6 @@
         "size": 100,
         "target": "device_0",
         "tensor_name": "test",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     }
 ]

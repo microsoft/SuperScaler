@@ -50,7 +50,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -79,7 +79,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -132,7 +132,7 @@
                 3
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -149,7 +149,7 @@
                 3072
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -166,7 +166,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -183,7 +183,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -203,7 +203,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -219,7 +219,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -299,7 +299,7 @@
         "output_shapes": [
             []
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -315,7 +315,7 @@
                 1
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -331,7 +331,7 @@
                 128
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -347,7 +347,7 @@
                 128
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -364,7 +364,7 @@
                 1
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -381,7 +381,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -396,7 +396,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -423,7 +423,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -440,7 +440,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -457,7 +457,7 @@
                 3072
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -484,7 +484,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -502,7 +502,7 @@
         ],
         "reduction": "sum",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -530,7 +530,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -546,7 +546,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -563,7 +563,7 @@
         ],
         "reduction": "sum",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -580,7 +580,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -616,7 +616,7 @@
         "output_shapes": [
             []
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/0/",
@@ -626,7 +626,7 @@
         "metadata": "name: \"sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0\"\nop: \"_Retval\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\ndevice: \"/job:localhost/replica:0/task:0/device:CPU:0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"index\"\n  value {\n    i: 0\n  }\n}\n",
         "name": "sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0",
         "op": "_Retval",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -679,7 +679,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -708,7 +708,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -761,7 +761,7 @@
                 3
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -778,7 +778,7 @@
                 3072
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -795,7 +795,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -812,7 +812,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -832,7 +832,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -848,7 +848,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -928,7 +928,7 @@
         "output_shapes": [
             []
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -944,7 +944,7 @@
                 1
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -960,7 +960,7 @@
                 128
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -976,7 +976,7 @@
                 128
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -993,7 +993,7 @@
                 1
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1010,7 +1010,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1025,7 +1025,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1052,7 +1052,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1069,7 +1069,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1086,7 +1086,7 @@
                 3072
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1113,7 +1113,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1131,7 +1131,7 @@
         ],
         "reduction": "sum",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1159,7 +1159,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1175,7 +1175,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1192,7 +1192,7 @@
         ],
         "reduction": "sum",
         "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1209,7 +1209,7 @@
                 10
             ]
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1245,7 +1245,7 @@
         "output_shapes": [
             []
         ],
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     },
     {
         "device": "/server/hostname1/GPU/1/",
@@ -1255,6 +1255,6 @@
         "metadata": "name: \"sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0\"\nop: \"_Retval\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\ndevice: \"/job:localhost/replica:0/task:0/device:CPU:0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"index\"\n  value {\n    i: 0\n  }\n}\n",
         "name": "sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0",
         "op": "_Retval",
-        "tensor_type": 1
+        "tensor_type": "DT_FLOAT"
     }
 ]

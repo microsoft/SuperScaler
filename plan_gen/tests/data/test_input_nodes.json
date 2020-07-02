@@ -5,7 +5,7 @@
         "op": "Allreduce",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "input": []
     },
     {
@@ -14,7 +14,8 @@
         "op": "Allreduce",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "input": []
     }
 ]
+

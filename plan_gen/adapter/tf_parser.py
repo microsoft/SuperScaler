@@ -28,6 +28,33 @@ Plan nodelist def:
 
 
 class TFParser(DAGParser):
+
+    DT_mapping_table = {
+            1: 'DT_FLOAT',
+            2: 'DT_DOUBLE',
+            3: 'DT_INT32',
+            4: 'DT_UINT8',
+            5: 'DT_INT16',
+            6: 'DT_INT8',
+            7: 'DT_STRING',
+            8: 'DT_COMPLEX64',    # Single-precision complex
+            9: 'DT_INT64',
+            10: 'DT_BOOL',
+            11: 'DT_QINT8',       # Quantized int8
+            12: 'DT_QUINT8',      # Quantized uint8
+            13: 'DT_QINT32',      # Quantized int32
+            14: 'DT_BFLOAT16',    # Float32 truncated to 16 bits.
+            15: 'DT_QINT16',      # Quantized int16
+            16: 'DT_QUINT16',     # Quantized uint16
+            17: 'DT_UINT16',
+            18: 'DT_COMPLEX128',  # Double-precision complex
+            19: 'DT_HALF',
+            20: 'DT_RESOURCE',
+            21: 'DT_VARIANT',     # Arbitrary C++ data types
+            22: 'DT_UINT32',
+            23: 'DT_UINT64'
+        }
+
     def __init__(self):
         super().__init__("TFParser")
         self.__NodeAttrParser = TFNodeAttrParser()
@@ -95,8 +122,8 @@ class TFParser(DAGParser):
             filtered_node['reduction'] = node['reduction']
         if 'tensor_name' in node:
             filtered_node['tensor_name'] = node['tensor_name']
-        if 'T' in node:
-            filtered_node['tensor_type'] = node['T']
+        if 'T' in node and node['T'] in self.DT_mapping_table:
+            filtered_node['tensor_type'] = self.DT_mapping_table[node['T']]
         if 'input' in node:
             filtered_node['input'] = node['input']
         if 'metadata' in node:
@@ -213,34 +240,6 @@ ListValue Message def:
 NameAttrList Message def:
     name <string>
     attr <map<string, AttrValue>>
-
-class DataType(Enum):
-    # Data types that all computation devices are expected to be
-    # capable to support.
-    # REF type = normal type + 100
-    DT_FLOAT = 1
-    DT_DOUBLE = 2
-    DT_INT32 = 3
-    DT_UINT8 = 4
-    DT_INT16 = 5
-    DT_INT8 = 6
-    DT_STRING = 7
-    DT_COMPLEX64 = 8  # Single-precision complex
-    DT_INT64 = 9
-    DT_BOOL = 10
-    DT_QINT8 = 11     # Quantized int8
-    DT_QUINT8 = 12    # Quantized uint8
-    DT_QINT32 = 13    # Quantized int32
-    DT_BFLOAT16 = 14  # Float32 truncated to 16 bits.  Only for cast ops.
-    DT_QINT16 = 15    # Quantized int16
-    DT_QUINT16 = 16   # Quantized uint16
-    DT_UINT16 = 17
-    DT_COMPLEX128 = 18  # Double-precision complex
-    DT_HALF = 19
-    DT_RESOURCE = 20
-    DT_VARIANT = 21  # Arbitrary C++ data types
-    DT_UINT32 = 22
-    DT_UINT64 = 23
 '''
 
 

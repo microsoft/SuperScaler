@@ -47,7 +47,7 @@ def test_gpu_round_robin():
             "op": "Allreduce",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "input": []
         },
         {
@@ -56,7 +56,7 @@ def test_gpu_round_robin():
             "op": "Allreduce",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "input": []
         },
         {
@@ -65,7 +65,7 @@ def test_gpu_round_robin():
             "op": "Allreduce",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "input": []
         },
         {
@@ -74,7 +74,7 @@ def test_gpu_round_robin():
             "op": "Allreduce",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "input": []
         },
         {
@@ -83,7 +83,7 @@ def test_gpu_round_robin():
             "op": "Allreduce",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "input": []
         },
     ]

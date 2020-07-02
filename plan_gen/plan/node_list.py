@@ -69,6 +69,23 @@ class Node(object):
                 metadata: <str> the metadata of DAG node
                 route_index: <int> the index of route from device to target
                 route_type: <str> the type of route including "PCIE", "RDMA"
+        example:
+            {
+                "name": "test_Send_0",
+                "device": "/server/hostname1/GPU/0/",
+                "op": "Send",
+                "input": ["test_Send_0"]
+                "tensor_name": "test"
+                "tensor_type": "DT_FLOAT"
+                "offset": 50,
+                "size": 50,
+                "reduction":"sum",
+                "target": "/server/hostname1/GPU/1/",
+                "related_op": "test_Recv_0",
+                "metadata":"..."
+                "route_index": 0
+                "route_type": "PCIE"
+            }
         '''
 
         self.valid_node_info_type = {
@@ -78,7 +95,7 @@ class Node(object):
             'input': list,
             "output_shapes": list,
             "tensor_name": str,
-            "tensor_type": int,
+            "tensor_type": str,
             "offset": int,
             "size": int,
             "reduction": str,
