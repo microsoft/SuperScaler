@@ -18,7 +18,8 @@ size                Int             Total number of data.
 class Tensor():
     # Supported tensor type
     valid_type = {'float': 4, 'double': 8, 'char': 1,
-                  'int8': 1, 'int16': 2, 'int32': 4, 'int64': 8}
+                  'int8': 1, 'int16': 2, 'int32': 4, 'int64': 8,
+                  'complex64': 8, 'complex128': 16}
 
     def __init__(self,
                  tensor_type='int8',
