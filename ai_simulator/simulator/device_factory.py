@@ -1,13 +1,12 @@
 from .computation_device import CPU, GPU
-from .network_device import NetworkSwitch
+from .network_simulator.network_simulator import NetworkSimulator
 
 
 class DeviceFactory():
     # Use a dict to store valid device_type string instead of using
     # dangerous eval() function
     valid_device_type = {'CPU': CPU, 'GPU': GPU,
-                         'NetworkSwitch': NetworkSwitch,
-                         'Switch': NetworkSwitch}
+                         'NetworkSimulator': NetworkSimulator}
 
     def __init__(self):
         pass
