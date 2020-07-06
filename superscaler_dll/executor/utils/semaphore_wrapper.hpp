@@ -9,7 +9,7 @@ public:
     enum class OpenType { e_create, e_open, e_open_or_create };
     NamedSemaphore(OpenType open_type, const std::string &name,
                    unsigned int init_value = 0);
-    ~NamedSemaphore();
+    virtual ~NamedSemaphore();
 
     /**
      * @brief Wait for semaphore
@@ -34,6 +34,7 @@ public:
      * @return false cannot wait or semaphore error.
      */
     bool try_wait();
+
     std::string get_name() const;
 
     /**
@@ -48,4 +49,13 @@ private:
     std::string m_name;
     sem_t *m_handle;
     bool m_own;
+};
+
+class SemaphoreMutex : private NamedSemaphore {
+public:
+    SemaphoreMutex(NamedSemaphore::OpenType open_type, const std::string &name);
+    void lock();
+    void unlock();
+    bool try_lock();
+    std::string get_name() const;
 };

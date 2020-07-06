@@ -109,3 +109,34 @@ std::string NamedSemaphore::get_name() const
 {
     return m_name;
 }
+
+SemaphoreMutex::SemaphoreMutex(NamedSemaphore::OpenType open_type,
+                               const std::string &name)
+    : NamedSemaphore(open_type, name, 1)
+{
+}
+
+void SemaphoreMutex::lock()
+{
+    bool ret = wait();
+    if (!ret) {
+        throw std::runtime_error(
+            std::string() +
+            "Semaphore lock failed, reason: " + strerror(errno));
+    }
+}
+
+void SemaphoreMutex::unlock()
+{
+    bool ret = post();
+    if (!ret) {
+        throw std::runtime_error(
+            std::string() +
+            "Semaphore unlock failed, reason: " + strerror(errno));
+    }
+}
+
+bool SemaphoreMutex::try_lock()
+{
+    return try_wait();
+}

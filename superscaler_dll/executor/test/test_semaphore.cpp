@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <thread>
+#include <mutex>
 
 #include <semaphore_wrapper.hpp>
 #include <utils.hpp>
@@ -95,4 +96,33 @@ TEST(Semaphore, TryWait)
     sem.post();
     wait_result = sem.try_wait();
     ASSERT_TRUE(wait_result);
+}
+
+TEST(Semaphore, Lock)
+{
+    std::string sem_name = get_thread_unique_name(TEST_SEM_NAME);
+    SemaphoreMutex mutex(NamedSemaphore::OpenType::e_open_or_create, sem_name);
+    {
+        std::lock_guard<SemaphoreMutex> lock(mutex);
+        bool lock_result = mutex.try_lock(); // Should fail because of lock
+        ASSERT_FALSE(lock_result);
+    }
+    bool lock_result = mutex.try_lock();
+    ASSERT_TRUE(
+        lock_result); // Should success because lock will release the semaphore
+}
+
+/**
+ * @brief Test open the same semaphore by name
+ * 
+ */
+TEST(Semaphore, MutexOpen)
+{
+    std::string sem_name = get_thread_unique_name(TEST_SEM_NAME);
+    SemaphoreMutex create_mutex(NamedSemaphore::OpenType::e_create, sem_name);
+    SemaphoreMutex open_mutex(NamedSemaphore::OpenType::e_open, sem_name);
+    open_mutex.lock();
+    create_mutex.unlock();
+    bool lock_result = open_mutex.try_lock();
+    ASSERT_TRUE(lock_result);
 }
