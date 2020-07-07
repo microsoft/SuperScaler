@@ -9,7 +9,7 @@ def test_network_simulator_functionality():
     # Topology:
     # GPU0 --10G-→ PCIeSW --6G-→ GPU2
     # GPU1 --2G--↗
-    tensor_unit = Tensor('int32', 1)
+    tensor_unit = Tensor("DT_INT32", 1)
     net_sim = NetworkSimulator(
         'network_sim',
         [
@@ -89,7 +89,7 @@ def test_network_simulator_functionality():
                 0
             ),
             device_name=net_sim.name(),
-            output_tensors=[Tensor('int32', 1)],  # should be []
+            output_tensors=[Tensor("DT_INT32", 1)],  # should be []
             execution_time=10, input_ids=[],
             dependency_ids=[], successor_ids=[101]),
             net_sim)
@@ -117,7 +117,7 @@ def create_netsim_nodes(index, src_name, dst_name,
             src_name, dst_name, route_index
         ),
         device_name=device_obj.name(),
-        output_tensors=[Tensor('int32', tensor_size)],
+        output_tensors=[Tensor("DT_INT32", tensor_size)],
         execution_time=10, input_ids=[],
         dependency_ids=[], successor_ids=[index+1]),
         device_obj)

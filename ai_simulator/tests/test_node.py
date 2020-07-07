@@ -6,7 +6,7 @@ from simulator.fifo_device import FIFODevice
 
 def test_node_module():
     # Initialize output_tensors
-    o_tensors = [Tensor('int32', 5), Tensor('int16', 6)]
+    o_tensors = [Tensor("DT_INT32", 5), Tensor("DT_INT16", 6)]
     # Test node initialization failure
     # The dependency_ids has duplicated elements
     node_metadata = NodeMetadata(

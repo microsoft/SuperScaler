@@ -7,7 +7,7 @@ from simulator.network_simulator.flow import Flow
 
 
 def test_flow():
-    tensor_unit = Tensor('int32', 1)
+    tensor_unit = Tensor("DT_INT32", 1)
     tensor_size = 5
     # Init flow with same time_now and capacity
     flow_0 = create_test_flow(0, 'send', '/switch/switch0/', tensor_size, 10)
@@ -40,9 +40,8 @@ def test_flow():
 
 
 def create_test_flow(index, node_name, device_name, tensor_size, time_now):
-    # tensor_unit = Tensor('int32', 1)
     # Initialize output_tensors
-    o_tensors = [Tensor('int32', 1) for _ in range(tensor_size)]
+    o_tensors = [Tensor("DT_INT32", 1) for _ in range(tensor_size)]
     # Initialize node metadata
     nodes_metadata = []
     nodes_metadata.append(NodeMetadata(index=index, op="send", name=node_name,
