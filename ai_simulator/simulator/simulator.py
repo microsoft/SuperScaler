@@ -27,7 +27,8 @@ class Simulator():
         '''Init Simulator with nodemetadata namedtuples and a device list
 
         Args:
-            nodemetadata_list: a list of namedtuple, storing nodemetadata
+            nodemetadata_list: a list of namedtuple or dict, storing
+                nodemetadata
             device_info: a list of tuple (device_type, spec_list) containing
                 device info, or a list of class Device, storing all Device
         '''
@@ -45,20 +46,7 @@ class Simulator():
         self.__time_now = 0.0
 
         # Init all node metadata
-        for i in range(len(nodemetadata_list)):
-            node = nodemetadata_list[i]
-            metadata = NodeMetadata(index=node.index,
-                                    op=node.op,
-                                    name=node.name,
-                                    device_name=node.device_name,
-                                    execution_time=node.execution_time,
-                                    output_tensors=node.output_tensors,
-                                    input_ids=node.input_ids,
-                                    dependency_ids=node.dependency_ids,
-                                    successor_ids=node.successor_ids
-                                    )
-            self.__nodes_metadata.append(metadata)
-
+        self.__init_node_metadata(nodemetadata_list)
         # Init devices list
         self.__init_device(device_info)
 
@@ -159,6 +147,47 @@ class Simulator():
     def get_nodes(self):
         '''Get the all nodes'''
         return self.__nodes
+
+    def __init_node_metadata(self, nodemetadata_list):
+        '''Init all NodeMetadata based on nodemetadata_list, which could be a
+        list of namedtuple or a list of dict.
+        '''
+        if not isinstance(nodemetadata_list, list):
+            raise ValueError("Input nodemetadata_list should be a list.")
+        elif len(nodemetadata_list) == 0:
+            return
+        else:
+            for i in range(len(nodemetadata_list)):
+                if isinstance(nodemetadata_list[i], dict):
+                    node = nodemetadata_list[i]
+                    metadata = NodeMetadata(
+                        index=node['index'],
+                        op=node['op'],
+                        name=node['name'],
+                        device_name=node['device_name'],
+                        execution_time=node['execution_time'],
+                        output_tensors=node['output_tensors'],
+                        input_ids=node['input_ids'],
+                        dependency_ids=node['dependency_ids'],
+                        successor_ids=node['successor_ids']
+                    )
+                    self.__nodes_metadata.append(metadata)
+                elif isinstance(nodemetadata_list[i], tuple):
+                    node = nodemetadata_list[i]
+                    metadata = NodeMetadata(
+                        index=node.index,
+                        op=node.op,
+                        name=node.name,
+                        device_name=node.device_name,
+                        execution_time=node.execution_time,
+                        output_tensors=node.output_tensors,
+                        input_ids=node.input_ids,
+                        dependency_ids=node.dependency_ids,
+                        successor_ids=node.successor_ids
+                    )
+                    self.__nodes_metadata.append(metadata)
+                else:
+                    raise ValueError("Invalid Input nodemetadata_list.")
 
     def __init_device(self, device_info):
         '''Init self.__devices via device_info
