@@ -5,8 +5,9 @@ cmake_minimum_required(VERSION 3.5.0)
 project(executor)
 
 find_package(CUDA)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/samples)
 
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 

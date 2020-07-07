@@ -1,0 +1,16 @@
+#pragma once
+#include <cstdint>
+#include <cuda.h>
+#include <cuda_runtime.h>
+
+using message_id_t = uint64_t;
+
+struct CudaTransferMeta {
+    message_id_t id; /* Message id*/
+    cudaIpcMemHandle_t handler; /* Handler for receive buffer */
+    size_t length; /* except length */
+};
+
+struct CudaTransferAck {
+    message_id_t id;
+};
