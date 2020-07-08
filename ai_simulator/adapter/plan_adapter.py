@@ -1,5 +1,7 @@
 import copy
 
+from simulator.tensor import Tensor
+
 
 class PlanAdapter():
     """Interface for adapting generated plan for the AI_Simulator."""
@@ -39,9 +41,13 @@ class PlanAdapter():
             'device': str, 'name': str, 'op': str, 'input': list}
         # The communication nodes must have these 7 attributes
         essential_comm_attr_type = dict(
-            {'output_shapes': list,
-             'tensor_name': str,
-             'tensor_type': int},
+            {
+                'target': str,
+                'route_index': int,
+                'output_shapes': list,
+                'tensor_name': str,
+                'tensor_type': str
+            },
             **essential_compute_attr_type
         )
         # These are the valid communication node op's name
@@ -67,11 +73,22 @@ class PlanAdapter():
 
     def __parse_plan(self):
         """ Parsing plan includes two steps, return False if failed
-            1, create index dependency for each node with new arguments of
+            1. create index dependency for each node with new arguments of
             index, input_ids, related_id, successor_ids
-            2, add empty arguments for Ai_simulator to fill
+            2. add execution time using Profiler
+            2. add empty arguments for AISimulator
         """
-        return self.__create_index_dependency()
+        # create dependency for each node
+        if not self.__create_index_dependency():
+            return False
+        # add estimated execution_time for each node
+        elif not self.__add_execution_time():
+            return False
+        # init the essential communication attributes for each node
+        elif not self.__init_communication_attributes():
+            return False
+        else:
+            return True
 
     def __create_index_dependency(self):
         '''
@@ -165,8 +182,42 @@ class PlanAdapter():
                 )
             else:
                 node['dependency_ids'] = []
+
+        return True
+
+    def __add_execution_time(self):
+        '''Add the execution time to nodes
+        '''
+        # TODO: In future, this function will call Profiler to get the
+        # estimated execution time
         for node in self.__plan:
-            # execution_time: argument for Ai_simulator to fill
+            # execution_time: argument for AISimulator to fill
             if 'execution_time' not in node:
                 node['execution_time'] = 0.0
+        return True
+
+    def __init_communication_attributes(self):
+        '''Add output_tensors, change Send nodes' name, change device name to
+        NetworkSimulator
+        '''
+        for node_raw in self.__plan:
+            # Add device_name and output_tensors attributes
+            node_raw['device_name'] = node_raw['device']
+            node_raw['output_tensors'] = []
+            if node_raw['op'] == 'Send' or node_raw['op'] == 'Recv':
+                # Set device_name to NetworkSimulator for send/recv nodes
+                node_raw['device_name'] = 'NetworkSimulator'
+                if node_raw['op'] == 'Send':
+                    # Check whether tensor_type is valid
+                    if not Tensor.check_tensor_type(node_raw['tensor_type']):
+                        return False
+                    # Add Tensor list
+                    node_raw['output_tensors'] = [
+                        Tensor(node_raw['tensor_type'], node_raw['size'])]
+                    # Change name of node, this is used as routing info
+                    new_name = ":send:{0}:{1}:{2}:".format(
+                        node_raw['device'], node_raw['target'],
+                        node_raw['route_index']
+                    )
+                    node_raw['name'] = new_name
         return True

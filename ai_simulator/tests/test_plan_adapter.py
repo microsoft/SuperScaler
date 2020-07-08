@@ -1,5 +1,6 @@
 import json
 import os
+import copy
 
 from adapter.plan_adapter import PlanAdapter
 
@@ -28,11 +29,27 @@ def test_plan_adapter():
                 assert node['index'] in check_node['input_ids'] \
                     or node['index'] in check_node['dependency_ids']
 
+    # Check adapted_plan, excluding the output_tensors
+    adapted_plan_without_output_tensors = copy.deepcopy(adapted_plan)
+    for node in adapted_plan_without_output_tensors:
+        node['output_tensors'] = []
     path_output = os.path.join(
         os.path.dirname(__file__),
         "test_plan_gen_adapter/test_plan_adapter_plan_output.json")
-    adapted_plan_ref = json.load(open(path_output, 'r'))
-    assert(adapted_plan == adapted_plan_ref)
+    adapted_plan_without_output_tensors_ref = json.load(open(path_output, 'r'))
+
+    assert(adapted_plan_without_output_tensors ==
+           adapted_plan_without_output_tensors_ref)
+
+    # Check output_tensors
+    for node in adapted_plan:
+        node_tensor_byte_size = 0
+        for tensor in node['output_tensors']:
+            node_tensor_byte_size += tensor.get_bytes_size()
+        if node['op'] == 'Send':
+            assert node_tensor_byte_size == 200
+        elif node['op'] == 'Recv':
+            assert node_tensor_byte_size == 0
 
     # Test wrong input
     assert adapter.set_plan(None) is False
@@ -43,82 +60,94 @@ def test_plan_adapter():
         "op": "Send",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "offset": 0,
         "size": 50,
         "reduction": "",
-        "target": "device_1",
+        "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Recv_1",
         "parent": "test",
-        "input": []}
+        "input": [],
+        "route_index": 0,
+        "route_type": "PCIE"
+    }
     assert adapter.set_plan([wrong_input_node]) is False
     assert adapter.get_plan() is None
     # Wrong 'device' type (should be str)
     wrong_input_node = {
-        'device': 1024,
+        "device": 1024,
         "name": "test_Send_0",
         "op": "Send",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "offset": 0,
         "size": 50,
         "reduction": "",
-        "target": "device_1",
+        "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Recv_1",
         "parent": "test",
-        "input": []}
+        "input": [],
+        "route_index": 0,
+        "route_type": "PCIE"
+    }
     assert adapter.set_plan([wrong_input_node]) is False
     assert adapter.get_plan() is None
-    # No (test_Send_0, device_1) in node list
+    # No (test_Send_0, /server/hostname1/GPU/1/) in node list
     wrong_input_node = {
-        "device": "device_0",
+        "device": "/server/hostname1/GPU/0/",
         "name": "test_Recv_1",
         "op": "Recv",
         "output_shapes": [[1, 100]],
         "tensor_name": "test",
-        "tensor_type": 1,
+        "tensor_type": "DT_FLOAT",
         "offset": 50,
         "size": 50,
         "reduction": "sum",
-        "target": "device_1",
+        "target": "/server/hostname1/GPU/1/",
         "related_op": "test_Send_0",
         "parent": "test",
-        "input": ["test_Send_0"]
+        "input": ["test_Send_0"],
+        "route_index": 0,
+        "route_type": "PCIE"
     }
     assert adapter.set_plan([wrong_input_node]) is False
     assert adapter.get_plan() is None
     # 'parent' attr is not the same
     wrong_input_nodes = [
         {
-            "device": "device_0",
+            "device": "/server/hostname1/GPU/0/",
             "name": "test_Send_0",
             "op": "Send",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "offset": 0,
             "size": 50,
             "reduction": "",
-            "target": "device_1",
+            "target": "/server/hostname1/GPU/1/",
             "related_op": "test_Recv_1",
             "parent": "NOT_SAME_PARENT",
-            "input": []
+            "input": [],
+            "route_index": 0,
+            "route_type": "PCIE"
         },
         {
-            "device": "device_1",
+            "device": "/server/hostname1/GPU/1/",
             "name": "test_Recv_1",
             "op": "Recv",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "offset": 0,
             "size": 50,
             "reduction": "sum",
-            "target": "device_0",
+            "target": "/server/hostname1/GPU/0/",
             "related_op": "test_Send_0",
             "parent": "test",
-            "input": ["test_Send_0"]
+            "input": ["test_Send_0"],
+            "route_index": 0,
+            "route_type": "PCIE"
         }
     ]
     assert adapter.set_plan(wrong_input_nodes) is False
@@ -126,34 +155,38 @@ def test_plan_adapter():
     # (related_op, target) not in node list
     wrong_input_nodes = [
         {
-            "device": "device_0",
+            "device": "/server/hostname1/GPU/0/",
             "name": "test_Send_0",
             "op": "Send",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "offset": 0,
             "size": 50,
             "reduction": "",
-            "target": "device_0",
+            "target": "NO_THIS_TARGET",
             "related_op": "test_Recv_1",
             "parent": "test",
-            "input": []
+            "input": [],
+            "route_index": 0,
+            "route_type": "PCIE"
         },
         {
-            "device": "device_1",
+            "device": "/server/hostname1/GPU/1/",
             "name": "test_Recv_1",
             "op": "Recv",
             "output_shapes": [[1, 100]],
             "tensor_name": "test",
-            "tensor_type": 1,
+            "tensor_type": "DT_FLOAT",
             "offset": 0,
             "size": 50,
             "reduction": "sum",
-            "target": "device_0",
+            "target": "/server/hostname1/GPU/0/",
             "related_op": "test_Send_0",
             "parent": "test",
-            "input": ["test_Send_0"]
+            "input": ["test_Send_0"],
+            "route_index": 0,
+            "route_type": "PCIE"
         }
     ]
     assert adapter.set_plan(wrong_input_nodes) is False
