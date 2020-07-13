@@ -4,6 +4,9 @@
 #include <condition_variable>
 #include <functional>
 #include <memory>
+#include <vector>
+
+using task_id_t = uint64_t;
 
 class Executor;
 
@@ -29,6 +32,15 @@ public:
     bool commit();
     TaskState get_state() const;
     bool is_finished() const;
+    task_id_t get_task_id() const;
+    void set_task_id(task_id_t t_id);
+
+    /**
+     * @brief Get dependent tasks 
+     * @return vector of depend tasks
+     */
+    const std::vector<std::weak_ptr<Task> > &get_dependences();
+
     /**
      * @brief Wait until Task finished, will return directly when uncommitted
      * 
@@ -49,8 +61,9 @@ private:
     std::mutex m_state_mutex;
     std::condition_variable m_condition;
     TaskState m_state;
+    task_id_t m_id;
     Executor *m_exec;
-    // Caution: callback will be called with m_state unchanged, use the passwd state instead
+    // Caution: callback will be called with m_state unchanged, use the passed state instead
     std::function<void(TaskState)> m_callback;
 };
 

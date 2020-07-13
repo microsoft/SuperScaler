@@ -12,7 +12,6 @@ public:
     SendTask(Executor *exec, task_callback_t callback,
              std::shared_ptr<Channel> channel, rank_t peer_rank,
              const void *buffer, size_t buffer_length);
-
 protected:
     TaskState execute(Executor *exec) override;
 

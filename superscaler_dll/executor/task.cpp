@@ -1,7 +1,7 @@
 #include "task.hpp"
 
 Task::Task(Executor *exec, std::function<void(TaskState)> callback)
-    : m_state(TaskState::e_uncommitted), m_exec(exec), m_callback(callback)
+    : m_state(TaskState::e_uncommitted), m_id(0), m_exec(exec), m_callback(callback)
 {
 }
 

@@ -1,30 +1,63 @@
 #pragma once
 
 #include <memory>
-#include <list>
-#include <vector>
-#include <limits>
 #include <mutex>
 
 #include "executor.hpp"
-#include "worker.hpp"
-
-class Task;
+#include "task_sched.hpp"
+#include "worker_sched.hpp"
+#include "task_manager.hpp"
 
 class PollExecutor : public Executor {
 public:
-    PollExecutor(size_t m_max_worker_count = std::numeric_limits<size_t>::max());
-    ~PollExecutor();
+	PollExecutor();
+	~PollExecutor();
 
-    bool add_task(std::shared_ptr<Task> t, bool thread_safe = true) override;
+	/**
+	 * @brief Add a task
+	 * 
+	 * @param t Pointer to task
+	 * @param thread_safe If multi-thread safe
+	 * 
+	 * @return True if successfully added
+	 */
+	bool add_task(task_id_t t_id, bool thread_safe=true) override;
+	/**
+	 * @brief Create a task
+	 * @return A task id unique within the process
+	 */
+	template <class T, class... Args>
+	task_id_t create_task(Args... args);
+	/**
+	 * @brief Get the pointer to a task
+	 * @param t_id Task id
+	 * @return Pointer to the task
+	 */
+	std::weak_ptr<Task> get_task(task_id_t t_id) override;
+
+	/**
+	 * @brief Add a dependence relationship that
+	 * task \p who depends on task \p whom
+	 */
+	void add_dependence(task_id_t who, task_id_t whom) override;
+
+	/**
+	 * @brief Block to wait a finished task. Executor won't keep any
+	 * information about this task after wait() called
+     * 
+     * @return The pointer to the execution info
+	 */
+	std::shared_ptr<ExecInfo> wait() override;
+
+	/**
+	 * @brief Block to wait a specific task
+	 * @param task_id task id
+	 * @return The pointer to the execution info
+	 */
+	std::shared_ptr<ExecInfo> wait(task_id_t task_id) override;
 
 private:
-    void assign_task(std::shared_ptr<Task> t, bool thread_safe = true);
-    void release_worker(std::weak_ptr<Worker> worker);
-
-    size_t m_max_worker_count;
-    std::mutex m_mutex;
-    std::list<std::weak_ptr<Worker> > m_idle_workers;
-    std::list<std::weak_ptr<Worker> > m_busy_workers;
-    std::vector<std::shared_ptr<Worker> > m_workers;
+	std::shared_ptr<TaskScheduler> m_task_scheduler;
+	std::shared_ptr<WorkerScheduler> m_worker_scheduler;
+	std::unique_ptr<TaskManager> m_task_manager;
 };
