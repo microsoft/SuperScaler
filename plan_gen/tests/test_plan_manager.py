@@ -1,7 +1,7 @@
 import json
 import os
 import pytest
-from resources.resource_pool import ResourcePool
+from plan.resources.resource_pool import ResourcePool
 from plan.plan_mapper import GPURoundRobinMapper
 from plan.plan_pool import PlanPool
 from plan.plan import Plan

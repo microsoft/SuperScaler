@@ -1,4 +1,4 @@
-from plan.plan import Plan
+from .plan import Plan
 
 
 class PlanPool(object):

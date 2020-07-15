@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format
-from adapter.DAG_parser import DAGParser
+from .DAG_parser import DAGParser
 
 
 class ParserError(Exception):

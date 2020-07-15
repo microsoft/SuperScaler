@@ -2,7 +2,7 @@ import os
 import json
 from plan.node_list import NodeList
 from plan.plan_mapper import GPURoundRobinMapper
-from resources.resource_pool import ResourcePool
+from plan.resources.resource_pool import ResourcePool
 
 
 def test_gpu_round_robin():

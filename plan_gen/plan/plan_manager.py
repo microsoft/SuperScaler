@@ -1,5 +1,5 @@
-from plan.plan_mapper import PlanMapper
-from plan.plan_pool import PlanPool
+from .plan_mapper import PlanMapper
+from .plan_pool import PlanPool
 
 
 class PlanManager(object):

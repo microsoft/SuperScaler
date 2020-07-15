@@ -3,7 +3,7 @@ import json
 import pytest
 import tensorflow as tf
 from google.protobuf import text_format
-from adapter.tf_parser import TFNodeAttrParser, TFParser, ParserError
+from plan.adapter.tf_parser import TFNodeAttrParser, TFParser, ParserError
 
 
 class InputError(Exception):

@@ -1,5 +1,5 @@
 import math
-from plan.allreduce_plan import AllreducePlan
+from .allreduce_plan import AllreducePlan
 
 
 class RecursiveHalvingAllreducePlan(AllreducePlan):

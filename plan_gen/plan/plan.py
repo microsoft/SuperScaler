@@ -1,6 +1,6 @@
 import copy
-from plan.node_list import NodeList
-from plan.node_list import Node
+from .node_list import NodeList
+from .node_list import Node
 
 
 class Plan(object):

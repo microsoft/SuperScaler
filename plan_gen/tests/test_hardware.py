@@ -1,8 +1,8 @@
 import pytest
 
-from resources.link import PCIE
-from resources.hardware import Hardware, ComputationHardware, CPUHardware
-from resources.hardware import GPUHardware, NetworkSwitchHardware
+from plan.resources.link import PCIE
+from plan.resources.hardware import Hardware, ComputationHardware, CPUHardware
+from plan.resources.hardware import GPUHardware, NetworkSwitchHardware
 
 
 def test_hardware():

@@ -1,6 +1,6 @@
 import copy
-from plan.plan import Plan
-from plan.node_list import NodeList
+from .plan import Plan
+from .node_list import NodeList
 
 
 class AllreducePlan(Plan):
