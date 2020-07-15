@@ -2,7 +2,7 @@ import json
 import os
 import copy
 
-from adapter.plan_adapter import PlanAdapter
+from simulator.adapter.plan_adapter import PlanAdapter
 
 
 def test_plan_adapter():

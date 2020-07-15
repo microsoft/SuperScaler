@@ -1,6 +1,6 @@
 import copy
 
-from simulator.tensor import Tensor
+from ..tensor import Tensor
 
 
 class PlanAdapter():
