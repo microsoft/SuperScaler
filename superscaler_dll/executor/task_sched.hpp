@@ -6,7 +6,7 @@
 #include <condition_variable>
 #include <queue>
 #include <unordered_map>
-#include <set>
+#include <utility>
 
 #include "task.hpp"
 
@@ -74,9 +74,13 @@ public:
 	std::shared_ptr<ExecInfo> wait(task_id_t task_id);
 
 private:
+	void dispatch_runnable();
+
+private:
 	/* Task pool to store all unfinished tasks */
-	std::unordered_map<task_id_t, std::shared_ptr<Task> > m_tasks;
-	std::unordered_map<task_id_t, std::set<task_id_t> > m_dependences;
+	std::unordered_map<task_id_t, std::pair<bool, std::shared_ptr<Task>>> m_tasks;
+	std::unordered_map<task_id_t, std::vector<task_id_t> > m_dependences;
+	std::unordered_map<task_id_t, size_t> m_dependence_count;
 	/* Queue to store execution info of finished tasks */
 	std::queue<std::shared_ptr<ExecInfo> > m_exec_infos;
 	std::mutex m_task_mutex;

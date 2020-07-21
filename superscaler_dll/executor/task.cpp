@@ -29,6 +29,21 @@ TaskState Task::get_state() const
     return m_state;
 }
 
+task_id_t Task::get_task_id() const
+{
+    return m_id;
+}
+
+void Task::set_task_id(task_id_t t_id)
+{
+    m_id = t_id;
+}
+
+bool Task::is_finished() const
+{
+    return m_state == TaskState::e_failed || m_state == TaskState::e_success;
+}
+
 bool Task::commit()
 {
     std::lock_guard<std::mutex> lock(m_state_mutex);
