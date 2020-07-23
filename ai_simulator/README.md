@@ -3,14 +3,11 @@
 ## Project Organization
 
 * `./doc/`: The detailed document of the AI Simulator.
-* `./examples/`: The tensorflow graph examples, including 4 CNN models and 4 RNN models.
-* `./adapter/`: The source code of the adapter module.
 * `./profiler/`: The source code of the profiler module.
 * `./simulator/`: The source code of the simulator module.
 * `./tests/`: The unit test files used in the AI Simulator.
 * `./Dockerfile`: The Dockerfile used to build the docker environment for the AI Simulator.
 * `./requirements.txt`: The prerequisite Python packages for the AI Simulator.
-* `./run.py`: The command line tool for the AI Simulator.
 * `./READEME.md`: The README file.
 
 ## Installation
@@ -31,7 +28,7 @@ sudo docker run ai-simulator
 Please install Python and TensorFlow berfore running the AI Simultor. The recommended setting is as follows:
 
 ```text
-    Python: 3.5–3.7 (64 bit)
+    Python: 3.6–3.7 (64 bit)
     Pip: >= 19.0
     TensorFlow: 1.15
     Protobuf: 3.8
@@ -95,44 +92,15 @@ You can go to ai_simulator folder, and run test:
 python3 -m pytest -v
 ```
 
-## Run AI Simulator
-
-You can go to ai_simulator folder, and run the command line tool for the AI Simulator:
-```bash
-python3 run.py -g <PATH_TO_MODEL_GRAPH>.
-```
-The `<PATH_TO_MODEL_GRAPH>` can be either a file path or a directory path. If `<PATH_TO_MODEL_GRAPH>` is a file path, it will simulate the single model that the path points to. If `<PATH_TO_MODEL_GRAPH>` is a directory path, it will simulate all the models under the directory recusively. By default, the `<PATH_TO_MODEL_GRAPH>` is set to the absolte path to the examples folder. A log file will be generated as well for detailed information of the simulation.
-
-For example, to run the simulator for the CNN_alexnet_cifar10 model in the `./examples/`, 
-```bash
-python3 run.py -g ./examples/CNN_alexnet_cifar10.pbtxt
-```
-
-For example, to run the simulator for all the models in the `./examples/`, 
-```bash
-python3 run.py -g ./examples/
-```
-
-For details of the usage,
-```bash
-python3 run.py -h
-```
-
 ## For developers
 
 ### AI Simulator development
-There are several interfaces from different modules that the ai simulator command line tool needs to call.
+There are several interfaces that users will call
 
-- In package `adapter`
-  - In module `tf_adapter`
-    - `TFAdapter.parse_protobuf_graph(graph_def)`: Parse tensorflow graph.
-- In package `profiler`
-  - In module `Profiler`
-    - `Profiler.get_node_execution_time(node)`: Profile single node in the graph.
-- In package `simulator`
-  - In module `simulator`
-    - `Simulator.__init__(model_graph)`: Initialize simulator for given model graph.
-    - `Simulator.run()`: Run the simulator.
+- In package `ai_simulator`
+  - `PlanAdapter`: input and check the json input of *node_list*
+  - `Simulator`: input *node_list* and *device_list* and use `Simulator.run()` to get the final result.
+
 
 ### Customized Device creation
 You can create you own customed device which can be merged into the simulator.
