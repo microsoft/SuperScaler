@@ -100,15 +100,21 @@ def test_resource_pool_functionality():
     print(rp.get_computational_hardware_as_list())
     assert rp.get_computational_hardware_as_list() == [
         {'performance': '12884901888.0bps',
-         'name': '/server/hostname1/CPU/0/'},
+         'name': '/server/hostname1/CPU/0/',
+         'type': 'CPU'},
         {'performance': '12884901888.0bps',
-         'name': '/server/hostname1/CPU/1/'},
+         'name': '/server/hostname1/CPU/1/',
+         'type': 'CPU'},
         {'performance': '13194139533312.0bps',
-         'name': '/server/hostname1/GPU/0/'},
+         'name': '/server/hostname1/GPU/0/',
+         'type': 'GPU'},
         {'performance': '13194139533312.0bps',
-         'name': '/server/hostname1/GPU/1/'},
+         'name': '/server/hostname1/GPU/1/',
+         'type': 'GPU'},
         {'performance': '13194139533312.0bps',
-         'name': '/server/hostname1/GPU/2/'},
+         'name': '/server/hostname1/GPU/2/',
+         'type': 'GPU'},
         {'performance': '13194139533312.0bps',
-         'name': '/server/hostname1/GPU/3/'}
+         'name': '/server/hostname1/GPU/3/',
+         'type': 'GPU'}
     ]

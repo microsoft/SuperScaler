@@ -213,7 +213,10 @@ class ResourcePool():
         '''
         hardware_info = []
         for hw in self.__computational_hardware.values():
-            hardware_info.append(hw.to_dict())
+            hardware_dict = hw.to_dict()
+            _, hardware_dict['type'], _, _ = \
+                hw.get_computation_hardware_description(hardware_dict['name'])
+            hardware_info.append(hardware_dict)
         return hardware_info
 
     def get_resource_from_name(self, resource_name):

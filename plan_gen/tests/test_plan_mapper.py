@@ -26,6 +26,14 @@ def test_gpu_round_robin():
     mappeded_node_list_ref = json.load(open(path_output, 'r'))
     assert(mapped_node_list.to_json() == mappeded_node_list_ref)
 
+    # Test get_route_info function
+    route_info = mapper.route_info
+    assert(len(route_info) == 2)
+    assert(route_info == {('/server/hostname1/GPU/0/',
+                           '/server/hostname1/GPU/1/', 0): [2, 9],
+                          ('/server/hostname1/GPU/1/',
+                           '/server/hostname1/GPU/0/', 0): [4, 8]})
+
     # Wrong setup: Plan mapper with no-connection resources pool
     resource_yaml_no_connection = os.path.join(
         os.path.dirname(__file__), 'data', 'resource_pool_no_connection.yaml')
