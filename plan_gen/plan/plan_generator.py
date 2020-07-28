@@ -10,11 +10,11 @@ v0.1 supported function:
 Introduce import package.
 '''
 
-from plan.plan_mapper import GPURoundRobinMapper
-from plan.plan_pool import PlanPool
-from plan.ring_allreduce_plan import RingAllreducePlan
-from plan.reduce_broadcast_allreduce_plan import ReduceBroadcastAllreducePlan
-from plan.plan_manager import PlanManager
+from .plan_mapper import GPURoundRobinMapper
+from .plan_pool import PlanPool
+from .ring_allreduce_plan import RingAllreducePlan
+from .reduce_broadcast_allreduce_plan import ReduceBroadcastAllreducePlan
+from .plan_manager import PlanManager
 
 
 class PlanGenerator():
