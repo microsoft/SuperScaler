@@ -45,3 +45,32 @@ def test_plan_generator():
 
     output_ref = json.load(open(output_path, 'r'))
     assert(plan_ring.to_json() == output_ref)
+
+    route_info = plan_generator.get_routing_info()
+    assert(len(route_info) == 2)
+    assert(route_info == {('/server/hostname1/GPU/0/',
+                           '/server/hostname1/GPU/1/', 0): [2, 9],
+                          ('/server/hostname1/GPU/1/',
+                           '/server/hostname1/GPU/0/', 0): [4, 8]})
+
+    device_info = plan_generator.get_device_info()
+    assert device_info == [
+        {'performance': '12884901888.0bps',
+         'name': '/server/hostname1/CPU/0/',
+         'type': 'CPU'},
+        {'performance': '12884901888.0bps',
+         'name': '/server/hostname1/CPU/1/',
+         'type': 'CPU'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/0/',
+         'type': 'GPU'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/1/',
+         'type': 'GPU'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/2/',
+         'type': 'GPU'},
+        {'performance': '13194139533312.0bps',
+         'name': '/server/hostname1/GPU/3/',
+         'type': 'GPU'}
+    ]

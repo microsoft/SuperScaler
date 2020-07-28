@@ -66,7 +66,7 @@ class PlanGenerator():
         # Note the get_routing_info() function should be called after
         # the get_execution_plan() function, otherwise the routing_info
         # is empty
-        routing_info = self.__mapper.get_route_info()
+        routing_info = self.__mapper.route_info
 
         return routing_info
 
