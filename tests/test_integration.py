@@ -12,10 +12,10 @@ def init_nodelist(graph_dir):
         os.path.dirname(__file__), graph_dir)
 
     # get all graphs and devices
-    graph_paths = os.listdir(graph_path)
+    device_ids = os.listdir(graph_path)
     graph_paths = [
-        os.path.join(graph_path, i + "/graph.pbtxt") for i in graph_paths]
-    devices = ["device_" + i for i in graph_paths]
+        os.path.join(graph_path, i + "/graph.pbtxt") for i in device_ids]
+    devices = ["device_" + i for i in device_ids]
 
     # parse the graph into nodelist
     parser = TFParser()
