@@ -59,9 +59,10 @@ public:
     inline bool pop(T &value);
     inline size_t size() const;
     inline size_t capacity() const;
+    inline bool empty() const;
 
 private:
-    RingBuffer m_ring_buffer;
+    RingBuffer m_ring_buffer;    
 };
 
 template <class T>
@@ -92,4 +93,10 @@ template <class T>
 inline size_t RingBufferQueue<T>::capacity() const
 {
     return m_ring_buffer.capacity() / sizeof(T);
+}
+
+template <class T>
+inline bool RingBufferQueue<T>::empty() const
+{
+    return (size() == 0);
 }

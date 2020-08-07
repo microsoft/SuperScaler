@@ -9,6 +9,7 @@
 using task_id_t = uint64_t;
 
 class Executor;
+class ExecInfo;
 
 enum class TaskState { e_uncommitted, e_unfinished, e_success, e_failed };
 
@@ -47,6 +48,12 @@ public:
      * @return TaskState 
      */
     TaskState wait();
+
+    /**
+     * @brief Generate execution info for this task
+     * @return execution info
+     */
+    ExecInfo gen_exec_info() const;
 
 protected:
     /**

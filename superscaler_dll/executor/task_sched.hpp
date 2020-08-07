@@ -2,17 +2,15 @@
 
 #include <memory>
 #include <vector>
-#include <mutex>
-#include <condition_variable>
-#include <queue>
+#include <list>
 #include <unordered_map>
+#include <unordered_set>
+#include <condition_variable>
 #include <utility>
 
 #include "task.hpp"
-
-class ExecInfo;
-class PollExecutor;
-class WorkerScheduler;
+#include "exec_info.hpp"
+#include "utils/ring_buffer.hpp"
 
 /**
  * @brief The TaskScheduler stores unfinished tasks and execution info
@@ -20,72 +18,83 @@ class WorkerScheduler;
  * 
  * Life cycle of a task within the TaskScheduler:
  * 1. Executor add a task to TaskScheduler
- * 2. WorkerScheduler get a task from TaskScheduler
- * 3. Worker remove a task from TaskScheduler after it's finished
- * 4. TaskScheduler put the execution info into the finish queue
+ * 2. Executor get a task from TaskScheduler and add to WorkerScheduler
+ * 3. Executor remove a task from TaskScheduler after it's finished
+ * 4. TaskScheduler put the execution info into the exec info queue
  * 5. Executor get the execution info from TaskScheduler
  */
 class TaskScheduler {
 public:
-	TaskScheduler();
+	friend class PollExecutor;
+
+	TaskScheduler(size_t queue_size=64);
     TaskScheduler(const TaskScheduler &) = delete;
     TaskScheduler operator=(const TaskScheduler &) = delete;
 	virtual ~TaskScheduler();
 
 	/**
 	 * @brief Add a task to the task pool
-	 * 
 	 * @param t Task to add
-	 * @param thread_safe If multi-thread safe
 	 * 
 	 * @return True if task is successfully added
 	 */
-	bool add_task(std::shared_ptr<Task> t, bool thread_safe=true);
+	bool add_task(std::shared_ptr<Task> t);
 
 	/**
 	 * @brief Add a dependence relationship that
 	 * task \p who depends on task \p whom
 	 */
-	void add_dependence(task_id_t who, task_id_t whom);
-
-	/**
-	 * @brief Remove a finished task from the task pool, add execution info,
-	 * and update dependence graph. Called by worker scheduler.
-	 * 
-	 * @param task_id The task id of the task to be removed
-	 * 
-	 * @return True if task is successfully removed
-	 */
-	bool remove_task(task_id_t task_id);
+	bool add_dependence(task_id_t who, task_id_t whom);
 
 	/**
      * @brief Block to wait a finished task. Executor won't keep any
 	 * information about this task after wait() called
      * 
-     * @return The pointer to the execution info
+     * @return The execution info
      */
-	std::shared_ptr<ExecInfo> wait();
+	ExecInfo wait();
 
 	/**
 	 * @brief Block to wait a specific task
 	 * @param task_id task id
-	 * @return The pointer to the execution info
+	 * @return The execution info
 	 */
-	std::shared_ptr<ExecInfo> wait(task_id_t task_id);
+	ExecInfo wait(task_id_t task_id);
+
+	/**
+	 * @brief Get all runnable tasks from runnable list
+	 */
+	std::shared_ptr<Task> get_runnable();
+
+	/**
+	 * @brief Remove a finished task from the task pool, add execution info,
+	 * and update dependence graph.
+	 * 
+	 * @param task_id The task id of the task to be removed
+	 * 
+	 * @return True if task is successfully removed
+	 */
+	bool task_done(task_id_t task_id);
 
 private:
-	void dispatch_runnable();
+	void sync_runnable();
+	ExecInfo fetch_one_exec_info();
 
 private:
 	/* Task pool to store all unfinished tasks */
-	std::unordered_map<task_id_t, std::pair<bool, std::shared_ptr<Task>>> m_tasks;
-	std::unordered_map<task_id_t, std::vector<task_id_t> > m_dependences;
+	std::unordered_map<task_id_t, std::shared_ptr<Task>> m_added_tasks;
+
+	std::unordered_map<task_id_t, std::unordered_set<task_id_t> > m_dependences;
 	std::unordered_map<task_id_t, size_t> m_dependence_count;
-	/* Queue to store execution info of finished tasks */
-	std::queue<std::shared_ptr<ExecInfo> > m_exec_infos;
-	std::mutex m_task_mutex;
+	std::unordered_map<task_id_t, bool> m_is_dispatched;
+
+	// Tasks runnable
+	std::list<task_id_t> m_runnable;
+	// Queue to store execution info of finished tasks
+	RingBufferQueue<ExecInfo> *m_exec_info_queue;
+	std::unique_ptr<char[]> m_exec_info_queue_data;
+	// Exectio info polled out from queue but not yet fetched
+	std::unordered_map<task_id_t, ExecInfo> m_exec_info_wait;
 	std::mutex m_info_mutex;
 	std::condition_variable m_condition;
-	std::shared_ptr<WorkerScheduler> m_worker_scheduler;
-	std::weak_ptr<PollExecutor> m_executor;
 };

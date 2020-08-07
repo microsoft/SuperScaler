@@ -9,17 +9,14 @@ enum class ExecState { e_success, e_fail };
 
 class ExecInfo {
 public:
-	ExecInfo() = delete;
-	ExecInfo(const ExecInfo &) = delete;
-	ExecInfo &operator=(const ExecInfo &) = delete;
-
-	ExecInfo(task_id_t task_id ,task_callback_t callback);
+	ExecInfo();
+	ExecInfo(task_id_t task_id, ExecState state);
 
 	virtual ~ExecInfo();
 	ExecState get_state() const;
+	task_id_t get_task_id() const;
 
 private:
 	task_id_t m_id;
 	ExecState m_state;
-	task_callback_t m_callback;
 };

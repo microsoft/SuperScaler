@@ -1,4 +1,5 @@
 #include "task.hpp"
+#include "exec_info.hpp"
 
 Task::Task(Executor *exec, std::function<void(TaskState)> callback)
     : m_state(TaskState::e_uncommitted), m_id(0), m_exec(exec), m_callback(callback)
@@ -64,6 +65,17 @@ TaskState Task::wait()
         return state == TaskState::e_success || state == TaskState::e_failed;
     });
     return m_state;
+}
+
+ExecInfo Task::gen_exec_info() const
+{
+    ExecState exec_state;
+    if (m_state == TaskState::e_success)
+        exec_state = ExecState::e_success;
+    else
+        exec_state = ExecState::e_fail;
+
+    return ExecInfo(m_id, exec_state);
 }
 
 TaskState Task::execute(Executor *)
