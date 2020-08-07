@@ -67,6 +67,9 @@ class TFParser(DAGParser):
         devices: virtual device_id
         '''
         node_list = []
+        """ comment this part as profiling_data_list is never used
+        profiling_data_list = []
+        """
 
         if len(graph_paths) != len(devices):
             raise ValueError("Devices count %d cannot match graph count %d" % (
@@ -74,7 +77,13 @@ class TFParser(DAGParser):
                                 len(graph_paths)))
 
         for graph_path, device_id in zip(graph_paths, devices):
-            graph = self.__load_protobuf_from_file(graph_path)
+            graph = self.load_protobuf_from_file(graph_path)
+            """ TODO add profiling_data_list support here
+            profiling_data_sublist = self.get_profiling_data_list(graph,
+                                                                  device_id)
+            profiling_data_list.extend(profiling_data_sublist)
+            """
+
             for node in graph.node:
                 attrs = self.__NodeAttrParser.parse_node(node)
                 metadata = str(node)
@@ -149,7 +158,7 @@ class TFParser(DAGParser):
             node['input'] = inputs
 
     @staticmethod
-    def __load_protobuf_from_file(filename):
+    def load_protobuf_from_file(filename):
         '''
         Load protobuf from file
         Return the protobuf
@@ -182,6 +191,113 @@ class TFParser(DAGParser):
             return 'Recv'
         else:
             return op
+
+    def get_profiling_data_list(self,
+                                graph,
+                                device_id,
+                                str_format=False):
+        '''
+        Parse all nodes form tensorflow DAGs.
+        Return the profiling_data_list: a list of profiling_node
+        profiling node structure:
+            node:           original TF node
+            device:         device id
+            name:           name of node
+            op:             op
+            output_shapes:  List of each output tensor's shape
+            input_shapes:   List of each input tensor's shape
+            attr_list:      List of (attr key, attr value) pair
+        '''
+
+        profiling_data_list = []
+
+        for node in graph.node:
+            # This setting is only for debug
+            if str_format is True:
+                profiling_node = {"node_def": str(node),
+                                  "device": device_id}
+            else:
+                profiling_node = {"node_def": node,
+                                  "device": device_id}
+            attrs = self.__NodeAttrParser.parse_node(node)
+
+            profiling_node['attr_list'] = []
+            profiling_node['output_shapes'] = []
+            for attr_key in attrs:
+                if attr_key == '_output_shapes':
+                    profiling_node['output_shapes'] =\
+                        attrs['_output_shapes']
+                else:
+                    attr_value = attrs[attr_key]
+                profiling_node['attr_list'].append((attr_key, attr_value))
+
+            profiling_node['name'] = str(node.name)
+            profiling_node['input'], profiling_node['input_index'] =\
+                self.__get_input_info(node.input)
+            profiling_node['op'] = node.op
+            profiling_data_list.append(profiling_node)
+
+        self.__create_input_shapes(profiling_data_list)
+
+        return profiling_data_list
+
+    @staticmethod
+    def __get_input_info(node_input):
+        """
+        In tensorflow proto, Each input is "node:src_output" with "node"
+        being a string name and "src_output" indicating which output tensor
+        to use from "node". If "src_output" is 0 the ":0" can be omitted.
+        Regular inputs may optionally be followed by control inputs that
+        have the format "^node".
+
+        we output "node" as input_raw and "src_output" as input_index
+        """
+
+        input_raw = []
+        input_index = []
+        for input_str in node_input:
+            if '^' in input_str:
+                # For tensorflow, ^ indicates control input
+                # In plan_gen, we use -1 for control input
+                index = -1
+                input_str = input_str.replace('^', '')
+            elif ':' in input_str:
+                # For tensorflow, :1 indicates which output tensor to use
+                # We parse the index directly
+                index = int(input_str[input_str.index(':')+1:])
+                input_str = input_str[0:input_str.index(':')]
+            else:
+                # 0 is the default option
+                index = 0
+
+            input_raw.append(input_str)
+            input_index.append(index)
+
+        return input_raw, input_index
+
+    @staticmethod
+    def __create_input_shapes(profiling_data_list):
+        """
+        With node input and node input_index infos, we can find the
+        input shapes by get the output tensor shape of node which has
+        the same node name and device with the current node.
+        """
+
+        for node in profiling_data_list:
+            input_shapes = []
+
+            for input_, index_ in zip(node['input'], node['input_index']):
+
+                if index_ == -1:
+                    input_shapes.append([])
+                else:
+                    for ref_node in profiling_data_list:
+                        if(ref_node['name'] == input_ and
+                           ref_node['device'] == node['device']):
+                            input_shape = ref_node['output_shapes'][index_]
+                            input_shapes.append(input_shape)
+
+            node['input_shapes'] = input_shapes
 
 
 '''
