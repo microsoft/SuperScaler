@@ -1,0 +1,10 @@
+{
+    "Cast%input%[128]%DstT%9%SrcT%1%Truncate%0": {
+        "avg": 20.0,
+        "std_err": 0.1
+    },
+    "Const%dtype%1%value%[1,[128]]": {
+        "avg": 10.0,
+        "std_err": 0.1
+    }
+}

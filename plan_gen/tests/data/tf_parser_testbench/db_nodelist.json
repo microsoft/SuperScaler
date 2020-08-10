@@ -1,0 +1,73 @@
+[
+    {
+        "attr_list": [
+            [
+                "value",
+                [
+                    1,
+                    [
+                        128
+                    ]
+                ]
+            ],
+            [
+                "dtype",
+                1
+            ],
+            [
+                "_output_shapes",
+                1
+            ]
+        ],
+        "device": "device_0",
+        "input": [],
+        "input_index": [],
+        "input_shapes": [],
+        "name": "const_0",
+        "op": "Const",
+        "output_shapes": [
+            [
+                128
+            ]
+        ]
+    },
+    {
+        "attr_list": [
+            [
+                "SrcT",
+                1
+            ],
+            [
+                "Truncate",
+                0
+            ],
+            [
+                "_output_shapes",
+                0
+            ],
+            [
+                "DstT",
+                9
+            ]
+        ],
+        "device": "device_0",
+        "input": [
+            "const_0"
+        ],
+        "input_index": [
+            0
+        ],
+        "input_shapes": [
+            [
+                128
+            ]
+        ],
+        "name": "cast_0",
+        "op": "Cast",
+        "output_shapes": [
+            [
+                128
+            ]
+        ]
+    }
+]
