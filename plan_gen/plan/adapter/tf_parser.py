@@ -2,6 +2,8 @@ import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format
 from .DAG_parser import DAGParser
+from .profiler.profiler import TFProfiler
+from .profiler.database_backend import DatabaseBackendLocalFile
 
 
 class ParserError(Exception):
@@ -55,9 +57,15 @@ class TFParser(DAGParser):
             23: 'DT_UINT64'
         }
 
-    def __init__(self):
+    def __init__(self, db_type=DatabaseBackendLocalFile, **kwargs):
         super().__init__("TFParser")
         self.__NodeAttrParser = TFNodeAttrParser()
+
+        # Check whether the database is available or not
+        try:
+            self.__Profiler = TFProfiler(db_type, **kwargs)
+        except Exception:
+            self.__Profiler = None
 
     def parse_graphs(self, graph_paths, devices):
         '''
@@ -67,9 +75,7 @@ class TFParser(DAGParser):
         devices: virtual device_id
         '''
         node_list = []
-        """ comment this part as profiling_data_list is never used
         profiling_data_list = []
-        """
 
         if len(graph_paths) != len(devices):
             raise ValueError("Devices count %d cannot match graph count %d" % (
@@ -78,11 +84,10 @@ class TFParser(DAGParser):
 
         for graph_path, device_id in zip(graph_paths, devices):
             graph = self.load_protobuf_from_file(graph_path)
-            """ TODO add profiling_data_list support here
+
             profiling_data_sublist = self.get_profiling_data_list(graph,
                                                                   device_id)
             profiling_data_list.extend(profiling_data_sublist)
-            """
 
             for node in graph.node:
                 attrs = self.__NodeAttrParser.parse_node(node)
@@ -93,6 +98,20 @@ class TFParser(DAGParser):
                 attrs['device'] = device_id
                 attrs['name'] = node.name
                 node_list.append(attrs)
+
+        # Query the profiler database with the profiling_data info
+        # to get the execution_time
+        for node, profiling_data in zip(node_list, profiling_data_list):
+
+            if self.__Profiler is not None:
+                execution_time =\
+                    self.__Profiler.get_node_execution_time(profiling_data)
+            else:
+                execution_time = None
+
+            # introduce execution_time when it is available on profiler
+            if execution_time is not None and 'avg' in execution_time:
+                node['execution_time'] = execution_time['avg']
 
         filtered_node_list = self.__filter_node_list(node_list)
         return filtered_node_list
@@ -137,6 +156,8 @@ class TFParser(DAGParser):
             filtered_node['input'] = node['input']
         if 'metadata' in node:
             filtered_node['metadata'] = node['metadata']
+        if 'execution_time' in node:
+            filtered_node['execution_time'] = node['execution_time']
 
         return filtered_node
 
@@ -229,7 +250,7 @@ class TFParser(DAGParser):
                         attrs['_output_shapes']
                 else:
                     attr_value = attrs[attr_key]
-                profiling_node['attr_list'].append((attr_key, attr_value))
+                    profiling_node['attr_list'].append((attr_key, attr_value))
 
             profiling_node['name'] = str(node.name)
             profiling_node['input'], profiling_node['input_index'] =\

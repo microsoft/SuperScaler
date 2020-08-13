@@ -1,7 +1,7 @@
 import pytest
 import json
-from plan.profiler.profiler import TFProfiler
-from plan.profiler.database_backend import DatabaseBackendException
+from plan.adapter.profiler.profiler import TFProfiler
+from plan.adapter.profiler.database_backend import DatabaseBackendException
 
 TEST_NODELIST_FILE = 'tests/data/tf_parser_testbench/db_nodelist.json'
 TEST_DB_FILE = 'tests/data/tf_parser_testbench/db_test.json'

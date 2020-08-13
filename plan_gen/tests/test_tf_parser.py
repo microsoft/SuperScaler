@@ -5,6 +5,8 @@ import tensorflow as tf
 from google.protobuf import text_format
 from plan.adapter.tf_parser import TFNodeAttrParser, TFParser, ParserError
 
+TEST_DB_FILE = 'tests/data/tf_parser_testbench/db_test.json'
+
 
 class InputError(Exception):
     """Exception raised for errors in the input.
@@ -95,29 +97,29 @@ def test_TFParser():
 
     with pytest.raises(Exception):
         "Test benchmark using 2 devices and 3 graphs, raise Exception"
-        parser = TFParser()
+        parser = TFParser(db_file_path=TEST_DB_FILE)
         devices = get_device(2)
         graph_paths = get_graph_paths(
             "data/DataParallelismPlan2GPUsIn2Hosts", 3)
-        parser = TFParser()
+        parser = TFParser(db_file_path=TEST_DB_FILE)
         nodelist = parser.parse_graphs(graph_paths, devices)
 
     with pytest.raises(Exception):
         "Test benchmark using 3 devices and 2 graphs, raise Exception"
-        parser = TFParser()
+        parser = TFParser(db_file_path=TEST_DB_FILE)
         devices = get_device(3)
         graph_paths = get_graph_paths(
             "data/DataParallelismPlan2GPUsIn2Hosts", 2)
-        parser = TFParser()
+        parser = TFParser(db_file_path=TEST_DB_FILE)
         nodelist = parser.parse_graphs(graph_paths, devices)
 
     "Test benchmark using 2 devices and 2 graphs, pass pytest"
     device_count = 2
-    parser = TFParser()
+    parser = TFParser(db_file_path=TEST_DB_FILE)
     devices = get_device(device_count)
     graph_paths = get_graph_paths(
         "data/DataParallelismPlan2GPUsIn2Hosts", device_count)
-    parser = TFParser()
+    parser = TFParser(db_file_path=TEST_DB_FILE)
     nodelist = parser.parse_graphs(graph_paths, devices)
     ref_path = "tests/data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json"
 
