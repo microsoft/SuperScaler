@@ -144,7 +144,6 @@ python3 -m pytest -v
 ### Project Organization
 
 - `./doc/`: The detailed document of the AI Simulator.
-- `./profiler/`: The source code of the profiler module.
 - `./simulator/`: The source code of the simulator module.
 - `./tests/`: The unit test files used in the AI Simulator.
 - `./Dockerfile`: The Dockerfile used to build the docker environment for the AI Simulator.
