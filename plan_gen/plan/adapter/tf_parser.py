@@ -91,8 +91,6 @@ class TFParser(DAGParser):
 
             for node in graph.node:
                 attrs = self.__NodeAttrParser.parse_node(node)
-                metadata = str(node)
-                attrs['metadata'] = metadata
                 attrs['op'] = node.op
                 attrs['input'] = node.input
                 attrs['device'] = device_id
@@ -154,8 +152,6 @@ class TFParser(DAGParser):
             filtered_node['tensor_type'] = self.DT_mapping_table[node['T']]
         if 'input' in node:
             filtered_node['input'] = node['input']
-        if 'metadata' in node:
-            filtered_node['metadata'] = node['metadata']
         if 'execution_time' in node:
             filtered_node['execution_time'] = node['execution_time']
 

@@ -3,7 +3,6 @@
         "device": "/server/hostname1/GPU/0/",
         "execution_time": 10.0,
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n        dim {\n          size: 128\n        }\n      }\n      float_val: 0.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels",
         "op": "Const",
         "output_shapes": [
@@ -18,7 +17,6 @@
         "input": [
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast\"\nop: \"Cast\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nattr {\n  key: \"DstT\"\n  value {\n    type: DT_INT64\n  }\n}\nattr {\n  key: \"SrcT\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Truncate\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast",
         "op": "Cast",
         "output_shapes": [
@@ -30,7 +28,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\nop: \"VariableV2\"\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"container\"\n  value {\n    s: \"\"\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"shape\"\n  value {\n    shape {\n      dim {\n        size: 10\n      }\n    }\n  }\n}\nattr {\n  key: \"shared_name\"\n  value {\n    s: \"\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_biases",
         "op": "VariableV2",
         "output_shapes": [
@@ -44,7 +41,6 @@
         "input": [
             "SuperScaler_SubgraphFCs/softmax_linear_biases"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_biases/read\"\nop: \"Identity\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_biases/read",
         "op": "Identity",
         "output_shapes": [
@@ -57,7 +53,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\nop: \"VariableV2\"\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"container\"\n  value {\n    s: \"\"\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"shape\"\n  value {\n    shape {\n      dim {\n        size: 3072\n      }\n      dim {\n        size: 10\n      }\n    }\n  }\n}\nattr {\n  key: \"shared_name\"\n  value {\n    s: \"\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_weights",
         "op": "VariableV2",
         "output_shapes": [
@@ -72,7 +67,6 @@
         "input": [
             "SuperScaler_SubgraphFCs/softmax_linear_weights"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nop: \"Identity\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_weights/read",
         "op": "Identity",
         "output_shapes": [
@@ -86,7 +80,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 2\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 2\n        }\n      }\n      tensor_content: \"\\200\\000\\000\\000\\377\\377\\377\\377\"\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape",
         "op": "Const",
         "output_shapes": [
@@ -98,7 +91,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 1.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const",
         "op": "Const",
         "output_shapes": [
@@ -108,7 +100,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 4\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 4\n        }\n      }\n      tensor_content: \"\\200\\000\\000\\000 \\000\\000\\000 \\000\\000\\000\\003\\000\\000\\000\"\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor",
         "op": "Const",
         "output_shapes": [
@@ -123,7 +114,6 @@
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor",
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images\"\nop: \"Fill\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 32\n        }\n        dim {\n          size: 32\n        }\n        dim {\n          size: 3\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"index_type\"\n  value {\n    type: DT_INT32\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images",
         "op": "Fill",
         "output_shapes": [
@@ -142,7 +132,6 @@
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images",
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\nop: \"Reshape\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tshape\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 3072\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
         "op": "Reshape",
         "output_shapes": [
@@ -159,7 +148,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
             "SuperScaler_SubgraphFCs/softmax_linear_weights/read"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul\"\nop: \"MatMul\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul",
         "op": "MatMul",
         "output_shapes": [
@@ -176,7 +164,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul",
             "SuperScaler_SubgraphFCs/softmax_linear_biases/read"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add\"\nop: \"BiasAdd\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"data_format\"\n  value {\n    s: \"NHWC\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add",
         "op": "BiasAdd",
         "output_shapes": [
@@ -193,7 +180,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add",
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example\"\nop: \"SparseSoftmaxCrossEntropyWithLogits\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tlabels\"\n  value {\n    type: DT_INT64\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example",
         "op": "SparseSoftmaxCrossEntropyWithLogits",
         "output_shapes": [
@@ -212,7 +198,6 @@
         "input": [
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient\"\nop: \"PreventGradient\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example:1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"message\"\n  value {\n    s: \"Currently there is no way to take the second derivative of sparse_softmax_cross_entropy_with_logits due to the fused implementation\\'s interaction with tf.gradients()\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient",
         "op": "PreventGradient",
         "output_shapes": [
@@ -226,7 +211,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n      }\n      int_val: -1\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim",
         "op": "Const",
         "output_shapes": [
@@ -236,7 +220,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 128.0\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1",
         "op": "Const",
         "output_shapes": [
@@ -246,7 +229,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 128\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const",
         "op": "Const",
         "output_shapes": [
@@ -258,7 +240,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 1\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape",
         "op": "Const",
         "output_shapes": [
@@ -270,7 +251,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/grad_ys_0\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 1.0\n    }\n  }\n}\n",
         "name": "gradients/grad_ys_0",
         "op": "Const",
         "output_shapes": [
@@ -280,7 +260,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"gradients/Shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/Shape",
         "op": "Const",
         "output_shapes": [
@@ -295,7 +274,6 @@
             "gradients/Shape",
             "gradients/grad_ys_0"
         ],
-        "metadata": "name: \"gradients/Fill\"\nop: \"Fill\"\ninput: \"gradients/Shape\"\ninput: \"gradients/grad_ys_0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"index_type\"\n  value {\n    type: DT_INT32\n  }\n}\n",
         "name": "gradients/Fill",
         "op": "Fill",
         "output_shapes": [
@@ -309,7 +287,6 @@
             "gradients/Fill",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape\"\nop: \"Reshape\"\ninput: \"gradients/Fill\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tshape\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape",
         "op": "Reshape",
         "output_shapes": [
@@ -325,7 +302,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile\"\nop: \"Tile\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tmultiples\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile",
         "op": "Tile",
         "output_shapes": [
@@ -341,7 +317,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv\"\nop: \"RealDiv\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv",
         "op": "RealDiv",
         "output_shapes": [
@@ -357,7 +332,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims\"\nop: \"ExpandDims\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tdim\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims",
         "op": "ExpandDims",
         "output_shapes": [
@@ -374,7 +348,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\nop: \"Mul\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul",
         "op": "Mul",
         "output_shapes": [
@@ -390,7 +363,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\nop: \"BiasAddGrad\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"data_format\"\n  value {\n    s: \"NHWC\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
         "op": "BiasAddGrad",
         "output_shapes": [
@@ -406,7 +378,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nop: \"NoOp\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\ninput: \"^gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps",
         "op": "NoOp"
     },
@@ -416,7 +387,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency",
         "op": "Identity",
         "output_shapes": [
@@ -433,7 +403,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\nop: \"MatMul\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: true\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: false\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1",
         "op": "MatMul",
         "output_shapes": [
@@ -450,7 +419,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency",
             "SuperScaler_SubgraphFCs/softmax_linear_weights/read"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul\"\nop: \"MatMul\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 3072\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: true\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul",
         "op": "MatMul",
         "output_shapes": [
@@ -467,7 +435,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps\"\nop: \"NoOp\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps",
         "op": "NoOp"
     },
@@ -477,7 +444,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
         "op": "Identity",
         "output_shapes": [
@@ -493,7 +459,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce\"\nop: \"_SCAllReduce\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"num_devices\"\n  value {\n    s: \"2\"\n  }\n}\nattr {\n  key: \"reduction\"\n  value {\n    s: \"sum\"\n  }\n}\nattr {\n  key: \"tensor_name\"\n  value {\n    s: \"For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
         "op": "Allreduce",
         "output_shapes": [
@@ -509,7 +474,6 @@
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 0.12345600128173828\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
         "op": "Const",
         "output_shapes": [
@@ -523,7 +487,6 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent\"\nop: \"ApplyGradientDescent\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\ninput: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"use_locking\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent",
         "op": "ApplyGradientDescent",
         "output_shapes": [
@@ -540,7 +503,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
         "op": "Identity",
         "output_shapes": [
@@ -555,7 +517,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce\"\nop: \"_SCAllReduce\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"num_devices\"\n  value {\n    s: \"2\"\n  }\n}\nattr {\n  key: \"reduction\"\n  value {\n    s: \"sum\"\n  }\n}\nattr {\n  key: \"tensor_name\"\n  value {\n    s: \"For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
         "op": "Allreduce",
         "output_shapes": [
@@ -574,7 +535,6 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent\"\nop: \"ApplyGradientDescent\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\ninput: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"use_locking\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent",
         "op": "ApplyGradientDescent",
         "output_shapes": [
@@ -590,14 +550,12 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent",
             "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent\"\nop: \"NoOp\"\ninput: \"^SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent\"\ninput: \"^SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent\"\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent",
         "op": "NoOp"
     },
     {
         "device": "/server/hostname1/GPU/0/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const",
         "op": "Const",
         "output_shapes": [
@@ -612,7 +570,6 @@
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example",
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\nop: \"Mean\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tidx\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"keep_dims\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy",
         "op": "Mean",
         "output_shapes": [
@@ -625,7 +582,6 @@
         "input": [
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy"
         ],
-        "metadata": "name: \"sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0\"\nop: \"_Retval\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\ndevice: \"/job:localhost/replica:0/task:0/device:CPU:0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"index\"\n  value {\n    i: 0\n  }\n}\n",
         "name": "sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0",
         "op": "_Retval",
         "tensor_type": "DT_FLOAT"
@@ -634,7 +590,6 @@
         "device": "/server/hostname1/GPU/1/",
         "execution_time": 10.0,
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n        dim {\n          size: 128\n        }\n      }\n      float_val: 0.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels",
         "op": "Const",
         "output_shapes": [
@@ -649,7 +604,6 @@
         "input": [
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast\"\nop: \"Cast\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nattr {\n  key: \"DstT\"\n  value {\n    type: DT_INT64\n  }\n}\nattr {\n  key: \"SrcT\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Truncate\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast",
         "op": "Cast",
         "output_shapes": [
@@ -661,7 +615,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\nop: \"VariableV2\"\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"container\"\n  value {\n    s: \"\"\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"shape\"\n  value {\n    shape {\n      dim {\n        size: 10\n      }\n    }\n  }\n}\nattr {\n  key: \"shared_name\"\n  value {\n    s: \"\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_biases",
         "op": "VariableV2",
         "output_shapes": [
@@ -675,7 +628,6 @@
         "input": [
             "SuperScaler_SubgraphFCs/softmax_linear_biases"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_biases/read\"\nop: \"Identity\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_biases/read",
         "op": "Identity",
         "output_shapes": [
@@ -688,7 +640,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\nop: \"VariableV2\"\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"container\"\n  value {\n    s: \"\"\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"shape\"\n  value {\n    shape {\n      dim {\n        size: 3072\n      }\n      dim {\n        size: 10\n      }\n    }\n  }\n}\nattr {\n  key: \"shared_name\"\n  value {\n    s: \"\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_weights",
         "op": "VariableV2",
         "output_shapes": [
@@ -703,7 +654,6 @@
         "input": [
             "SuperScaler_SubgraphFCs/softmax_linear_weights"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nop: \"Identity\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/softmax_linear_weights/read",
         "op": "Identity",
         "output_shapes": [
@@ -717,7 +667,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 2\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 2\n        }\n      }\n      tensor_content: \"\\200\\000\\000\\000\\377\\377\\377\\377\"\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape",
         "op": "Const",
         "output_shapes": [
@@ -729,7 +678,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 1.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const",
         "op": "Const",
         "output_shapes": [
@@ -739,7 +687,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 4\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 4\n        }\n      }\n      tensor_content: \"\\200\\000\\000\\000 \\000\\000\\000 \\000\\000\\000\\003\\000\\000\\000\"\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor",
         "op": "Const",
         "output_shapes": [
@@ -754,7 +701,6 @@
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor",
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images\"\nop: \"Fill\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/shape_as_tensor\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 32\n        }\n        dim {\n          size: 32\n        }\n        dim {\n          size: 3\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"index_type\"\n  value {\n    type: DT_INT32\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images",
         "op": "Fill",
         "output_shapes": [
@@ -773,7 +719,6 @@
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/images",
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\nop: \"Reshape\"\ninput: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/images\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape/shape\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tshape\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 3072\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
         "op": "Reshape",
         "output_shapes": [
@@ -790,7 +735,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
             "SuperScaler_SubgraphFCs/softmax_linear_weights/read"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul\"\nop: \"MatMul\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul",
         "op": "MatMul",
         "output_shapes": [
@@ -807,7 +751,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul",
             "SuperScaler_SubgraphFCs/softmax_linear_biases/read"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add\"\nop: \"BiasAdd\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"data_format\"\n  value {\n    s: \"NHWC\"\n  }\n}\n",
         "name": "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add",
         "op": "BiasAdd",
         "output_shapes": [
@@ -824,7 +767,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add",
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example\"\nop: \"SparseSoftmaxCrossEntropyWithLogits\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/labels_cast\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tlabels\"\n  value {\n    type: DT_INT64\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example",
         "op": "SparseSoftmaxCrossEntropyWithLogits",
         "output_shapes": [
@@ -843,7 +785,6 @@
         "input": [
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient\"\nop: \"PreventGradient\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example:1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"message\"\n  value {\n    s: \"Currently there is no way to take the second derivative of sparse_softmax_cross_entropy_with_logits due to the fused implementation\\'s interaction with tf.gradients()\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient",
         "op": "PreventGradient",
         "output_shapes": [
@@ -857,7 +798,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n      }\n      int_val: -1\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim",
         "op": "Const",
         "output_shapes": [
@@ -867,7 +807,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 128.0\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1",
         "op": "Const",
         "output_shapes": [
@@ -877,7 +816,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 128\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const",
         "op": "Const",
         "output_shapes": [
@@ -889,7 +827,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 1\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape",
         "op": "Const",
         "output_shapes": [
@@ -901,7 +838,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/grad_ys_0\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 1.0\n    }\n  }\n}\n",
         "name": "gradients/grad_ys_0",
         "op": "Const",
         "output_shapes": [
@@ -911,7 +847,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"gradients/Shape\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/Shape",
         "op": "Const",
         "output_shapes": [
@@ -926,7 +861,6 @@
             "gradients/Shape",
             "gradients/grad_ys_0"
         ],
-        "metadata": "name: \"gradients/Fill\"\nop: \"Fill\"\ninput: \"gradients/Shape\"\ninput: \"gradients/grad_ys_0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"index_type\"\n  value {\n    type: DT_INT32\n  }\n}\n",
         "name": "gradients/Fill",
         "op": "Fill",
         "output_shapes": [
@@ -940,7 +874,6 @@
             "gradients/Fill",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape\"\nop: \"Reshape\"\ninput: \"gradients/Fill\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape/shape\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tshape\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape",
         "op": "Reshape",
         "output_shapes": [
@@ -956,7 +889,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile\"\nop: \"Tile\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Reshape\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tmultiples\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile",
         "op": "Tile",
         "output_shapes": [
@@ -972,7 +904,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv\"\nop: \"RealDiv\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Tile\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/Const_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv",
         "op": "RealDiv",
         "output_shapes": [
@@ -988,7 +919,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims\"\nop: \"ExpandDims\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_grad/truediv\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tdim\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims",
         "op": "ExpandDims",
         "output_shapes": [
@@ -1005,7 +935,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\nop: \"Mul\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul",
         "op": "Mul",
         "output_shapes": [
@@ -1021,7 +950,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\nop: \"BiasAddGrad\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"data_format\"\n  value {\n    s: \"NHWC\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
         "op": "BiasAddGrad",
         "output_shapes": [
@@ -1037,7 +965,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nop: \"NoOp\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\ninput: \"^gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps",
         "op": "NoOp"
     },
@@ -1047,7 +974,6 @@
             "gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example_grad/mul\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency",
         "op": "Identity",
         "output_shapes": [
@@ -1064,7 +990,6 @@
             "SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\nop: \"MatMul\"\ninput: \"SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/reshape\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: true\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: false\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1",
         "op": "MatMul",
         "output_shapes": [
@@ -1081,7 +1006,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency",
             "SuperScaler_SubgraphFCs/softmax_linear_weights/read"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul\"\nop: \"MatMul\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights/read\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n        dim {\n          size: 3072\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"transpose_a\"\n  value {\n    b: false\n  }\n}\nattr {\n  key: \"transpose_b\"\n  value {\n    b: true\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul",
         "op": "MatMul",
         "output_shapes": [
@@ -1098,7 +1022,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps\"\nop: \"NoOp\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps",
         "op": "NoOp"
     },
@@ -1108,7 +1031,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/MatMul_1\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
         "op": "Identity",
         "output_shapes": [
@@ -1124,7 +1046,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce\"\nop: \"_SCAllReduce\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"num_devices\"\n  value {\n    s: \"2\"\n  }\n}\nattr {\n  key: \"reduction\"\n  value {\n    s: \"sum\"\n  }\n}\nattr {\n  key: \"tensor_name\"\n  value {\n    s: \"For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
         "op": "Allreduce",
         "output_shapes": [
@@ -1140,7 +1061,6 @@
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n      }\n      float_val: 0.12345600128173828\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
         "op": "Const",
         "output_shapes": [
@@ -1154,7 +1074,6 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent\"\nop: \"ApplyGradientDescent\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_weights\"\ninput: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_weights\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 3072\n        }\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"use_locking\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent",
         "op": "ApplyGradientDescent",
         "output_shapes": [
@@ -1171,7 +1090,6 @@
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\nop: \"Identity\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\ninput: \"^gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/group_deps\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/BiasAddGrad\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
         "op": "Identity",
         "output_shapes": [
@@ -1186,7 +1104,6 @@
         "input": [
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1"
         ],
-        "metadata": "name: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce\"\nop: \"_SCAllReduce\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"num_devices\"\n  value {\n    s: \"2\"\n  }\n}\nattr {\n  key: \"reduction\"\n  value {\n    s: \"sum\"\n  }\n}\nattr {\n  key: \"tensor_name\"\n  value {\n    s: \"For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1\"\n  }\n}\n",
         "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
         "op": "Allreduce",
         "output_shapes": [
@@ -1205,7 +1122,6 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate",
             "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent\"\nop: \"ApplyGradientDescent\"\ninput: \"SuperScaler_SubgraphFCs/softmax_linear_biases\"\ninput: \"SuperScaler_SubgraphOptimizer/GradientDescent/learning_rate\"\ninput: \"gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"_class\"\n  value {\n    list {\n      s: \"loc:@SuperScaler_SubgraphFCs/softmax_linear_biases\"\n    }\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 10\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"use_locking\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent",
         "op": "ApplyGradientDescent",
         "output_shapes": [
@@ -1221,14 +1137,12 @@
             "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent",
             "SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphOptimizer/GradientDescent\"\nop: \"NoOp\"\ninput: \"^SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_biases/ApplyGradientDescent\"\ninput: \"^SuperScaler_SubgraphOptimizer/GradientDescent/update_SuperScaler_SubgraphFCs/softmax_linear_weights/ApplyGradientDescent\"\n",
         "name": "SuperScaler_SubgraphOptimizer/GradientDescent",
         "op": "NoOp"
     },
     {
         "device": "/server/hostname1/GPU/1/",
         "input": [],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 1\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_INT32\n      tensor_shape {\n        dim {\n          size: 1\n        }\n      }\n      int_val: 0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const",
         "op": "Const",
         "output_shapes": [
@@ -1243,7 +1157,6 @@
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example",
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const"
         ],
-        "metadata": "name: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\nop: \"Mean\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_per_example/cross_entropy_per_example\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/Const\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"Tidx\"\n  value {\n    type: DT_INT32\n  }\n}\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n      }\n    }\n  }\n}\nattr {\n  key: \"keep_dims\"\n  value {\n    b: false\n  }\n}\n",
         "name": "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy",
         "op": "Mean",
         "output_shapes": [
@@ -1256,7 +1169,6 @@
         "input": [
             "SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy"
         ],
-        "metadata": "name: \"sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0\"\nop: \"_Retval\"\ninput: \"SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy\"\ndevice: \"/job:localhost/replica:0/task:0/device:CPU:0\"\nattr {\n  key: \"T\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"index\"\n  value {\n    i: 0\n  }\n}\n",
         "name": "sc__retval_SuperScaler_SubgraphLoss/SuperScaler_Backward_SubgraphBpLoss/cross_entropy_0_0",
         "op": "_Retval",
         "tensor_type": "DT_FLOAT"

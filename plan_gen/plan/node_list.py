@@ -66,7 +66,6 @@ class Node(object):
                 reduction: <str> the reduction including "", "sum" and "recv"
                 target: <str> the target device
                 related_op: <str> the related op name
-                metadata: <str> the metadata of DAG node
                 route_index: <int> the index of route from device to target
                 route_type: <str> the type of route including "PCIE", "RDMA"
                 execution_time: <flaot> the profiling execution time
@@ -83,7 +82,6 @@ class Node(object):
                 "reduction":"sum",
                 "target": "/server/hostname1/GPU/1/",
                 "related_op": "test_Recv_0",
-                "metadata":"..."
                 "route_index": 0
                 "route_type": "PCIE"
                 "execution_time": 1.0
@@ -104,7 +102,6 @@ class Node(object):
             "target": str,
             "related_op": str,
             "parent": str,
-            "metadata": str,
             "route_index": int,
             "route_type": str,
             "execution_time": float
