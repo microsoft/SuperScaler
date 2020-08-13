@@ -1,6 +1,7 @@
 [
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 10.0,
         "input": [],
         "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n        dim {\n          size: 128\n        }\n      }\n      float_val: 0.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels",
@@ -13,6 +14,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.0,
         "input": [
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels"
         ],
@@ -630,6 +632,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 10.0,
         "input": [],
         "metadata": "name: \"SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels\"\nop: \"Const\"\nattr {\n  key: \"_output_shapes\"\n  value {\n    list {\n      shape {\n        dim {\n          size: 128\n        }\n      }\n    }\n  }\n}\nattr {\n  key: \"dtype\"\n  value {\n    type: DT_FLOAT\n  }\n}\nattr {\n  key: \"value\"\n  value {\n    tensor {\n      dtype: DT_FLOAT\n      tensor_shape {\n        dim {\n          size: 128\n        }\n      }\n      float_val: 0.0\n    }\n  }\n}\n",
         "name": "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels",
@@ -642,6 +645,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.0,
         "input": [
             "SuperScaler_SubgraphData/SuperScaler_SubgraphData/labels"
         ],

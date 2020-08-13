@@ -21,12 +21,14 @@ def test_plan_generator():
 
     # Init nodelist
     device_count = 2
-    parser = TFParser()
+    parser = TFParser(
+        db_file_path='tests/data/tf_parser_testbench/db_test.json')
     devices = get_device(device_count)
     graph_paths = get_graph_paths(
         "examples/CNN_vgg16_imagenet/PureDataParallelismPlan2GPUsIn1Hosts/",
         device_count)
-    parser = TFParser()
+    parser = TFParser(
+        db_file_path='tests/data/tf_parser_testbench/db_test.json')
     nodelist = parser.parse_graphs(graph_paths, devices)
 
     # Init ResourcePool

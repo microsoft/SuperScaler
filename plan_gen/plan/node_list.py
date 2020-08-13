@@ -69,6 +69,7 @@ class Node(object):
                 metadata: <str> the metadata of DAG node
                 route_index: <int> the index of route from device to target
                 route_type: <str> the type of route including "PCIE", "RDMA"
+                execution_time: <flaot> the profiling execution time
         example:
             {
                 "name": "test_Send_0",
@@ -85,6 +86,7 @@ class Node(object):
                 "metadata":"..."
                 "route_index": 0
                 "route_type": "PCIE"
+                "execution_time": 1.0
             }
         '''
 
@@ -104,7 +106,8 @@ class Node(object):
             "parent": str,
             "metadata": str,
             "route_index": int,
-            "route_type": str
+            "route_type": str,
+            "execution_time": float
         }
 
         if isinstance(node_info, dict):
