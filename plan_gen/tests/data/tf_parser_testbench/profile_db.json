@@ -1,0 +1,486 @@
+{
+    "Const%dtype%9%value%[9,[]]": {
+        "avg": 15.385211,
+        "std_err": 0.098887
+    },
+    "VariableV2%dtype%9%shape%[]": {
+        "avg": 15.87038,
+        "std_err": 0.142059
+    },
+    "Const%dtype%9%value%[9,[64]]": {
+        "avg": 15.297711,
+        "std_err": 0.208518
+    },
+    "VariableV2%dtype%1%shape%[3,3,3,64]": {
+        "avg": 16.174793,
+        "std_err": 0.3123
+    },
+    "VariableV2%dtype%1%shape%[64]": {
+        "avg": 15.79113,
+        "std_err": 0.082468
+    },
+    "VariableV2%dtype%1%shape%[3,3,64,64]": {
+        "avg": 16.446781,
+        "std_err": 0.857651
+    },
+    "VariableV2%dtype%1%shape%[3,3,64,128]": {
+        "avg": 15.960455,
+        "std_err": 0.220135
+    },
+    "VariableV2%dtype%1%shape%[128]": {
+        "avg": 16.104937,
+        "std_err": 0.107173
+    },
+    "VariableV2%dtype%1%shape%[3,3,128,128]": {
+        "avg": 16.525841,
+        "std_err": 1.056808
+    },
+    "VariableV2%dtype%1%shape%[3,3,128,256]": {
+        "avg": 15.854418,
+        "std_err": 0.112031
+    },
+    "VariableV2%dtype%1%shape%[256]": {
+        "avg": 15.943098,
+        "std_err": 0.163704
+    },
+    "VariableV2%dtype%1%shape%[3,3,256,256]": {
+        "avg": 16.128922,
+        "std_err": 0.26954
+    },
+    "VariableV2%dtype%1%shape%[3,3,256,512]": {
+        "avg": 16.31552,
+        "std_err": 0.463323
+    },
+    "VariableV2%dtype%1%shape%[512]": {
+        "avg": 16.684818,
+        "std_err": 1.507987
+    },
+    "VariableV2%dtype%1%shape%[3,3,512,512]": {
+        "avg": 15.928268,
+        "std_err": 0.052836
+    },
+    "Const%dtype%1%value%[1,[]]": {
+        "avg": 15.389085,
+        "std_err": 0.279666
+    },
+    "Const%dtype%3%value%[3,[2]]": {
+        "avg": 15.309143,
+        "std_err": 0.067452
+    },
+    "VariableV2%dtype%1%shape%[25088,4096]": {
+        "avg": 27.15985,
+        "std_err": 2.230069
+    },
+    "VariableV2%dtype%1%shape%[4096]": {
+        "avg": 16.094589,
+        "std_err": 0.288505
+    },
+    "VariableV2%dtype%1%shape%[4096,4096]": {
+        "avg": 18.012604,
+        "std_err": 0.953332
+    },
+    "VariableV2%dtype%1%shape%[4096,1000]": {
+        "avg": 16.351841,
+        "std_err": 0.249341
+    },
+    "VariableV2%dtype%1%shape%[1000]": {
+        "avg": 15.984297,
+        "std_err": 0.27774
+    },
+    "Const%dtype%3%value%[3,[4]]": {
+        "avg": 16.705418,
+        "std_err": 2.073895
+    },
+    "Const%dtype%1%value%[1,[64,1]]": {
+        "avg": 15.18482,
+        "std_err": 0.079375
+    },
+    "Const%dtype%1%value%[1,[64,3,224,224]]": {
+        "avg": 15.749066,
+        "std_err": 0.105809
+    },
+    "IsVariableInitialized%input%[]%dtype%9": {
+        "avg": 15.954971,
+        "std_err": 0.231806
+    },
+    "Identity%input%[3,3,3,64]%T%1": {
+        "avg": 15.74266,
+        "std_err": 0.242841
+    },
+    "Identity%input%[64]%T%1": {
+        "avg": 15.627384,
+        "std_err": 0.158683
+    },
+    "Identity%input%[3,3,64,64]%T%1": {
+        "avg": 15.519559,
+        "std_err": 0.046178
+    },
+    "Identity%input%[3,3,64,128]%T%1": {
+        "avg": 15.622675,
+        "std_err": 0.034505
+    },
+    "Identity%input%[128]%T%1": {
+        "avg": 15.562391,
+        "std_err": 0.291701
+    },
+    "Identity%input%[3,3,128,128]%T%1": {
+        "avg": 15.51348,
+        "std_err": 0.050063
+    },
+    "Identity%input%[3,3,128,256]%T%1": {
+        "avg": 15.517426,
+        "std_err": 0.0532
+    },
+    "Identity%input%[256]%T%1": {
+        "avg": 16.513968,
+        "std_err": 1.150178
+    },
+    "Identity%input%[3,3,256,256]%T%1": {
+        "avg": 15.581274,
+        "std_err": 0.039329
+    },
+    "Identity%input%[3,3,256,512]%T%1": {
+        "avg": 15.561867,
+        "std_err": 0.162512
+    },
+    "Identity%input%[512]%T%1": {
+        "avg": 15.568066,
+        "std_err": 0.358411
+    },
+    "Identity%input%[3,3,512,512]%T%1": {
+        "avg": 15.341187,
+        "std_err": 0.11101
+    },
+    "Identity%input%[25088,4096]%T%1": {
+        "avg": 45.142571,
+        "std_err": 0.288219
+    },
+    "Identity%input%[4096]%T%1": {
+        "avg": 15.394163,
+        "std_err": 0.14016
+    },
+    "Identity%input%[4096,4096]%T%1": {
+        "avg": 18.685456,
+        "std_err": 2.353135
+    },
+    "Identity%input%[4096,1000]%T%1": {
+        "avg": 15.55521,
+        "std_err": 0.074703
+    },
+    "Identity%input%[1000]%T%1": {
+        "avg": 15.639305,
+        "std_err": 0.148681
+    },
+    "Conv2D%input%[64,3,224,224]%input%[3,3,3,64]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 1407.074928,
+        "std_err": 7.666141
+    },
+    "BiasAdd%input%[64,64,224,224]%input%[64]%T%1": {
+        "avg": 2789.620558,
+        "std_err": 1.418006
+    },
+    "Relu%input%[64,64,224,224]%T%1": {
+        "avg": 2259.747187,
+        "std_err": 0.878741
+    },
+    "Conv2D%input%[64,64,224,224]%input%[3,3,64,64]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 11355.97229,
+        "std_err": 17.384215
+    },
+    "MaxPool%input%[64,64,224,224]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 1316.542427,
+        "std_err": 0.429275
+    },
+    "Conv2D%input%[64,64,112,112]%input%[3,3,64,128]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 5422.085524,
+        "std_err": 1.601408
+    },
+    "BiasAdd%input%[64,128,112,112]%input%[128]%T%1": {
+        "avg": 1352.196932,
+        "std_err": 0.556012
+    },
+    "Relu%input%[64,128,112,112]%T%1": {
+        "avg": 1106.745005,
+        "std_err": 0.631659
+    },
+    "Conv2D%input%[64,128,112,112]%input%[3,3,128,128]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 8188.247681,
+        "std_err": 1.357291
+    },
+    "MaxPool%input%[64,128,112,112]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 663.104008,
+        "std_err": 0.098408
+    },
+    "Conv2D%input%[64,128,56,56]%input%[3,3,128,256]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3783.115745,
+        "std_err": 5.205807
+    },
+    "BiasAdd%input%[64,256,56,56]%input%[256]%T%1": {
+        "avg": 667.46672,
+        "std_err": 0.327786
+    },
+    "Relu%input%[64,256,56,56]%T%1": {
+        "avg": 544.893742,
+        "std_err": 1.078332
+    },
+    "Conv2D%input%[64,256,56,56]%input%[3,3,256,256]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 6655.752659,
+        "std_err": 11.910693
+    },
+    "MaxPool%input%[64,256,56,56]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 342.507706,
+        "std_err": 0.388271
+    },
+    "Conv2D%input%[64,256,28,28]%input%[3,3,256,512]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3029.980119,
+        "std_err": 0.362139
+    },
+    "BiasAdd%input%[64,512,28,28]%input%[512]%T%1": {
+        "avg": 338.724962,
+        "std_err": 2.163433
+    },
+    "Relu%input%[64,512,28,28]%T%1": {
+        "avg": 275.850788,
+        "std_err": 0.593303
+    },
+    "Conv2D%input%[64,512,28,28]%input%[3,3,512,512]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 5629.167852,
+        "std_err": 5.242684
+    },
+    "MaxPool%input%[64,512,28,28]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 196.91205,
+        "std_err": 0.167886
+    },
+    "Conv2D%input%[64,512,14,14]%input%[3,3,512,512]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 1952.299118,
+        "std_err": 0.9085
+    },
+    "BiasAdd%input%[64,512,14,14]%input%[512]%T%1": {
+        "avg": 97.329206,
+        "std_err": 0.184877
+    },
+    "Relu%input%[64,512,14,14]%T%1": {
+        "avg": 82.008759,
+        "std_err": 0.71429
+    },
+    "MaxPool%input%[64,512,14,14]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 66.298604,
+        "std_err": 0.418098
+    },
+    "Transpose%input%[64,512,7,7]%input%[4]%T%1%Tperm%3": {
+        "avg": 34.963429,
+        "std_err": 0.435832
+    },
+    "Reshape%input%[64,7,7,512]%input%[2]%T%1%Tshape%3": {
+        "avg": 16.111672,
+        "std_err": 0.121527
+    },
+    "MatMul%input%[64,25088]%input%[25088,4096]%T%1%transpose_a%0%transpose_b%0": {
+        "avg": 1013.452053,
+        "std_err": 0.45567
+    },
+    "BiasAdd%input%[64,4096]%input%[4096]%T%1": {
+        "avg": 20.153141,
+        "std_err": 0.083903
+    },
+    "Relu%input%[64,4096]%T%1": {
+        "avg": 20.587301,
+        "std_err": 0.690881
+    },
+    "MatMul%input%[64,4096]%input%[4096,4096]%T%1%transpose_a%0%transpose_b%0": {
+        "avg": 196.335602,
+        "std_err": 0.267899
+    },
+    "MatMul%input%[64,4096]%input%[4096,1000]%T%1%transpose_a%0%transpose_b%0": {
+        "avg": 78.489351,
+        "std_err": 0.064612
+    },
+    "BiasAdd%input%[64,1000]%input%[1000]%T%1": {
+        "avg": 20.3825,
+        "std_err": 0.250413
+    },
+    "SparseSoftmaxCrossEntropyWithLogits%input%[64,1000]%input%[64]%T%1%Tlabels%9": {
+        "avg": 139.745617,
+        "std_err": 0.272205
+    },
+    "Mul%input%[64,1000]%input%[64,1]%T%1": {
+        "avg": 22.044373,
+        "std_err": 1.391923
+    },
+    "BiasAddGrad%input%[64,1000]%T%1": {
+        "avg": 23.055315,
+        "std_err": 0.202962
+    },
+    "MatMul%input%[64,1000]%input%[4096,1000]%T%1%transpose_a%0%transpose_b%1": {
+        "avg": 80.58939,
+        "std_err": 0.34163
+    },
+    "MatMul%input%[64,4096]%input%[64,1000]%T%1%transpose_a%1%transpose_b%0": {
+        "avg": 66.759156,
+        "std_err": 0.657341
+    },
+    "ReluGrad%input%[64,4096]%input%[64,4096]%T%1": {
+        "avg": 20.342767,
+        "std_err": 0.185013
+    },
+    "BiasAddGrad%input%[64,4096]%T%1": {
+        "avg": 23.993254,
+        "std_err": 0.266057
+    },
+    "MatMul%input%[64,4096]%input%[4096,4096]%T%1%transpose_a%0%transpose_b%1": {
+        "avg": 211.435604,
+        "std_err": 17.253781
+    },
+    "MatMul%input%[64,4096]%input%[64,4096]%T%1%transpose_a%1%transpose_b%0": {
+        "avg": 198.466666,
+        "std_err": 0.879488
+    },
+    "MatMul%input%[64,4096]%input%[25088,4096]%T%1%transpose_a%0%transpose_b%1": {
+        "avg": 1137.405396,
+        "std_err": 1.861363
+    },
+    "MatMul%input%[64,25088]%input%[64,4096]%T%1%transpose_a%1%transpose_b%0": {
+        "avg": 1114.026705,
+        "std_err": 6.345606
+    },
+    "Reshape%input%[64,25088]%input%[4]%T%1%Tshape%3": {
+        "avg": 17.650414,
+        "std_err": 3.03639
+    },
+    "Transpose%input%[64,7,7,512]%input%[4]%T%1%Tperm%3": {
+        "avg": 35.327911,
+        "std_err": 0.630532
+    },
+    "MaxPoolGrad%input%[64,512,14,14]%input%[64,512,7,7]%input%[64,512,7,7]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 128.063261,
+        "std_err": 0.305103
+    },
+    "ReluGrad%input%[64,512,14,14]%input%[64,512,14,14]%T%1": {
+        "avg": 112.112506,
+        "std_err": 0.398342
+    },
+    "BiasAddGrad%input%[64,512,14,14]%T%1": {
+        "avg": 52.951694,
+        "std_err": 0.873735
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,512,512]%input%[64,512,14,14]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 1950.986862,
+        "std_err": 3.360328
+    },
+    "Conv2DBackpropFilter%input%[64,512,14,14]%input%[4]%input%[64,512,14,14]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 2024.786711,
+        "std_err": 0.546467
+    },
+    "MaxPoolGrad%input%[64,512,28,28]%input%[64,512,14,14]%input%[64,512,14,14]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 351.146324,
+        "std_err": 0.177563
+    },
+    "ReluGrad%input%[64,512,28,28]%input%[64,512,28,28]%T%1": {
+        "avg": 396.735398,
+        "std_err": 0.367057
+    },
+    "BiasAddGrad%input%[64,512,28,28]%T%1": {
+        "avg": 139.754534,
+        "std_err": 0.160377
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,512,512]%input%[64,512,28,28]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 5619.007288,
+        "std_err": 7.086471
+    },
+    "Conv2DBackpropFilter%input%[64,512,28,28]%input%[4]%input%[64,512,28,28]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 5525.731564,
+        "std_err": 1.608487
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,256,512]%input%[64,512,28,28]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3110.784531,
+        "std_err": 6.130232
+    },
+    "Conv2DBackpropFilter%input%[64,256,28,28]%input%[4]%input%[64,512,28,28]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3126.659393,
+        "std_err": 0.855256
+    },
+    "MaxPoolGrad%input%[64,256,56,56]%input%[64,256,28,28]%input%[64,256,28,28]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 911.418597,
+        "std_err": 0.316825
+    },
+    "ReluGrad%input%[64,256,56,56]%input%[64,256,56,56]%T%1": {
+        "avg": 791.455309,
+        "std_err": 0.871312
+    },
+    "BiasAddGrad%input%[64,256,56,56]%T%1": {
+        "avg": 255.965471,
+        "std_err": 0.120351
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,256,256]%input%[64,256,56,56]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 6689.94387,
+        "std_err": 11.469746
+    },
+    "Conv2DBackpropFilter%input%[64,256,56,56]%input%[4]%input%[64,256,56,56]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 6686.728001,
+        "std_err": 1.361664
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,128,256]%input%[64,256,56,56]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3751.54977,
+        "std_err": 5.861583
+    },
+    "Conv2DBackpropFilter%input%[64,128,56,56]%input%[4]%input%[64,256,56,56]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3832.821846,
+        "std_err": 1.329813
+    },
+    "MaxPoolGrad%input%[64,128,112,112]%input%[64,128,56,56]%input%[64,128,56,56]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 1342.24693,
+        "std_err": 0.692657
+    },
+    "ReluGrad%input%[64,128,112,112]%input%[64,128,112,112]%T%1": {
+        "avg": 1611.415545,
+        "std_err": 1.462678
+    },
+    "BiasAddGrad%input%[64,128,112,112]%T%1": {
+        "avg": 487.100887,
+        "std_err": 0.306201
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,128,128]%input%[64,128,112,112]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 8141.299089,
+        "std_err": 0.907414
+    },
+    "Conv2DBackpropFilter%input%[64,128,112,112]%input%[4]%input%[64,128,112,112]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 13557.801247,
+        "std_err": 2.3444
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,64,128]%input%[64,128,112,112]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 5322.892467,
+        "std_err": 4.528389
+    },
+    "Conv2DBackpropFilter%input%[64,64,112,112]%input%[4]%input%[64,128,112,112]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 10107.178688,
+        "std_err": 6.641734
+    },
+    "MaxPoolGrad%input%[64,64,224,224]%input%[64,64,112,112]%input%[64,64,112,112]%T%1%ksize%[1,1,2,2]%strides%[1,1,2,2]": {
+        "avg": 2698.083719,
+        "std_err": 1.584731
+    },
+    "ReluGrad%input%[64,64,224,224]%input%[64,64,224,224]%T%1": {
+        "avg": 3420.801957,
+        "std_err": 7.440402
+    },
+    "BiasAddGrad%input%[64,64,224,224]%T%1": {
+        "avg": 948.191261,
+        "std_err": 0.211072
+    },
+    "Conv2DBackpropInput%input%[4]%input%[3,3,64,64]%input%[64,64,224,224]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 11492.07751,
+        "std_err": 21.799405
+    },
+    "Conv2DBackpropFilter%input%[64,64,224,224]%input%[4]%input%[64,64,224,224]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 30688.281059,
+        "std_err": 127.132715
+    },
+    "Conv2DBackpropFilter%input%[64,3,224,224]%input%[4]%input%[64,64,224,224]%T%1%dilations%[1,1,1,1]%explicit_paddings%[]%strides%[1,1,1,1]%use_cudnn_on_gpu%1": {
+        "avg": 3115.055561,
+        "std_err": 11.940236
+    },
+    "NoOp": {
+        "avg": 15.264893,
+        "std_err": 0.058455
+    }
+}

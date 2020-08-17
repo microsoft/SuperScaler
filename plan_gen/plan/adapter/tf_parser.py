@@ -238,12 +238,20 @@ class TFParser(DAGParser):
                                   "device": device_id}
             attrs = self.__NodeAttrParser.parse_node(node)
 
+            # Note: We are currently unable to determine the complete set
+            # of valid attributes
+            # TODO: Determine the complete set and make code_book for it.
+            # profiling_node ignore those attributes with string key,
+            # rename the attribute name of _output_shapes as output_shapes
+            # and accept all other attribute with original name and key
             profiling_node['attr_list'] = []
             profiling_node['output_shapes'] = []
             for attr_key in attrs:
                 if attr_key == '_output_shapes':
                     profiling_node['output_shapes'] =\
                         attrs['_output_shapes']
+                elif isinstance(attrs[attr_key], str):
+                    continue
                 else:
                     attr_value = attrs[attr_key]
                     profiling_node['attr_list'].append((attr_key, attr_value))

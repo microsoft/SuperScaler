@@ -1,6 +1,7 @@
 [
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv9/Reshape_grad/Shape",
         "op": "Const",
@@ -12,6 +13,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv9/Reshape/shape",
         "op": "Const",
@@ -23,6 +25,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv9/biases",
         "op": "VariableV2",
@@ -34,6 +37,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv9/biases"
         ],
@@ -48,6 +52,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv9/conv2d/kernel",
         "op": "VariableV2",
@@ -62,6 +67,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "conv9/conv2d/kernel"
         ],
@@ -79,6 +85,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv8/Reshape/shape",
         "op": "Const",
@@ -90,6 +97,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv8/biases",
         "op": "VariableV2",
@@ -101,6 +109,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv8/biases"
         ],
@@ -115,6 +124,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv8/conv2d/kernel",
         "op": "VariableV2",
@@ -129,6 +139,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "conv8/conv2d/kernel"
         ],
@@ -146,6 +157,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv7/Reshape/shape",
         "op": "Const",
@@ -157,6 +169,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv7/biases",
         "op": "VariableV2",
@@ -168,6 +181,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv7/biases"
         ],
@@ -182,6 +196,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.31552,
         "input": [],
         "name": "conv7/conv2d/kernel",
         "op": "VariableV2",
@@ -196,6 +211,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.561867,
         "input": [
             "conv7/conv2d/kernel"
         ],
@@ -213,6 +229,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv6/Reshape/shape",
         "op": "Const",
@@ -224,6 +241,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv6/biases",
         "op": "VariableV2",
@@ -235,6 +253,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "conv6/biases"
         ],
@@ -249,6 +268,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.128922,
         "input": [],
         "name": "conv6/conv2d/kernel",
         "op": "VariableV2",
@@ -263,6 +283,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.581274,
         "input": [
             "conv6/conv2d/kernel"
         ],
@@ -280,6 +301,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv5/Reshape/shape",
         "op": "Const",
@@ -291,6 +313,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv5/biases",
         "op": "VariableV2",
@@ -302,6 +325,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "conv5/biases"
         ],
@@ -316,6 +340,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.128922,
         "input": [],
         "name": "conv5/conv2d/kernel",
         "op": "VariableV2",
@@ -330,6 +355,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.581274,
         "input": [
             "conv5/conv2d/kernel"
         ],
@@ -347,6 +373,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv4/Reshape/shape",
         "op": "Const",
@@ -358,6 +385,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv4/biases",
         "op": "VariableV2",
@@ -369,6 +397,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "conv4/biases"
         ],
@@ -383,6 +412,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.854418,
         "input": [],
         "name": "conv4/conv2d/kernel",
         "op": "VariableV2",
@@ -397,6 +427,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.517426,
         "input": [
             "conv4/conv2d/kernel"
         ],
@@ -414,6 +445,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv3/Reshape/shape",
         "op": "Const",
@@ -425,6 +457,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.104937,
         "input": [],
         "name": "conv3/biases",
         "op": "VariableV2",
@@ -436,6 +469,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.562391,
         "input": [
             "conv3/biases"
         ],
@@ -450,6 +484,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.525841,
         "input": [],
         "name": "conv3/conv2d/kernel",
         "op": "VariableV2",
@@ -464,6 +499,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.51348,
         "input": [
             "conv3/conv2d/kernel"
         ],
@@ -481,6 +517,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv2/Reshape/shape",
         "op": "Const",
@@ -492,6 +529,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.104937,
         "input": [],
         "name": "conv2/biases",
         "op": "VariableV2",
@@ -503,6 +541,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.562391,
         "input": [
             "conv2/biases"
         ],
@@ -517,6 +556,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.960455,
         "input": [],
         "name": "conv2/conv2d/kernel",
         "op": "VariableV2",
@@ -531,6 +571,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.622675,
         "input": [
             "conv2/conv2d/kernel"
         ],
@@ -548,6 +589,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv1/Reshape/shape",
         "op": "Const",
@@ -559,6 +601,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.79113,
         "input": [],
         "name": "conv1/biases",
         "op": "VariableV2",
@@ -570,6 +613,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.627384,
         "input": [
             "conv1/biases"
         ],
@@ -584,6 +628,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.446781,
         "input": [],
         "name": "conv1/conv2d/kernel",
         "op": "VariableV2",
@@ -598,6 +643,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.519559,
         "input": [
             "conv1/conv2d/kernel"
         ],
@@ -615,6 +661,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv0/Reshape/shape",
         "op": "Const",
@@ -626,6 +673,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.79113,
         "input": [],
         "name": "conv0/biases",
         "op": "VariableV2",
@@ -637,6 +685,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.627384,
         "input": [
             "conv0/biases"
         ],
@@ -651,6 +700,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.174793,
         "input": [],
         "name": "conv0/conv2d/kernel",
         "op": "VariableV2",
@@ -665,6 +715,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.74266,
         "input": [
             "conv0/conv2d/kernel"
         ],
@@ -682,6 +733,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "images/Const",
         "op": "Const",
@@ -691,6 +743,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "images/shape_as_tensor",
         "op": "Const",
@@ -720,6 +773,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1407.074928,
         "input": [
             "images",
             "conv0/conv2d/kernel/read"
@@ -738,6 +792,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2789.620558,
         "input": [
             "conv0/conv2d/Conv2D",
             "conv0/biases/read"
@@ -774,6 +829,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2259.747187,
         "input": [
             "conv0/Reshape"
         ],
@@ -791,6 +847,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 11355.97229,
         "input": [
             "conv0/Relu",
             "conv1/conv2d/kernel/read"
@@ -809,6 +866,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2789.620558,
         "input": [
             "conv1/conv2d/Conv2D",
             "conv1/biases/read"
@@ -845,6 +903,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2259.747187,
         "input": [
             "conv1/Reshape"
         ],
@@ -862,6 +921,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1316.542427,
         "input": [
             "conv1/Relu"
         ],
@@ -879,6 +939,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5422.085524,
         "input": [
             "mpool0/MaxPool",
             "conv2/conv2d/kernel/read"
@@ -897,6 +958,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1352.196932,
         "input": [
             "conv2/conv2d/Conv2D",
             "conv2/biases/read"
@@ -933,6 +995,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1106.745005,
         "input": [
             "conv2/Reshape"
         ],
@@ -950,6 +1013,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 8188.247681,
         "input": [
             "conv2/Relu",
             "conv3/conv2d/kernel/read"
@@ -968,6 +1032,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1352.196932,
         "input": [
             "conv3/conv2d/Conv2D",
             "conv3/biases/read"
@@ -1004,6 +1069,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1106.745005,
         "input": [
             "conv3/Reshape"
         ],
@@ -1021,6 +1087,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 663.104008,
         "input": [
             "conv3/Relu"
         ],
@@ -1038,6 +1105,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3783.115745,
         "input": [
             "mpool1/MaxPool",
             "conv4/conv2d/kernel/read"
@@ -1056,6 +1124,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 667.46672,
         "input": [
             "conv4/conv2d/Conv2D",
             "conv4/biases/read"
@@ -1092,6 +1161,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 544.893742,
         "input": [
             "conv4/Reshape"
         ],
@@ -1109,6 +1179,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6655.752659,
         "input": [
             "conv4/Relu",
             "conv5/conv2d/kernel/read"
@@ -1127,6 +1198,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 667.46672,
         "input": [
             "conv5/conv2d/Conv2D",
             "conv5/biases/read"
@@ -1163,6 +1235,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 544.893742,
         "input": [
             "conv5/Reshape"
         ],
@@ -1180,6 +1253,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6655.752659,
         "input": [
             "conv5/Relu",
             "conv6/conv2d/kernel/read"
@@ -1198,6 +1272,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 667.46672,
         "input": [
             "conv6/conv2d/Conv2D",
             "conv6/biases/read"
@@ -1234,6 +1309,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 544.893742,
         "input": [
             "conv6/Reshape"
         ],
@@ -1251,6 +1327,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 342.507706,
         "input": [
             "conv6/Relu"
         ],
@@ -1268,6 +1345,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3029.980119,
         "input": [
             "mpool2/MaxPool",
             "conv7/conv2d/kernel/read"
@@ -1286,6 +1364,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 338.724962,
         "input": [
             "conv7/conv2d/Conv2D",
             "conv7/biases/read"
@@ -1322,6 +1401,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 275.850788,
         "input": [
             "conv7/Reshape"
         ],
@@ -1339,6 +1419,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5629.167852,
         "input": [
             "conv7/Relu",
             "conv8/conv2d/kernel/read"
@@ -1357,6 +1438,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 338.724962,
         "input": [
             "conv8/conv2d/Conv2D",
             "conv8/biases/read"
@@ -1393,6 +1475,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 275.850788,
         "input": [
             "conv8/Reshape"
         ],
@@ -1410,6 +1493,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5629.167852,
         "input": [
             "conv8/Relu",
             "conv9/conv2d/kernel/read"
@@ -1428,6 +1512,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 338.724962,
         "input": [
             "conv9/conv2d/Conv2D",
             "conv9/biases/read"
@@ -1464,6 +1549,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 275.850788,
         "input": [
             "conv9/Reshape"
         ],
@@ -1481,6 +1567,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv10/Reshape_grad/Shape",
         "op": "Const",
@@ -1492,6 +1579,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv10/Reshape/shape",
         "op": "Const",
@@ -1503,6 +1591,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv10/biases",
         "op": "VariableV2",
@@ -1514,6 +1603,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv10/biases"
         ],
@@ -1528,6 +1618,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv10/conv2d/kernel",
         "op": "VariableV2",
@@ -1542,6 +1633,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "conv10/conv2d/kernel"
         ],
@@ -1559,6 +1651,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 196.91205,
         "input": [
             "conv9/Relu"
         ],
@@ -1576,6 +1669,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1952.299118,
         "input": [
             "mpool3/MaxPool",
             "conv10/conv2d/kernel/read"
@@ -1594,6 +1688,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 97.329206,
         "input": [
             "conv10/conv2d/Conv2D",
             "conv10/biases/read"
@@ -1630,6 +1725,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 82.008759,
         "input": [
             "conv10/Reshape"
         ],
@@ -1647,6 +1743,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv11/Reshape_grad/Shape",
         "op": "Const",
@@ -1658,6 +1755,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv11/Reshape/shape",
         "op": "Const",
@@ -1669,6 +1767,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv11/biases",
         "op": "VariableV2",
@@ -1680,6 +1779,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv11/biases"
         ],
@@ -1694,6 +1794,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv11/conv2d/kernel",
         "op": "VariableV2",
@@ -1708,6 +1809,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "conv11/conv2d/kernel"
         ],
@@ -1725,6 +1827,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1952.299118,
         "input": [
             "conv10/Relu",
             "conv11/conv2d/kernel/read"
@@ -1743,6 +1846,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 97.329206,
         "input": [
             "conv11/conv2d/Conv2D",
             "conv11/biases/read"
@@ -1779,6 +1883,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 82.008759,
         "input": [
             "conv11/Reshape"
         ],
@@ -1796,6 +1901,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv12/Reshape_grad/Shape",
         "op": "Const",
@@ -1807,6 +1913,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv12/Reshape/shape",
         "op": "Const",
@@ -1818,6 +1925,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv12/biases",
         "op": "VariableV2",
@@ -1829,6 +1937,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "conv12/biases"
         ],
@@ -1843,6 +1952,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv12/conv2d/kernel",
         "op": "VariableV2",
@@ -1857,6 +1967,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "conv12/conv2d/kernel"
         ],
@@ -1874,6 +1985,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1952.299118,
         "input": [
             "conv11/Relu",
             "conv12/conv2d/kernel/read"
@@ -1892,6 +2004,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 97.329206,
         "input": [
             "conv12/conv2d/Conv2D",
             "conv12/biases/read"
@@ -1928,6 +2041,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 82.008759,
         "input": [
             "conv12/Reshape"
         ],
@@ -1945,6 +2059,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/Reshape_grad/Shape",
         "op": "Const",
@@ -1956,6 +2071,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.094589,
         "input": [],
         "name": "affine0/biases",
         "op": "VariableV2",
@@ -1967,6 +2083,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.394163,
         "input": [
             "affine0/biases"
         ],
@@ -1981,6 +2098,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 27.15985,
         "input": [],
         "name": "affine0/weights",
         "op": "VariableV2",
@@ -1993,6 +2111,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 45.142571,
         "input": [
             "affine0/weights"
         ],
@@ -2008,6 +2127,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.309143,
         "input": [],
         "name": "Reshape/shape",
         "op": "Const",
@@ -2019,6 +2139,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 66.298604,
         "input": [
             "conv12/Relu"
         ],
@@ -2052,6 +2173,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1013.452053,
         "input": [
             "Reshape",
             "affine0/weights/read"
@@ -2068,6 +2190,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.153141,
         "input": [
             "affine0/xw_plus_b/MatMul",
             "affine0/biases/read"
@@ -2084,6 +2207,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.587301,
         "input": [
             "affine0/xw_plus_b"
         ],
@@ -2099,6 +2223,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.094589,
         "input": [],
         "name": "affine1/biases",
         "op": "VariableV2",
@@ -2110,6 +2235,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.394163,
         "input": [
             "affine1/biases"
         ],
@@ -2124,6 +2250,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 18.012604,
         "input": [],
         "name": "affine1/weights",
         "op": "VariableV2",
@@ -2136,6 +2263,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 18.685456,
         "input": [
             "affine1/weights"
         ],
@@ -2166,6 +2294,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 196.335602,
         "input": [
             "dropout0/dropout/Identity",
             "affine1/weights/read"
@@ -2182,6 +2311,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.153141,
         "input": [
             "affine1/xw_plus_b/MatMul",
             "affine1/biases/read"
@@ -2198,6 +2328,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.587301,
         "input": [
             "affine1/xw_plus_b"
         ],
@@ -2237,6 +2368,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.984297,
         "input": [],
         "name": "affine2/biases",
         "op": "VariableV2",
@@ -2248,6 +2380,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.639305,
         "input": [
             "affine2/biases"
         ],
@@ -2262,6 +2395,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.351841,
         "input": [],
         "name": "affine2/weights",
         "op": "VariableV2",
@@ -2274,6 +2408,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.55521,
         "input": [
             "affine2/weights"
         ],
@@ -2304,6 +2439,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 78.489351,
         "input": [
             "dropout0_1/dropout/Identity",
             "affine2/weights/read"
@@ -2320,6 +2456,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.3825,
         "input": [
             "affine2/xw_plus_b/MatMul",
             "affine2/biases/read"
@@ -2336,6 +2473,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 139.745617,
         "input": [
             "affine2/xw_plus_b",
             "labels_cast"
@@ -2379,6 +2517,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "gradients/cross_entropy_grad/Const_1",
         "op": "Const",
@@ -2410,6 +2549,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "gradients/grad_ys_0",
         "op": "Const",
@@ -2520,6 +2660,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 23.055315,
         "input": [
             "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
@@ -2559,6 +2700,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 66.759156,
         "input": [
             "dropout0_1/dropout/Identity",
             "gradients/affine2/xw_plus_b_grad/tuple/control_dependency"
@@ -2575,6 +2717,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 80.58939,
         "input": [
             "gradients/affine2/xw_plus_b_grad/tuple/control_dependency",
             "affine2/weights/read"
@@ -2616,6 +2759,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.342767,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "affine1/affine1"
@@ -2632,6 +2776,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 23.993254,
         "input": [
             "gradients/affine1/affine1_grad/ReluGrad"
         ],
@@ -2671,6 +2816,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 198.466666,
         "input": [
             "dropout0/dropout/Identity",
             "gradients/affine1/xw_plus_b_grad/tuple/control_dependency"
@@ -2687,6 +2833,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 211.435604,
         "input": [
             "gradients/affine1/xw_plus_b_grad/tuple/control_dependency",
             "affine1/weights/read"
@@ -2728,6 +2875,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 20.342767,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "affine0/affine0"
@@ -2744,6 +2892,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 23.993254,
         "input": [
             "gradients/affine0/affine0_grad/ReluGrad"
         ],
@@ -2783,6 +2932,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1114.026705,
         "input": [
             "Reshape",
             "gradients/affine0/xw_plus_b_grad/tuple/control_dependency"
@@ -2799,6 +2949,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1137.405396,
         "input": [
             "gradients/affine0/xw_plus_b_grad/tuple/control_dependency",
             "affine0/weights/read"
@@ -2840,6 +2991,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 17.650414,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "gradients/Reshape_grad/Shape"
@@ -2858,6 +3010,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 128.063261,
         "input": [
             "conv12/Relu",
             "mpool4/MaxPool",
@@ -2877,6 +3030,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/mpool4/MaxPool_grad/MaxPoolGrad",
             "conv12/Relu"
@@ -2913,6 +3067,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv12/Reshape_grad/Reshape"
         ],
@@ -2972,6 +3127,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/ShapeN",
             "conv12/conv2d/kernel/read",
@@ -2991,6 +3147,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2024.786711,
         "input": [
             "conv11/Relu",
             "gradients/conv12/conv2d/Conv2D_grad/ShapeN",
@@ -3037,6 +3194,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv11/Relu"
@@ -3073,6 +3231,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv11/Reshape_grad/Reshape"
         ],
@@ -3132,6 +3291,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/ShapeN",
             "conv11/conv2d/kernel/read",
@@ -3151,6 +3311,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2024.786711,
         "input": [
             "conv10/Relu",
             "gradients/conv11/conv2d/Conv2D_grad/ShapeN",
@@ -3197,6 +3358,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv10/Relu"
@@ -3233,6 +3395,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv10/Reshape_grad/Reshape"
         ],
@@ -3292,6 +3455,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/ShapeN",
             "conv10/conv2d/kernel/read",
@@ -3311,6 +3475,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2024.786711,
         "input": [
             "mpool3/MaxPool",
             "gradients/conv10/conv2d/Conv2D_grad/ShapeN",
@@ -3357,6 +3522,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 351.146324,
         "input": [
             "conv9/Relu",
             "mpool3/MaxPool",
@@ -3376,6 +3542,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/mpool3/MaxPool_grad/MaxPoolGrad",
             "conv9/Relu"
@@ -3412,6 +3579,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv9/Reshape_grad/Reshape"
         ],
@@ -3471,6 +3639,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5619.007288,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/ShapeN",
             "conv9/conv2d/kernel/read",
@@ -3490,6 +3659,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5525.731564,
         "input": [
             "conv8/Relu",
             "gradients/conv9/conv2d/Conv2D_grad/ShapeN",
@@ -3643,6 +3813,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "GradientDescent/learning_rate",
         "op": "Const",
@@ -3797,6 +3968,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv8/Reshape_grad/Shape",
         "op": "Const",
@@ -3826,6 +3998,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv8/Relu"
@@ -3862,6 +4035,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv8/Reshape_grad/Reshape"
         ],
@@ -3921,6 +4095,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5619.007288,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/ShapeN",
             "conv8/conv2d/kernel/read",
@@ -3940,6 +4115,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5525.731564,
         "input": [
             "conv7/Relu",
             "gradients/conv8/conv2d/Conv2D_grad/ShapeN",
@@ -4238,6 +4414,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv7/Reshape_grad/Shape",
         "op": "Const",
@@ -4267,6 +4444,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv7/Relu"
@@ -4303,6 +4481,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv7/Reshape_grad/Reshape"
         ],
@@ -4362,6 +4541,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3110.784531,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/ShapeN",
             "conv7/conv2d/kernel/read",
@@ -4381,6 +4561,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3126.659393,
         "input": [
             "mpool2/MaxPool",
             "gradients/conv7/conv2d/Conv2D_grad/ShapeN",
@@ -4679,6 +4860,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv6/Reshape_grad/Shape",
         "op": "Const",
@@ -4708,6 +4890,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 911.418597,
         "input": [
             "conv6/Relu",
             "mpool2/MaxPool",
@@ -4727,6 +4910,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/mpool2/MaxPool_grad/MaxPoolGrad",
             "conv6/Relu"
@@ -4763,6 +4947,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv6/Reshape_grad/Reshape"
         ],
@@ -4822,6 +5007,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6689.94387,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/ShapeN",
             "conv6/conv2d/kernel/read",
@@ -4841,6 +5027,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6686.728001,
         "input": [
             "conv5/Relu",
             "gradients/conv6/conv2d/Conv2D_grad/ShapeN",
@@ -5139,6 +5326,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv5/Reshape_grad/Shape",
         "op": "Const",
@@ -5168,6 +5356,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv5/Relu"
@@ -5204,6 +5393,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv5/Reshape_grad/Reshape"
         ],
@@ -5263,6 +5453,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6689.94387,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/ShapeN",
             "conv5/conv2d/kernel/read",
@@ -5282,6 +5473,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 6686.728001,
         "input": [
             "conv4/Relu",
             "gradients/conv5/conv2d/Conv2D_grad/ShapeN",
@@ -5580,6 +5772,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv4/Reshape_grad/Shape",
         "op": "Const",
@@ -5609,6 +5802,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv4/Relu"
@@ -5645,6 +5839,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv4/Reshape_grad/Reshape"
         ],
@@ -5704,6 +5899,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3751.54977,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/ShapeN",
             "conv4/conv2d/kernel/read",
@@ -5723,6 +5919,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3832.821846,
         "input": [
             "mpool1/MaxPool",
             "gradients/conv4/conv2d/Conv2D_grad/ShapeN",
@@ -6021,6 +6218,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv3/Reshape_grad/Shape",
         "op": "Const",
@@ -6050,6 +6248,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1342.24693,
         "input": [
             "conv3/Relu",
             "mpool1/MaxPool",
@@ -6069,6 +6268,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1611.415545,
         "input": [
             "gradients/mpool1/MaxPool_grad/MaxPoolGrad",
             "conv3/Relu"
@@ -6105,6 +6305,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 487.100887,
         "input": [
             "gradients/conv3/Reshape_grad/Reshape"
         ],
@@ -6164,6 +6365,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 8141.299089,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/ShapeN",
             "conv3/conv2d/kernel/read",
@@ -6183,6 +6385,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 13557.801247,
         "input": [
             "conv2/Relu",
             "gradients/conv3/conv2d/Conv2D_grad/ShapeN",
@@ -6481,6 +6684,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv2/Reshape_grad/Shape",
         "op": "Const",
@@ -6510,6 +6714,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 1611.415545,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv2/Relu"
@@ -6546,6 +6751,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 487.100887,
         "input": [
             "gradients/conv2/Reshape_grad/Reshape"
         ],
@@ -6605,6 +6811,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 5322.892467,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/ShapeN",
             "conv2/conv2d/kernel/read",
@@ -6624,6 +6831,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 10107.178688,
         "input": [
             "mpool0/MaxPool",
             "gradients/conv2/conv2d/Conv2D_grad/ShapeN",
@@ -7732,6 +7940,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv1/Reshape_grad/Shape",
         "op": "Const",
@@ -7761,6 +7970,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 2698.083719,
         "input": [
             "conv1/Relu",
             "mpool0/MaxPool",
@@ -7780,6 +7990,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3420.801957,
         "input": [
             "gradients/mpool0/MaxPool_grad/MaxPoolGrad",
             "conv1/Relu"
@@ -7816,6 +8027,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 948.191261,
         "input": [
             "gradients/conv1/Reshape_grad/Reshape"
         ],
@@ -7875,6 +8087,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 11492.07751,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/ShapeN",
             "conv1/conv2d/kernel/read",
@@ -7894,6 +8107,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 30688.281059,
         "input": [
             "conv0/Relu",
             "gradients/conv1/conv2d/Conv2D_grad/ShapeN",
@@ -8192,6 +8406,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv0/Reshape_grad/Shape",
         "op": "Const",
@@ -8221,6 +8436,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3420.801957,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv0/Relu"
@@ -8257,6 +8473,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 948.191261,
         "input": [
             "gradients/conv0/Reshape_grad/Reshape"
         ],
@@ -8335,6 +8552,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 3115.055561,
         "input": [
             "images",
             "gradients/conv0/conv2d/Conv2D_grad/ShapeN",
@@ -9514,6 +9732,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.984297,
         "input": [],
         "name": "affine2/biases",
         "op": "VariableV2",
@@ -9525,6 +9744,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.639305,
         "input": [
             "affine2/biases"
         ],
@@ -9539,6 +9759,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.351841,
         "input": [],
         "name": "affine2/weights",
         "op": "VariableV2",
@@ -9551,6 +9772,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.55521,
         "input": [
             "affine2/weights"
         ],
@@ -9566,6 +9788,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.094589,
         "input": [],
         "name": "affine1/biases",
         "op": "VariableV2",
@@ -9577,6 +9800,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.394163,
         "input": [
             "affine1/biases"
         ],
@@ -9591,6 +9815,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 18.012604,
         "input": [],
         "name": "affine1/weights",
         "op": "VariableV2",
@@ -9603,6 +9828,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 18.685456,
         "input": [
             "affine1/weights"
         ],
@@ -9618,6 +9844,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.094589,
         "input": [],
         "name": "affine0/biases",
         "op": "VariableV2",
@@ -9629,6 +9856,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.394163,
         "input": [
             "affine0/biases"
         ],
@@ -9643,6 +9871,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 27.15985,
         "input": [],
         "name": "affine0/weights",
         "op": "VariableV2",
@@ -9655,6 +9884,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 45.142571,
         "input": [
             "affine0/weights"
         ],
@@ -9670,6 +9900,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.309143,
         "input": [],
         "name": "Reshape/shape",
         "op": "Const",
@@ -9681,6 +9912,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv12/Reshape/shape",
         "op": "Const",
@@ -9692,6 +9924,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv12/biases",
         "op": "VariableV2",
@@ -9703,6 +9936,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv12/biases"
         ],
@@ -9717,6 +9951,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv12/conv2d/kernel",
         "op": "VariableV2",
@@ -9731,6 +9966,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "conv12/conv2d/kernel"
         ],
@@ -9748,6 +9984,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv11/Reshape/shape",
         "op": "Const",
@@ -9759,6 +9996,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv11/biases",
         "op": "VariableV2",
@@ -9770,6 +10008,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv11/biases"
         ],
@@ -9784,6 +10023,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv11/conv2d/kernel",
         "op": "VariableV2",
@@ -9798,6 +10038,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "conv11/conv2d/kernel"
         ],
@@ -9815,6 +10056,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv10/Reshape/shape",
         "op": "Const",
@@ -9826,6 +10068,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv10/biases",
         "op": "VariableV2",
@@ -9837,6 +10080,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv10/biases"
         ],
@@ -9851,6 +10095,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv10/conv2d/kernel",
         "op": "VariableV2",
@@ -9865,6 +10110,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "conv10/conv2d/kernel"
         ],
@@ -9882,6 +10128,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv9/Reshape/shape",
         "op": "Const",
@@ -9893,6 +10140,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv9/biases",
         "op": "VariableV2",
@@ -9904,6 +10152,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv9/biases"
         ],
@@ -9918,6 +10167,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv9/conv2d/kernel",
         "op": "VariableV2",
@@ -9932,6 +10182,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "conv9/conv2d/kernel"
         ],
@@ -9949,6 +10200,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv8/Reshape/shape",
         "op": "Const",
@@ -9960,6 +10212,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv8/biases",
         "op": "VariableV2",
@@ -9971,6 +10224,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv8/biases"
         ],
@@ -9985,6 +10239,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.928268,
         "input": [],
         "name": "conv8/conv2d/kernel",
         "op": "VariableV2",
@@ -9999,6 +10254,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "conv8/conv2d/kernel"
         ],
@@ -10016,6 +10272,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv7/Reshape/shape",
         "op": "Const",
@@ -10027,6 +10284,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.684818,
         "input": [],
         "name": "conv7/biases",
         "op": "VariableV2",
@@ -10038,6 +10296,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "conv7/biases"
         ],
@@ -10052,6 +10311,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.31552,
         "input": [],
         "name": "conv7/conv2d/kernel",
         "op": "VariableV2",
@@ -10066,6 +10326,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.561867,
         "input": [
             "conv7/conv2d/kernel"
         ],
@@ -10083,6 +10344,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv6/Reshape/shape",
         "op": "Const",
@@ -10094,6 +10356,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv6/biases",
         "op": "VariableV2",
@@ -10105,6 +10368,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "conv6/biases"
         ],
@@ -10119,6 +10383,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.128922,
         "input": [],
         "name": "conv6/conv2d/kernel",
         "op": "VariableV2",
@@ -10133,6 +10398,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.581274,
         "input": [
             "conv6/conv2d/kernel"
         ],
@@ -10150,6 +10416,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv5/Reshape/shape",
         "op": "Const",
@@ -10161,6 +10428,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv5/biases",
         "op": "VariableV2",
@@ -10172,6 +10440,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "conv5/biases"
         ],
@@ -10186,6 +10455,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.128922,
         "input": [],
         "name": "conv5/conv2d/kernel",
         "op": "VariableV2",
@@ -10200,6 +10470,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.581274,
         "input": [
             "conv5/conv2d/kernel"
         ],
@@ -10217,6 +10488,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv4/Reshape/shape",
         "op": "Const",
@@ -10228,6 +10500,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.943098,
         "input": [],
         "name": "conv4/biases",
         "op": "VariableV2",
@@ -10239,6 +10512,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "conv4/biases"
         ],
@@ -10253,6 +10527,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.854418,
         "input": [],
         "name": "conv4/conv2d/kernel",
         "op": "VariableV2",
@@ -10267,6 +10542,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.517426,
         "input": [
             "conv4/conv2d/kernel"
         ],
@@ -10284,6 +10560,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv3/Reshape/shape",
         "op": "Const",
@@ -10295,6 +10572,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.104937,
         "input": [],
         "name": "conv3/biases",
         "op": "VariableV2",
@@ -10306,6 +10584,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.562391,
         "input": [
             "conv3/biases"
         ],
@@ -10320,6 +10599,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.525841,
         "input": [],
         "name": "conv3/conv2d/kernel",
         "op": "VariableV2",
@@ -10334,6 +10614,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.51348,
         "input": [
             "conv3/conv2d/kernel"
         ],
@@ -10351,6 +10632,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv2/Reshape/shape",
         "op": "Const",
@@ -10362,6 +10644,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.104937,
         "input": [],
         "name": "conv2/biases",
         "op": "VariableV2",
@@ -10373,6 +10656,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.562391,
         "input": [
             "conv2/biases"
         ],
@@ -10387,6 +10671,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.960455,
         "input": [],
         "name": "conv2/conv2d/kernel",
         "op": "VariableV2",
@@ -10401,6 +10686,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.622675,
         "input": [
             "conv2/conv2d/kernel"
         ],
@@ -10418,6 +10704,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv1/Reshape/shape",
         "op": "Const",
@@ -10429,6 +10716,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.79113,
         "input": [],
         "name": "conv1/biases",
         "op": "VariableV2",
@@ -10440,6 +10728,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.627384,
         "input": [
             "conv1/biases"
         ],
@@ -10454,6 +10743,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.446781,
         "input": [],
         "name": "conv1/conv2d/kernel",
         "op": "VariableV2",
@@ -10468,6 +10758,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.519559,
         "input": [
             "conv1/conv2d/kernel"
         ],
@@ -10485,6 +10776,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "conv0/Reshape/shape",
         "op": "Const",
@@ -10496,6 +10788,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.79113,
         "input": [],
         "name": "conv0/biases",
         "op": "VariableV2",
@@ -10507,6 +10800,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.627384,
         "input": [
             "conv0/biases"
         ],
@@ -10521,6 +10815,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.174793,
         "input": [],
         "name": "conv0/conv2d/kernel",
         "op": "VariableV2",
@@ -10535,6 +10830,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.74266,
         "input": [
             "conv0/conv2d/kernel"
         ],
@@ -10552,6 +10848,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "images/Const",
         "op": "Const",
@@ -10561,6 +10858,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "images/shape_as_tensor",
         "op": "Const",
@@ -10590,6 +10888,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1407.074928,
         "input": [
             "images",
             "conv0/conv2d/kernel/read"
@@ -10608,6 +10907,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2789.620558,
         "input": [
             "conv0/conv2d/Conv2D",
             "conv0/biases/read"
@@ -10644,6 +10944,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2259.747187,
         "input": [
             "conv0/Reshape"
         ],
@@ -10661,6 +10962,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 11355.97229,
         "input": [
             "conv0/Relu",
             "conv1/conv2d/kernel/read"
@@ -10679,6 +10981,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2789.620558,
         "input": [
             "conv1/conv2d/Conv2D",
             "conv1/biases/read"
@@ -10715,6 +11018,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2259.747187,
         "input": [
             "conv1/Reshape"
         ],
@@ -10732,6 +11036,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1316.542427,
         "input": [
             "conv1/Relu"
         ],
@@ -10749,6 +11054,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5422.085524,
         "input": [
             "mpool0/MaxPool",
             "conv2/conv2d/kernel/read"
@@ -10767,6 +11073,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1352.196932,
         "input": [
             "conv2/conv2d/Conv2D",
             "conv2/biases/read"
@@ -10803,6 +11110,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1106.745005,
         "input": [
             "conv2/Reshape"
         ],
@@ -10820,6 +11128,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 8188.247681,
         "input": [
             "conv2/Relu",
             "conv3/conv2d/kernel/read"
@@ -10838,6 +11147,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1352.196932,
         "input": [
             "conv3/conv2d/Conv2D",
             "conv3/biases/read"
@@ -10874,6 +11184,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1106.745005,
         "input": [
             "conv3/Reshape"
         ],
@@ -10891,6 +11202,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 663.104008,
         "input": [
             "conv3/Relu"
         ],
@@ -10908,6 +11220,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3783.115745,
         "input": [
             "mpool1/MaxPool",
             "conv4/conv2d/kernel/read"
@@ -10926,6 +11239,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 667.46672,
         "input": [
             "conv4/conv2d/Conv2D",
             "conv4/biases/read"
@@ -10962,6 +11276,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 544.893742,
         "input": [
             "conv4/Reshape"
         ],
@@ -10979,6 +11294,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6655.752659,
         "input": [
             "conv4/Relu",
             "conv5/conv2d/kernel/read"
@@ -10997,6 +11313,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 667.46672,
         "input": [
             "conv5/conv2d/Conv2D",
             "conv5/biases/read"
@@ -11033,6 +11350,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 544.893742,
         "input": [
             "conv5/Reshape"
         ],
@@ -11050,6 +11368,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6655.752659,
         "input": [
             "conv5/Relu",
             "conv6/conv2d/kernel/read"
@@ -11068,6 +11387,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 667.46672,
         "input": [
             "conv6/conv2d/Conv2D",
             "conv6/biases/read"
@@ -11104,6 +11424,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 544.893742,
         "input": [
             "conv6/Reshape"
         ],
@@ -11121,6 +11442,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 342.507706,
         "input": [
             "conv6/Relu"
         ],
@@ -11138,6 +11460,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3029.980119,
         "input": [
             "mpool2/MaxPool",
             "conv7/conv2d/kernel/read"
@@ -11156,6 +11479,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 338.724962,
         "input": [
             "conv7/conv2d/Conv2D",
             "conv7/biases/read"
@@ -11192,6 +11516,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 275.850788,
         "input": [
             "conv7/Reshape"
         ],
@@ -11209,6 +11534,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5629.167852,
         "input": [
             "conv7/Relu",
             "conv8/conv2d/kernel/read"
@@ -11227,6 +11553,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 338.724962,
         "input": [
             "conv8/conv2d/Conv2D",
             "conv8/biases/read"
@@ -11263,6 +11590,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 275.850788,
         "input": [
             "conv8/Reshape"
         ],
@@ -11280,6 +11608,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5629.167852,
         "input": [
             "conv8/Relu",
             "conv9/conv2d/kernel/read"
@@ -11298,6 +11627,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 338.724962,
         "input": [
             "conv9/conv2d/Conv2D",
             "conv9/biases/read"
@@ -11334,6 +11664,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 275.850788,
         "input": [
             "conv9/Reshape"
         ],
@@ -11351,6 +11682,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 196.91205,
         "input": [
             "conv9/Relu"
         ],
@@ -11368,6 +11700,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1952.299118,
         "input": [
             "mpool3/MaxPool",
             "conv10/conv2d/kernel/read"
@@ -11386,6 +11719,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 97.329206,
         "input": [
             "conv10/conv2d/Conv2D",
             "conv10/biases/read"
@@ -11422,6 +11756,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 82.008759,
         "input": [
             "conv10/Reshape"
         ],
@@ -11439,6 +11774,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1952.299118,
         "input": [
             "conv10/Relu",
             "conv11/conv2d/kernel/read"
@@ -11457,6 +11793,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 97.329206,
         "input": [
             "conv11/conv2d/Conv2D",
             "conv11/biases/read"
@@ -11493,6 +11830,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 82.008759,
         "input": [
             "conv11/Reshape"
         ],
@@ -11510,6 +11848,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1952.299118,
         "input": [
             "conv11/Relu",
             "conv12/conv2d/kernel/read"
@@ -11528,6 +11867,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 97.329206,
         "input": [
             "conv12/conv2d/Conv2D",
             "conv12/biases/read"
@@ -11564,6 +11904,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 82.008759,
         "input": [
             "conv12/Reshape"
         ],
@@ -11581,6 +11922,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 66.298604,
         "input": [
             "conv12/Relu"
         ],
@@ -11614,6 +11956,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1013.452053,
         "input": [
             "Reshape",
             "affine0/weights/read"
@@ -11630,6 +11973,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.153141,
         "input": [
             "affine0/xw_plus_b/MatMul",
             "affine0/biases/read"
@@ -11646,6 +11990,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.587301,
         "input": [
             "affine0/xw_plus_b"
         ],
@@ -11676,6 +12021,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 196.335602,
         "input": [
             "dropout0/dropout/Identity",
             "affine1/weights/read"
@@ -11692,6 +12038,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.153141,
         "input": [
             "affine1/xw_plus_b/MatMul",
             "affine1/biases/read"
@@ -11708,6 +12055,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.587301,
         "input": [
             "affine1/xw_plus_b"
         ],
@@ -11738,6 +12086,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 78.489351,
         "input": [
             "dropout0_1/dropout/Identity",
             "affine2/weights/read"
@@ -11754,6 +12103,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.3825,
         "input": [
             "affine2/xw_plus_b/MatMul",
             "affine2/biases/read"
@@ -11770,6 +12120,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 139.745617,
         "input": [
             "affine2/xw_plus_b",
             "labels_cast"
@@ -11811,6 +12162,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv9/Reshape_grad/Shape",
         "op": "Const",
@@ -11822,6 +12174,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv10/Reshape_grad/Shape",
         "op": "Const",
@@ -11833,6 +12186,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv11/Reshape_grad/Shape",
         "op": "Const",
@@ -11844,6 +12198,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv12/Reshape_grad/Shape",
         "op": "Const",
@@ -11855,6 +12210,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/Reshape_grad/Shape",
         "op": "Const",
@@ -11890,6 +12246,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "gradients/cross_entropy_grad/Const_1",
         "op": "Const",
@@ -11921,6 +12278,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "gradients/grad_ys_0",
         "op": "Const",
@@ -12031,6 +12389,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 23.055315,
         "input": [
             "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
         ],
@@ -12070,6 +12429,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 66.759156,
         "input": [
             "dropout0_1/dropout/Identity",
             "gradients/affine2/xw_plus_b_grad/tuple/control_dependency"
@@ -12086,6 +12446,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 80.58939,
         "input": [
             "gradients/affine2/xw_plus_b_grad/tuple/control_dependency",
             "affine2/weights/read"
@@ -12127,6 +12488,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.342767,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "affine1/affine1"
@@ -12143,6 +12505,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 23.993254,
         "input": [
             "gradients/affine1/affine1_grad/ReluGrad"
         ],
@@ -12182,6 +12545,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 198.466666,
         "input": [
             "dropout0/dropout/Identity",
             "gradients/affine1/xw_plus_b_grad/tuple/control_dependency"
@@ -12198,6 +12562,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 211.435604,
         "input": [
             "gradients/affine1/xw_plus_b_grad/tuple/control_dependency",
             "affine1/weights/read"
@@ -12239,6 +12604,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 20.342767,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "affine0/affine0"
@@ -12255,6 +12621,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 23.993254,
         "input": [
             "gradients/affine0/affine0_grad/ReluGrad"
         ],
@@ -12294,6 +12661,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1114.026705,
         "input": [
             "Reshape",
             "gradients/affine0/xw_plus_b_grad/tuple/control_dependency"
@@ -12310,6 +12678,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1137.405396,
         "input": [
             "gradients/affine0/xw_plus_b_grad/tuple/control_dependency",
             "affine0/weights/read"
@@ -12351,6 +12720,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 17.650414,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/tuple/control_dependency",
             "gradients/Reshape_grad/Shape"
@@ -12369,6 +12739,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 128.063261,
         "input": [
             "conv12/Relu",
             "mpool4/MaxPool",
@@ -12388,6 +12759,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/mpool4/MaxPool_grad/MaxPoolGrad",
             "conv12/Relu"
@@ -12424,6 +12796,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv12/Reshape_grad/Reshape"
         ],
@@ -12483,6 +12856,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/ShapeN",
             "conv12/conv2d/kernel/read",
@@ -12502,6 +12876,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2024.786711,
         "input": [
             "conv11/Relu",
             "gradients/conv12/conv2d/Conv2D_grad/ShapeN",
@@ -12548,6 +12923,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv11/Relu"
@@ -12584,6 +12960,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv11/Reshape_grad/Reshape"
         ],
@@ -12643,6 +13020,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/ShapeN",
             "conv11/conv2d/kernel/read",
@@ -12662,6 +13040,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2024.786711,
         "input": [
             "conv10/Relu",
             "gradients/conv11/conv2d/Conv2D_grad/ShapeN",
@@ -12708,6 +13087,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 112.112506,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv10/Relu"
@@ -12744,6 +13124,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 52.951694,
         "input": [
             "gradients/conv10/Reshape_grad/Reshape"
         ],
@@ -12803,6 +13184,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1950.986862,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/ShapeN",
             "conv10/conv2d/kernel/read",
@@ -12822,6 +13204,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2024.786711,
         "input": [
             "mpool3/MaxPool",
             "gradients/conv10/conv2d/Conv2D_grad/ShapeN",
@@ -12868,6 +13251,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 351.146324,
         "input": [
             "conv9/Relu",
             "mpool3/MaxPool",
@@ -12887,6 +13271,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/mpool3/MaxPool_grad/MaxPoolGrad",
             "conv9/Relu"
@@ -12923,6 +13308,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv9/Reshape_grad/Reshape"
         ],
@@ -12982,6 +13368,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5619.007288,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/ShapeN",
             "conv9/conv2d/kernel/read",
@@ -13001,6 +13388,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5525.731564,
         "input": [
             "conv8/Relu",
             "gradients/conv9/conv2d/Conv2D_grad/ShapeN",
@@ -13154,6 +13542,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.389085,
         "input": [],
         "name": "GradientDescent/learning_rate",
         "op": "Const",
@@ -13308,6 +13697,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv8/Reshape_grad/Shape",
         "op": "Const",
@@ -13337,6 +13727,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv8/Relu"
@@ -13373,6 +13764,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv8/Reshape_grad/Reshape"
         ],
@@ -13432,6 +13824,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5619.007288,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/ShapeN",
             "conv8/conv2d/kernel/read",
@@ -13451,6 +13844,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5525.731564,
         "input": [
             "conv7/Relu",
             "gradients/conv8/conv2d/Conv2D_grad/ShapeN",
@@ -13749,6 +14143,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv7/Reshape_grad/Shape",
         "op": "Const",
@@ -13778,6 +14173,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 396.735398,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv7/Relu"
@@ -13814,6 +14210,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 139.754534,
         "input": [
             "gradients/conv7/Reshape_grad/Reshape"
         ],
@@ -13873,6 +14270,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3110.784531,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/ShapeN",
             "conv7/conv2d/kernel/read",
@@ -13892,6 +14290,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3126.659393,
         "input": [
             "mpool2/MaxPool",
             "gradients/conv7/conv2d/Conv2D_grad/ShapeN",
@@ -14190,6 +14589,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv6/Reshape_grad/Shape",
         "op": "Const",
@@ -14219,6 +14619,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 911.418597,
         "input": [
             "conv6/Relu",
             "mpool2/MaxPool",
@@ -14238,6 +14639,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/mpool2/MaxPool_grad/MaxPoolGrad",
             "conv6/Relu"
@@ -14274,6 +14676,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv6/Reshape_grad/Reshape"
         ],
@@ -14333,6 +14736,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6689.94387,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/ShapeN",
             "conv6/conv2d/kernel/read",
@@ -14352,6 +14756,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6686.728001,
         "input": [
             "conv5/Relu",
             "gradients/conv6/conv2d/Conv2D_grad/ShapeN",
@@ -14650,6 +15055,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv5/Reshape_grad/Shape",
         "op": "Const",
@@ -14679,6 +15085,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv5/Relu"
@@ -14715,6 +15122,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv5/Reshape_grad/Reshape"
         ],
@@ -14774,6 +15182,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6689.94387,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/ShapeN",
             "conv5/conv2d/kernel/read",
@@ -14793,6 +15202,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 6686.728001,
         "input": [
             "conv4/Relu",
             "gradients/conv5/conv2d/Conv2D_grad/ShapeN",
@@ -15091,6 +15501,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv4/Reshape_grad/Shape",
         "op": "Const",
@@ -15120,6 +15531,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 791.455309,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv4/Relu"
@@ -15156,6 +15568,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 255.965471,
         "input": [
             "gradients/conv4/Reshape_grad/Reshape"
         ],
@@ -15215,6 +15628,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3751.54977,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/ShapeN",
             "conv4/conv2d/kernel/read",
@@ -15234,6 +15648,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3832.821846,
         "input": [
             "mpool1/MaxPool",
             "gradients/conv4/conv2d/Conv2D_grad/ShapeN",
@@ -15532,6 +15947,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv3/Reshape_grad/Shape",
         "op": "Const",
@@ -15561,6 +15977,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1342.24693,
         "input": [
             "conv3/Relu",
             "mpool1/MaxPool",
@@ -15580,6 +15997,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1611.415545,
         "input": [
             "gradients/mpool1/MaxPool_grad/MaxPoolGrad",
             "conv3/Relu"
@@ -15616,6 +16034,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 487.100887,
         "input": [
             "gradients/conv3/Reshape_grad/Reshape"
         ],
@@ -15675,6 +16094,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 8141.299089,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/ShapeN",
             "conv3/conv2d/kernel/read",
@@ -15694,6 +16114,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 13557.801247,
         "input": [
             "conv2/Relu",
             "gradients/conv3/conv2d/Conv2D_grad/ShapeN",
@@ -15992,6 +16413,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv2/Reshape_grad/Shape",
         "op": "Const",
@@ -16021,6 +16443,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 1611.415545,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv2/Relu"
@@ -16057,6 +16480,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 487.100887,
         "input": [
             "gradients/conv2/Reshape_grad/Reshape"
         ],
@@ -16116,6 +16540,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 5322.892467,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/ShapeN",
             "conv2/conv2d/kernel/read",
@@ -16135,6 +16560,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 10107.178688,
         "input": [
             "mpool0/MaxPool",
             "gradients/conv2/conv2d/Conv2D_grad/ShapeN",
@@ -17243,6 +17669,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv1/Reshape_grad/Shape",
         "op": "Const",
@@ -17272,6 +17699,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 2698.083719,
         "input": [
             "conv1/Relu",
             "mpool0/MaxPool",
@@ -17291,6 +17719,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3420.801957,
         "input": [
             "gradients/mpool0/MaxPool_grad/MaxPoolGrad",
             "conv1/Relu"
@@ -17327,6 +17756,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 948.191261,
         "input": [
             "gradients/conv1/Reshape_grad/Reshape"
         ],
@@ -17386,6 +17816,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 11492.07751,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/ShapeN",
             "conv1/conv2d/kernel/read",
@@ -17405,6 +17836,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 30688.281059,
         "input": [
             "conv0/Relu",
             "gradients/conv1/conv2d/Conv2D_grad/ShapeN",
@@ -17703,6 +18135,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.705418,
         "input": [],
         "name": "gradients/conv0/Reshape_grad/Shape",
         "op": "Const",
@@ -17732,6 +18165,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3420.801957,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/tuple/control_dependency",
             "conv0/Relu"
@@ -17768,6 +18202,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 948.191261,
         "input": [
             "gradients/conv0/Reshape_grad/Reshape"
         ],
@@ -17846,6 +18281,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 3115.055561,
         "input": [
             "images",
             "gradients/conv0/conv2d/Conv2D_grad/ShapeN",
