@@ -6,12 +6,8 @@
 
 constexpr size_t default_concurr_tasks_num = 16;
 
-TaskScheduler::TaskScheduler(size_t queue_size)
-	: m_exec_info_queue_data(new char[queue_size * sizeof(ExecInfo) +
-							   sizeof(RingBufferQueue<ExecInfo>)])
+TaskScheduler::TaskScheduler()
 {
-	m_exec_info_queue = new (m_exec_info_queue_data.get())
-		RingBufferQueue<ExecInfo>(queue_size * sizeof(ExecInfo));
 }
 
 TaskScheduler::~TaskScheduler()
@@ -51,11 +47,7 @@ bool TaskScheduler::add_dependence(task_id_t who, task_id_t whom)
 ExecInfo TaskScheduler::fetch_one_exec_info()
 {
 	ExecInfo exec_info;
-	{
-		std::unique_lock<std::mutex> lock(m_info_mutex);
-		m_condition.wait(lock, [this] { return !m_exec_info_queue->empty(); });
-	}
-	m_exec_info_queue->pop(exec_info);
+	m_exec_info_queue.pop(exec_info);
 	return exec_info;
 }
 
@@ -187,8 +179,7 @@ bool TaskScheduler::task_done(task_id_t t_id)
 
 	// Generate execution info
 	auto ei = task->gen_exec_info();
-	m_exec_info_queue->push(ei);
-	m_condition.notify_one();
+	m_exec_info_queue.push(ei);
 
 	return true;
 }

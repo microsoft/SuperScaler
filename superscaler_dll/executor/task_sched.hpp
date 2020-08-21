@@ -5,12 +5,11 @@
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
-#include <condition_variable>
 #include <utility>
 
 #include "task.hpp"
 #include "exec_info.hpp"
-#include "utils/ring_buffer.hpp"
+#include "utils/thread_safe_queue.hpp"
 
 /**
  * @brief The TaskScheduler stores unfinished tasks and execution info
@@ -27,7 +26,7 @@ class TaskScheduler {
 public:
 	friend class PollExecutor;
 
-	TaskScheduler(size_t queue_size=64);
+	TaskScheduler();
     TaskScheduler(const TaskScheduler &) = delete;
     TaskScheduler operator=(const TaskScheduler &) = delete;
 	virtual ~TaskScheduler();
@@ -91,10 +90,7 @@ private:
 	// Tasks runnable
 	std::list<task_id_t> m_runnable;
 	// Queue to store execution info of finished tasks
-	RingBufferQueue<ExecInfo> *m_exec_info_queue;
-	std::unique_ptr<char[]> m_exec_info_queue_data;
+	ThreadSafeQueue<ExecInfo> m_exec_info_queue;
 	// Exectio info polled out from queue but not yet fetched
 	std::unordered_map<task_id_t, ExecInfo> m_exec_info_wait;
-	std::mutex m_info_mutex;
-	std::condition_variable m_condition;
 };
