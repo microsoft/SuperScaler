@@ -7,6 +7,8 @@
 
 class Executor {
 public:
+    friend class Worker;
+
     Executor()
     {
     }
@@ -19,11 +21,10 @@ public:
      * @brief Add a task to Executor
      * 
      * @param t pointer to task
-     * @param thread_safe thread_safe needed?
      * @return true add success
      * @return false failed. Maybe because task has been added before
      */
-    virtual bool add_task(task_id_t t_id, bool thread_safe = true) = 0;
+    virtual bool add_task(task_id_t t_id) = 0;
     /**
 	 * @brief Get the pointer to a task
 	 * @param t_id Task id
@@ -48,4 +49,11 @@ public:
 	 * @return The pointer to the execution info
 	 */
     virtual std::shared_ptr<ExecInfo> wait(task_id_t t_id) = 0;
+
+protected:
+    /**
+     * @brief Notify executor a task has finished
+     * @param t_id Id of task
+     */
+    virtual void notify_task_finish(task_id_t t_id) = 0;
 };

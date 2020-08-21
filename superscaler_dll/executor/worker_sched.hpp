@@ -1,55 +1,56 @@
 #pragma once
 
-#include <memory>
 #include <list>
 #include <vector>
-#include <mutex>
+#include <memory>
+#include <unordered_map>
+#include <functional>
 
 #include "task.hpp"
+#include "worker.hpp"
 
-class Worker;
-class TaskScheduler;
+class Executor;
 
-/**
- * @brief WorkerScheduler keeps a pool of workers, once it receives a
- * task, it will assign it to one of the workes.
- */
 class WorkerScheduler {
 public:
-	WorkerScheduler(size_t max_worker_count);
+	friend class Worker;
+
+	WorkerScheduler(Executor *executor,
+					size_t max_worker_count = 256);
 	WorkerScheduler(const WorkerScheduler &) = delete;
-	WorkerScheduler operator=(const WorkerScheduler &) = delete;
+	WorkerScheduler &operator=(const WorkerScheduler &) = delete;
 	virtual ~WorkerScheduler();
 
 	/**
 	 * @brief Add a task to worker scheduler and let it to schedule
 	 * the task to a specific worker. Called by task scheduler.
-	 * 
+	 *
 	 * @param t Pointer to task
-	 * @param thread_safe If multi-thread safe
 	 * @return True if success
 	 */
-	bool add_task(std::shared_ptr<Task> t, bool thread_safe = true);
+	bool dispatch_task(std::shared_ptr<Task> t);
+
 	/**
-	 * @brief Inform worker scheduler that a task is already finished,
-	 * worker scheduler will then inform task scheduler about this. Called
-	 * by worker
-	 * 
-	 * @param t_id The task id of the finished task
+	 * @brief Move a worker from busy list to idle list
+	 * @param w_id Id of the worker
 	 */
-	void finish_task(task_id_t t_id);
+    void move_worker_to_idle(worker_id_t w_id);
+
+	/**
+	 * @brief Stop all workers and wait for them to exit
+	 */
+	void stop_all_workers();
 
 private:
-	friend class Worker;
-    void release_worker(std::weak_ptr<Worker> worker);
+	void assign_task(std::shared_ptr<Task> t);
 
-private:
-	void assign_task(std::shared_ptr<Task> t, bool thread_safe = true);
+	Executor *m_executor;
 
 	size_t m_max_worker_count;
-	std::mutex m_mutex;
-	std::list<std::weak_ptr<Worker> > m_idle_workers;
-    std::list<std::weak_ptr<Worker> > m_busy_workers;
-    std::vector<std::shared_ptr<Worker> > m_workers;
-	std::weak_ptr<TaskScheduler> m_task_scheduler;
+	size_t m_worker_cnt;
+
+	std::list<std::pair<worker_id_t, std::weak_ptr<Worker>>> m_idle_workers;
+	std::unordered_map<worker_id_t, std::weak_ptr<Worker> > m_busy_workers;
+	std::mutex m_worker_mutex;
+	std::vector<std::shared_ptr<Worker>> m_workers;
 };

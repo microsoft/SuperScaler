@@ -2,8 +2,12 @@
 
 #include "worker.hpp"
 #include "task.hpp"
+#include "worker_sched.hpp"
+#include "executor.hpp"
 
-Worker::Worker() : m_is_activated(true), m_is_idle(true)
+Worker::Worker(worker_id_t id, Executor *executor, WorkerScheduler *worker_sched)
+    : m_executor(executor), m_worker_sched(worker_sched),
+      m_id(id), m_is_activated(true)
 {
     m_worker_thread = std::thread(&Worker::run, this);
 }
@@ -38,14 +42,14 @@ void Worker::exit()
     }
 }
 
-bool Worker::is_idle() const
-{
-    return m_is_idle;
-}
-
 size_t Worker::get_workload() const
 {
     return m_task_queue.size();
+}
+
+worker_id_t Worker::get_worker_id() const
+{
+    return m_id;
 }
 
 void Worker::run()
@@ -54,7 +58,6 @@ void Worker::run()
         std::vector<std::shared_ptr<Task> > tasks;
         // Reserve memory for tasks to optimize the push_back time
         tasks.reserve(16);
-        m_is_idle = true;
         {
             std::unique_lock<std::mutex> lock(m_mutex);
             auto &task_queue = m_task_queue;
@@ -65,11 +68,17 @@ void Worker::run()
                 m_task_queue.pop();
             }
         }
-        m_is_idle = false;
         for (auto &task : tasks) {
             if (task) {
                 (*task)();
+                if (m_executor)
+                    m_executor->notify_task_finish(task->get_task_id());
             }
+        }
+
+        if (m_task_queue.empty()) {
+            if (m_worker_sched)
+                m_worker_sched->move_worker_to_idle(m_id);
         }
     }
 }

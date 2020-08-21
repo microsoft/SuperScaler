@@ -7,21 +7,21 @@
 #include "task_sched.hpp"
 #include "worker_sched.hpp"
 #include "task_manager.hpp"
+#include "worker.hpp"
 
 class PollExecutor : public Executor {
 public:
+	friend class Worker;
+
 	PollExecutor();
-	~PollExecutor();
+	virtual ~PollExecutor();
 
 	/**
 	 * @brief Add a task
-	 * 
 	 * @param t Pointer to task
-	 * @param thread_safe If multi-thread safe
-	 * 
 	 * @return True if successfully added
 	 */
-	bool add_task(task_id_t t_id, bool thread_safe=true) override;
+	bool add_task(task_id_t t_id) override;
 	/**
 	 * @brief Create a task
 	 * @return A task id unique within the process
@@ -55,6 +55,9 @@ public:
 	 * @return The pointer to the execution info
 	 */
 	std::shared_ptr<ExecInfo> wait(task_id_t task_id) override;
+
+protected:
+	virtual void notify_task_finish(task_id_t t_id) override;
 
 private:
 	std::shared_ptr<TaskScheduler> m_task_scheduler;
