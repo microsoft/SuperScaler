@@ -33,10 +33,12 @@ public:
 	 */
 	void pop(T &item)
 	{
-		std::unique_lock<std::mutex> lock(m_mutex);
-		m_cond_empty.wait(lock, [this]() { return !m_queue.empty(); });
-		item = m_queue.front();
-		m_queue.pop();
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+			m_cond_empty.wait(lock, [this]() { return !m_queue.empty(); });
+			item = m_queue.front();
+			m_queue.pop();
+		}
 		m_cond_full.notify_one();
 	}
 
@@ -57,9 +59,11 @@ public:
 	 */
 	void push(const T &item)
 	{
-		std::unique_lock<std::mutex> lock(m_mutex);
-		m_cond_full.wait(lock, [this]() { return !full(); });
-		m_queue.push(item);
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+			m_cond_full.wait(lock, [this]() { return !full(); });
+			m_queue.push(item);
+		}
 		m_cond_empty.notify_one();
 	}
 

@@ -57,7 +57,7 @@ public:
 	 * @param t_id Task id
 	 * @return Pointer to the task
 	 */
-	std::shared_ptr<Task> get_task(task_id_t t_id);
+	std::shared_ptr<Task> get_task(task_id_t t_id) const;
 
 	/**
 	 * @brief Get the number of active tasks

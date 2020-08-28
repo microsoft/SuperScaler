@@ -19,7 +19,7 @@ bool TaskManager::delete_task(task_id_t t_id)
 		return false;
 }
 
-std::shared_ptr<Task> TaskManager::get_task(task_id_t t_id)
+std::shared_ptr<Task> TaskManager::get_task(task_id_t t_id) const
 {
 	auto itr = m_tasks.find(t_id);
 	if (itr != m_tasks.end())

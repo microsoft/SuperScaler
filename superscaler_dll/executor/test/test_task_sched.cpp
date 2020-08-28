@@ -127,6 +127,42 @@ TEST(TaskScheduler, TestDispatch)
 	ASSERT_FALSE(t);
 }
 
+TEST(TaskScheduler, TestCircularDependency)
+{
+	TaskManager mgr;
+	TaskScheduler sched;
+	std::vector<task_id_t> ids;
+	std::shared_ptr<Task> t;
+
+	for (int i = 0; i < 4; i++) {
+		task_id_t t_id = mgr.create_task<Task>(
+			nullptr,
+			[](TaskState) {});
+		ids.push_back(t_id);
+	}
+
+	// dependence: 0->1<->2->3
+	ASSERT_TRUE(sched.add_dependence(ids[1], ids[0]));
+	ASSERT_TRUE(sched.add_dependence(ids[2], ids[1]));
+	ASSERT_TRUE(sched.add_dependence(ids[1], ids[2]));
+	ASSERT_TRUE(sched.add_dependence(ids[3], ids[2]));
+
+	// add all tasks
+	for (int i = 0; i < 4; i++) {
+		ASSERT_TRUE(sched.add_task(mgr.get_task(ids[i])));
+	}
+
+	// request runnable task, expect getting task 0
+	t = sched.get_runnable();
+	ASSERT_TRUE(t);
+	ASSERT_EQ(t->get_task_id(), ids[0]);
+	// finish task 0
+	ASSERT_TRUE(sched.task_done(t->get_task_id()));
+
+	// expected detect circular dependency between task 1 and task 2
+	ASSERT_THROW(sched.get_runnable(), std::runtime_error);
+}
+
 TEST(TaskScheduler, TestWait)
 {
 	TaskManager mgr;

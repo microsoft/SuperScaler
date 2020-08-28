@@ -44,7 +44,7 @@ void WorkerScheduler::assign_task(std::shared_ptr<Task> t)
 	std::weak_ptr<Worker> worker;
 	worker_id_t worker_id;
 	if (m_idle_workers.empty()) {
-		if (m_busy_workers.size() < m_max_worker_count) {
+		if (m_workers.size() < m_max_worker_count) {
 			worker_id = ++m_worker_cnt;
 			m_workers.emplace_back(new Worker(
 				worker_id, m_executor, this));

@@ -35,20 +35,21 @@ public:
 	 * @brief Add a dependence relationship that
 	 * task \p who depends on task \p whom
 	 */
-    virtual void add_dependence(task_id_t who, task_id_t whom) = 0;
+    virtual bool add_dependence(task_id_t who, task_id_t whom) = 0;
     /**
 	 * @brief Block to wait a finished task. Executor won't keep any
-	 * information about this task after wait() called
-     * 
+	 * information about this task after wait() called. Need to call
+     * wait for every added task.
      * @return The pointer to the execution info
 	 */
-    virtual std::shared_ptr<ExecInfo> wait() = 0;
+    virtual ExecInfo wait() = 0;
     /**
-	 * @brief Block to wait a specific task
+	 * @brief Block to wait a specific task. Need to call wait for
+     * every added task.
 	 * @param task_id task id
 	 * @return The pointer to the execution info
 	 */
-    virtual std::shared_ptr<ExecInfo> wait(task_id_t t_id) = 0;
+    virtual ExecInfo wait(task_id_t t_id) = 0;
 
 protected:
     /**

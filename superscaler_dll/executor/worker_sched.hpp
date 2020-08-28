@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <functional>
 
+#include "config.hpp"
 #include "task.hpp"
 #include "worker.hpp"
 
@@ -16,7 +17,7 @@ public:
 	friend class Worker;
 
 	WorkerScheduler(Executor *executor,
-					size_t max_worker_count = 256);
+					size_t max_worker_count = default_max_worker_num);
 	WorkerScheduler(const WorkerScheduler &) = delete;
 	WorkerScheduler &operator=(const WorkerScheduler &) = delete;
 	virtual ~WorkerScheduler();

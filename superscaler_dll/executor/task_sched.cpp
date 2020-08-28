@@ -4,9 +4,8 @@
 #include "exec_info.hpp"
 #include <iostream>
 
-constexpr size_t default_concurr_tasks_num = 16;
-
-TaskScheduler::TaskScheduler()
+TaskScheduler::TaskScheduler(size_t max_queue_size)
+	: m_exec_info_queue(max_queue_size)
 {
 }
 
@@ -54,22 +53,16 @@ ExecInfo TaskScheduler::fetch_one_exec_info()
 ExecInfo TaskScheduler::wait()
 {
 	ExecInfo exec_info;
-	task_id_t task_id;
 
 	if (!m_exec_info_wait.empty()) {
 		// First check if there is execution info waiting
 		auto ei_it = m_exec_info_wait.begin();
 		exec_info = ei_it->second;
-		task_id = ei_it->first;
 		m_exec_info_wait.erase(ei_it);
 	} else {
 		// Then fetch an execution info from the queue
 		exec_info = fetch_one_exec_info();
-		task_id = exec_info.get_task_id();
 	}
-
-	// Remove from added tasks list
-	m_added_tasks.erase(task_id);
 
 	return exec_info;
 }
@@ -93,9 +86,6 @@ ExecInfo TaskScheduler::wait(task_id_t task_id)
 		}
 	}
 
-	// Remove from added tasks list
-	m_added_tasks.erase(task_id);
-
 	return exec_info;
 }
 
@@ -106,11 +96,16 @@ void TaskScheduler::sync_runnable()
 		if (t.second == 0) {
 			if (!m_is_dispatched[t.first]) {
 				m_runnable.push_back(t.first);
-				n++;
 			}
+			n++;
 		}
 	}
-	// std::cout << "sync " << n << " tasks into dispatch queue\n";
+	/*
+	 * At any time, when dependence graph is not empty, there must be at least 
+	 * one task that has no dependence, otherwise there is a circular dependency
+	 */
+	if (!m_dependence_count.empty() && n == 0)
+		throw std::runtime_error("[Task Scheduler]: Circular dependency detected");
 }
 
 std::shared_ptr<Task> TaskScheduler::get_runnable()
@@ -146,12 +141,9 @@ std::shared_ptr<Task> TaskScheduler::get_runnable()
 
 bool TaskScheduler::task_done(task_id_t t_id)
 {
-	std::shared_ptr<Task> task;
-
 	auto tsk_it = m_added_tasks.find(t_id);
 	if (tsk_it == m_added_tasks.end())
 		return false;
-	task = tsk_it->second;
 
 	auto dep_it = m_dependences.find(t_id);
 	if (dep_it != m_dependences.end()) {
@@ -178,8 +170,11 @@ bool TaskScheduler::task_done(task_id_t t_id)
 	m_is_dispatched.erase(t_id);
 
 	// Generate execution info
-	auto ei = task->gen_exec_info();
+	auto ei = tsk_it->second->gen_exec_info();
 	m_exec_info_queue.push(ei);
+	
+	// Remove from added tasks
+	m_added_tasks.erase(t_id);
 
 	return true;
 }

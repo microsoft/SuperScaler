@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <utility>
 
+#include "config.hpp"
 #include "task.hpp"
 #include "exec_info.hpp"
 #include "utils/thread_safe_queue.hpp"
@@ -26,7 +27,7 @@ class TaskScheduler {
 public:
 	friend class PollExecutor;
 
-	TaskScheduler();
+	TaskScheduler(size_t max_queue_size = default_exec_info_queue_size);
     TaskScheduler(const TaskScheduler &) = delete;
     TaskScheduler operator=(const TaskScheduler &) = delete;
 	virtual ~TaskScheduler();
