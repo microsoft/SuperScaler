@@ -2675,6 +2675,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine2/xw_plus_b_grad/BiasAddGrad",
             "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
@@ -2734,6 +2735,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul_1"
@@ -2791,6 +2793,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine1/affine1_grad/ReluGrad",
             "gradients/affine1/xw_plus_b_grad/BiasAddGrad"
@@ -2850,6 +2853,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul_1"
@@ -2907,6 +2911,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine0/affine0_grad/ReluGrad",
             "gradients/affine0/xw_plus_b_grad/BiasAddGrad"
@@ -2966,6 +2971,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul_1"
@@ -3082,6 +3088,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv12/BiasAdd_grad/BiasAddGrad",
             "gradients/conv12/Reshape_grad/Reshape"
@@ -3167,6 +3174,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -3246,6 +3254,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv11/BiasAdd_grad/BiasAddGrad",
             "gradients/conv11/Reshape_grad/Reshape"
@@ -3331,6 +3340,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -3410,6 +3420,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv10/BiasAdd_grad/BiasAddGrad",
             "gradients/conv10/Reshape_grad/Reshape"
@@ -3495,6 +3506,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -3594,6 +3606,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv9/BiasAdd_grad/BiasAddGrad",
             "gradients/conv9/Reshape_grad/Reshape"
@@ -3679,6 +3692,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -3688,6 +3702,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv9/conv2d/Conv2D_grad/tuple/group_deps"
@@ -3842,6 +3857,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv9/BiasAdd_grad/BiasAddGrad",
             "gradients/conv9/BiasAdd_grad/tuple/group_deps"
@@ -4050,6 +4066,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv8/BiasAdd_grad/BiasAddGrad",
             "gradients/conv8/Reshape_grad/Reshape"
@@ -4135,6 +4152,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -4144,6 +4162,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv8/conv2d/Conv2D_grad/tuple/group_deps"
@@ -4288,6 +4307,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv8/BiasAdd_grad/BiasAddGrad",
             "gradients/conv8/BiasAdd_grad/tuple/group_deps"
@@ -4496,6 +4516,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv7/BiasAdd_grad/BiasAddGrad",
             "gradients/conv7/Reshape_grad/Reshape"
@@ -4581,6 +4602,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -4590,6 +4612,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.561867,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv7/conv2d/Conv2D_grad/tuple/group_deps"
@@ -4734,6 +4757,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv7/BiasAdd_grad/BiasAddGrad",
             "gradients/conv7/BiasAdd_grad/tuple/group_deps"
@@ -4962,6 +4986,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv6/BiasAdd_grad/BiasAddGrad",
             "gradients/conv6/Reshape_grad/Reshape"
@@ -5047,6 +5072,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -5056,6 +5082,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.581274,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv6/conv2d/Conv2D_grad/tuple/group_deps"
@@ -5200,6 +5227,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv6/BiasAdd_grad/BiasAddGrad",
             "gradients/conv6/BiasAdd_grad/tuple/group_deps"
@@ -5408,6 +5436,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv5/BiasAdd_grad/BiasAddGrad",
             "gradients/conv5/Reshape_grad/Reshape"
@@ -5493,6 +5522,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -5502,6 +5532,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.581274,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv5/conv2d/Conv2D_grad/tuple/group_deps"
@@ -5646,6 +5677,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv5/BiasAdd_grad/BiasAddGrad",
             "gradients/conv5/BiasAdd_grad/tuple/group_deps"
@@ -5854,6 +5886,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv4/BiasAdd_grad/BiasAddGrad",
             "gradients/conv4/Reshape_grad/Reshape"
@@ -5939,6 +5972,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -5948,6 +5982,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.517426,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv4/conv2d/Conv2D_grad/tuple/group_deps"
@@ -6092,6 +6127,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv4/BiasAdd_grad/BiasAddGrad",
             "gradients/conv4/BiasAdd_grad/tuple/group_deps"
@@ -6320,6 +6356,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv3/BiasAdd_grad/BiasAddGrad",
             "gradients/conv3/Reshape_grad/Reshape"
@@ -6405,6 +6442,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -6414,6 +6452,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.51348,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv3/conv2d/Conv2D_grad/tuple/group_deps"
@@ -6558,6 +6597,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.562391,
         "input": [
             "gradients/conv3/BiasAdd_grad/BiasAddGrad",
             "gradients/conv3/BiasAdd_grad/tuple/group_deps"
@@ -6766,6 +6806,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv2/BiasAdd_grad/BiasAddGrad",
             "gradients/conv2/Reshape_grad/Reshape"
@@ -6851,6 +6892,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -6860,6 +6902,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.622675,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv2/conv2d/Conv2D_grad/tuple/group_deps"
@@ -7004,6 +7047,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.562391,
         "input": [
             "gradients/conv2/BiasAdd_grad/BiasAddGrad",
             "gradients/conv2/BiasAdd_grad/tuple/group_deps"
@@ -7130,6 +7174,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv12/conv2d/Conv2D_grad/tuple/group_deps"
@@ -7274,6 +7319,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv12/BiasAdd_grad/BiasAddGrad",
             "gradients/conv12/BiasAdd_grad/tuple/group_deps"
@@ -7400,6 +7446,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv11/conv2d/Conv2D_grad/tuple/group_deps"
@@ -7544,6 +7591,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv11/BiasAdd_grad/BiasAddGrad",
             "gradients/conv11/BiasAdd_grad/tuple/group_deps"
@@ -7670,6 +7718,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv10/conv2d/Conv2D_grad/tuple/group_deps"
@@ -7814,6 +7863,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv10/BiasAdd_grad/BiasAddGrad",
             "gradients/conv10/BiasAdd_grad/tuple/group_deps"
@@ -8042,6 +8092,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv1/BiasAdd_grad/BiasAddGrad",
             "gradients/conv1/Reshape_grad/Reshape"
@@ -8127,6 +8178,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -8136,6 +8188,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.519559,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv1/conv2d/Conv2D_grad/tuple/group_deps"
@@ -8280,6 +8333,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.627384,
         "input": [
             "gradients/conv1/BiasAdd_grad/BiasAddGrad",
             "gradients/conv1/BiasAdd_grad/tuple/group_deps"
@@ -8488,6 +8542,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv0/BiasAdd_grad/BiasAddGrad",
             "gradients/conv0/Reshape_grad/Reshape"
@@ -8572,6 +8627,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -8581,6 +8637,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.74266,
         "input": [
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv0/conv2d/Conv2D_grad/tuple/group_deps"
@@ -8725,6 +8782,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.627384,
         "input": [
             "gradients/conv0/BiasAdd_grad/BiasAddGrad",
             "gradients/conv0/BiasAdd_grad/tuple/group_deps"
@@ -8851,6 +8909,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.55521,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine2/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -8983,6 +9042,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.639305,
         "input": [
             "gradients/affine2/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine2/xw_plus_b_grad/tuple/group_deps"
@@ -9109,6 +9169,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 18.685456,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine1/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -9241,6 +9302,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.394163,
         "input": [
             "gradients/affine1/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine1/xw_plus_b_grad/tuple/group_deps"
@@ -9367,6 +9429,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 45.142571,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine0/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -9499,6 +9562,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.394163,
         "input": [
             "gradients/affine0/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine0/xw_plus_b_grad/tuple/group_deps"
@@ -9625,6 +9689,7 @@
     },
     {
         "device": "/server/hostname1/GPU/0/",
+        "execution_time": 15.264893,
         "input": [
             "GradientDescent/update_affine0/biases/ApplyGradientDescent",
             "GradientDescent/update_affine0/weights/ApplyGradientDescent",
@@ -12404,6 +12469,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine2/xw_plus_b_grad/BiasAddGrad",
             "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
@@ -12463,6 +12529,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul_1"
@@ -12520,6 +12587,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine1/affine1_grad/ReluGrad",
             "gradients/affine1/xw_plus_b_grad/BiasAddGrad"
@@ -12579,6 +12647,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul_1"
@@ -12636,6 +12705,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine0/affine0_grad/ReluGrad",
             "gradients/affine0/xw_plus_b_grad/BiasAddGrad"
@@ -12695,6 +12765,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul",
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul_1"
@@ -12811,6 +12882,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv12/BiasAdd_grad/BiasAddGrad",
             "gradients/conv12/Reshape_grad/Reshape"
@@ -12896,6 +12968,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -12975,6 +13048,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv11/BiasAdd_grad/BiasAddGrad",
             "gradients/conv11/Reshape_grad/Reshape"
@@ -13060,6 +13134,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -13139,6 +13214,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv10/BiasAdd_grad/BiasAddGrad",
             "gradients/conv10/Reshape_grad/Reshape"
@@ -13224,6 +13300,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -13323,6 +13400,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv9/BiasAdd_grad/BiasAddGrad",
             "gradients/conv9/Reshape_grad/Reshape"
@@ -13408,6 +13486,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -13417,6 +13496,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv9/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv9/conv2d/Conv2D_grad/tuple/group_deps"
@@ -13571,6 +13651,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv9/BiasAdd_grad/BiasAddGrad",
             "gradients/conv9/BiasAdd_grad/tuple/group_deps"
@@ -13779,6 +13860,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv8/BiasAdd_grad/BiasAddGrad",
             "gradients/conv8/Reshape_grad/Reshape"
@@ -13864,6 +13946,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -13873,6 +13956,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv8/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv8/conv2d/Conv2D_grad/tuple/group_deps"
@@ -14017,6 +14101,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv8/BiasAdd_grad/BiasAddGrad",
             "gradients/conv8/BiasAdd_grad/tuple/group_deps"
@@ -14225,6 +14310,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv7/BiasAdd_grad/BiasAddGrad",
             "gradients/conv7/Reshape_grad/Reshape"
@@ -14310,6 +14396,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -14319,6 +14406,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.561867,
         "input": [
             "gradients/conv7/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv7/conv2d/Conv2D_grad/tuple/group_deps"
@@ -14463,6 +14551,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv7/BiasAdd_grad/BiasAddGrad",
             "gradients/conv7/BiasAdd_grad/tuple/group_deps"
@@ -14691,6 +14780,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv6/BiasAdd_grad/BiasAddGrad",
             "gradients/conv6/Reshape_grad/Reshape"
@@ -14776,6 +14866,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -14785,6 +14876,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.581274,
         "input": [
             "gradients/conv6/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv6/conv2d/Conv2D_grad/tuple/group_deps"
@@ -14929,6 +15021,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv6/BiasAdd_grad/BiasAddGrad",
             "gradients/conv6/BiasAdd_grad/tuple/group_deps"
@@ -15137,6 +15230,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv5/BiasAdd_grad/BiasAddGrad",
             "gradients/conv5/Reshape_grad/Reshape"
@@ -15222,6 +15316,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -15231,6 +15326,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.581274,
         "input": [
             "gradients/conv5/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv5/conv2d/Conv2D_grad/tuple/group_deps"
@@ -15375,6 +15471,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv5/BiasAdd_grad/BiasAddGrad",
             "gradients/conv5/BiasAdd_grad/tuple/group_deps"
@@ -15583,6 +15680,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv4/BiasAdd_grad/BiasAddGrad",
             "gradients/conv4/Reshape_grad/Reshape"
@@ -15668,6 +15766,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -15677,6 +15776,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.517426,
         "input": [
             "gradients/conv4/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv4/conv2d/Conv2D_grad/tuple/group_deps"
@@ -15821,6 +15921,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 16.513968,
         "input": [
             "gradients/conv4/BiasAdd_grad/BiasAddGrad",
             "gradients/conv4/BiasAdd_grad/tuple/group_deps"
@@ -16049,6 +16150,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv3/BiasAdd_grad/BiasAddGrad",
             "gradients/conv3/Reshape_grad/Reshape"
@@ -16134,6 +16236,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -16143,6 +16246,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.51348,
         "input": [
             "gradients/conv3/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv3/conv2d/Conv2D_grad/tuple/group_deps"
@@ -16287,6 +16391,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.562391,
         "input": [
             "gradients/conv3/BiasAdd_grad/BiasAddGrad",
             "gradients/conv3/BiasAdd_grad/tuple/group_deps"
@@ -16495,6 +16600,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv2/BiasAdd_grad/BiasAddGrad",
             "gradients/conv2/Reshape_grad/Reshape"
@@ -16580,6 +16686,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -16589,6 +16696,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.622675,
         "input": [
             "gradients/conv2/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv2/conv2d/Conv2D_grad/tuple/group_deps"
@@ -16733,6 +16841,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.562391,
         "input": [
             "gradients/conv2/BiasAdd_grad/BiasAddGrad",
             "gradients/conv2/BiasAdd_grad/tuple/group_deps"
@@ -16859,6 +16968,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv12/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv12/conv2d/Conv2D_grad/tuple/group_deps"
@@ -17003,6 +17113,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv12/BiasAdd_grad/BiasAddGrad",
             "gradients/conv12/BiasAdd_grad/tuple/group_deps"
@@ -17129,6 +17240,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv11/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv11/conv2d/Conv2D_grad/tuple/group_deps"
@@ -17273,6 +17385,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv11/BiasAdd_grad/BiasAddGrad",
             "gradients/conv11/BiasAdd_grad/tuple/group_deps"
@@ -17399,6 +17512,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.341187,
         "input": [
             "gradients/conv10/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv10/conv2d/Conv2D_grad/tuple/group_deps"
@@ -17543,6 +17657,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.568066,
         "input": [
             "gradients/conv10/BiasAdd_grad/BiasAddGrad",
             "gradients/conv10/BiasAdd_grad/tuple/group_deps"
@@ -17771,6 +17886,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv1/BiasAdd_grad/BiasAddGrad",
             "gradients/conv1/Reshape_grad/Reshape"
@@ -17856,6 +17972,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -17865,6 +17982,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.519559,
         "input": [
             "gradients/conv1/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv1/conv2d/Conv2D_grad/tuple/group_deps"
@@ -18009,6 +18127,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.627384,
         "input": [
             "gradients/conv1/BiasAdd_grad/BiasAddGrad",
             "gradients/conv1/BiasAdd_grad/tuple/group_deps"
@@ -18217,6 +18336,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv0/BiasAdd_grad/BiasAddGrad",
             "gradients/conv0/Reshape_grad/Reshape"
@@ -18301,6 +18421,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropInput"
@@ -18310,6 +18431,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.74266,
         "input": [
             "gradients/conv0/conv2d/Conv2D_grad/Conv2DBackpropFilter",
             "gradients/conv0/conv2d/Conv2D_grad/tuple/group_deps"
@@ -18454,6 +18576,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.627384,
         "input": [
             "gradients/conv0/BiasAdd_grad/BiasAddGrad",
             "gradients/conv0/BiasAdd_grad/tuple/group_deps"
@@ -18580,6 +18703,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.55521,
         "input": [
             "gradients/affine2/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine2/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -18712,6 +18836,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.639305,
         "input": [
             "gradients/affine2/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine2/xw_plus_b_grad/tuple/group_deps"
@@ -18838,6 +18963,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 18.685456,
         "input": [
             "gradients/affine1/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine1/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -18970,6 +19096,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.394163,
         "input": [
             "gradients/affine1/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine1/xw_plus_b_grad/tuple/group_deps"
@@ -19096,6 +19223,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 45.142571,
         "input": [
             "gradients/affine0/xw_plus_b/MatMul_grad/MatMul_1",
             "gradients/affine0/xw_plus_b/MatMul_grad/tuple/group_deps"
@@ -19228,6 +19356,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.394163,
         "input": [
             "gradients/affine0/xw_plus_b_grad/BiasAddGrad",
             "gradients/affine0/xw_plus_b_grad/tuple/group_deps"
@@ -19354,6 +19483,7 @@
     },
     {
         "device": "/server/hostname1/GPU/1/",
+        "execution_time": 15.264893,
         "input": [
             "GradientDescent/update_affine0/biases/ApplyGradientDescent",
             "GradientDescent/update_affine0/weights/ApplyGradientDescent",

@@ -283,9 +283,8 @@ class TFParser(DAGParser):
         for input_str in node_input:
             if '^' in input_str:
                 # For tensorflow, ^ indicates control input
-                # In plan_gen, we use -1 for control input
-                index = -1
-                input_str = input_str.replace('^', '')
+                # In plan_gen, we ignore control input
+                continue
             elif ':' in input_str:
                 # For tensorflow, :1 indicates which output tensor to use
                 # We parse the index directly
