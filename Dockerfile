@@ -28,7 +28,7 @@ RUN \
 
 # Install superscaler as a package
 RUN \
-    python3 -m pip install --upgrade setuptools && \
+    python3 -m pip install --upgrade setuptools==49.6.0 && \
     python3 setup.py install
 
 # Run pytest
