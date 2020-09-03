@@ -1,7 +1,7 @@
 #pragma once
 
 #include "task.hpp"
-#include "reduction_kernel.hpp"
+#include "cpu_kernels.hpp"
 
 template <class T, class Func>
 class ReductionTask : public Task{
