@@ -2,6 +2,7 @@
 
 #include "task.hpp"
 #include "cpu_kernels.hpp"
+#include "gpu_kernels.hpp"
 
 template <class T, class Func>
 class ReductionTask : public Task{

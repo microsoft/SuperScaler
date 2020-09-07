@@ -5,6 +5,13 @@ cmake_minimum_required(VERSION 3.5.0)
 project(executor)
 
 find_package(CUDA)
+
+if(CUDA_FOUND)
+    enable_language(CUDA)
+    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -gencode arch=compute_30,code=sm_30)
+    add_compile_options(-DGPU_SWITCH)
+endif(CUDA_FOUND)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/samples)
@@ -38,9 +45,11 @@ set(LIBRARIES
 
 # SRC
 file(GLOB CPP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB CUDA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cu ${CMAKE_CURRENT_SOURCE_DIR}/*.cuh)
 set(SOURCES
     ${SOURCES}
     ${CPP_SOURCES}
+    ${CUDA_SOURCES}
 )
 
 # Output
@@ -52,10 +61,14 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 target_compile_options(${PROJECT_NAME}
     PRIVATE
-    -Wall
-    -Werror
-    -Wextra
 )
+
+if(CUDA_FOUND)
+    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        CUDA_SEPARABLE_COMPILATION ON
+    )
+endif(CUDA_FOUND)
 
 # Test
 OPTION(DO_TEST "Build google test？" OFF)
