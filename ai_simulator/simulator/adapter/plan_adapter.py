@@ -165,11 +165,11 @@ class PlanAdapter():
 
         # Generate successor ids for each node from input_ids
         for node in self.__plan:
-            successor_ids = []
-            for node_itr in self.__plan:
-                if node['index'] in node_itr['input_ids']:
-                    successor_ids.append(node_itr['index'])
-            node['successor_ids'] = successor_ids
+            node['successor_ids'] = []
+
+        for node in self.__plan:
+            for input_id in node['input_ids']:
+                self.__plan[input_id]['successor_ids'].append(node['index'])
 
         # Generate dependency_ids for each node
         for node in self.__plan:
