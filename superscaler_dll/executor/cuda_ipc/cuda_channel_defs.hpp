@@ -3,11 +3,12 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-using message_id_t = uint64_t;
+#include "../channel/channel.hpp"
 
 struct CudaTransferMeta {
-    message_id_t id; /* Message id*/
+    message_id_t id; /* Message id */
     cudaIpcMemHandle_t handler; /* Handler for receive buffer */
+    size_t offset; /* Offset from the base address of handler */
     size_t length; /* except length */
 };
 

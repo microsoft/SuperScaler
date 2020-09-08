@@ -37,9 +37,9 @@ TYPED_TEST(SendRecvTest, SingleSendRecv)
     char input_str[] = "123456";
     char output_str[7];
     memset(output_str, 0, sizeof(output_str));
-    SendTask send_task(nullptr, nullptr, this->m_channel, 0, input_str,
+    SendTask send_task(nullptr, nullptr, this->m_channel, 0, 0, input_str,
                        sizeof(input_str));
-    RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, output_str,
+    RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, 0, output_str,
                        sizeof(input_str));
     send_task();
     recv_task();
@@ -56,12 +56,12 @@ TYPED_TEST(SendRecvTest, SendCallback)
 
     task_callback_t send_callback = [&](TaskState state) {
         ASSERT_EQ(state, TaskState::e_success);
-        RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, output_str,
+        RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, 0, output_str,
                            sizeof(input_str));
         recv_task();
         ASSERT_EQ(recv_task.get_state(), TaskState::e_success);
     };
-    SendTask send_task(nullptr, send_callback, this->m_channel, 0, input_str,
+    SendTask send_task(nullptr, send_callback, this->m_channel, 0, 0, input_str,
                        sizeof(input_str));
     send_task();
     ASSERT_EQ(send_task.get_state(), TaskState::e_success);
@@ -78,9 +78,9 @@ TYPED_TEST(SendRecvTest, RecvCallback)
         success = true;
     };
     memset(output_str, 0, sizeof(output_str));
-    SendTask send_task(nullptr, nullptr, this->m_channel, 0, input_str,
+    SendTask send_task(nullptr, nullptr, this->m_channel, 0, 0, input_str,
                        sizeof(input_str));
-    RecvTask recv_task(nullptr, recv_callback, this->m_channel, 0, output_str,
+    RecvTask recv_task(nullptr, recv_callback, this->m_channel, 0, 0, output_str,
                        sizeof(input_str));
     send_task();
     recv_task();
@@ -95,9 +95,9 @@ TYPED_TEST(SendRecvTest, RecvFirst)
     char input_str[] = "123456";
     char output_str[7];
     memset(output_str, 0, sizeof(output_str));
-    SendTask send_task(nullptr, nullptr, this->m_channel, 0, input_str,
+    SendTask send_task(nullptr, nullptr, this->m_channel, 0, 0, input_str,
                        sizeof(input_str));
-    RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, output_str,
+    RecvTask recv_task(nullptr, nullptr, this->m_channel, 0, 0, output_str,
                        sizeof(input_str));
     auto recv = [&]() { recv_task(); };
     std::thread recv_thread(recv);

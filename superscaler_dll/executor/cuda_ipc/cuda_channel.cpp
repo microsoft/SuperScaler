@@ -7,6 +7,7 @@
 
 constexpr char CUDA_SEMAPHORE_PREFIX[] = "CudaSema_";
 constexpr char CUDA_SHAREDMEMORY_PREFIX[] = "CudaMem_";
+constexpr char CUDA_CHANNEL_PREFIX[] = "CudaChan_";
 
 inline std::string cuda_get_semaphore_name(const std::string &channel_id)
 {
@@ -90,6 +91,11 @@ CudaChannelSender::~CudaChannelSender()
     cudaStreamDestroy(m_stream);
 }
 
+CudaChannelStatus CudaChannelSender::get_status() const
+{
+    return m_status;
+}
+
 std::string CudaChannelSender::get_channel_id() const
 {
     return m_channel_id;
@@ -131,7 +137,7 @@ bool CudaChannelSender::connect()
         return false;
     // Check the sizeof shared memory can match the sizeof ring buffer
     bool check_result = QueueAligner::get_shared_memory_size(
-        m_receiver_buffer_size, m_sender_buffer_size);
+        m_receiver_buffer_size, m_sender_buffer_size) <= shared_size;
     if (!check_result) {
         return false;
     }
@@ -152,7 +158,7 @@ bool CudaChannelSender::send(const message_id_t &message_id, const void *data,
     if (!get_result)
         return false;
     SharedBlock destination(meta.handler, meta.length);
-    transfer(destination.get_buffer(), data, length);
+    transfer((char *)destination.get_buffer() + meta.offset, data, length);
     // TODO: Optimize performance by asynchronously sending acks
     bool ret = false;
     CudaTransferAck ack{ message_id };
@@ -167,6 +173,8 @@ bool CudaChannelSender::send(const message_id_t &message_id, const void *data,
 bool CudaChannelSender::get_receiver_meta(const message_id_t &message_id,
                                           CudaTransferMeta &meta)
 {
+    // TODO: schedule all operation of the same channel to the same worker
+    // to avoid using lock here.
     std::lock_guard<std::mutex> lock(m_received_mutex);
     bool ret = false;
     do {
@@ -180,6 +188,7 @@ bool CudaChannelSender::get_receiver_meta(const message_id_t &message_id,
         return false;
     }
     meta = it->second;
+    m_received.erase(it);
     return true;
 }
 
@@ -218,21 +227,25 @@ CudaChannelReceiver::CudaChannelReceiver(const std::string &channel_id,
 
 void CudaChannelReceiver::listen()
 {
+    if (m_status == CudaChannelStatus::e_connected)
+        return;
     std::string semaphore_name = cuda_get_semaphore_name(m_channel_id);
     //FIXME: If two receiver have the same channel_id,
     //one receiver will never know this but cannot work
     NamedSemaphore::remove(semaphore_name);
     m_semaphore.reset(
         new SemaphoreMutex(NamedSemaphore::OpenType::e_create, semaphore_name));
+    m_status = CudaChannelStatus::e_connected;
 }
 
 bool CudaChannelReceiver::receive(const message_id_t &message_id,
                                   const cudaIpcMemHandle_t &handler,
-                                  size_t length)
+                                  size_t offset, size_t length)
 {
     CudaTransferMeta meta;
     meta.id = message_id;
     meta.handler = handler;
+    meta.offset = offset;
     meta.length = length;
     return m_receiver_fifo->push(meta);
 }
@@ -246,6 +259,23 @@ bool CudaChannelReceiver::wait(message_id_t &message_id)
     return ret;
 }
 
+bool CudaChannelReceiver::wait_id(const message_id_t message_id)
+{
+    CudaTransferAck ack;
+    bool ret = false;
+    do {
+        ret = m_sender_fifo->pop(ack);
+        if (ret) {
+            m_acked.emplace(ack.id, ack);
+        }
+    } while (ret);
+    auto it = m_acked.find(message_id);
+    if (it == m_acked.end())
+        return false;
+    m_acked.erase(it);
+    return true;
+}
+
 CudaChannelReceiver::~CudaChannelReceiver()
 {
 }
@@ -253,4 +283,130 @@ CudaChannelReceiver::~CudaChannelReceiver()
 std::string CudaChannelReceiver::get_channel_id() const
 {
     return m_channel_id;
+}
+
+CudaChannelStatus CudaChannelReceiver::get_status() const
+{
+    return m_status;
+}
+
+static std::string get_cuda_channel_name(int send_device, int recv_device)
+{
+    // Default name: PREFIX_sendDevice_recvDevice
+    return std::string(CUDA_CHANNEL_PREFIX) + std::to_string(send_device) +
+           std::string("_") + std::to_string(recv_device);
+}
+
+CudaSingleChannel::CudaSingleChannel(int self_device, int peer_device,
+                                     size_t receiver_buffer_size, size_t sender_buffer_size)
+    : m_status(CudaChannelStatus::e_unconnected),
+      m_send_channel_name(get_cuda_channel_name(self_device, peer_device)),
+      m_recv_channel_name(get_cuda_channel_name(peer_device, self_device))
+{
+    m_sender = CudaChannelSenderManager::get_manager().create_channel(
+        m_send_channel_name, receiver_buffer_size, sender_buffer_size);
+    m_receiver = CudaChannelReceiverManager::get_manager().create_channel(
+        m_recv_channel_name, receiver_buffer_size, sender_buffer_size);
+}
+
+CudaSingleChannel::~CudaSingleChannel()
+{
+    CudaChannelSenderManager::get_manager().remove_channel(m_send_channel_name);
+    CudaChannelReceiverManager::get_manager().remove_channel(m_recv_channel_name);
+}
+
+bool CudaSingleChannel::send(const message_id_t message_id, const MemBlock &buffer)
+{
+    init_connection();
+
+    bool send_result = false;
+    do {
+        send_result = m_sender->send(message_id, buffer.get_address(), buffer.get_length());
+    } while (!send_result);
+
+    return true;
+}
+
+bool CudaSingleChannel::receive(const message_id_t message_id, MemBlock &buffer)
+{
+    init_connection();
+
+    cudaIpcMemHandle_t handler;
+    checkCudaErrors(cudaIpcGetMemHandle(&handler, buffer.get_base()));
+
+    bool receive_result = false;
+    bool wait_result = false;
+    do {
+        receive_result = m_receiver->receive(message_id, handler, buffer.get_offset(), buffer.get_length());
+    } while (!receive_result);
+
+    do {
+        wait_result = m_receiver->wait_id(message_id);
+    } while (!wait_result);
+
+    return true;
+}
+
+void CudaSingleChannel::init_connection()
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    if (m_status == CudaChannelStatus::e_connected)
+        return;
+    m_receiver->listen();
+
+    bool connect_result = false;
+    do {
+        connect_result = m_sender->connect();
+    } while (!connect_result);
+
+    m_status = CudaChannelStatus::e_connected;
+}
+
+CudaChannel::CudaChannel(const rank_t self_device, const std::vector<rank_t> &devices)
+{
+    EnableCudaDeviceAccess();
+    checkCudaErrors(cudaSetDevice(self_device));
+
+    // Create a channel between self and every other device
+    for (auto dev : devices) {
+        if (dev == self_device)
+            continue;
+        auto it = m_channels.find(dev);
+        if (it != m_channels.end())
+            continue;
+        m_channels.emplace(dev, std::make_shared<CudaSingleChannel>(self_device, dev));
+    }
+}
+
+bool CudaChannel::send(const MemBlock &buffer, rank_t to_rank, message_id_t message_id,
+                       std::function<void(bool success, const MemBlock &buffer)> call_back)
+{
+    auto it = m_channels.find(to_rank);
+    bool ret;
+    if (it == m_channels.end()) {
+        ret = false;
+    } else {
+        it->second->send(message_id, buffer);
+        ret = true;
+    }
+    if (call_back)
+        call_back(ret, buffer);
+    return ret;
+}
+
+bool CudaChannel::receive(MemBlock &buffer, rank_t from_rank, message_id_t message_id,
+                          std::function<void(bool success, MemBlock &buffer)> call_back)
+{
+    auto it = m_channels.find(from_rank);
+    bool ret;
+    if (it == m_channels.end()) {
+        ret = false;
+    } else {
+        it->second->receive(message_id, buffer);
+        ret = true;
+    }
+    if (call_back)
+        call_back(ret, buffer);
+    return ret;
 }

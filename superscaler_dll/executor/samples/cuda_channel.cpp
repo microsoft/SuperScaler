@@ -84,7 +84,7 @@ void ReceiverProcess()
          * In this case, receive operation will not fail. However, if there is a lot of receivers
          * and the receiver's fifo is full, receive may fail.
          */
-        receive_result = receiver->receive(message_id, handler, test_size);
+        receive_result = receiver->receive(message_id, handler, 0, test_size);
     } while (!receive_result);
     std::cerr << "[Receiver Info] receive task added\n";
     bool wait_result = false;
