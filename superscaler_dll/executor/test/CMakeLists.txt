@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved. 
 # Licensed under the MIT License.
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.9.0)
 
 set(TEST_PROJECT test_${PROJECT_NAME})
 set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -46,11 +46,13 @@ set_target_properties(${TEST_PROJECT} PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
+if(CUDA_FOUND)
+    set_source_files_properties(${TEST_SOURCES} PROPERTIES LANGUAGE CUDA)
+    target_compile_features(${TEST_PROJECT} PRIVATE cxx_std_11)
+endif()
+
 target_compile_options(${TEST_PROJECT}
     PRIVATE
-    -Wall
-    -Werror
-    -Wextra
 )
 
 add_custom_target(g_test COMMAND ${TEST_PROJECT})

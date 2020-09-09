@@ -2,6 +2,7 @@
 
 #include "task.hpp"
 #include "cpu_kernels.hpp"
+#include "gpu_kernels.hpp"
 
 /**
 * @brief A task for scaling or division

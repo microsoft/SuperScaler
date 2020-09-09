@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.9.0)
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 
 include_directories(${INCLUDE_DIRS})
