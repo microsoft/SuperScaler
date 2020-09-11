@@ -307,19 +307,24 @@ class TFParser(DAGParser):
         the same node name and device with the current node.
         """
 
+        # create a code_book for input_shape
+        input_shapes_dict = {}
+        for node in profiling_data_list:
+            input_shapes_dict[(node['name'], node['device'])] = \
+                node['output_shapes']
+
+        # introduce input_shape to node
         for node in profiling_data_list:
             input_shapes = []
 
             for input_, index_ in zip(node['input'], node['input_index']):
-
-                if index_ == -1:
-                    input_shapes.append([])
+                if (input_, node['device']) in input_shapes_dict and \
+                   index_ >= 0 and \
+                   index_ < len(input_shapes_dict[(input_, node['device'])]):
+                    input_shapes.append(
+                        input_shapes_dict[(input_, node['device'])][index_])
                 else:
-                    for ref_node in profiling_data_list:
-                        if(ref_node['name'] == input_ and
-                           ref_node['device'] == node['device']):
-                            input_shape = ref_node['output_shapes'][index_]
-                            input_shapes.append(input_shape)
+                    raise Exception("Raise Exception on create_input_shapes")
 
             node['input_shapes'] = input_shapes
 
