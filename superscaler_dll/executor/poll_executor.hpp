@@ -36,7 +36,8 @@ class PollExecutor : public Executor {
 public:
 	friend class Worker;
 
-	PollExecutor(size_t max_worker = default_max_worker_num);
+	PollExecutor(compute_dev_id_t compute_dev_id = 0,
+				 size_t max_worker = default_max_worker_num);
 	virtual ~PollExecutor();
 
 	/**
@@ -85,6 +86,12 @@ public:
 	ExecInfo wait(task_id_t task_id) override;
 
 	/**
+	 * @brief Get the pointer to the execution context.
+	 * @return The pointer to the execution context.
+	 */
+    const ExecCtx *get_context() override;
+
+	/**
 	 * @brief Stop Poll Executor thread
 	 */
 	void exit();
@@ -106,4 +113,6 @@ private:
 
 	std::thread m_executor_thread;
 	bool m_is_activated;
+
+	ExecCtx m_context;
 };

@@ -4,12 +4,19 @@
 #include "poll_executor.hpp"
 #include "exec_info.hpp"
 
-PollExecutor::PollExecutor(size_t max_worker)
+PollExecutor::PollExecutor(compute_dev_id_t compute_dev_id, size_t max_worker)
 	: m_task_manager(new TaskManager),
 	  m_task_scheduler(new TaskScheduler(default_exec_info_queue_size)),
 	  m_worker_scheduler(new WorkerScheduler(this, max_worker)),
 	  m_is_activated(true)
 {
+	m_context.compute_dev_id = compute_dev_id;
+#ifdef HAVE_CUDA
+    checkCudaErrors(cudaSetDevice(m_context.compute_dev_id));
+    checkCudaErrors(cudaStreamCreate(&m_context.compute_dev_stream));
+#else
+    m_context.compute_dev_stream = 0;
+#endif
 	m_executor_thread = std::thread(&PollExecutor::run, this);
 }
 
@@ -69,6 +76,11 @@ ExecInfo PollExecutor::wait(task_id_t t_id)
 	m_task_manager->delete_task(t_id);
 
 	return exec_info;
+}
+
+const ExecCtx *PollExecutor::get_context()
+{
+	return &m_context;
 }
 
 void PollExecutor::exit()

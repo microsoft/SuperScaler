@@ -54,6 +54,11 @@ worker_id_t Worker::get_worker_id() const
 
 void Worker::run()
 {
+#ifdef HAVE_CUDA
+    if (m_executor)
+        checkCudaErrors(cudaSetDevice(m_executor->get_context()->compute_dev_id));
+#endif
+
     while (m_is_activated || !m_task_queue.empty()) {
         std::vector<std::shared_ptr<Task> > tasks;
         // Reserve memory for tasks to optimize the push_back time

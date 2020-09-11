@@ -10,6 +10,7 @@ if(CUDA_FOUND)
     enable_language(CUDA)
     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -gencode arch=compute_30,code=sm_30)
     add_compile_options(-DGPU_SWITCH)
+    add_definitions(-DHAVE_CUDA)
 endif(CUDA_FOUND)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)

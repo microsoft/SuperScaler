@@ -4,6 +4,7 @@
 
 #include "task.hpp"
 #include "exec_info.hpp"
+#include "exec_ctx.hpp"
 
 class Executor {
 public:
@@ -50,6 +51,11 @@ public:
 	 * @return The pointer to the execution info
 	 */
     virtual ExecInfo wait(task_id_t t_id) = 0;
+    /**
+	 * @brief Get the pointer to the execution context.
+	 * @return The pointer to the execution context.
+	 */
+    virtual const ExecCtx *get_context() = 0;
 
 protected:
     /**

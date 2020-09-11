@@ -41,6 +41,7 @@ void WorkerScheduler::stop_all_workers()
 
 void WorkerScheduler::assign_task(std::shared_ptr<Task> t)
 {
+	// TODO: Need better strategy for scheduling send/recv tasks
 	std::weak_ptr<Worker> worker;
 	worker_id_t worker_id;
 	if (m_idle_workers.empty()) {
