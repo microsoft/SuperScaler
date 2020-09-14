@@ -10,8 +10,11 @@ from simulator.computation_device import GPU, CPU
 
 
 def test_simulator_error_handling():
-    nodes = generate_nodes()
     ''' Test wrong device list '''
+    file_path = os.path.join(
+        os.path.dirname(__file__), "test_simulator_input",
+        "simulator_test_good_nodelist.json")
+    nodes = generate_nodes(file_path)
     # device_list incoherence, node_list needs 3 device:
     # "/server/hostname1/CPU/0", "/server/hostname1/CPU/1" and
     # "/server/hostname1/GPU/0". However, in wrong_device_list there are only
@@ -62,8 +65,12 @@ def test_simulator_error_handling():
 
 
 def test_simulator():
+    file_path = os.path.join(
+        os.path.dirname(__file__), "test_simulator_input",
+        "simulator_test_good_nodelist.json")
+
     # test simulator with node_dict_list and device_obj_list
-    node_dict_list = generate_nodes()['dict']
+    node_dict_list = generate_nodes(file_path)['dict']
     device_obj_list = [
         GPU("/server/hostname1/GPU/0"),
         CPU("/server/hostname1/CPU/0"),
@@ -74,7 +81,7 @@ def test_simulator():
     check_sim_results(timeuse, start_time, finish_time)
 
     # test simulator with node_tuple_list and device_obj_list
-    node_tuple_list = generate_nodes()['tuple']
+    node_tuple_list = generate_nodes(file_path)['tuple']
     device_obj_list = [
         GPU("/server/hostname1/GPU/0"),
         CPU("/server/hostname1/CPU/0"),
@@ -85,7 +92,7 @@ def test_simulator():
     check_sim_results(timeuse, start_time, finish_time)
 
     # test simulator with node_dict_list and device_tuple_list
-    node_dict_list = generate_nodes()['dict']
+    node_dict_list = generate_nodes(file_path)['dict']
     device_tuple_list = [
         ('GPU', ["/server/hostname1/GPU/0"]),
         ('CPU', ["/server/hostname1/CPU/0"]),
@@ -96,7 +103,7 @@ def test_simulator():
     check_sim_results(timeuse, start_time, finish_time)
 
     # test simulator with node_tuple_list and device_tuple_list
-    node_tuple_list = generate_nodes()['tuple']
+    node_tuple_list = generate_nodes(file_path)['tuple']
     device_tuple_list = [
         ('GPU', ["/server/hostname1/GPU/0"]),
         ('CPU', ["/server/hostname1/CPU/0"]),
@@ -104,10 +111,30 @@ def test_simulator():
     ]
     sim = Simulator(node_tuple_list, device_tuple_list)
     timeuse, start_time, finish_time = sim.run()
+    # test the self.first_undone_node if all nodes done
+    assert not sim.list_undone_nodes()
+    check_sim_results(timeuse, start_time, finish_time)
+
+    # test simulator if some nodes not executed
+    file_path_2 = os.path.join(
+        os.path.dirname(__file__), "test_simulator_input",
+        "simulator_test_redundant_node_nodelist.json")
+
+    node_dict_list = generate_nodes(file_path_2)['dict']
+    device_tuple_list = [
+        ('GPU', ["/server/hostname1/GPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/1"])
+    ]
+    sim = Simulator(node_dict_list, device_tuple_list)
+    with pytest.warns(UserWarning):
+        timeuse, start_time, finish_time = sim.run()
+    # test the self.first_undone_node if node3 not done
+    assert [i.get_index() for i in sim.list_undone_nodes()] == [3]
     check_sim_results(timeuse, start_time, finish_time)
 
 
-def generate_nodes():
+def generate_nodes(file_path):
     '''Return {'dict': node_dict_list, 'list': node_tuple_list} generated from
     simulator_unit_test.json
     '''
@@ -115,10 +142,8 @@ def generate_nodes():
     # Mock the input data (node_list)
     node_tuple_list = []
     node_dict_list = []
-    simulator_unit_test_file_relative_path = os.path.join(
-        os.path.dirname(__file__), "test_simulator_input",
-        "simulator_unit_test.json")
-    with open(simulator_unit_test_file_relative_path) as f:
+
+    with open(file_path) as f:
         node_json_data = json.load(f)
 
     # Iterate the "node_list" objects, convert each json object to node

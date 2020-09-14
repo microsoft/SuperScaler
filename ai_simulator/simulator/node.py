@@ -158,6 +158,9 @@ class Node():
     def is_ready(self):
         return self.__remain_dependency_cnt == 0
 
+    def is_done(self):
+        return self.__status == NodeStatus.done
+
     def get_index(self):
         return self.__metadata.index
 

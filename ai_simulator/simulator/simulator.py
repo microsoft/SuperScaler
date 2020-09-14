@@ -17,7 +17,7 @@ from .node import NodeMetadata
 from .node import Node
 from .device import Device
 from .device_factory import DeviceFactory
-
+import warnings
 
 RET_SIMULATION_FINISH = -1
 
@@ -131,6 +131,40 @@ class Simulator():
         for node in self.__nodes:
             node.reset()
 
+    def list_undone_nodes(self):
+        '''Return list of undone nodes to check if all nodes have been executed
+        '''
+        undone_nodes = []
+        for node in self.__nodes:
+            if not node.is_done():
+                undone_nodes.append(node)
+        return undone_nodes
+
+    def __check_if_all_nodes_done(self):
+        '''Send a warining if there are nodes haven't been done. Only show the
+        top 10 nodes' detail information.
+        the Warnings are like this:
+        There are 1155/1589 nodes haven't been executed:
+          Index:434    Name:conv0/batchnorm0/FusedBatchNorm
+          Index:435    Name:conv0/Relu
+          ...
+        '''
+        undone_nodes = self.list_undone_nodes()
+        if undone_nodes:
+            not_done_nodes = ''
+            not_done_num = len(undone_nodes)
+            nodes_tmp = '\n  Index:%-6d Name:%s  '
+            warn_tmp = "\nThere are %d/%d nodes haven't been executed:%s"
+            for node in undone_nodes[:10]:
+                not_done_nodes += nodes_tmp \
+                    % (node.get_index(),
+                       node.get_name())
+            if not_done_num > 10:
+                not_done_nodes += '\n  ...'
+            warnings.warn(warn_tmp % (not_done_num,
+                                      len(self.__nodes),
+                                      not_done_nodes))
+
     def run(self):
         '''Run the simulation'''
         self.reset()
@@ -140,6 +174,8 @@ class Simulator():
         while(finish_time != RET_SIMULATION_FINISH):
             # Wait until one node is done.
             finish_time = self.__next_step()
+        # send warning if there are nodes haven't been executed
+        self.__check_if_all_nodes_done()
         return (self.__time_now,
                 self.__execution_enqueue_time,
                 self.__execution_dequeue_time)
