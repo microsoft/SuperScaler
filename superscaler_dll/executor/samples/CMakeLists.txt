@@ -7,6 +7,7 @@ if(CUDA_FOUND)
     add_executable(cuda_channel cuda_channel.cpp)
     add_executable(cuda_task cuda_task.cpp)
     add_executable(allreduce_sample allreduce_sample.cpp)
+    add_executable(handle_manager handle_manager.cpp)
     
     target_link_libraries(cuda_channel 
         ${LIBRARIES}
@@ -15,6 +16,9 @@ if(CUDA_FOUND)
         ${LIBRARIES}
         ${PROJECT_NAME})
     target_link_libraries(allreduce_sample
+        ${LIBRARIES}
+        ${PROJECT_NAME})
+    target_link_libraries(handle_manager
         ${LIBRARIES}
         ${PROJECT_NAME})
     set_source_files_properties(allreduce_sample PROPERTIES

@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "cuda_channel.hpp"
-#include "shared_block.hpp"
 
 constexpr char CUDA_SEMAPHORE_PREFIX[] = "CudaSema_";
 constexpr char CUDA_SHAREDMEMORY_PREFIX[] = "CudaMem_";
@@ -157,8 +156,7 @@ bool CudaChannelSender::send(const message_id_t &message_id, const void *data,
     bool get_result = get_receiver_meta(message_id, meta);
     if (!get_result)
         return false;
-    SharedBlock destination(meta.handler, meta.length);
-    transfer((char *)destination.get_buffer() + meta.offset, data, length);
+    transfer((char *)m_handle_manager.get_address(meta.handler) + meta.offset, data, length);
     // TODO: Optimize performance by asynchronously sending acks
     bool ret = false;
     CudaTransferAck ack{ message_id };

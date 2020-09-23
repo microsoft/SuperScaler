@@ -14,6 +14,7 @@
 
 #include "cuda_channel_defs.hpp"
 #include "channel_manager.hpp"
+#include "handle_manager.hpp"
 
 void EnableCudaDeviceAccess();
 
@@ -108,6 +109,7 @@ private:
     std::mutex m_received_mutex;
     size_t m_receiver_buffer_size;
     size_t m_sender_buffer_size;
+    HandleManager m_handle_manager;
 };
 
 class CudaChannelReceiver {
