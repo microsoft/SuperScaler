@@ -52,7 +52,8 @@ class AllreducePlan(Plan):
         return allreduce_node_list
 
     def find_endpoints(self, node, node_list):
-        ''' Return a endpoints where all nodes have same op and tensor_name
+        ''' Return a endpoints where all nodes have same op, op name
+        and tensor_name
         Args:
             node: dict, the node with allreduce op
             node_list: list, the input nodelist
@@ -60,6 +61,7 @@ class AllreducePlan(Plan):
         endpoints = NodeList()
         for node_itr in node_list:
             if(node_itr.op == self.get_plan_type() and
+               node_itr.name == node.name and
                node_itr.tensor_name == node.tensor_name):
                 endpoints.append(node_itr)
         return endpoints
