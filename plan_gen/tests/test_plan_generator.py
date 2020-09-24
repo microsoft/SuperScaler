@@ -1,6 +1,6 @@
 import os
 import json
-from plan.adapter.tf_parser import TFParser
+from plan.parser.tf_parser import TFParser
 from plan.resources.resource_pool import ResourcePool
 from plan.plan_generator import PlanGenerator
 

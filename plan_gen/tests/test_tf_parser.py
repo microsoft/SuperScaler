@@ -3,7 +3,7 @@ import json
 import pytest
 import tensorflow as tf
 from google.protobuf import text_format
-from plan.adapter.tf_parser import TFNodeAttrParser, TFParser, ParserError
+from plan.parser.tf_parser import TFNodeAttrParser, TFParser, ParserError
 
 TEST_DB_FILE = 'tests/data/tf_parser_testbench/db_test.json'
 
