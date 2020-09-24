@@ -39,13 +39,12 @@ class PlanAdapter():
         # The computational nodes must have these 4 attributes
         essential_compute_attr_type = {
             'device': str, 'name': str, 'op': str, 'input': list}
-        # The communication nodes must have these 7 attributes
+        # The communication nodes must have these 8 attributes
         essential_comm_attr_type = dict(
             {
                 'target': str,
                 'route_index': int,
                 'output_shapes': list,
-                'tensor_name': str,
                 'tensor_type': str
             },
             **essential_compute_attr_type
