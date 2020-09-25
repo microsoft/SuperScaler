@@ -193,9 +193,10 @@ class Simulator():
         elif len(nodemetadata_list) == 0:
             return
         else:
-            for i in range(len(nodemetadata_list)):
-                if isinstance(nodemetadata_list[i], dict):
-                    node = nodemetadata_list[i]
+            for node in nodemetadata_list:
+                if isinstance(node, tuple):
+                    node = dict(node._asdict())
+                if isinstance(node, dict):
                     metadata = NodeMetadata(
                         index=node['index'],
                         op=node['op'],
@@ -206,20 +207,6 @@ class Simulator():
                         input_ids=node['input_ids'],
                         dependency_ids=node['dependency_ids'],
                         successor_ids=node['successor_ids']
-                    )
-                    self.__nodes_metadata.append(metadata)
-                elif isinstance(nodemetadata_list[i], tuple):
-                    node = nodemetadata_list[i]
-                    metadata = NodeMetadata(
-                        index=node.index,
-                        op=node.op,
-                        name=node.name,
-                        device_name=node.device_name,
-                        execution_time=node.execution_time,
-                        output_tensors=node.output_tensors,
-                        input_ids=node.input_ids,
-                        dependency_ids=node.dependency_ids,
-                        successor_ids=node.successor_ids
                     )
                     self.__nodes_metadata.append(metadata)
                 else:
