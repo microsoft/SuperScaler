@@ -61,12 +61,12 @@ void EnableCudaDeviceAccess()
         for (int j = i + 1; j < device_count; ++j) {
             int can_access;
             checkCudaErrors(cudaDeviceCanAccessPeer(&can_access, i, j));
-            if (!can_access) {
+            if (can_access) {
                 DeviceContextGuard guard(i);
                 checkCudaErrors(cudaDeviceEnablePeerAccess(j, 0));
             }
             checkCudaErrors(cudaDeviceCanAccessPeer(&can_access, j, i));
-            if (!can_access) {
+            if (can_access) {
                 DeviceContextGuard guard(j);
                 checkCudaErrors(cudaDeviceEnablePeerAccess(i, 0));
             }
