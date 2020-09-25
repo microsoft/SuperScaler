@@ -2,7 +2,7 @@ from .adapter import Adapter
 from ..node_list import NodeList
 
 
-class AISimulatorAdaptor(Adapter):
+class AISimulatorAdapter(Adapter):
     """Interface for adapting generated plan for the AI_Simulator."""
 
     def __init__(self):

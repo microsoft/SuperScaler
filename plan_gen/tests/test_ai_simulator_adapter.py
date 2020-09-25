@@ -2,13 +2,13 @@ import json
 import os
 import copy
 
-from plan.adapter.ai_simulator_adapter import AISimulatorAdaptor
+from plan.adapter.ai_simulator_adapter import AISimulatorAdapter
 
 
 def test_ai_simulator_adapter():
 
     # Init adapter class
-    adapter = AISimulatorAdaptor()
+    adapter = AISimulatorAdapter()
 
     # Set input plan
     path_input = os.path.join(
