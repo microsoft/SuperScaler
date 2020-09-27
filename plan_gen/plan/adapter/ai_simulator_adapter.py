@@ -87,6 +87,9 @@ class AISimulatorAdapter(Adapter):
         # add estimated execution_time for each node
         elif not self.__add_execution_time():
             return False
+        # init the essential communication attributes for each node
+        elif not self.__init_communication_attributes():
+            return False
         else:
             return True
 
@@ -194,4 +197,23 @@ class AISimulatorAdapter(Adapter):
             # execution_time: argument for AISimulator to fill
             if 'execution_time' not in node:
                 node['execution_time'] = 0.0
+        return True
+
+    def __init_communication_attributes(self):
+        '''change Send nodes' name, change device name to NetworkSimulator
+        change device to device_name
+        '''
+        for node_raw in self.__plan:
+            # Add device_name and output_tensors attributes
+            node_raw['device_name'] = node_raw['device']
+            if node_raw['op'] == 'Send' or node_raw['op'] == 'Recv':
+                # Set device_name to NetworkSimulator for send/recv nodes
+                node_raw['device_name'] = 'NetworkSimulator'
+                if node_raw['op'] == 'Send':
+                    # Change name of node, this is used as routing info
+                    new_name = ":send:{0}:{1}:{2}:".format(
+                        node_raw['device'], node_raw['target'],
+                        node_raw['route_index']
+                    )
+                    node_raw['name'] = new_name
         return True
