@@ -5,7 +5,6 @@ import json
 import pytest
 
 from simulator import Simulator
-from simulator.tensor import Tensor
 from simulator.computation_device import GPU, CPU
 
 
@@ -133,6 +132,21 @@ def test_simulator():
     assert [i.get_index() for i in sim.list_undone_nodes()] == [3]
     check_sim_results(timeuse, start_time, finish_time)
 
+    # test simulator if some nodes not executed
+    file_path_2 = os.path.join(
+        os.path.dirname(__file__), "test_simulator_input",
+        "simulator_test_redundant_attribute_nodelist.json")
+
+    node_tuple_list = generate_nodes(file_path)['tuple']
+    device_tuple_list = [
+        ('GPU', ["/server/hostname1/GPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/0"]),
+        ('CPU', ["/server/hostname1/CPU/1"])
+    ]
+    sim = Simulator(node_tuple_list, device_tuple_list)
+    timeuse, start_time, finish_time = sim.run()
+    check_sim_results(timeuse, start_time, finish_time)
+
 
 def generate_nodes(file_path):
     '''Return {'dict': node_dict_list, 'list': node_tuple_list} generated from
@@ -152,19 +166,11 @@ def generate_nodes(file_path):
             json.dumps(node_json_obj),
             object_hook=lambda d: namedtuple(
                 'metadata_tuple', d.keys())(*d.values()))
-        tensor_list = []
-        for tensor_metadata in node_obj.output_tensors:
-            tensor_list.append(
-                Tensor(tensor_metadata[0], tensor_metadata[1])
-            )
-        final_tuple_obj = node_obj._replace(output_tensors=tensor_list)
         # Init node_tuple_list
         node_tuple_list.append(
-            final_tuple_obj)
+            node_obj)
         # Init node_dict_list
         final_dict_obj = copy.deepcopy(node_json_obj)
-        final_dict_obj['output_tensors'] = \
-            tensor_list
         node_dict_list.append(
             final_dict_obj)
 

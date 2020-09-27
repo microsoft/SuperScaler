@@ -1,7 +1,7 @@
 import os
 
-from plan_gen import ResourcePool, TFParser, PlanGenerator
-from ai_simulator import Simulator, PlanAdapter
+from plan_gen import ResourcePool, TFParser, PlanGenerator, AISimulatorAdapter
+from ai_simulator import Simulator
 
 
 def init_nodelist(graph_dir):
@@ -46,7 +46,7 @@ def init_simulator(node_list, rp):
     compu_device_spec = plan_generator.get_device_info()
 
     # use PlanAdapter to get json node_list
-    adapter = PlanAdapter()
+    adapter = AISimulatorAdapter()
     assert adapter.set_plan(mapped_plan) is True
     sim_nodes_list = adapter.get_plan()
 

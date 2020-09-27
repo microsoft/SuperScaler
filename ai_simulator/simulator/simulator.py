@@ -17,6 +17,7 @@ from .node import NodeMetadata
 from .node import Node
 from .device import Device
 from .device_factory import DeviceFactory
+from .tensor import Tensor
 import warnings
 
 RET_SIMULATION_FINISH = -1
@@ -197,6 +198,7 @@ class Simulator():
                 if isinstance(node, tuple):
                     node = dict(node._asdict())
                 if isinstance(node, dict):
+                    node = self.__init_output_tensors(node)
                     metadata = NodeMetadata(
                         index=node['index'],
                         op=node['op'],
@@ -230,3 +232,19 @@ class Simulator():
                 self.__devices[device.name()] = device
         else:
             raise ValueError("Invalid input device_info parameter.")
+
+    def __init_output_tensors(self, node):
+        '''Add output_tensors attribute to node
+        '''
+        # Add output_tensors attributes
+        node['output_tensors'] = []
+        if node['op'] == 'Send' or node['op'] == 'Recv':
+            # Set device_name to NetworkSimulator for send/recv nodes
+            if node['op'] == 'Send':
+                # Check whether tensor_type is valid
+                if not Tensor.check_tensor_type(node['tensor_type']):
+                    raise ValueError("Node have invalid tensor_type")
+                # Add Tensor list
+                node['output_tensors'] = [
+                    Tensor(node['tensor_type'], node['size'])]
+        return node

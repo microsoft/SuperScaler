@@ -11,6 +11,11 @@
             "successor_ids": [
                 1,
                 2
+            ],
+            "output_tensors":
+            [
+                ["DT_INT32", 1],
+                ["DT_INT32", 4]
             ]
         },
         {
@@ -23,6 +28,11 @@
             ],
             "name": "op_no_2",
             "op": "Add",
+            "output_tensors":
+            [
+                ["DT_INT32", 1],
+                ["DT_INT32", 4]
+            ],
             "successor_ids": []
         },
         {
@@ -35,6 +45,11 @@
             ],
             "name": "op_no_2",
             "op": "Sub",
+            "output_tensors":
+            [
+                ["DT_INT32", 1],
+                ["DT_INT32", 4]
+            ],
             "successor_ids": []
         }
     ]
