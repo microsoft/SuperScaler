@@ -1,0 +1,206 @@
+[
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 0,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                3072,
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "",
+        "related_id": 9,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 15360,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 1,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+        "offset": 15360,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                3072,
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "sum",
+        "related_id": 8,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 15360,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 2,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+        "offset": 15360,
+        "op": "Send",
+        "output_shapes": [
+            [
+                3072,
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "",
+        "related_id": 11,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 15360,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 3,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                3072,
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "copy",
+        "related_id": 10,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 15360,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_matmul_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 4,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+        "offset": 0,
+        "op": "Send",
+        "output_shapes": [
+            [
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "",
+        "related_id": 13,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 5,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 5,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+        "offset": 5,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "sum",
+        "related_id": 12,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 5,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 6,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+        "offset": 5,
+        "op": "Send",
+        "output_shapes": [
+            [
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "",
+        "related_id": 15,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 5,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    },
+    {
+        "device": "/server/hostname1/GPU/0/",
+        "device_id": "0",
+        "device_type": "GPU",
+        "host_id": "1",
+        "index": 7,
+        "input_ids": [],
+        "name": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+        "offset": 0,
+        "op": "Recv",
+        "output_shapes": [
+            [
+                10
+            ]
+        ],
+        "parent": "gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1_allreduce",
+        "reduction": "copy",
+        "related_id": 14,
+        "route_index": 0,
+        "route_type": "PCIE",
+        "size": 5,
+        "target": "/server/hostname1/GPU/1/",
+        "tensor_name": "For_gradients/SuperScaler_SubgraphFCs/SuperScaler_Backward_SubgraphBpFCs/softmax_add_grad/tuple/control_dependency_1",
+        "tensor_type": "DT_FLOAT"
+    }
+]

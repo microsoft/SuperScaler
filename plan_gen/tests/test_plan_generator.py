@@ -76,3 +76,43 @@ def test_plan_generator():
          'name': '/server/hostname1/GPU/3/',
          'type': 'GPU'}
     ]
+
+
+def test_simple():
+
+    # Test for a simple graph
+    def get_device(device_count):
+        return ["device_%d" % (i) for i in range(device_count)]
+
+    def get_graph_paths(path, device_count):
+        graph_paths = []
+        for i in range(device_count):
+            sub_path = os.path.join(path, "run_" + str(i) + ".pbtxt")
+            graph_paths.append(sub_path)
+        return graph_paths
+
+    device_count = 2
+    parser = TFParser()
+    devices = get_device(device_count)
+    graph_paths = get_graph_paths(
+        "tests/data/DataParallelismPlan2GPUsIn2Hosts",
+        device_count)
+    parser = TFParser()
+    nodelist = parser.parse_graphs(graph_paths, devices)
+
+    # Init ResourcePool
+    resource_yaml_path = os.path.join(
+        os.path.dirname(__file__), 'data', 'resource_pool.yaml')
+    rp = ResourcePool()
+    rp.init_from_yaml(resource_yaml_path)
+
+    # Init PlanManager by PlanPool and PlanMapper
+    plan_generator = PlanGenerator(nodelist, rp)
+
+    # Check the correctness of output
+    plan_ring = plan_generator.get_execution_plan('Allreduce', 'ring')
+    output_path = os.path.join(
+        os.path.dirname(__file__), "data/ring_simple.json")
+
+    output_ref = json.load(open(output_path, 'r'))
+    assert(plan_ring.to_json() == output_ref)
