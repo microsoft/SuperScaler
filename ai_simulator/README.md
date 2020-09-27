@@ -117,8 +117,10 @@ node_list = [
         'name': 'op_no_1',
         'op': 'Const',
         'successor_ids': [],
-        'output_tensors': []
     },
+    {
+
+    }
 ]
 device_list = [('CPU', ["/server/hostname1/CPU/0"])]
 
@@ -152,11 +154,10 @@ python3 -m pytest -v
 
 ### AI Simulator development
 
-There are several interfaces that users will call
+There is a interface that users will call
 
 - In package `ai_simulator`
-  - `PlanAdapter`: input and check the json input of *node_list*
-  - `Simulator`: input *node_list* and *device_list* and use `Simulator.run()` to get the final result.
+  - `Simulator`: input json of *node_list* and *device_list* and use `Simulator.run()` to get the final result.
 
 ### Customized Device creation
 
