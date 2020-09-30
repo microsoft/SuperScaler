@@ -32,7 +32,9 @@ void SenderProcess()
     CudaChannelSenderManager &sender_manager =
         CudaChannelSenderManager::get_manager();
     CudaChannelSender *sender = sender_manager.create_channel(
-        CHANNEL_NAME, receiver_buffer_size, sender_buffer_size);
+        CHANNEL_NAME,
+        receiver_device, sender_device,
+        receiver_buffer_size, sender_buffer_size);
     if (sender == nullptr) {
         std::cerr << "[Sender Error] Cannot open cuda channel sender\n";
         exit(-1);
@@ -73,7 +75,9 @@ void ReceiverProcess()
 
     // Create ChannelReceiver
     CudaChannelReceiver *receiver = receiver_manager.create_channel(
-        CHANNEL_NAME, receiver_buffer_size, sender_buffer_size);
+        CHANNEL_NAME,
+        receiver_device, sender_device,
+        receiver_buffer_size, sender_buffer_size);
     // Get connect
     receiver->listen();
     std::cerr << "[Receiver Info] Listend\n";

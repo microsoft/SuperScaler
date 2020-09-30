@@ -7,20 +7,23 @@ HandleManager::HandleManager()
 
 HandleManager::~HandleManager()
 {
-    for (auto &pair : m_handle_cache)
-        checkCudaErrors(cudaIpcCloseMemHandle(pair.second));
+    for (auto &pair : m_handle_cache) {
+        DeviceContextGuard guard(pair.second.dev_id);
+        checkCudaErrors(cudaIpcCloseMemHandle(pair.second.dev_ptr));
+    }
 }
 
-void *HandleManager::get_address(const cudaIpcMemHandle_t &handle)
+void *HandleManager::get_address(const cudaIpcMemHandle_t &handle, int dev_id)
 {
     auto itr = m_handle_cache.find(handle);
     if (itr == m_handle_cache.end()) {
-        void *buffer;
+        void *buffer = nullptr;
+        DeviceContextGuard guard(dev_id);
         checkCudaErrors(cudaIpcOpenMemHandle(&buffer, handle, cudaIpcMemLazyEnablePeerAccess));
-        m_handle_cache.emplace(handle, buffer);
+        m_handle_cache.emplace(handle, HandleInfo{buffer, dev_id});
         return buffer;
     } else {
-        return itr->second;
+        return itr->second.dev_ptr;
     }
 }
 
@@ -30,7 +33,8 @@ bool HandleManager::free_address(const cudaIpcMemHandle_t &handle)
     if (itr == m_handle_cache.end())
         return false;
     else {
-        checkCudaErrors(cudaIpcCloseMemHandle(itr->second));
+        DeviceContextGuard guard(itr->second.dev_id);
+        checkCudaErrors(cudaIpcCloseMemHandle(itr->second.dev_ptr));
         m_handle_cache.erase(itr);
         return true;
     }

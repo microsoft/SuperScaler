@@ -13,6 +13,7 @@ public:
     static CudaChannelManager &get_manager();
     T *get_channel(const std::string &channel_id);
     T *create_channel(const std::string &channel_id,
+                      int receiver_device, int sender_device,
                       size_t receiver_buffer_size, size_t sender_buffer_size);
     void remove_channel(const std::string &channel_id);
 
@@ -50,6 +51,8 @@ T *CudaChannelManager<T>::get_channel(const std::string &channel_id)
 
 template <class T>
 T *CudaChannelManager<T>::create_channel(const std::string &channel_id,
+                                         int receiver_device,
+                                         int sender_device,
                                          size_t receiver_buffer_size,
                                          size_t sender_buffer_size)
 {
@@ -57,7 +60,9 @@ T *CudaChannelManager<T>::create_channel(const std::string &channel_id,
     auto it = m_channels.find(channel_id);
     if (it != m_channels.end()) // Already have one
         return nullptr;
-    T *channel = new T(channel_id, receiver_buffer_size, sender_buffer_size);
+    T *channel = new T(channel_id,
+                       receiver_device, sender_device,
+                       receiver_buffer_size, sender_buffer_size);
     m_channels.insert(std::make_pair(channel_id, channel));
     return channel;
 }

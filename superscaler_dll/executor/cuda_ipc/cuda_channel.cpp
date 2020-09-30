@@ -75,9 +75,13 @@ void EnableCudaDeviceAccess()
 }
 
 CudaChannelSender::CudaChannelSender(const std::string &channel_id,
+                                     int receiver_device_id,
+                                     int sender_device_id,
                                      size_t receiver_buffer_size,
                                      size_t sender_buffer_size)
     : m_status(CudaChannelStatus::e_unconnected), m_channel_id(channel_id),
+      m_receiver_device(receiver_device_id),
+      m_sender_device(sender_device_id),
       m_semaphore(nullptr), m_shared_memory(nullptr), m_receiver_fifo(nullptr),
       m_sender_fifo(nullptr), m_receiver_buffer_size(receiver_buffer_size),
       m_sender_buffer_size(sender_buffer_size)
@@ -156,7 +160,8 @@ bool CudaChannelSender::send(const message_id_t &message_id, const void *data,
     bool get_result = get_receiver_meta(message_id, meta);
     if (!get_result)
         return false;
-    transfer((char *)m_handle_manager.get_address(meta.handler) + meta.offset, data, length);
+    transfer((char *)m_handle_manager.get_address(meta.handler, m_receiver_device) +
+        meta.offset, data, length);
     // TODO: Optimize performance by asynchronously sending acks
     bool ret = false;
     CudaTransferAck ack{ message_id };
@@ -203,9 +208,13 @@ void CudaChannelSender::transfer(void *dst, const void *src, size_t size)
 }
 
 CudaChannelReceiver::CudaChannelReceiver(const std::string &channel_id,
+                                         int receiver_device_id,
+                                         int sender_device_id,
                                          size_t receiver_buffer_size,
                                          size_t sender_buffer_size)
-    : m_status(CudaChannelStatus::e_unconnected), m_channel_id(channel_id)
+    : m_status(CudaChannelStatus::e_unconnected), m_channel_id(channel_id),
+      m_receiver_device(receiver_device_id),
+      m_sender_device(sender_device_id)
 {
     if (channel_id.empty())
         throw std::invalid_argument(std::string() + "Empty channel id");
@@ -302,9 +311,13 @@ CudaSingleChannel::CudaSingleChannel(int self_device, int peer_device,
       m_recv_channel_name(get_cuda_channel_name(peer_device, self_device))
 {
     m_sender = CudaChannelSenderManager::get_manager().create_channel(
-        m_send_channel_name, receiver_buffer_size, sender_buffer_size);
+        m_send_channel_name,
+        peer_device, self_device,
+        receiver_buffer_size, sender_buffer_size);
     m_receiver = CudaChannelReceiverManager::get_manager().create_channel(
-        m_recv_channel_name, receiver_buffer_size, sender_buffer_size);
+        m_recv_channel_name,
+        self_device, peer_device,
+        receiver_buffer_size, sender_buffer_size);
 }
 
 CudaSingleChannel::~CudaSingleChannel()

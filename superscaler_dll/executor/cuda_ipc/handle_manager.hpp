@@ -36,22 +36,28 @@ public:
      * @brief Get the mapped address of the ipc mem handle. Store the handle->address
      * mapping into the cache if the handle is new
      * @param handle Cuda ipc memory handle
+     * @param dev_id Cuda device ID
      * @return The mapped address.
      */
-    void *get_address(const cudaIpcMemHandle_t &handle);
+    void *get_address(const cudaIpcMemHandle_t &handle, int dev_id);
 
     /**
      * @brief Remove the handle->address mapping from the cache and unmap the ipc
      * mmory address.
      * @param handle Handle of the freed address.
      * @return True if the mapping is in the cache, false else;
-     * 
+     *
      * TODO: When to call this API? Memory is freed in another process, so need some
      * way to let this process know the mapped memory is freed in another process. i.e.,
      * call this API in a "cross process" way.
      */
     bool free_address(const cudaIpcMemHandle_t &handle);
-    
+
 private:
-    std::unordered_map<cudaIpcMemHandle_t, void *> m_handle_cache;
+    struct HandleInfo {
+        void *dev_ptr;
+        int dev_id;
+    };
+
+    std::unordered_map<cudaIpcMemHandle_t, HandleInfo> m_handle_cache;
 };

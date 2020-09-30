@@ -3,7 +3,7 @@
  * This code shows a simple usage of HandleManager. The parent process will create
  * a cudaIpcMemHandle and pass it to the child process (though the ipc ring buffer queue).
  * The child process will use the handle manager to manage the handle-to-address mapping.
- * 
+ *
  * TODO: This code sample only shows getting address from ipc mem handle. For freeing
  * memory, after the memory is freed in parent address, it needs to inform the child
  * process about that and the child process will call HandleManager::free_address to
@@ -46,7 +46,7 @@ SharedMemory *parent_process()
     checkCudaErrors(cudaMalloc(&devPtr, test_size));
     checkCudaErrors(cudaIpcGetMemHandle(&handle, devPtr));
     checkCudaErrors(cudaMemset(devPtr, MAGIC_NUM, test_size));
-    
+
     // Pass handle to child process
     handle_queue->push(handle);
     std::cout << "[Parent] Finish\n";
@@ -77,11 +77,11 @@ void child_process()
     // Get handle from parent address
     while (!handle_queue->pop(handle))
         ;
-    
+
     // Get address from handle for the first time
-    addr1 = (char *)mgr.get_address(handle);
+    addr1 = (char *)mgr.get_address(handle, 0);
     // Should get the same address from the same handle
-    addr2 = (char *)mgr.get_address(handle);
+    addr2 = (char *)mgr.get_address(handle, 0);
 
     if (addr1 != addr2) {
         std::cout << "[Child] Get address error" << std::endl;
