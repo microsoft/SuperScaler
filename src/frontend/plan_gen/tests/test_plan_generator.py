@@ -1,3 +1,5 @@
+"""Unit test for plan generator from parser to nodelist."""
+
 import os
 import json
 from plan.parser.tf_parser import TFParser
@@ -7,6 +9,7 @@ from plan.plan_generator import PlanGenerator
 
 def test_plan_generator():
 
+    # Unit test using vgg16 graph from tensroflow
     def get_device(device_count):
         # get virtual device names
         return ["device_%d" % (i) for i in range(device_count)]
@@ -78,9 +81,9 @@ def test_plan_generator():
     ]
 
 
-def test_simple():
+def test_tensorflow_graph():
 
-    # Test for a simple graph
+    # Test for a simple graph with only two allreduce nodes
     def get_device(device_count):
         return ["device_%d" % (i) for i in range(device_count)]
 
@@ -113,6 +116,46 @@ def test_simple():
     plan_ring = plan_generator.get_execution_plan('Allreduce', 'ring')
     output_path = os.path.join(
         os.path.dirname(__file__), "data/ring_simple.json")
+
+    output_ref = json.load(open(output_path, 'r'))
+    assert(plan_ring.to_json() == output_ref)
+
+
+def test_nnfusion_graph_using_BERT():
+
+    # Test for a graph dumped from nnfusion
+    def get_device(device_count):
+        return ["device_%d" % (i) for i in range(device_count)]
+
+    def get_graph_paths(path, device_count):
+        graph_paths = []
+        for i in range(device_count):
+            sub_path = os.path.join(path, str(i) + "/graph.pbtxt")
+            graph_paths.append(sub_path)
+        return graph_paths
+
+    device_count = 2
+    parser = TFParser()
+    devices = get_device(device_count)
+    graph_paths = get_graph_paths(
+        "examples/BERT_NNfusion/PureDataParallelismPlan2GPUsIn1Hosts/",
+        device_count)
+    parser = TFParser()
+    nodelist = parser.parse_graphs(graph_paths, devices)
+
+    # Init ResourcePool
+    resource_yaml_path = os.path.join(
+        os.path.dirname(__file__), 'data', 'resource_pool.yaml')
+    rp = ResourcePool()
+    rp.init_from_yaml(resource_yaml_path)
+
+    # Init PlanManager by PlanPool and PlanMapper
+    plan_generator = PlanGenerator(nodelist, rp)
+
+    # Check the correctness of output
+    plan_ring = plan_generator.get_execution_plan('Allreduce', 'ring')
+    output_path = os.path.join(
+        os.path.dirname(__file__), "data/ring_bert.json")
 
     output_ref = json.load(open(output_path, 'r'))
     assert(plan_ring.to_json() == output_ref)
