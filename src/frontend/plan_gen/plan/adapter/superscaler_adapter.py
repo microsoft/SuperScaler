@@ -77,7 +77,7 @@ class SuperScalerAdapter(Adapter):
     def __create_index_dependency(self, node_list):
         ''' Introduce index attr into node_list, then convert
             input name dependency into index dependency.
-            related_id is also introduced here.
+            key is also introduced here.
         Args:
             node_list: list
         '''
@@ -88,6 +88,8 @@ class SuperScalerAdapter(Adapter):
             value: index:int
         '''
         node_book = {}
+        key_book = {}
+        key_value = 0
 
         # Introduce index attr to each node, and use node_book and
         # parent_book to record them
@@ -116,14 +118,27 @@ class SuperScalerAdapter(Adapter):
                 node.pop('input')
             node['input_ids'] = input_ids
 
-        # Generate related id for each generated node
+        # Generate key for each generated node, where related send/recv
+        # nodes share same key
         # eg. Send <-> Recv
         for node in node_list:
             if 'related_op' in node:
+                name = node['name']
+                device = node['device']
                 related_op = node['related_op']
                 target = node['target']
 
-                node['related_id'] = node_book[(related_op, target)]
+                key = (name, device, related_op, target)
+                key_opponent = (related_op, target, name, device)
+
+                if key not in key_book or key_opponent not in key_book:
+                    key_book[key] = key_value
+                    key_book[key_opponent] = key_value
+                    node['key'] = node['parent'] + '_' + str(key_value)
+                    key_value += 1
+                else:
+                    node['key'] = node['parent'] + '_' + str(key_book[key])
+
                 node.pop('related_op')
 
     def __split_device_info(self, node_list):
@@ -141,6 +156,12 @@ class SuperScalerAdapter(Adapter):
                 node['host_id'] = re.sub("\\D", "", splited_infos[2])
                 node['device_type'] = splited_infos[3]
                 node['device_id'] = splited_infos[4]
+            if 'target' in node:
+                target_info = node['target']
+                splited_infos = str.split(target_info, '/')
+                node['target_host_id'] = re.sub("\\D", "", splited_infos[2])
+                node['target_device_type'] = splited_infos[3]
+                node['target_device_id'] = splited_infos[4]
 
     def __differentiate_node_list(self, node_list):
         """ Differentiate a complete node_list based on device
