@@ -2,13 +2,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <unistd.h>
 
-#include "../cuda_ipc/cuda_channel.hpp"
-#include "../send_task.hpp"
-#include "../recv_task.hpp"
-#include "../reduction_task.hpp"
-#include "../gpu_kernels.hpp"
-#include "../poll_executor.hpp"
+#include "../executor_pub.hpp"
 
 template <class DataType, class ReduceKernel>
 int ring_allreduce_worker(compute_dev_id_t self_compute_dev,

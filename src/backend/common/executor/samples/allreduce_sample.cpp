@@ -5,12 +5,7 @@
 #include <sys/types.h>
 #include <stdio.h>
 
-#include "../cuda_ipc/cuda_channel.hpp"
-#include "../send_task.hpp"
-#include "../recv_task.hpp"
-#include "../reduction_task.hpp"
-#include "../gpu_kernels.hpp"
-#include "../poll_executor.hpp"
+#include "../executor_pub.hpp"
 
 #define GPU_0 0
 #define GPU_1 1
