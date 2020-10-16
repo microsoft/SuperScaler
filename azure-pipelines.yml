@@ -31,7 +31,7 @@ stages:
       displayName: Run Test for SuperScaler Executor
       inputs:
         command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/backend/common/executor/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/src/backend/common_runtime/executor/Dockerfile'
         tags: |
           $(tag)
     - task: Docker@2
