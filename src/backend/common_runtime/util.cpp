@@ -1,14 +1,17 @@
-#include "logging.hpp"
+#include "util.hpp"
+
 #include <chrono>
-#include <iostream>
-#include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
 
+#include <fstream>
+#include <iostream>
+
 namespace superscaler
 {
-    namespace log
+    namespace util
     {
+        //Logger
         int Logger::MinLogLevelFromEnv()
         {
             const char* sc_env_var_val = getenv("SC_MIN_LOG_LEVEL");
@@ -40,7 +43,7 @@ namespace superscaler
             char time_buffer[time_buffer_size];
             strftime(time_buffer, time_buffer_size, "%Y-%m-%d %H:%M:%S", localtime(&now_seconds));
             std::string filename = std::string(fname_);
-            std::string partial_name = filename.substr(filename.rfind("superscaler"));
+            std::string partial_name = filename.substr(filename.rfind("src"));
             std::fprintf(stderr,
                          "%s.%06d: %c %s:%d] %s\n",
                          time_buffer,
@@ -50,5 +53,13 @@ namespace superscaler
                          line_,
                          sstream_.str().c_str());
         }
-    } // namespace log
+
+        //Json Parser
+        json JsonParser::load_from(std::string fpath)
+        {
+            std::ifstream f(fpath);
+            json j = json::parse(f);
+            return j;
+        }
+    } // namespace util
 };    // namespace superscaler

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <limits>
-#include <memory>
 #include <sstream>
+#include "nlohmann/json.hpp"
 
 namespace superscaler
 {
@@ -14,7 +13,7 @@ namespace superscaler
         NUM_SEVERITIES = 3
     };
 
-    namespace log
+    namespace util
     {
         class Logger
         {
@@ -34,13 +33,20 @@ namespace superscaler
             std::stringstream sstream_;
         };
 
-    }; // namespace log
+        using json = nlohmann::json;
+        class JsonParser
+        {
+        public:
+            static json load_from(std::string fpath);
+        };
+
+    }; // namespace util
 
 }; // namespace superscaler
 
-#define _SC_LOG_INFO ::superscaler::log::Logger(__FILE__, __LINE__, ::superscaler::INFO).stream()
+#define _SC_LOG_INFO ::superscaler::util::Logger(__FILE__, __LINE__, ::superscaler::INFO).stream()
 #define _SC_LOG_WARNING                                                                            \
-    ::superscaler::log::Logger(__FILE__, __LINE__, ::superscaler::WARNING).stream()
-#define _SC_LOG_ERROR ::superscaler::log::Logger(__FILE__, __LINE__, ::superscaler::ERROR).stream()
+    ::superscaler::util::Logger(__FILE__, __LINE__, ::superscaler::WARNING).stream()
+#define _SC_LOG_ERROR ::superscaler::util::Logger(__FILE__, __LINE__, ::superscaler::ERROR).stream()
 
 #define LOG(severity) _SC_LOG_##severity
