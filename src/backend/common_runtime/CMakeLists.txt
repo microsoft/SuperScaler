@@ -10,13 +10,8 @@ target_link_libraries(util PUBLIC nlohmann_json::nlohmann_json)
 
 add_subdirectory(executor)
 
-option(EXPORT_SC "Build the shared library" OFF)
-
-if(EXPORT_SC)
-  add_library(${PROJECT_NAME} SHARED)
-else()
-  add_library(${PROJECT_NAME} STATIC)
-endif()
+# add_library(${PROJECT_NAME} SHARED)
+add_library(${PROJECT_NAME} STATIC)
 
 target_sources(
   ${PROJECT_NAME}
@@ -31,9 +26,15 @@ target_include_directories(
 
 target_link_libraries(${PROJECT_NAME} PUBLIC util executor)
 
+find_package(CUDAToolkit REQUIRED)
+if(CUDAToolkit_FOUND)
+  target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
+  target_link_libraries(${PROJECT_NAME} PUBLIC CUDA::cudart)
+endif()
+
 find_package(MPI 3.1 REQUIRED COMPONENTS C)
 if(MPI_FOUND)
-  target_link_libraries(${PROJECT_NAME} PRIVATE MPI::MPI_C)
+  target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_C)
 endif()
 
 enable_testing()
