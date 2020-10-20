@@ -1,0 +1,3 @@
+[flake8]
+exclude = plan_gen 
+          ai_simulator

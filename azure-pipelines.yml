@@ -41,3 +41,10 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/src/frontend/plan_gen/Dockerfile'
         tags: |
           $(tag)
+    - task: Docker@2
+      displayName: Run Test for Frontend
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/src/frontend/Dockerfile'
+        tags: |
+          $(tag)
