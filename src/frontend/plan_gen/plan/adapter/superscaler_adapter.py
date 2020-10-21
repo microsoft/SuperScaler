@@ -1,6 +1,7 @@
 import re
 import os
 import json
+import copy
 from .adapter import Adapter
 from plan.node_list import NodeList
 
@@ -32,11 +33,11 @@ class SuperScalerAdapter(Adapter):
             dump_name: string
         """
 
-        multi_comm_node_list = self.adapt_plan()
+        multi_comm_node_dict = self.adapt_plan()
 
-        for id_ in range(len(multi_comm_node_list)):
+        for id_ in range(len(multi_comm_node_dict)):
             path = os.path.join(dump_path, dump_name + str(id_) + ".json")
-            json.dump(multi_comm_node_list[id_],
+            json.dump(multi_comm_node_dict[id_],
                       open(path, 'w'),
                       indent=4,
                       sort_keys=True)
@@ -49,16 +50,16 @@ class SuperScalerAdapter(Adapter):
             4, differentiate nodelist based on its device mapping
 
         Return:
-            multi_comm_node_list: list
+            multi_comm_node_dict: dict
         """
 
         comm_node_list = self.__extract_comm_nodes()
         self.__create_index_dependency(comm_node_list)
         self.__split_device_info(comm_node_list)
-        multi_comm_node_list =\
+        multi_comm_node_dict =\
             self.__differentiate_node_list(comm_node_list)
 
-        return multi_comm_node_list
+        return multi_comm_node_dict
 
     def __extract_comm_nodes(self):
         """ Extract communication nodes of Send, Recv and Allreduce
@@ -68,7 +69,9 @@ class SuperScalerAdapter(Adapter):
         comm_ops = ['Send', 'Recv', 'Allreduce']
 
         comm_node_list = []
-        for node in self.__node_list:
+        node_list = copy.deepcopy(self.__node_list)
+
+        for node in node_list:
             if 'op' in node and node['op'] in comm_ops:
                 comm_node_list.append(node)
 
@@ -172,15 +175,55 @@ class SuperScalerAdapter(Adapter):
             multi_node_list: list
         """
 
-        # Record all devices of node_list
+        # Record all devices of node_list, for each device a node_dict
+        # is created with device infos and peer infos
         devices = []
-        for node in node_list:
-            if 'device' in node and node['device'] not in devices:
-                devices.append(node['device'])
+        multi_node_dict = []
 
-        # differentiate node_list on each device
-        multi_node_list = [[] for device in devices]
-        for node in node_list:
-            multi_node_list[devices.index(node['device'])].append(node)
+        # For template testing, only test one allreduce op
+        tensor_name = None
 
-        return multi_node_list
+        for node in node_list:
+
+            if 'tensor_name' in node and tensor_name is None:
+                tensor_name = node['tensor_name']
+
+            if 'device' in node:
+                if node['device'] not in devices:
+                    devices.append(node['device'])
+                    multi_node_dict.append(
+                        {
+                         'host_id': node['host_id'],
+                         'device_type': node['device_type'],
+                         'device_id': node['device_id'],
+                         'num_peers': 1,
+                         'peer_device_names': [node['device']],
+                         'tasks': []
+                        })
+
+                # pop unused device infos
+                node.pop('host_id')
+                node.pop('device_type')
+                node.pop('device_id')
+
+        # differentiate node_list on each node_dict
+        for node in node_list:
+            node_dict = multi_node_dict[devices.index(node['device'])]
+            if 'tensor_name' in node and tensor_name == node['tensor_name']:
+                node_dict['tasks'].append(node)
+
+                # Count the peers for communication
+                if 'target' in node and \
+                   node['target'] not in node_dict['peer_device_names']:
+                    node_dict['num_peers'] += 1
+                    node_dict['peer_device_names'].append(node['target'])
+
+            # pop unused device infos
+            node.pop('device')
+            node.pop('target')
+
+        # Using str format
+        for node_dict in multi_node_dict:
+            node_dict['num_peers'] = str(node_dict['num_peers'])
+
+        return multi_node_dict
