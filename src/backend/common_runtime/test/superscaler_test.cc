@@ -48,12 +48,8 @@ template <typename DataType>
 void process_func(TestProcessContext<DataType> ctx)
 {
     superscaler::Session sess;
-
-    // std::string planPath = std::to_string(grank) + ".json";
-    printf("-- [Grank: %d Lrank: %d] is running\n", sess.GetGlobalRank(), sess.GetLocalRank());
-
-    // sess.Create(planPath.c_str());
     sess.Create(ctx.plan);
+    printf("-- [Grank: %d Lrank: %d] is running\n", sess.GetGlobalRank(), sess.GetLocalRank());
 
     DataType* sendbuff = NULL;
     cudaSetDevice(sess.GetLocalRank());

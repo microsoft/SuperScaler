@@ -36,6 +36,7 @@ namespace superscaler
         exec_.reset();
         cuda_channel_.reset();
         rdma_channel_.reset();
+        table_.clear();
 
         checkCudaErrors(cudaSetDevice(local_rank_));
         if (cuda_recv_buf_)
@@ -223,7 +224,7 @@ namespace superscaler
         //                            MPI_STATUS_IGNORE);
     }
 
-    void Session::ParsePlan(util::json& j)
+    void Session::ParsePlan(util::json j)
     {
         std::string host_id = j["host_id"];
         std::string device_id = j["device_id"];
@@ -236,7 +237,7 @@ namespace superscaler
         //TODO: configurable thru plan or env var, defaults to 16MB
         cuda_recv_buf_sze_ = 16 * 1024 * 1024;
 
-        for (auto& element : j["tasks"])
+        for (auto element : j["tasks"])
         {
             // LOG(INFO)<< element << '\n';
             std::string target_host_id = element["target_host_id"];

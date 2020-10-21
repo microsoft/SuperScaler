@@ -32,10 +32,5 @@ if(CUDAToolkit_FOUND)
   target_link_libraries(${PROJECT_NAME} PUBLIC CUDA::cudart)
 endif()
 
-find_package(MPI 3.1 REQUIRED COMPONENTS C)
-if(MPI_FOUND)
-  target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_C)
-endif()
-
 enable_testing()
 add_subdirectory(test)

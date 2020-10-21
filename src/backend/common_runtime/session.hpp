@@ -34,7 +34,7 @@ namespace superscaler
         inline int GetGlobalRank() { return global_rank_; }
     private:
         //parse plan from json format
-        void ParsePlan(util::json&);
+        void ParsePlan(util::json);
         //check if data type matches the op description
         template <class DataType>
         bool is_expected_type(DataType* ptr, std::string op);

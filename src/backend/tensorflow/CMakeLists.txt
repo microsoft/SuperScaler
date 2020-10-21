@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.17)
 project(
   tfadaptor
   VERSION 0.1
-  DESCRIPTION "superscaler plugin for tensorflow")
+  DESCRIPTION "superscaler plugin for tensorflow"
+  LANGUAGES CUDA CXX)
 
 add_library(${PROJECT_NAME} SHARED)
 target_sources(${PROJECT_NAME} PRIVATE operation.hpp operation.cpp gpu_util.hpp)
