@@ -1,0 +1,3237 @@
+node {
+  name: "images/shape_as_tensor"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\200\000\000\000 \000\000\000 \000\000\000\003\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "images/Const"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "images"
+  op: "Fill"
+  input: "images/shape_as_tensor"
+  input: "images/Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "labels"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 128
+          }
+        }
+        float_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "conv1_weights"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_weights"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 5
+        }
+        dim {
+          size: 5
+        }
+        dim {
+          size: 3
+        }
+        dim {
+          size: 64
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "conv1_weights/read"
+  op: "Identity"
+  input: "conv1_weights"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_weights"
+      }
+    }
+  }
+}
+node {
+  name: "conv1_matmul"
+  op: "Conv2D"
+  input: "images"
+  input: "conv1_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "conv1_biases"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_biases"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 64
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "conv1_biases/read"
+  op: "Identity"
+  input: "conv1_biases"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_biases"
+      }
+    }
+  }
+}
+node {
+  name: "conv1_add"
+  op: "BiasAdd"
+  input: "conv1_matmul"
+  input: "conv1_biases/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "conv1_relu"
+  op: "Relu"
+  input: "conv1_add"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pool1"
+  op: "MaxPool"
+  input: "conv1_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 3
+        i: 3
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "norm1"
+  op: "LRN"
+  input: "pool1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "alpha"
+    value {
+      f: 0.000111111112
+    }
+  }
+  attr {
+    key: "beta"
+    value {
+      f: 0.75
+    }
+  }
+  attr {
+    key: "bias"
+    value {
+      f: 1
+    }
+  }
+  attr {
+    key: "depth_radius"
+    value {
+      i: 4
+    }
+  }
+}
+node {
+  name: "conv2_weights"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_weights"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 5
+        }
+        dim {
+          size: 5
+        }
+        dim {
+          size: 64
+        }
+        dim {
+          size: 64
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "conv2_weights/read"
+  op: "Identity"
+  input: "conv2_weights"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_weights"
+      }
+    }
+  }
+}
+node {
+  name: "conv2_matmul"
+  op: "Conv2D"
+  input: "norm1"
+  input: "conv2_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "conv2_biases"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_biases"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 64
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "conv2_biases/read"
+  op: "Identity"
+  input: "conv2_biases"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_biases"
+      }
+    }
+  }
+}
+node {
+  name: "conv2_add"
+  op: "BiasAdd"
+  input: "conv2_matmul"
+  input: "conv2_biases/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "conv2_relu"
+  op: "Relu"
+  input: "conv2_add"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "norm2"
+  op: "LRN"
+  input: "conv2_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "alpha"
+    value {
+      f: 0.000111111112
+    }
+  }
+  attr {
+    key: "beta"
+    value {
+      f: 0.75
+    }
+  }
+  attr {
+    key: "bias"
+    value {
+      f: 1
+    }
+  }
+  attr {
+    key: "depth_radius"
+    value {
+      i: 4
+    }
+  }
+}
+node {
+  name: "pool2"
+  op: "MaxPool"
+  input: "norm2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 3
+        i: 3
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "reshape/shape"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\200\000\000\000\377\377\377\377"
+      }
+    }
+  }
+}
+node {
+  name: "reshape"
+  op: "Reshape"
+  input: "pool2"
+  input: "reshape/shape"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "dense3_weights"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_weights"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 4096
+        }
+        dim {
+          size: 384
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "dense3_weights/read"
+  op: "Identity"
+  input: "dense3_weights"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_weights"
+      }
+    }
+  }
+}
+node {
+  name: "dense3_biases"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_biases"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 384
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "dense3_biases/read"
+  op: "Identity"
+  input: "dense3_biases"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_biases"
+      }
+    }
+  }
+}
+node {
+  name: "dense3_matmul"
+  op: "MatMul"
+  input: "reshape"
+  input: "dense3_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "dense3_add"
+  op: "BiasAdd"
+  input: "dense3_matmul"
+  input: "dense3_biases/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "dense3_relu"
+  op: "Relu"
+  input: "dense3_add"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense4_weights"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_weights"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 384
+        }
+        dim {
+          size: 192
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "dense4_weights/read"
+  op: "Identity"
+  input: "dense4_weights"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_weights"
+      }
+    }
+  }
+}
+node {
+  name: "dense4_biases"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_biases"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 192
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "dense4_biases/read"
+  op: "Identity"
+  input: "dense4_biases"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_biases"
+      }
+    }
+  }
+}
+node {
+  name: "dense4_matmul"
+  op: "MatMul"
+  input: "dense3_relu"
+  input: "dense4_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "dense4_add"
+  op: "BiasAdd"
+  input: "dense4_matmul"
+  input: "dense4_biases/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "dense4_relu"
+  op: "Relu"
+  input: "dense4_add"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "softmax_linear_weights"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_weights"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 192
+        }
+        dim {
+          size: 10
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "softmax_linear_weights/read"
+  op: "Identity"
+  input: "softmax_linear_weights"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_weights"
+      }
+    }
+  }
+}
+node {
+  name: "softmax_linear_biases"
+  op: "VariableV2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_biases"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 10
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "softmax_linear_biases/read"
+  op: "Identity"
+  input: "softmax_linear_biases"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_biases"
+      }
+    }
+  }
+}
+node {
+  name: "softmax_matmul"
+  op: "MatMul"
+  input: "dense4_relu"
+  input: "softmax_linear_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "softmax_add"
+  op: "BiasAdd"
+  input: "softmax_matmul"
+  input: "softmax_linear_biases/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "labels_cast"
+  op: "Cast"
+  input: "labels"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "cross_entropy_per_example/cross_entropy_per_example"
+  op: "SparseSoftmaxCrossEntropyWithLogits"
+  input: "softmax_add"
+  input: "labels_cast"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tlabels"
+    value {
+      type: DT_INT64
+    }
+  }
+}
+node {
+  name: "Const"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "cross_entropy"
+  op: "Mean"
+  input: "cross_entropy_per_example/cross_entropy_per_example"
+  input: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/Shape"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "gradients/grad_ys_0"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "gradients/Fill"
+  op: "Fill"
+  input: "gradients/Shape"
+  input: "gradients/grad_ys_0"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/Reshape/shape"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/Reshape"
+  op: "Reshape"
+  input: "gradients/Fill"
+  input: "gradients/cross_entropy_grad/Reshape/shape"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/Const"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 128
+      }
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/Tile"
+  op: "Tile"
+  input: "gradients/cross_entropy_grad/Reshape"
+  input: "gradients/cross_entropy_grad/Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tmultiples"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/Const_1"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 128
+      }
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_grad/truediv"
+  op: "RealDiv"
+  input: "gradients/cross_entropy_grad/Tile"
+  input: "gradients/cross_entropy_grad/Const_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
+  op: "PreventGradient"
+  input: "cross_entropy_per_example/cross_entropy_per_example:1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "message"
+    value {
+      s: "Currently there is no way to take the second derivative of sparse_softmax_cross_entropy_with_logits due to the fused implementation\'s interaction with tf.gradients()"
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: -1
+      }
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims"
+  op: "ExpandDims"
+  input: "gradients/cross_entropy_grad/truediv"
+  input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tdim"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
+  op: "Mul"
+  input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims"
+  input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/softmax_add_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "gradients/softmax_add_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
+  input: "^gradients/softmax_add_grad/BiasAddGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/softmax_add_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
+  input: "^gradients/softmax_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/softmax_add_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/softmax_add_grad/BiasAddGrad"
+  input: "^gradients/softmax_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/softmax_add_grad/BiasAddGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/softmax_matmul_grad/MatMul"
+  op: "MatMul"
+  input: "gradients/softmax_add_grad/tuple/control_dependency"
+  input: "softmax_linear_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/softmax_matmul_grad/MatMul_1"
+  op: "MatMul"
+  input: "dense4_relu"
+  input: "gradients/softmax_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/softmax_matmul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/softmax_matmul_grad/MatMul"
+  input: "^gradients/softmax_matmul_grad/MatMul_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/softmax_matmul_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/softmax_matmul_grad/MatMul"
+  input: "^gradients/softmax_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/softmax_matmul_grad/MatMul"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/softmax_matmul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/softmax_matmul_grad/MatMul_1"
+  input: "^gradients/softmax_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/softmax_matmul_grad/MatMul_1"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense4_relu_grad/ReluGrad"
+  op: "ReluGrad"
+  input: "gradients/softmax_matmul_grad/tuple/control_dependency"
+  input: "dense4_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/dense4_add_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "gradients/dense4_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "gradients/dense4_add_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/dense4_add_grad/BiasAddGrad"
+  input: "^gradients/dense4_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/dense4_add_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/dense4_relu_grad/ReluGrad"
+  input: "^gradients/dense4_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense4_relu_grad/ReluGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense4_add_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/dense4_add_grad/BiasAddGrad"
+  input: "^gradients/dense4_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense4_add_grad/BiasAddGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense4_matmul_grad/MatMul"
+  op: "MatMul"
+  input: "gradients/dense4_add_grad/tuple/control_dependency"
+  input: "dense4_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/dense4_matmul_grad/MatMul_1"
+  op: "MatMul"
+  input: "dense3_relu"
+  input: "gradients/dense4_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/dense4_matmul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/dense4_matmul_grad/MatMul"
+  input: "^gradients/dense4_matmul_grad/MatMul_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/dense4_matmul_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/dense4_matmul_grad/MatMul"
+  input: "^gradients/dense4_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense4_matmul_grad/MatMul"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense4_matmul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/dense4_matmul_grad/MatMul_1"
+  input: "^gradients/dense4_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense4_matmul_grad/MatMul_1"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense3_relu_grad/ReluGrad"
+  op: "ReluGrad"
+  input: "gradients/dense4_matmul_grad/tuple/control_dependency"
+  input: "dense3_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/dense3_add_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "gradients/dense3_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "gradients/dense3_add_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/dense3_add_grad/BiasAddGrad"
+  input: "^gradients/dense3_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/dense3_add_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/dense3_relu_grad/ReluGrad"
+  input: "^gradients/dense3_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense3_relu_grad/ReluGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense3_add_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/dense3_add_grad/BiasAddGrad"
+  input: "^gradients/dense3_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense3_add_grad/BiasAddGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense3_matmul_grad/MatMul"
+  op: "MatMul"
+  input: "gradients/dense3_add_grad/tuple/control_dependency"
+  input: "dense3_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/dense3_matmul_grad/MatMul_1"
+  op: "MatMul"
+  input: "reshape"
+  input: "gradients/dense3_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/dense3_matmul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/dense3_matmul_grad/MatMul"
+  input: "^gradients/dense3_matmul_grad/MatMul_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/dense3_matmul_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/dense3_matmul_grad/MatMul"
+  input: "^gradients/dense3_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense3_matmul_grad/MatMul"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/dense3_matmul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/dense3_matmul_grad/MatMul_1"
+  input: "^gradients/dense3_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/dense3_matmul_grad/MatMul_1"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/reshape_grad/Shape"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\200\000\000\000\010\000\000\000\010\000\000\000@\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/reshape_grad/Reshape"
+  op: "Reshape"
+  input: "gradients/dense3_matmul_grad/tuple/control_dependency"
+  input: "gradients/reshape_grad/Shape"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pool2_grad/MaxPoolGrad"
+  op: "MaxPoolGrad"
+  input: "norm2"
+  input: "pool2"
+  input: "gradients/reshape_grad/Reshape"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 3
+        i: 3
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "gradients/norm2_grad/LRNGrad"
+  op: "LRNGrad"
+  input: "gradients/pool2_grad/MaxPoolGrad"
+  input: "conv2_relu"
+  input: "norm2"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "alpha"
+    value {
+      f: 0.000111111112
+    }
+  }
+  attr {
+    key: "beta"
+    value {
+      f: 0.75
+    }
+  }
+  attr {
+    key: "bias"
+    value {
+      f: 1
+    }
+  }
+  attr {
+    key: "depth_radius"
+    value {
+      i: 4
+    }
+  }
+}
+node {
+  name: "gradients/conv2_relu_grad/ReluGrad"
+  op: "ReluGrad"
+  input: "gradients/norm2_grad/LRNGrad"
+  input: "conv2_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/conv2_add_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "gradients/conv2_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "gradients/conv2_add_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/conv2_add_grad/BiasAddGrad"
+  input: "^gradients/conv2_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/conv2_add_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/conv2_relu_grad/ReluGrad"
+  input: "^gradients/conv2_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv2_relu_grad/ReluGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv2_add_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/conv2_add_grad/BiasAddGrad"
+  input: "^gradients/conv2_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv2_add_grad/BiasAddGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv2_matmul_grad/ShapeN"
+  op: "ShapeN"
+  input: "norm1"
+  input: "conv2_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "N"
+    value {
+      i: 2
+    }
+  }
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/conv2_matmul_grad/Conv2DBackpropInput"
+  op: "Conv2DBackpropInput"
+  input: "gradients/conv2_matmul_grad/ShapeN"
+  input: "conv2_weights/read"
+  input: "gradients/conv2_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/conv2_matmul_grad/Conv2DBackpropFilter"
+  op: "Conv2DBackpropFilter"
+  input: "norm1"
+  input: "gradients/conv2_matmul_grad/ShapeN:1"
+  input: "gradients/conv2_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/conv2_matmul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/conv2_matmul_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2_matmul_grad/Conv2DBackpropInput"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/conv2_matmul_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/conv2_matmul_grad/Conv2DBackpropInput"
+  input: "^gradients/conv2_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv2_matmul_grad/Conv2DBackpropInput"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv2_matmul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/conv2_matmul_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv2_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv2_matmul_grad/Conv2DBackpropFilter"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/norm1_grad/LRNGrad"
+  op: "LRNGrad"
+  input: "gradients/conv2_matmul_grad/tuple/control_dependency"
+  input: "pool1"
+  input: "norm1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "alpha"
+    value {
+      f: 0.000111111112
+    }
+  }
+  attr {
+    key: "beta"
+    value {
+      f: 0.75
+    }
+  }
+  attr {
+    key: "bias"
+    value {
+      f: 1
+    }
+  }
+  attr {
+    key: "depth_radius"
+    value {
+      i: 4
+    }
+  }
+}
+node {
+  name: "gradients/pool1_grad/MaxPoolGrad"
+  op: "MaxPoolGrad"
+  input: "conv1_relu"
+  input: "pool1"
+  input: "gradients/norm1_grad/LRNGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list {
+        i: 1
+        i: 3
+        i: 3
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv1_relu_grad/ReluGrad"
+  op: "ReluGrad"
+  input: "gradients/pool1_grad/MaxPoolGrad"
+  input: "conv1_relu"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/conv1_add_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "gradients/conv1_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "gradients/conv1_add_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/conv1_add_grad/BiasAddGrad"
+  input: "^gradients/conv1_relu_grad/ReluGrad"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/conv1_add_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/conv1_relu_grad/ReluGrad"
+  input: "^gradients/conv1_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv1_relu_grad/ReluGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv1_add_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/conv1_add_grad/BiasAddGrad"
+  input: "^gradients/conv1_add_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv1_add_grad/BiasAddGrad"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/conv1_matmul_grad/ShapeN"
+  op: "ShapeN"
+  input: "images"
+  input: "conv1_weights/read"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "N"
+    value {
+      i: 2
+    }
+  }
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/conv1_matmul_grad/Conv2DBackpropInput"
+  op: "Conv2DBackpropInput"
+  input: "gradients/conv1_matmul_grad/ShapeN"
+  input: "conv1_weights/read"
+  input: "gradients/conv1_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/conv1_matmul_grad/Conv2DBackpropFilter"
+  op: "Conv2DBackpropFilter"
+  input: "images"
+  input: "gradients/conv1_matmul_grad/ShapeN:1"
+  input: "gradients/conv1_add_grad/tuple/control_dependency"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "explicit_paddings"
+    value {
+      list {
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "SAME"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "use_cudnn_on_gpu"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "gradients/conv1_matmul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/conv1_matmul_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv1_matmul_grad/Conv2DBackpropInput"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "gradients/conv1_matmul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/conv1_matmul_grad/Conv2DBackpropFilter"
+  input: "^gradients/conv1_matmul_grad/tuple/group_deps"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/conv1_matmul_grad/Conv2DBackpropFilter"
+      }
+    }
+  }
+}
+node {
+  name: "GradientDescent/learning_rate"
+  op: "Const"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.123456
+      }
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_conv1_weights/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "conv1_weights"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/conv1_matmul_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_conv1_biases/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "conv1_biases"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/conv1_add_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv1_biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_conv2_weights/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "conv2_weights"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/conv2_matmul_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_conv2_biases/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "conv2_biases"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/conv2_add_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@conv2_biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_dense3_weights/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "dense3_weights"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/dense3_matmul_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_dense3_biases/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "dense3_biases"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/dense3_add_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense3_biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_dense4_weights/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "dense4_weights"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/dense4_matmul_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_dense4_biases/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "dense4_biases"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/dense4_add_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense4_biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_softmax_linear_weights/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "softmax_linear_weights"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/softmax_matmul_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent/update_softmax_linear_biases/ApplyGradientDescent"
+  op: "ApplyGradientDescent"
+  input: "softmax_linear_biases"
+  input: "GradientDescent/learning_rate"
+  input: "gradients/softmax_add_grad/tuple/control_dependency_1"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@softmax_linear_biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "GradientDescent"
+  op: "NoOp"
+  input: "^GradientDescent/update_conv1_biases/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv1_weights/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2_biases/ApplyGradientDescent"
+  input: "^GradientDescent/update_conv2_weights/ApplyGradientDescent"
+  input: "^GradientDescent/update_dense3_biases/ApplyGradientDescent"
+  input: "^GradientDescent/update_dense3_weights/ApplyGradientDescent"
+  input: "^GradientDescent/update_dense4_biases/ApplyGradientDescent"
+  input: "^GradientDescent/update_dense4_weights/ApplyGradientDescent"
+  input: "^GradientDescent/update_softmax_linear_biases/ApplyGradientDescent"
+  input: "^GradientDescent/update_softmax_linear_weights/ApplyGradientDescent"
+  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+}
+node {
+  name: "_retval_cross_entropy_0_0"
+  op: "_Retval"
+  input: "cross_entropy"
+  device: "/job:localhost/replica:0/task:0/device:CPU:0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index"
+    value {
+      i: 0
+    }
+  }
+}
+library {
+}
+versions {
+  producer: 134
+}
