@@ -65,12 +65,16 @@ void DivKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements) {
 }
 
 template void SumKernelGPUImpl::operator()(const float* buffer, float* memory, size_t num_elements);
+template void SumKernelGPUImpl::operator()(const double* buffer, double* memory, size_t num_elements);
 template void SumKernelGPUImpl::operator()(const int* buffer, int* memory, size_t num_elements);
 template void SynchronizedCopyKernelImpl::operator()(const float* buffer, float* memory, size_t num_elements);
+template void SynchronizedCopyKernelImpl::operator()(const double* buffer, double* memory, size_t num_elements);
 template void SynchronizedCopyKernelImpl::operator()(const int* buffer, int* memory, size_t num_elements);
 template void ScaleKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements);
+template void ScaleKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements);
 template void ScaleKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements);
 template void DivKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements);
+template void DivKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements);
 template void DivKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements);
 
 #endif

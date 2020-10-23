@@ -16,11 +16,14 @@ TEST(CudaChannel, ChannelReceiverManager)
         get_thread_unique_name("ChannelReceiverManager");
     const size_t receiver_buffer_size = 1024;
     const size_t sender_buffer_size = 1024;
+    int fake_send_device = 0;
+    int fake_recv_device = 0;
     CudaChannelReceiverManager &manager =
         CudaChannelReceiverManager::get_manager();
     // Create a channel receiver;
-    auto create_ptr = manager.create_channel(channel_id, receiver_buffer_size,
-                                             sender_buffer_size);
+    auto create_ptr = manager.create_channel(channel_id,
+                                             fake_send_device, fake_recv_device,
+                                             receiver_buffer_size, sender_buffer_size);
     ASSERT_NE(create_ptr, nullptr);
     // Get the channel receiver by channel id
     auto get_ptr = manager.get_channel(channel_id);
@@ -37,10 +40,13 @@ TEST(CudaChannel, ChannelSenderManager)
         get_thread_unique_name("ChannelSenderManager");
     const size_t receiver_buffer_size = 1024;
     const size_t sender_buffer_size = 1024;
+    int fake_send_device = 0;
+    int fake_recv_device = 0;
     CudaChannelSenderManager &manager = CudaChannelSenderManager::get_manager();
     // Create a channel receiver;
-    auto create_ptr = manager.create_channel(channel_id, receiver_buffer_size,
-                                             sender_buffer_size);
+    auto create_ptr = manager.create_channel(channel_id,
+                                             fake_send_device, fake_recv_device,
+                                             receiver_buffer_size, sender_buffer_size);
     ASSERT_NE(create_ptr, nullptr);
     // Get the channel receiver by channel id
     auto get_ptr = manager.get_channel(channel_id);

@@ -4,6 +4,7 @@
 #include <memory>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 #include "../cuda_ipc/cuda_channel.hpp"
 #include "../send_task.hpp"
@@ -90,7 +91,7 @@ int main()
 		SenderProcess();
 	} else {
 		ReceiverProcess();
-		wait();
+		wait(NULL);
 	}
 	return 0;
 }

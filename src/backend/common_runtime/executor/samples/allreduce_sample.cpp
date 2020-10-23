@@ -3,6 +3,7 @@
 #include <memory>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <stdio.h>
 
 #include "../executor_pub.hpp"
@@ -156,7 +157,7 @@ int main()
 		process_1();
 	} else {
 		process_0();
-		wait();
+		wait(NULL);
 	}
 	return 0;
 }

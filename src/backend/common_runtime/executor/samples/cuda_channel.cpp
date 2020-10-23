@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 #include "../cuda_ipc/channel_manager.hpp"
 #include "../cuda_ipc/cuda_channel.hpp"
@@ -114,7 +115,7 @@ int main()
         SenderProcess();
     } else {
         ReceiverProcess();
-        wait();
+        wait(NULL);
     }
     return 0;
 }
