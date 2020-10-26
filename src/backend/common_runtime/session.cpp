@@ -1,5 +1,4 @@
 #include "session.hpp"
-#include "mpi.h"
 #include "util.hpp"
 
 #include <chrono>
