@@ -1,6 +1,12 @@
-from pathlib import Path
-from tensorflow.python import types_pb2, tensor_shape
 import google.protobuf.text_format
+import os
+import re
+from pathlib import Path
+from frontend.scaler_graph.IR.graph import Graph
+from frontend.scaler_graph.IR import operator
+from frontend.scaler_graph.IR.conversion.tensorflow_ops \
+    import tf_op_map_to_sc_op
+from tensorflow.python import types_pb2, tensor_shape
 from tensorflow.core.framework import tensor_pb2
 from tensorflow.core.framework.op_def_pb2 import OpDef
 import tensorflow as tf
@@ -15,10 +21,6 @@ from tensorflow.python.framework.op_def_library import (
     _MakeTensor,
     _MakeType,
 )
-from frontend.scaler_graph.IR.graph import Graph
-from frontend.scaler_graph.IR import operator
-from frontend.scaler_graph.IR.conversion.tensorflow_ops \
-    import tf_op_map_to_sc_op
 
 
 def get_dtype_proto(node_def, op_def, output_arg):
@@ -343,3 +345,48 @@ def export_to_graph_def_file(sc_graph, file_path=None):
         file = Path(file_path)
         file.write_text(graph_pbtxt)
     return graph_pbtxt
+
+
+def import_tensorflow_model(apply_gradient_op, loss):
+    def dump_pbtxts():
+        options = tf.RunOptions(output_partition_graphs=True)
+        run_metadata = tf.RunMetadata()
+        run_config = tf.ConfigProto()
+        run_config.gpu_options.allow_growth = True
+        run_config.graph_options.place_pruned_graph = True
+        with tf.Session(config=run_config) as sess:
+            sess.run(tf.global_variables_initializer())
+            sess.run([apply_gradient_op, loss],
+                     options=options,
+                     run_metadata=run_metadata)
+        tf.reset_default_graph()
+
+    def get_dumped_pbtxts():
+        if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
+            dump_pbtxts()
+        file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
+        if len(file_names) == 0:
+            raise Exception(r'''
+                We cannot dump the tensorflow graph under TF_DUMP_GRAPH_PREFIX  
+                Users should set TF_DUMP_GRAPH_PREFIX=path_to_empty_directory and TF_CPP_MIN_VLOG_LEVEL=4 before import tensorflow.
+                e.g.:
+                    TF_DUMP_GRAPH_PREFIX=path_to_empty_directory TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py
+                ''')
+        id_file = {}
+        for file_name in file_names:
+            obj = re.match(r"^placer_input(_(\d+))?\.pbtxt$", file_name)
+            if obj is not None:
+                if obj.group(2) is None:
+                    id_file[0] = file_name
+                else:
+                    id_file[int(obj.group(2))] = file_name
+        if len(id_file) != 2:
+            raise Exception(
+                "Clean up the directory TF_DUMP_GRAPH_PREFIX first.")
+        return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[0], \
+            os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[1]
+
+    init_path, run_path = get_dumped_pbtxts()
+    sc_graph_init = import_graph_from_tf_file(init_path)
+    sc_graph_run = import_graph_from_tf_file(run_path)
+    return sc_graph_init, sc_graph_run

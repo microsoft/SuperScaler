@@ -17,7 +17,7 @@ def reverse_DFS(graph):
         if current_node in ordered_nodes:
             return
         elif current_node in temp_nodes:
-            raise Exception("there is a ring in graph: %s" %
+            raise Exception("there is a cycle in graph: %s" %
                             (current_node.name))
         else:
             temp_nodes.add(current_node)
