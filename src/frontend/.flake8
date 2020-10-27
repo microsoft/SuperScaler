@@ -1,6 +1,7 @@
 [flake8]
 exclude = plan_gen 
           ai_simulator
+          runtime
           scaler_graph/__init__.py
           scaler_graph/test/
           scaler_graph/IR/conversion/tensorflow.py

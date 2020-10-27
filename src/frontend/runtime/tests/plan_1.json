@@ -1,0 +1,110 @@
+{
+    "host_id": "0",
+    "device_id": "1",
+    "device_type": "GPU",
+    "num_peers": "2",
+    "tasks": [
+        {
+            "index": 4,
+            "input_ids": [],
+            "key": "rendez_1",
+            "offset": 15360,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    3072,
+                    10
+                ]
+            ],
+            "parent": "",
+            "reduction": "",
+            "related_id": 1,
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 15360,
+            "target_device_id": "0",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "AllReduce_0",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 5,
+            "input_ids": [
+                4
+            ],
+            "key": "rendez_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    3072,
+                    10
+                ]
+            ],
+            "parent": "",
+            "reduction": "sum",
+            "related_id": 0,
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 15360,
+            "target_device_id": "0",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "AllReduce_0",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 6,
+            "input_ids": [
+                5
+            ],
+            "key": "rendez_3",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    3072,
+                    10
+                ]
+            ],
+            "parent": "",
+            "reduction": "",
+            "related_id": 3,
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 15360,
+            "target_device_id": "0",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "AllReduce_0",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 7,
+            "input_ids": [
+                6
+            ],
+            "key": "rendez_2",
+            "offset": 15360,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    3072,
+                    10
+                ]
+            ],
+            "parent": "",
+            "reduction": "copy",
+            "related_id": 2,
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 15360,
+            "target_device_id": "0",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "AllReduce_0",
+            "tensor_type": "DT_FLOAT"
+        }
+    ]
+}
