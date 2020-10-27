@@ -21,30 +21,9 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
-      displayName: Run Test for AISimulator
+      displayName: Build uni-test Docker of CPU version
       inputs:
         command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/frontend/ai_simulator/Dockerfile'
-        tags: |
-          $(tag)
-    - task: Docker@2
-      displayName: Run Test for SuperScaler Executor
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/backend/common_runtime/executor/Dockerfile'
-        tags: |
-          $(tag)
-    - task: Docker@2
-      displayName: Run Test for Plan Generator
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/frontend/plan_gen/Dockerfile'
-        tags: |
-          $(tag)
-    - task: Docker@2
-      displayName: Run Test for Frontend
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/src/frontend/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile.test.CPU'
         tags: |
           $(tag)

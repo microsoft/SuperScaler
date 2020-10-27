@@ -1,0 +1,33 @@
+FROM ubuntu:18.04
+
+# python version is related to tensorflow version
+ARG python=3.6
+ENV PYTHON_VERSION=${python}
+
+# install the dependencies
+RUN apt-get update && apt-get install --no-install-recommends --allow-downgrades -y \
+    build-essential \
+    git \
+    wget \
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-dev \
+    python3-pip
+
+RUN wget -qO- "https://cmake.org/files/v3.18/cmake-3.18.2-Linux-x86_64.tar.gz" | \
+  tar --strip-components=1 -xz -C /usr/local
+
+# set softlink of python3 and python
+RUN ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 && \
+    ln -sf /usr/bin/python3 /usr/bin/python
+
+# Install python packages
+COPY requirements.txt /
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install setuptools && \
+    python3 -m pip install flake8 && \
+    python3 -m pip install --no-cache-dir -r requirements.txt
+
+COPY . /SuperScaler
+WORKDIR /SuperScaler
+
+RUN /SuperScaler/tools/build_and_test.sh

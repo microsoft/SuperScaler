@@ -1,0 +1,45 @@
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+
+# because 'docker build' cannot call GPU, so you need to run like this:
+# docker build -t superscaler_gpu -f Dockerfile.test.GPU .
+# if you want to run test cases automately:
+# $ docker run --gpus all superscaler_gpu
+# or if you want to specify the GPUs to use:
+# $ docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 superscaler_gpu
+
+
+# python version is related to tensorflow version
+ARG python=3.6
+ENV PYTHON_VERSION=${python}
+
+# install the dependencies
+RUN apt-get update && apt-get install --no-install-recommends --allow-downgrades -y \
+    build-essential \
+    git \
+    wget \
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-dev \
+    python3-pip
+
+RUN wget -qO- "https://cmake.org/files/v3.18/cmake-3.18.2-Linux-x86_64.tar.gz" | \
+  tar --strip-components=1 -xz -C /usr/local
+
+# set softlink of python3 and python
+RUN ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 && \
+    ln -sf /usr/bin/python3 /usr/bin/python
+
+# Install python packages
+COPY requirements.txt /
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install setuptools && \
+    python3 -m pip install flake8 && \
+    python3 -m pip install --no-cache-dir -r requirements.txt
+
+COPY . /SuperScaler
+WORKDIR /SuperScaler
+
+RUN rm -rf build && mkdir build && cd build && \
+    cmake .. && \
+    make -j $(nproc)
+
+CMD "/SuperScaler/tools/build_and_test.sh"
