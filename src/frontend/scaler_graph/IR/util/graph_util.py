@@ -2,7 +2,7 @@ import itertools
 from frontend.scaler_graph.IR.node import CompositeNode
 
 
-def reverse_DFS(graph):
+def get_output_nodes(graph):
     upstream_ops = set(
         itertools.chain.from_iterable(
             map(
@@ -10,6 +10,11 @@ def reverse_DFS(graph):
                 graph.nodes,
             )))
     output_nodes = set(graph.nodes) - upstream_ops
+    return output_nodes
+
+
+def reverse_DFS(graph):
+    output_nodes = get_output_nodes(graph)
     temp_nodes = set()
     ordered_nodes = []
 

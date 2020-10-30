@@ -5,8 +5,9 @@ from abc import abstractmethod
 
 
 class Operator:
-    def __init__(self, original_name):
+    def __init__(self, original_name=None):
         self._original_name = original_name
+        self.info = {}
 
     @property
     def name(self):
@@ -71,7 +72,8 @@ class BinaryElementWiseOp(Operator):
 class ApplyOp(Operator):
     def infer_shape(self, node):
         # TODO(gbxu): check input shapes
-        parameter_shape = node._input_tensors[0].shape()
+        parameter_shape = node._input_tensors[
+            self.info["parameter_index"]].shape()
         output_shape = []
         for i in range(len(parameter_shape)):
             output_shape.append(parameter_shape[i])
@@ -90,6 +92,14 @@ class GlobalInfoOp(Operator):
 
 
 class NoOp(Operator):
+    def infer_shape(self, node):
+        return
+
+    def partition(self, node):
+        return
+
+
+class AllreduceOp(Operator):
     def infer_shape(self, node):
         return
 

@@ -21,6 +21,11 @@ from tensorflow.python.framework.op_def_library import (
     _MakeTensor,
     _MakeType,
 )
+from frontend.scaler_graph.IR.graph import Graph
+from frontend.scaler_graph.IR.conversion.tensorflow_ops \
+    import tf_op_map_to_sc_op, convert_to_tf_node
+from frontend.scaler_graph.IR.util import graph_util
+from frontend.scaler_graph.util.log import logger
 
 
 def get_dtype_proto(node_def, op_def, output_arg):
@@ -101,11 +106,14 @@ def from_attr_proto(attr_value):
             return []
 
 
-def import_graph_from_tf_file(pbtxt_path):
+def import_graph_from_tf_file(init_path=None, run_path=None):
     tf_graph_def = tf.GraphDef()
-    google.protobuf.text_format.Merge(
-        Path(pbtxt_path).read_text(), tf_graph_def)
-
+    if init_path is not None:
+        google.protobuf.text_format.Parse(
+            Path(init_path).read_text(), tf_graph_def)
+    if run_path is not None:
+        google.protobuf.text_format.Merge(
+            Path(run_path).read_text(), tf_graph_def)
     sc_graph = Graph()
     tf_graph = tf.Graph()
     name_to_node = {node.name: node for node in tf_graph_def.node}
@@ -143,8 +151,7 @@ def import_graph_from_tf_file(pbtxt_path):
         }
         dtypes = get_dtypes(tf_graph, tf_node)
         sc_node = sc_graph.add_node_and_edge(
-            tf_node.name,
-            tf_op_map_to_sc_op.get(tf_node.op, operator.Operator)(tf_node.op),
+            tf_node.name, tf_op_map_to_sc_op(tf_graph._get_op_def(tf_node.op)),
             input_node_idxes, len(dtypes), attrs)
         sc_node.attrs["tf"] = {}
         sc_node.attrs["tf"]["device"] = tf_node.device
@@ -163,6 +170,23 @@ def import_graph_from_tf_file(pbtxt_path):
     sc_graph.attrs["initialized_variables"] = {}
     sc_graph.attrs["lower_name_func"] = (lambda name: name.lower())
     return sc_graph
+
+
+def get_tf_runtime_config(sc_graph):
+    tf_runtime_config = {}
+    tf_runtime_config["inits"] = []  # for all assign op
+    tf_runtime_config["feeds"] = []  # no need now. it's for training data.
+    tf_runtime_config["fetches"] = []  # retval
+    tf_runtime_config["targets"] = []  # send or final
+    for sc_node in graph_util.get_output_nodes(sc_graph):
+        if sc_node.op.original_name == "_Retval":
+            sc_node.attrs["tf"]["device"] = ""
+            tf_runtime_config["fetches"].append(sc_node.name)
+        elif sc_node.name == "init" and sc_node.op.original_name == "NoOp":
+            tf_runtime_config["inits"].append(sc_node.name)
+        elif sc_node.op.original_name == "NoOp":
+            tf_runtime_config["targets"].append(sc_node.name)
+    return tf_runtime_config
 
 
 def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
@@ -316,11 +340,16 @@ def export_to_graph_def_file(sc_graph, file_path=None):
         if key in sc_graph.attrs:
             getattr(graph_def, key).CopyFrom(sc_graph.attrs[key])
     for sc_node in sc_graph.nodes:
+        convert_to_tf_node(sc_node)
         attrs = {
             name: value
             for name, value in sc_node.attrs.items() if name != "tf"
         }
         tf_node = graph_def.node.add()
+        # TODO(gbxu): we have to rename op with prefix "_" now.
+        obj = re.match("^_.*$", sc_node.name)
+        if obj is not None:
+            sc_node.name = "sc" + sc_node.name
         tf_node.name = sc_node.name
         tf_node.op = sc_node.op.original_name
         tf_node.device = sc_node.attrs["tf"]["device"]
@@ -364,6 +393,10 @@ def import_tensorflow_model(apply_gradient_op, loss):
     def get_dumped_pbtxts():
         if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
             dump_pbtxts()
+        else:
+            logger("TF_conversion").warning(
+                "The directory %s contains pbtxt files before running scaler_graph."
+                % (os.environ["TF_DUMP_GRAPH_PREFIX"]))
         file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
         if len(file_names) == 0:
             raise Exception(r'''
@@ -387,6 +420,5 @@ def import_tensorflow_model(apply_gradient_op, loss):
             os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[1]
 
     init_path, run_path = get_dumped_pbtxts()
-    sc_graph_init = import_graph_from_tf_file(init_path)
-    sc_graph_run = import_graph_from_tf_file(run_path)
-    return sc_graph_init, sc_graph_run
+    sc_graph = import_graph_from_tf_file(init_path, run_path)
+    return sc_graph

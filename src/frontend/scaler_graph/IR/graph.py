@@ -4,10 +4,11 @@ You can utilize adapters to convert tensorflow graph, nnfusion graph, etc.
 to our graphs, then take modifications for parallelisms.
 '''
 import json
-
+import copy
 from frontend.scaler_graph.IR.node import Node
 from frontend.scaler_graph.IR.edge import Edge
 from frontend.scaler_graph.IR.util import graph_util, serialization
+import sys
 
 
 class Graph:
@@ -47,10 +48,7 @@ class Graph:
 
     @property
     def edges(self):
-        return self.edges
-
-    def set_attr(self, name, value):
-        self._attrs[name] = value
+        return self._edges
 
     @property
     def attrs(self):
@@ -84,15 +82,45 @@ class Graph:
         self._STALE_COLLECTIONS = True
         self._STALE_ORDERED_NODES = True
         for edge in node.in_edges:
-            edge.src_node.out_edges.remove(edge)
-            node.in_edges.remove(edge)
+            if edge is None:
+                continue
+            edge.src_node.remove_out_edge(edge)
+            node.remove_in_edge(edge)
             self._edges.remove(edge)
         for edge in node.out_edges:
-            edge.dest_node.in_edges.remove(edge)
-            node.out_edges.remove(edge)
+            edge.dest_node.remove_in_edge(edge)
+            node.remove_out_edge(edge)
             self._edges.remove(edge)
         self._name_to_node.pop(node.name)
         self._nodes.remove(node)
+
+    def remove_edge(self, edge):
+        '''Remove a edge from this graph.
+        '''
+        self._STALE_COLLECTIONS = True
+        self._STALE_ORDERED_NODES = True
+        edge.src_node.remove_out_edge(edge)
+        edge.dest_node.remove_in_edge(edge)
+        self._edges.remove(edge)
+
+    def add_edge(self, src_node, src_idx, dest_node, slot_idx=None):
+        '''add a edge from this graph.
+        '''
+        self._STALE_COLLECTIONS = True
+        self._STALE_ORDERED_NODES = True
+        if slot_idx is not None:
+            edge = Edge(src_node, src_idx, dest_node, slot_idx)
+            dest_node.add_in_edge(edge, slot_idx)
+        else:
+            slot_idx = len(dest_node.in_edges)
+            edge = Edge(src_node, src_idx, dest_node, slot_idx)
+            dest_node.add_in_edge(edge)
+        src_node.add_out_edge(edge)
+        self._edges.append(edge)
+
+    def copy(self):
+        sys.setrecursionlimit(1000000)
+        return copy.deepcopy(self)
 
     def get_collection(self, collection_name):
         if not self._STALE_COLLECTIONS:

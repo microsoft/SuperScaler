@@ -1,0 +1,12 @@
+{
+    "feeds": [],
+    "fetches": [
+        "_retval_cross_entropy_0_0"
+    ],
+    "inits": [
+        "init"
+    ],
+    "targets": [
+        "GradientDescent"
+    ]
+}

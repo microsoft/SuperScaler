@@ -39,7 +39,8 @@ class Node:
         for input_node_idx in input_node_idxes:
             (input_node, idx) = input_node_idx
             output_tensor = input_node.get_output_tensor(idx)
-            self._input_tensors.append(output_tensor)
+            self._input_tensors.append(
+                output_tensor)  # we should keep them ordered
 
         self._output_tensors = self._create_output_tensors(output_size)
 
@@ -55,11 +56,24 @@ class Node:
             return None
         return self._output_tensors[idx]
 
-    def add_in_edge(self, edge):
-        self.in_edges.append(edge)
+    def add_in_edge(self, edge, slot_idx=None):
+        if slot_idx is not None:
+            assert (self.in_edges[slot_idx] is None
+                    and self._input_tensors[slot_idx] is None)
+            self.in_edges[slot_idx] = edge
+            if edge.src_idx != -1:
+                output_tensor = edge.src_node.get_output_tensor(edge.src_idx)
+                self._input_tensors[slot_idx] = output_tensor
+        else:
+            self.in_edges.append(edge)
+            if edge.src_idx != -1:
+                self._input_tensors.append(
+                    edge.src_node.get_output_tensor(edge.src_idx))
 
     def remove_in_edge(self, edge):
-        self.in_edges.remove(edge)
+        index = self.in_edges.index(edge)
+        self.in_edges[index] = None
+        self._input_tensors[index] = None
 
     def add_out_edge(self, edge):
         self.out_edges.append(edge)
@@ -73,7 +87,9 @@ class Node:
     def dict(self):
         in_edges = []
         for in_edge in self.in_edges:
-            if in_edge.src_idx == -1:
+            if in_edge is None:
+                in_edge_str = ""
+            elif in_edge.src_idx == -1:
                 in_edge_str = f"^{in_edge.src_node.name}"
             elif in_edge.src_idx == 0:
                 in_edge_str = f"{in_edge.src_node.name}"
