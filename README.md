@@ -22,8 +22,7 @@ SuperScaler is an open-source distributed training platform for deep learning, w
 
 ### Install on Native Machines
 
-- Install dependencies (Optional, you can back to here if installation failed):
-
+- Install dependencies
   ```bash
   # Install tools needed
   sudo apt-get update && apt-get install build-essential wget

@@ -43,7 +43,7 @@ then
     exe make -j $(nproc)
 
     echo "Build success! Running test for backend:"
-    $BUILD_PATH/src/backend/common_runtime/test/superscaler_rt_test
+    exe $BUILD_PATH/src/backend/common_runtime/test/superscaler_rt_test
     echo "Backend test success!"
 else
     echo "nvcc not found, skip the backend build and test"
@@ -78,8 +78,17 @@ exe $PYTHON -m flake8
 exe $PYTHON -m pytest -v
 echo "Ai_simulator test success"
 
-# Test for ai_simulator
+# Test for runtime
 echo "Running test for runtime:"
+
+if [ -f "$BUILD_PATH/lib/libtfadaptor.so" ]
+then
+    exe mkdir -p $ROOT_PATH/lib
+    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/lib/libtfadaptor.so
+else
+    echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
+fi
+
 exe cd $ROOT_PATH/src/frontend/runtime
 exe $PYTHON -m flake8
 exe $PYTHON -m pytest -v
@@ -87,7 +96,7 @@ echo "Runtime test success"
 
 # Test for scaler_graph
 echo "Running test for scaler_graph:"
-export PYTHONPATH=$ROOT_PATH/src
+exe export PYTHONPATH=$ROOT_PATH/src
 exe cd $ROOT_PATH/src/frontend/scaler_graph
 exe $PYTHON -m flake8
 exe $PYTHON -m pytest -v

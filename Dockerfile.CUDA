@@ -1,15 +1,15 @@
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 # because 'docker build' cannot call GPU, so you need to run like this:
-# docker build -t superscaler_gpu -f Dockerfile.test.GPU .
-# if you want to run test cases automately:
-# $ docker run --gpus all superscaler_gpu
+# $ docker build -t superscaler -f Dockerfile.CUDA .
+# run docker in interactive mode:
+# $ docker run --it --runtime=nvidia superscaler bash
 # or if you want to specify the GPUs to use:
-# $ docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 superscaler_gpu
+# $ docker run --it --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 superscaler bash
 
 
 # python version is related to tensorflow version
-ARG python=3.6
+ARG python=3.7
 ENV PYTHON_VERSION=${python}
 
 # install the dependencies
@@ -38,8 +38,5 @@ RUN python3 -m pip install --upgrade pip && \
 COPY . /SuperScaler
 WORKDIR /SuperScaler
 
-RUN rm -rf build && mkdir build && cd build && \
-    cmake .. && \
-    make -j $(nproc)
-
-CMD "/SuperScaler/tools/build_and_test.sh"
+# Install SuperScaler package
+RUN python3 -m pip install .

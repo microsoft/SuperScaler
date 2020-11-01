@@ -16,5 +16,7 @@ target_include_directories(
             $<INSTALL_INTERFACE:.>
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC superscaler_rt)
 target_link_libraries(${PROJECT_NAME} PUBLIC tf_lib)
