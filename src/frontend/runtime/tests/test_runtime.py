@@ -1,6 +1,12 @@
 import os
 import pytest
+import multiprocessing
+import traceback
 from runtime import Runtime
+
+father_path = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
+lib_path = father_path + \
+    "/lib/libtfadaptor.so"
 
 
 def test_runtime_import():
@@ -21,9 +27,6 @@ def test_runtime_import():
     plan_path_1 = "plan_1.json"
     plan_path_1 = os.path.join(os.path.dirname(__file__),
                                plan_path_1)
-    lib_path = "libtfadaptor.so"
-    lib_path = os.path.join(os.path.dirname(__file__),
-                            lib_path)
 
     # Check wrong lib_path
     with pytest.raises(Exception):
@@ -42,8 +45,68 @@ def test_runtime_import():
         rt = Runtime(plan_path_0, fake_lib_path)
         rt.shutdown()
 
-    # #functional check
-    # rt = Runtime(plan_path_0, lib_path)
-    # assert rt.local_rank() == 0
-    # assert rt.global_rank() == 0
-    # assert rt.comm_world_size() == 2
+
+class Process(multiprocessing.Process):
+    # let the Process to throw out its own exceptions
+    def __init__(self, *args, **kwargs):
+        multiprocessing.Process.__init__(self, *args, **kwargs)
+        self._pconn, self._cconn = multiprocessing.Pipe()
+        self._exception = None
+
+    def run(self):
+        try:
+            multiprocessing.Process.run(self)
+            self._cconn.send(None)
+        except Exception as e:
+            tb = traceback.format_exc()
+            self._cconn.send((e, tb))
+
+    @property
+    def exception(self):
+        if self._pconn.poll():
+            self._exception = self._pconn.recv()
+        return self._exception
+
+
+def is_cuda_available():
+    """
+        Check NVIDIA with nvidia-smi command
+        Returning code 0 if no error, it means NVIDIA is installed
+        Other codes mean not installed
+    """
+    code = os.system('nvidia-smi')
+    return code == 0
+
+
+def test_runtime():
+    def func(lrank):
+        try:
+            plan_path = 'plan_' + lrank + '.json'
+            plan_path = os.path.join(os.path.dirname(__file__),
+                                     plan_path)
+
+            # Check for init
+            rt = Runtime(plan_path, lib_path)
+            assert rt.local_rank() == int(lrank)
+            assert rt.global_rank() == 0
+            assert rt.comm_world_size() == 2
+
+        except BaseException:
+            raise Exception
+
+    # All backend codes must run on gpu environment with cuda support
+    if is_cuda_available is True:
+        p0 = Process(target=func, args=('0', ))
+        p0.start()
+        p0.join()
+        p1 = Process(target=func, args=('1', ))
+        p1.start()
+        p1.join()
+
+        if p0.exception:
+            error, traceback = p0.exception
+            raise ValueError("something wrong at p0.")
+
+        if p1.exception:
+            error, traceback = p1.exception
+            raise ValueError("something wrong at p1.")

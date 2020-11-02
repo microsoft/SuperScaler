@@ -24,7 +24,7 @@
             "size": 15360,
             "target_device_id": "0",
             "target_device_type": "GPU",
-            "target_host_id": "1",
+            "target_host_id": "0",
             "tensor_name": "AllReduce_0",
             "tensor_type": "DT_FLOAT"
         },
@@ -50,7 +50,7 @@
             "size": 15360,
             "target_device_id": "0",
             "target_device_type": "GPU",
-            "target_host_id": "1",
+            "target_host_id": "0",
             "tensor_name": "AllReduce_0",
             "tensor_type": "DT_FLOAT"
         },
@@ -76,7 +76,7 @@
             "size": 15360,
             "target_device_id": "0",
             "target_device_type": "GPU",
-            "target_host_id": "1",
+            "target_host_id": "0",
             "tensor_name": "AllReduce_0",
             "tensor_type": "DT_FLOAT"
         },
@@ -102,7 +102,7 @@
             "size": 15360,
             "target_device_id": "0",
             "target_device_type": "GPU",
-            "target_host_id": "1",
+            "target_host_id": "0",
             "tensor_name": "AllReduce_0",
             "tensor_type": "DT_FLOAT"
         }
