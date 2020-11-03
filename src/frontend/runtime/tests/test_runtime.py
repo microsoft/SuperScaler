@@ -79,16 +79,16 @@ def is_cuda_available():
 
 
 def test_runtime():
-    def func(lrank):
+    def func(rank):
         try:
-            plan_path = 'plan_' + lrank + '.json'
+            plan_path = 'plan_' + rank + '.json'
             plan_path = os.path.join(os.path.dirname(__file__),
                                      plan_path)
 
             # Check for init
             rt = Runtime(plan_path, lib_path)
-            assert rt.local_rank() == int(lrank)
-            assert rt.global_rank() == 0
+            assert rt.device_id() == int(rank)
+            assert rt.host_id() == 0
             assert rt.comm_world_size() == 2
 
         except BaseException:

@@ -33,8 +33,8 @@ class Runtime(object):
             raise Exception("libsc init failed")
 
         # Check for the member function of libsc
-        if not hasattr(self.libsc, "sc_get_local_rank") or\
-           not hasattr(self.libsc, "sc_get_global_rank") or\
+        if not hasattr(self.libsc, "sc_get_device_id") or\
+           not hasattr(self.libsc, "sc_get_host_id") or\
            not hasattr(self.libsc, "sc_get_world_size") or\
            not hasattr(self.libsc, "sc_finalize"):
             raise Exception("member function not exist")
@@ -43,31 +43,29 @@ class Runtime(object):
         """ A function that get the sc_lib_path. """
         return self.libsc_path
 
-    def local_rank(self):
-        """ A function that returns the local rank of the calling process,
-        within the node that it is running on. If there are seven processes
-        running on a node, their local ranks will be zero through six.
+    def device_id(self):
+        """ A function that returns thedevice_id of the calling process.
 
         Returns:
-          An integer with the local rank of the calling process.
+          An integer with the device_id of the calling process.
         """
-        lrank = c_int()
+        device_id = c_int()
         try:
-            self.libsc.sc_get_local_rank(byref(lrank))
-            return lrank.value
+            self.libsc.sc_get_device_id(byref(device_id))
+            return device_id.value
         except BaseException:
             return None
 
-    def global_rank(self):
-        """A function that returns the global rank of the calling process.
+    def host_id(self):
+        """A function that returns the host_id of the calling process.
 
         Returns:
-          An integer with the global rank of the calling process.
+          An integer with the host_id of the calling process.
         """
-        grank = c_int()
+        host_id = c_int()
         try:
-            self.libsc.sc_get_global_rank(byref(grank))
-            return grank.value
+            self.libsc.sc_get_host_id(byref(host_id))
+            return host_id.value
         except BaseException:
             return None
 
