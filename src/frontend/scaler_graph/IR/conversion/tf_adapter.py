@@ -2,10 +2,6 @@ import google.protobuf.text_format
 import os
 import re
 from pathlib import Path
-from frontend.scaler_graph.IR.graph import Graph
-from frontend.scaler_graph.IR import operator
-from frontend.scaler_graph.IR.conversion.tensorflow_ops \
-    import tf_op_map_to_sc_op
 from tensorflow.python import types_pb2, tensor_shape
 from tensorflow.core.framework import tensor_pb2
 from tensorflow.core.framework.op_def_pb2 import OpDef
@@ -26,6 +22,10 @@ from frontend.scaler_graph.IR.conversion.tensorflow_ops \
     import tf_op_map_to_sc_op, convert_to_tf_node
 from frontend.scaler_graph.IR.util import graph_util
 from frontend.scaler_graph.util.log import logger
+__all__ = [
+    "import_graph_from_tf_file", "get_tf_runtime_config",
+    "export_graph_to_tf_file", "import_tensorflow_model"
+]
 
 
 def get_dtype_proto(node_def, op_def, output_arg):
@@ -154,7 +154,10 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
             tf_node.name, tf_op_map_to_sc_op(tf_graph._get_op_def(tf_node.op)),
             input_node_idxes, len(dtypes), attrs)
         sc_node.attrs["tf"] = {}
-        sc_node.attrs["tf"]["device"] = tf_node.device
+        if tf_node.op == "_Retval":
+            sc_node.attrs["tf"]["device"] = tf_node.device
+        else:
+            sc_node.attrs["tf"]["device"] = ""
         sc_node.attrs["tf"]["dtypes"] = dtypes
         if tf_node.HasField("experimental_debug_info"):
             sc_node.attrs["tf"][
@@ -180,7 +183,6 @@ def get_tf_runtime_config(sc_graph):
     tf_runtime_config["targets"] = []  # send or final
     for sc_node in graph_util.get_output_nodes(sc_graph):
         if sc_node.op.original_name == "_Retval":
-            sc_node.attrs["tf"]["device"] = ""
             tf_runtime_config["fetches"].append(sc_node.name)
         elif sc_node.name == "init" and sc_node.op.original_name == "NoOp":
             tf_runtime_config["inits"].append(sc_node.name)
@@ -333,9 +335,17 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
     return attr_protos
 
 
-def export_to_graph_def_file(sc_graph, file_path=None):
+def export_graph_to_tf_file(sc_graph, file_path=None):
+    # TODO(gbxu): the library file path should be configurable.
+    proj_path = os.path.abspath(
+        os.path.join(os.path.abspath(__file__), "../../../../../../"))
+    lib_path = proj_path + "/lib/libtfadaptor.so"
+    if os.path.exists(lib_path):
+        tf.load_library(lib_path)
+    else:
+        raise Exception("The library file %s does not exist." % (lib_path))
     tf_graph = tf.Graph()
-    graph_def = tf_graph.as_graph_def()
+    graph_def = tf_graph.as_graph_def(add_shapes=True)
     for key in ["versions", "library"]:
         if key in sc_graph.attrs:
             getattr(graph_def, key).CopyFrom(sc_graph.attrs[key])
@@ -369,6 +379,10 @@ def export_to_graph_def_file(sc_graph, file_path=None):
                 in_edge_str = f"{in_edge.src_node.name}:{in_edge.src_idx}"
             tf_node.input.append(in_edge_str)
 
+    output_graph = tf.Graph()
+    with output_graph.as_default():
+        tf.import_graph_def(graph_def, name="")
+    graph_def = output_graph.as_graph_def(add_shapes=True)
     graph_pbtxt = google.protobuf.text_format.MessageToString(graph_def)
     if file_path is not None:
         file = Path(file_path)
@@ -377,6 +391,16 @@ def export_to_graph_def_file(sc_graph, file_path=None):
 
 
 def import_tensorflow_model(apply_gradient_op, loss):
+    # TODO(gbxu): find a more elegant importing way.
+    if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys(
+    ) or "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys():
+        raise Exception(
+            '''We cannot get the tensorflow graph. Users should set \
+TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
+and TF_CPP_MIN_VLOG_LEVEL=4 before importing tensorflow, \
+e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
+TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
+
     def dump_pbtxts():
         options = tf.RunOptions(output_partition_graphs=True)
         run_metadata = tf.RunMetadata()
@@ -395,16 +419,17 @@ def import_tensorflow_model(apply_gradient_op, loss):
             dump_pbtxts()
         else:
             logger("TF_conversion").warning(
-                "The directory %s contains pbtxt files before running scaler_graph."
-                % (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+                "The directory %s contains pbtxt files \
+                    before running scaler_graph." %
+                (os.environ["TF_DUMP_GRAPH_PREFIX"]))
         file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
         if len(file_names) == 0:
-            raise Exception(r'''
-                We cannot dump the tensorflow graph under TF_DUMP_GRAPH_PREFIX  
-                Users should set TF_DUMP_GRAPH_PREFIX=path_to_empty_directory and TF_CPP_MIN_VLOG_LEVEL=4 before import tensorflow.
-                e.g.:
-                    TF_DUMP_GRAPH_PREFIX=path_to_empty_directory TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py
-                ''')
+            raise Exception(
+                '''We cannot get the tensorflow graph. Users should set \
+TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
+and TF_CPP_MIN_VLOG_LEVEL=4 before importing tensorflow, \
+e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
+TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
         id_file = {}
         for file_name in file_names:
             obj = re.match(r"^placer_input(_(\d+))?\.pbtxt$", file_name)

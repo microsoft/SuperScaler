@@ -1599,7 +1599,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce"
             },
@@ -1746,7 +1746,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce"
             },
@@ -1859,7 +1859,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2028,7 +2028,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2326,7 +2326,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2443,7 +2443,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2556,7 +2556,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2673,7 +2673,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce"
             },
@@ -2956,7 +2956,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce"
             },
@@ -3073,7 +3073,7 @@
         {
             "attrs": {
                 "T": null,
-                "num_devices": 2,
+                "num_devices": "2",
                 "reduction": "sum",
                 "tensor_name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce"
             },

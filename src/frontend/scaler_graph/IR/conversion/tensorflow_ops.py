@@ -93,7 +93,7 @@ def tf_op_map_to_sc_op(tf_op_def):
 
 
 def convert_to_tf_node(sc_node):
-    if sc_node.op.name == "Allreduce":
+    if sc_node.op.name == "AllreduceOp" and sc_node.op.original_name is None:
         sc_node.attrs["tf"] = {}
         sc_node.attrs["tf"]["device"] = ""
         sc_node.op.original_name = "_SCAllReduce"

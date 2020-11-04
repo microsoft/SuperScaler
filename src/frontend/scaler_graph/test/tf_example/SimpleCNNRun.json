@@ -11,7 +11,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -27,7 +27,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -52,7 +52,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -72,7 +72,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -96,7 +96,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -120,7 +120,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -144,7 +144,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -168,7 +168,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -192,7 +192,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -216,7 +216,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -240,7 +240,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -264,7 +264,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -288,7 +288,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -327,7 +327,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -352,7 +352,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -371,7 +371,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -404,7 +404,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -424,7 +424,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -448,7 +448,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -467,7 +467,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -486,7 +486,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -511,7 +511,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -530,7 +530,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -563,7 +563,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -583,7 +583,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -607,7 +607,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -626,7 +626,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -646,7 +646,7 @@
                 "Tidx": null,
                 "keep_dims": false,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -666,7 +666,7 @@
                 "T": null,
                 "Tlabels": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null,
                         null
@@ -687,7 +687,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -712,7 +712,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -731,7 +731,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -749,7 +749,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -770,7 +770,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -794,7 +794,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -813,7 +813,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -832,7 +832,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -857,7 +857,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -876,7 +876,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -894,7 +894,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -915,7 +915,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -939,7 +939,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -958,7 +958,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -977,7 +977,7 @@
                 "T": null,
                 "index_type": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -996,7 +996,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1014,7 +1014,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1035,7 +1035,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1057,7 +1057,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1075,7 +1075,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1107,7 +1107,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1143,7 +1143,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1166,7 +1166,7 @@
                 "T": null,
                 "out_type": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null,
                         null
@@ -1189,7 +1189,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1207,7 +1207,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1224,7 +1224,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1244,7 +1244,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1265,7 +1265,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1287,7 +1287,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1305,7 +1305,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1337,7 +1337,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1373,7 +1373,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1396,7 +1396,7 @@
                 "T": null,
                 "out_type": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null,
                         null
@@ -1419,7 +1419,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1441,7 +1441,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1459,7 +1459,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1476,7 +1476,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1495,7 +1495,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1512,7 +1512,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1530,7 +1530,7 @@
                 "T": null,
                 "Tshape": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1549,7 +1549,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1567,7 +1567,7 @@
                 "T": null,
                 "Tmultiples": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1586,7 +1586,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1606,7 +1606,7 @@
                 "T": null,
                 "Tdim": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1625,7 +1625,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1643,7 +1643,7 @@
                 "T": null,
                 "message": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1661,7 +1661,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1681,7 +1681,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1702,7 +1702,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1724,7 +1724,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1742,7 +1742,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1759,7 +1759,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1780,7 +1780,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1804,7 +1804,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1826,7 +1826,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1844,7 +1844,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1861,7 +1861,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1881,7 +1881,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1902,7 +1902,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1924,7 +1924,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1942,7 +1942,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -1959,7 +1959,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -1980,7 +1980,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2004,7 +2004,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2026,7 +2026,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2044,7 +2044,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -2061,7 +2061,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2080,7 +2080,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2101,7 +2101,7 @@
                 "bias": 1.0,
                 "depth_radius": 4,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2125,7 +2125,7 @@
                 "bias": 1.0,
                 "depth_radius": 4,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2159,7 +2159,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2193,7 +2193,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2214,7 +2214,7 @@
                 "T": null,
                 "Tshape": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2233,7 +2233,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2251,7 +2251,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2272,7 +2272,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2294,7 +2294,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2312,7 +2312,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -2329,7 +2329,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2350,7 +2350,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2374,7 +2374,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2396,7 +2396,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2414,7 +2414,7 @@
         {
             "attrs": {
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
@@ -2432,7 +2432,7 @@
                 "T": null,
                 "index_type": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2451,7 +2451,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2468,7 +2468,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2485,7 +2485,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2504,7 +2504,7 @@
                 "SrcT": null,
                 "Truncate": false,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2526,7 +2526,7 @@
                 "bias": 1.0,
                 "depth_radius": 4,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2548,7 +2548,7 @@
                 "bias": 1.0,
                 "depth_radius": 4,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2580,7 +2580,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2612,7 +2612,7 @@
                     1
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2631,7 +2631,7 @@
                 "T": null,
                 "Tshape": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2650,7 +2650,7 @@
             "attrs": {
                 "dtype": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2668,7 +2668,7 @@
                 "T": null,
                 "data_format": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2693,7 +2693,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2712,7 +2712,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2736,7 +2736,7 @@
                 "shape": null,
                 "shared_name": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2755,7 +2755,7 @@
                     null
                 ],
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]
@@ -2773,7 +2773,7 @@
             "attrs": {
                 "T": null,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+                    "device": "",
                     "dtypes": [
                         null
                     ]

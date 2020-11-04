@@ -1,7 +1,7 @@
 node {
   name: "images/shape_as_tensor"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -26,7 +26,7 @@ node {
 node {
   name: "images/Const"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -50,7 +50,7 @@ node {
   op: "Fill"
   input: "images/shape_as_tensor"
   input: "images/Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -67,7 +67,7 @@ node {
 node {
   name: "labels"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -92,7 +92,7 @@ node {
 node {
   name: "conv1_weights"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -143,7 +143,7 @@ node {
   name: "conv1_weights/read"
   op: "Identity"
   input: "conv1_weights"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -164,7 +164,7 @@ node {
   op: "Conv2D"
   input: "images"
   input: "conv1_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -222,7 +222,7 @@ node {
 node {
   name: "conv1_biases"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -264,7 +264,7 @@ node {
   name: "conv1_biases/read"
   op: "Identity"
   input: "conv1_biases"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -285,7 +285,7 @@ node {
   op: "BiasAdd"
   input: "conv1_matmul"
   input: "conv1_biases/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -303,7 +303,7 @@ node {
   name: "conv1_relu"
   op: "Relu"
   input: "conv1_add"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -315,7 +315,7 @@ node {
   name: "pool1"
   op: "MaxPool"
   input: "conv1_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -361,7 +361,7 @@ node {
   name: "norm1"
   op: "LRN"
   input: "pool1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -396,7 +396,7 @@ node {
 node {
   name: "conv2_weights"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -447,7 +447,7 @@ node {
   name: "conv2_weights/read"
   op: "Identity"
   input: "conv2_weights"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -468,7 +468,7 @@ node {
   op: "Conv2D"
   input: "norm1"
   input: "conv2_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -526,7 +526,7 @@ node {
 node {
   name: "conv2_biases"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -568,7 +568,7 @@ node {
   name: "conv2_biases/read"
   op: "Identity"
   input: "conv2_biases"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -589,7 +589,7 @@ node {
   op: "BiasAdd"
   input: "conv2_matmul"
   input: "conv2_biases/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -607,7 +607,7 @@ node {
   name: "conv2_relu"
   op: "Relu"
   input: "conv2_add"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -619,7 +619,7 @@ node {
   name: "norm2"
   op: "LRN"
   input: "conv2_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -655,7 +655,7 @@ node {
   name: "pool2"
   op: "MaxPool"
   input: "norm2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -700,7 +700,7 @@ node {
 node {
   name: "reshape/shape"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -727,7 +727,7 @@ node {
   op: "Reshape"
   input: "pool2"
   input: "reshape/shape"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -744,7 +744,7 @@ node {
 node {
   name: "dense3_weights"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -789,7 +789,7 @@ node {
   name: "dense3_weights/read"
   op: "Identity"
   input: "dense3_weights"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -808,7 +808,7 @@ node {
 node {
   name: "dense3_biases"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -850,7 +850,7 @@ node {
   name: "dense3_biases/read"
   op: "Identity"
   input: "dense3_biases"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -871,7 +871,7 @@ node {
   op: "MatMul"
   input: "reshape"
   input: "dense3_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -896,7 +896,7 @@ node {
   op: "BiasAdd"
   input: "dense3_matmul"
   input: "dense3_biases/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -914,7 +914,7 @@ node {
   name: "dense3_relu"
   op: "Relu"
   input: "dense3_add"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -925,7 +925,7 @@ node {
 node {
   name: "dense4_weights"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -970,7 +970,7 @@ node {
   name: "dense4_weights/read"
   op: "Identity"
   input: "dense4_weights"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -989,7 +989,7 @@ node {
 node {
   name: "dense4_biases"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -1031,7 +1031,7 @@ node {
   name: "dense4_biases/read"
   op: "Identity"
   input: "dense4_biases"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1052,7 +1052,7 @@ node {
   op: "MatMul"
   input: "dense3_relu"
   input: "dense4_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1077,7 +1077,7 @@ node {
   op: "BiasAdd"
   input: "dense4_matmul"
   input: "dense4_biases/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1095,7 +1095,7 @@ node {
   name: "dense4_relu"
   op: "Relu"
   input: "dense4_add"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1106,7 +1106,7 @@ node {
 node {
   name: "softmax_linear_weights"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -1151,7 +1151,7 @@ node {
   name: "softmax_linear_weights/read"
   op: "Identity"
   input: "softmax_linear_weights"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1170,7 +1170,7 @@ node {
 node {
   name: "softmax_linear_biases"
   op: "VariableV2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "_class"
     value {
@@ -1212,7 +1212,7 @@ node {
   name: "softmax_linear_biases/read"
   op: "Identity"
   input: "softmax_linear_biases"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1233,7 +1233,7 @@ node {
   op: "MatMul"
   input: "dense4_relu"
   input: "softmax_linear_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1258,7 +1258,7 @@ node {
   op: "BiasAdd"
   input: "softmax_matmul"
   input: "softmax_linear_biases/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1276,7 +1276,7 @@ node {
   name: "labels_cast"
   op: "Cast"
   input: "labels"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "DstT"
     value {
@@ -1301,7 +1301,7 @@ node {
   op: "SparseSoftmaxCrossEntropyWithLogits"
   input: "softmax_add"
   input: "labels_cast"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1318,7 +1318,7 @@ node {
 node {
   name: "Const"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1345,7 +1345,7 @@ node {
   op: "Mean"
   input: "cross_entropy_per_example/cross_entropy_per_example"
   input: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1368,7 +1368,7 @@ node {
 node {
   name: "gradients/Shape"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1391,7 +1391,7 @@ node {
 node {
   name: "gradients/grad_ys_0"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1415,7 +1415,7 @@ node {
   op: "Fill"
   input: "gradients/Shape"
   input: "gradients/grad_ys_0"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1432,7 +1432,7 @@ node {
 node {
   name: "gradients/cross_entropy_grad/Reshape/shape"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1459,7 +1459,7 @@ node {
   op: "Reshape"
   input: "gradients/Fill"
   input: "gradients/cross_entropy_grad/Reshape/shape"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1476,7 +1476,7 @@ node {
 node {
   name: "gradients/cross_entropy_grad/Const"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1503,7 +1503,7 @@ node {
   op: "Tile"
   input: "gradients/cross_entropy_grad/Reshape"
   input: "gradients/cross_entropy_grad/Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1520,7 +1520,7 @@ node {
 node {
   name: "gradients/cross_entropy_grad/Const_1"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1544,7 +1544,7 @@ node {
   op: "RealDiv"
   input: "gradients/cross_entropy_grad/Tile"
   input: "gradients/cross_entropy_grad/Const_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1556,7 +1556,7 @@ node {
   name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
   op: "PreventGradient"
   input: "cross_entropy_per_example/cross_entropy_per_example:1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1573,7 +1573,7 @@ node {
 node {
   name: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -1597,7 +1597,7 @@ node {
   op: "ExpandDims"
   input: "gradients/cross_entropy_grad/truediv"
   input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims/dim"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1616,7 +1616,7 @@ node {
   op: "Mul"
   input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/ExpandDims"
   input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/PreventGradient"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1628,7 +1628,7 @@ node {
   name: "gradients/softmax_add_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1647,14 +1647,14 @@ node {
   op: "NoOp"
   input: "^gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
   input: "^gradients/softmax_add_grad/BiasAddGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/softmax_add_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/cross_entropy_per_example/cross_entropy_per_example_grad/mul"
   input: "^gradients/softmax_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1675,7 +1675,7 @@ node {
   op: "Identity"
   input: "gradients/softmax_add_grad/BiasAddGrad"
   input: "^gradients/softmax_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1696,7 +1696,7 @@ node {
   op: "MatMul"
   input: "gradients/softmax_add_grad/tuple/control_dependency"
   input: "softmax_linear_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1721,7 +1721,7 @@ node {
   op: "MatMul"
   input: "dense4_relu"
   input: "gradients/softmax_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1746,14 +1746,14 @@ node {
   op: "NoOp"
   input: "^gradients/softmax_matmul_grad/MatMul"
   input: "^gradients/softmax_matmul_grad/MatMul_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/softmax_matmul_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/softmax_matmul_grad/MatMul"
   input: "^gradients/softmax_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1774,7 +1774,7 @@ node {
   op: "Identity"
   input: "gradients/softmax_matmul_grad/MatMul_1"
   input: "^gradients/softmax_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1795,7 +1795,7 @@ node {
   op: "ReluGrad"
   input: "gradients/softmax_matmul_grad/tuple/control_dependency"
   input: "dense4_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1807,7 +1807,7 @@ node {
   name: "gradients/dense4_add_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "gradients/dense4_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1826,14 +1826,14 @@ node {
   op: "NoOp"
   input: "^gradients/dense4_add_grad/BiasAddGrad"
   input: "^gradients/dense4_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/dense4_add_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/dense4_relu_grad/ReluGrad"
   input: "^gradients/dense4_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1854,7 +1854,7 @@ node {
   op: "Identity"
   input: "gradients/dense4_add_grad/BiasAddGrad"
   input: "^gradients/dense4_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1875,7 +1875,7 @@ node {
   op: "MatMul"
   input: "gradients/dense4_add_grad/tuple/control_dependency"
   input: "dense4_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1900,7 +1900,7 @@ node {
   op: "MatMul"
   input: "dense3_relu"
   input: "gradients/dense4_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1925,14 +1925,14 @@ node {
   op: "NoOp"
   input: "^gradients/dense4_matmul_grad/MatMul"
   input: "^gradients/dense4_matmul_grad/MatMul_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/dense4_matmul_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/dense4_matmul_grad/MatMul"
   input: "^gradients/dense4_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1953,7 +1953,7 @@ node {
   op: "Identity"
   input: "gradients/dense4_matmul_grad/MatMul_1"
   input: "^gradients/dense4_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1974,7 +1974,7 @@ node {
   op: "ReluGrad"
   input: "gradients/dense4_matmul_grad/tuple/control_dependency"
   input: "dense3_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -1986,7 +1986,7 @@ node {
   name: "gradients/dense3_add_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "gradients/dense3_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2005,14 +2005,14 @@ node {
   op: "NoOp"
   input: "^gradients/dense3_add_grad/BiasAddGrad"
   input: "^gradients/dense3_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/dense3_add_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/dense3_relu_grad/ReluGrad"
   input: "^gradients/dense3_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2033,7 +2033,7 @@ node {
   op: "Identity"
   input: "gradients/dense3_add_grad/BiasAddGrad"
   input: "^gradients/dense3_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2054,7 +2054,7 @@ node {
   op: "MatMul"
   input: "gradients/dense3_add_grad/tuple/control_dependency"
   input: "dense3_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2079,7 +2079,7 @@ node {
   op: "MatMul"
   input: "reshape"
   input: "gradients/dense3_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2104,14 +2104,14 @@ node {
   op: "NoOp"
   input: "^gradients/dense3_matmul_grad/MatMul"
   input: "^gradients/dense3_matmul_grad/MatMul_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/dense3_matmul_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/dense3_matmul_grad/MatMul"
   input: "^gradients/dense3_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2132,7 +2132,7 @@ node {
   op: "Identity"
   input: "gradients/dense3_matmul_grad/MatMul_1"
   input: "^gradients/dense3_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2151,7 +2151,7 @@ node {
 node {
   name: "gradients/reshape_grad/Shape"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -2178,7 +2178,7 @@ node {
   op: "Reshape"
   input: "gradients/dense3_matmul_grad/tuple/control_dependency"
   input: "gradients/reshape_grad/Shape"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2198,7 +2198,7 @@ node {
   input: "norm2"
   input: "pool2"
   input: "gradients/reshape_grad/Reshape"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2246,7 +2246,7 @@ node {
   input: "gradients/pool2_grad/MaxPoolGrad"
   input: "conv2_relu"
   input: "norm2"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2283,7 +2283,7 @@ node {
   op: "ReluGrad"
   input: "gradients/norm2_grad/LRNGrad"
   input: "conv2_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2295,7 +2295,7 @@ node {
   name: "gradients/conv2_add_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "gradients/conv2_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2314,14 +2314,14 @@ node {
   op: "NoOp"
   input: "^gradients/conv2_add_grad/BiasAddGrad"
   input: "^gradients/conv2_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/conv2_add_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/conv2_relu_grad/ReluGrad"
   input: "^gradients/conv2_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2342,7 +2342,7 @@ node {
   op: "Identity"
   input: "gradients/conv2_add_grad/BiasAddGrad"
   input: "^gradients/conv2_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2363,7 +2363,7 @@ node {
   op: "ShapeN"
   input: "norm1"
   input: "conv2_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "N"
     value {
@@ -2389,7 +2389,7 @@ node {
   input: "gradients/conv2_matmul_grad/ShapeN"
   input: "conv2_weights/read"
   input: "gradients/conv2_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2450,7 +2450,7 @@ node {
   input: "norm1"
   input: "gradients/conv2_matmul_grad/ShapeN:1"
   input: "gradients/conv2_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2510,14 +2510,14 @@ node {
   op: "NoOp"
   input: "^gradients/conv2_matmul_grad/Conv2DBackpropFilter"
   input: "^gradients/conv2_matmul_grad/Conv2DBackpropInput"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/conv2_matmul_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/conv2_matmul_grad/Conv2DBackpropInput"
   input: "^gradients/conv2_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2538,7 +2538,7 @@ node {
   op: "Identity"
   input: "gradients/conv2_matmul_grad/Conv2DBackpropFilter"
   input: "^gradients/conv2_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2560,7 +2560,7 @@ node {
   input: "gradients/conv2_matmul_grad/tuple/control_dependency"
   input: "pool1"
   input: "norm1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2598,7 +2598,7 @@ node {
   input: "conv1_relu"
   input: "pool1"
   input: "gradients/norm1_grad/LRNGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2645,7 +2645,7 @@ node {
   op: "ReluGrad"
   input: "gradients/pool1_grad/MaxPoolGrad"
   input: "conv1_relu"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2657,7 +2657,7 @@ node {
   name: "gradients/conv1_add_grad/BiasAddGrad"
   op: "BiasAddGrad"
   input: "gradients/conv1_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2676,14 +2676,14 @@ node {
   op: "NoOp"
   input: "^gradients/conv1_add_grad/BiasAddGrad"
   input: "^gradients/conv1_relu_grad/ReluGrad"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/conv1_add_grad/tuple/control_dependency"
   op: "Identity"
   input: "gradients/conv1_relu_grad/ReluGrad"
   input: "^gradients/conv1_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2704,7 +2704,7 @@ node {
   op: "Identity"
   input: "gradients/conv1_add_grad/BiasAddGrad"
   input: "^gradients/conv1_add_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2725,7 +2725,7 @@ node {
   op: "ShapeN"
   input: "images"
   input: "conv1_weights/read"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "N"
     value {
@@ -2751,7 +2751,7 @@ node {
   input: "gradients/conv1_matmul_grad/ShapeN"
   input: "conv1_weights/read"
   input: "gradients/conv1_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2812,7 +2812,7 @@ node {
   input: "images"
   input: "gradients/conv1_matmul_grad/ShapeN:1"
   input: "gradients/conv1_add_grad/tuple/control_dependency"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2872,14 +2872,14 @@ node {
   op: "NoOp"
   input: "^gradients/conv1_matmul_grad/Conv2DBackpropFilter"
   input: "^gradients/conv1_matmul_grad/Conv2DBackpropInput"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "gradients/conv1_matmul_grad/tuple/control_dependency_1"
   op: "Identity"
   input: "gradients/conv1_matmul_grad/Conv2DBackpropFilter"
   input: "^gradients/conv1_matmul_grad/tuple/group_deps"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2898,7 +2898,7 @@ node {
 node {
   name: "GradientDescent/learning_rate"
   op: "Const"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "dtype"
     value {
@@ -2923,7 +2923,7 @@ node {
   input: "conv1_weights"
   input: "GradientDescent/learning_rate"
   input: "gradients/conv1_matmul_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2951,7 +2951,7 @@ node {
   input: "conv1_biases"
   input: "GradientDescent/learning_rate"
   input: "gradients/conv1_add_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -2979,7 +2979,7 @@ node {
   input: "conv2_weights"
   input: "GradientDescent/learning_rate"
   input: "gradients/conv2_matmul_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3007,7 +3007,7 @@ node {
   input: "conv2_biases"
   input: "GradientDescent/learning_rate"
   input: "gradients/conv2_add_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3035,7 +3035,7 @@ node {
   input: "dense3_weights"
   input: "GradientDescent/learning_rate"
   input: "gradients/dense3_matmul_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3063,7 +3063,7 @@ node {
   input: "dense3_biases"
   input: "GradientDescent/learning_rate"
   input: "gradients/dense3_add_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3091,7 +3091,7 @@ node {
   input: "dense4_weights"
   input: "GradientDescent/learning_rate"
   input: "gradients/dense4_matmul_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3119,7 +3119,7 @@ node {
   input: "dense4_biases"
   input: "GradientDescent/learning_rate"
   input: "gradients/dense4_add_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3147,7 +3147,7 @@ node {
   input: "softmax_linear_weights"
   input: "GradientDescent/learning_rate"
   input: "gradients/softmax_matmul_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3175,7 +3175,7 @@ node {
   input: "softmax_linear_biases"
   input: "GradientDescent/learning_rate"
   input: "gradients/softmax_add_grad/tuple/control_dependency_1"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
   attr {
     key: "T"
     value {
@@ -3210,7 +3210,7 @@ node {
   input: "^GradientDescent/update_dense4_weights/ApplyGradientDescent"
   input: "^GradientDescent/update_softmax_linear_biases/ApplyGradientDescent"
   input: "^GradientDescent/update_softmax_linear_weights/ApplyGradientDescent"
-  device: "/job:localhost/replica:0/task:0/device:GPU:0"
+  device: ""
 }
 node {
   name: "_retval_cross_entropy_0_0"

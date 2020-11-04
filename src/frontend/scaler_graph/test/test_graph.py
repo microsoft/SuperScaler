@@ -5,7 +5,7 @@ from pathlib import Path
 WORKDIR_HANDLER = tempfile.TemporaryDirectory()
 os.environ["TF_DUMP_GRAPH_PREFIX"] = WORKDIR_HANDLER.name
 os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "4"
-from frontend.scaler_graph.IR.conversion import tensorflow as tf_adapter
+from frontend.scaler_graph.IR.conversion import tf_adapter
 from frontend.scaler_graph.IR import operator
 
 
@@ -20,7 +20,6 @@ def test_graph_io():
     file = Path(sc_graph_serialization_file)
     assert (len(sc_graph.nodes) == 130)
     assert (json.loads(file.read_text()) == json.loads(sc_graph.json()))
-    tf_adapter.export_to_graph_def_file(sc_graph)
 
 
 def test_remove_nodes():

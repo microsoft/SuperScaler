@@ -30,7 +30,7 @@ class DataParallelism(Parallelism):
             attrs["tensor_name"] = edge.src_node.name + "_allreduce"
             attrs["T"] = edge.src_node.attrs["T"]
             attrs["reduction"] = "sum"
-            attrs["num_devices"] = len(self.devices)
+            attrs["num_devices"] = str(len(self.devices))
             node_name = edge.src_node.name + "_allreduce"
             graph.remove_edge(edge)
             node = graph.add_node_and_edge(node_name, sc_op, input_node_idxes,

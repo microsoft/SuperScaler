@@ -17,6 +17,11 @@ class Operator:
     def original_name(self):
         return self._original_name
 
+    @original_name.setter
+    def original_name(self, value):
+        assert (self._original_name is None)
+        self._original_name = value
+
     @abstractmethod
     def infer_shape(self, node):
         pass
