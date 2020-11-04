@@ -3,7 +3,7 @@ import os
 import json
 import copy
 from .adapter import Adapter
-from plan.node_list import NodeList
+from ..node_list import NodeList
 
 
 class SuperScalerAdapter(Adapter):
@@ -180,14 +180,7 @@ class SuperScalerAdapter(Adapter):
         devices = []
         multi_node_dict = []
 
-        # For template testing, only test one allreduce op
-        tensor_name = None
-
         for node in node_list:
-
-            if 'tensor_name' in node and tensor_name is None:
-                tensor_name = node['tensor_name']
-
             if 'device' in node:
                 if node['device'] not in devices:
                     devices.append(node['device'])
@@ -209,14 +202,13 @@ class SuperScalerAdapter(Adapter):
         # differentiate node_list on each node_dict
         for node in node_list:
             node_dict = multi_node_dict[devices.index(node['device'])]
-            if 'tensor_name' in node and tensor_name == node['tensor_name']:
-                node_dict['tasks'].append(node)
+            node_dict['tasks'].append(node)
 
-                # Count the peers for communication
-                if 'target' in node and \
-                   node['target'] not in node_dict['peer_device_names']:
-                    node_dict['num_peers'] += 1
-                    node_dict['peer_device_names'].append(node['target'])
+            # Count the peers for communication
+            if 'target' in node and \
+               node['target'] not in node_dict['peer_device_names']:
+                node_dict['num_peers'] += 1
+                node_dict['peer_device_names'].append(node['target'])
 
             # pop unused device infos
             node.pop('device')

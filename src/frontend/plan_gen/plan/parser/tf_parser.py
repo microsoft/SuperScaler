@@ -67,11 +67,13 @@ class TFParser(DAGParser):
         except Exception:
             self.__Profiler = None
 
-    def parse_graphs(self, graph_paths, devices):
+    def parse_graphs(self, graph_paths, devices, load_from_memory=False):
         '''
         Parse all nodes from tensorflow DAG.
         Return the node_list that contains all parsed nodes
         graph_paths: path to tensorflow DAG
+        load_from_memory: True to load data from memory,
+            False to load data from files
         devices: virtual device_id
         '''
         node_list = []
@@ -83,7 +85,10 @@ class TFParser(DAGParser):
                                 len(graph_paths)))
 
         for graph_path, device_id in zip(graph_paths, devices):
-            graph = self.load_protobuf_from_file(graph_path)
+            if load_from_memory is False:
+                graph = self.load_protobuf_from_file(graph_path)
+            else:
+                graph = self.load_protobuf(graph_path)
 
             profiling_data_sublist = self.get_profiling_data_list(graph,
                                                                   device_id)
@@ -173,6 +178,22 @@ class TFParser(DAGParser):
                     input_str = input_str[0:input_str.index(':')]
                 inputs.append(input_str)
             node['input'] = inputs
+
+    @staticmethod
+    def load_protobuf(graph_content):
+        '''
+        Load protobuf from memory
+        Return the protobuf
+        graph_content: string description of graph
+        '''
+        try:
+            graph_def = text_format.Parse(graph_content,
+                                          tf.compat.v1.GraphDef())
+            return graph_def
+        except text_format.ParseError as e:
+            raise ParserError("Cannot parse description: %s." %
+                              (str(e)))
+        return graph_def
 
     @staticmethod
     def load_protobuf_from_file(filename):

@@ -113,7 +113,33 @@ def test_TFParser():
         parser = TFParser(db_file_path=TEST_DB_FILE)
         nodelist = parser.parse_graphs(graph_paths, devices)
 
-    "Test benchmark using 2 devices and 2 graphs, pass pytest"
+    with pytest.raises(Exception):
+        "Test benchmark from file but using load_from_memory, raise Exception"
+        parser = TFParser(db_file_path=TEST_DB_FILE)
+        devices = get_device(2)
+        graph_paths = get_graph_paths(
+            "data/DataParallelismPlan2GPUsIn2Hosts", 2)
+        parser = TFParser(db_file_path=TEST_DB_FILE)
+        nodelist = parser.parse_graphs(graph_paths,
+                                       devices,
+                                       load_from_memory=True)
+
+    with pytest.raises(Exception):
+        "Test benchmark from load_from_memory but using file, raise Exception"
+        parser = TFParser(db_file_path=TEST_DB_FILE)
+        devices = get_device(2)
+        graph_paths = get_graph_paths(
+            "data/DataParallelismPlan2GPUsIn2Hosts", 2)
+        graphs = []
+        for graph_path in graph_paths:
+            with open(graph_path, 'r') as f:
+                graphs.append(f.read())
+        parser = TFParser(db_file_path=TEST_DB_FILE)
+        nodelist = parser.parse_graphs(graphs,
+                                       devices,
+                                       load_from_memory=False)
+
+    "Test benchmark using 2 devices and 2 graphs from file, pass pytest"
     device_count = 2
     parser = TFParser(db_file_path=TEST_DB_FILE)
     devices = get_device(device_count)
@@ -121,6 +147,23 @@ def test_TFParser():
         "data/DataParallelismPlan2GPUsIn2Hosts", device_count)
     parser = TFParser(db_file_path=TEST_DB_FILE)
     nodelist = parser.parse_graphs(graph_paths, devices)
+    ref_path = "tests/data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json"
+
+    ref_nodelist = json.load(open(ref_path, "r"))
+    assert(nodelist == ref_nodelist)
+
+    "Test benchmark using 2 devices and 2 graphs from memory, pass pytest"
+    device_count = 2
+    parser = TFParser(db_file_path=TEST_DB_FILE)
+    devices = get_device(device_count)
+    graph_paths = get_graph_paths(
+        "data/DataParallelismPlan2GPUsIn2Hosts", device_count)
+    graphs = []
+    for graph_path in graph_paths:
+        with open(graph_path, 'r') as f:
+            graphs.append(f.read())
+    parser = TFParser(db_file_path=TEST_DB_FILE)
+    nodelist = parser.parse_graphs(graphs, devices, load_from_memory=True)
     ref_path = "tests/data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json"
 
     ref_nodelist = json.load(open(ref_path, "r"))
