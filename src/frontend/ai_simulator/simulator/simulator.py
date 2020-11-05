@@ -13,11 +13,11 @@ v1.0 execute required node attributes:
 Defined in node_define.py
 '''
 
-from .node import NodeMetadata
-from .node import Node
-from .device import Device
-from .device_factory import DeviceFactory
-from .tensor import Tensor
+from frontend.ai_simulator.simulator.node import NodeMetadata
+from frontend.ai_simulator.simulator.node import Node
+from frontend.ai_simulator.simulator.device import Device
+from frontend.ai_simulator.simulator.device_factory import DeviceFactory
+from frontend.ai_simulator.simulator.tensor import Tensor
 import warnings
 
 RET_SIMULATION_FINISH = -1

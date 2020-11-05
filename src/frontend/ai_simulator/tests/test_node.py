@@ -1,7 +1,8 @@
 import pytest
-from simulator.node import NodeMetadata, Node, NodeException, NodeStatus
-from simulator.tensor import Tensor
-from simulator.fifo_device import FIFODevice
+from frontend.ai_simulator.simulator.node import \
+     NodeMetadata, Node, NodeException, NodeStatus
+from frontend.ai_simulator.simulator.tensor import Tensor
+from frontend.ai_simulator.simulator.fifo_device import FIFODevice
 
 
 def test_node_module():

@@ -1,4 +1,4 @@
-from simulator.computation_device import CPU, GPU
+from frontend.ai_simulator.simulator.computation_device import CPU, GPU
 
 
 def test_calculation_device():

@@ -1,5 +1,5 @@
-from .database_backend import DatabaseBackendException,\
-    DatabaseBackendLocalFile
+from frontend.plan_gen.plan.parser.profiler.database_backend import \
+     DatabaseBackendException, DatabaseBackendLocalFile
 
 DB_RETVAL_OK = 0
 DB_RETVAL_KEY_NOT_FOUND = None

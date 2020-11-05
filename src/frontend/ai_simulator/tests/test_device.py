@@ -1,6 +1,6 @@
-from simulator.device import Device
-from simulator.fifo_device import FIFODevice
-from simulator.node import Node, NodeMetadata
+from frontend.ai_simulator.simulator.device import Device
+from frontend.ai_simulator.simulator.fifo_device import FIFODevice
+from frontend.ai_simulator.simulator.node import Node, NodeMetadata
 
 
 def test_device_module():

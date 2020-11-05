@@ -1,5 +1,5 @@
 import pytest
-from simulator.device_factory import DeviceFactory
+from frontend.ai_simulator.simulator.device_factory import DeviceFactory
 
 
 def test_device_factory():

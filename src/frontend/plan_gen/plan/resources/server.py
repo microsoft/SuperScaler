@@ -1,5 +1,6 @@
-from .resource import Resource
-from .hardware import ComputationHardware, CPUHardware, GPUHardware
+from frontend.plan_gen.plan.resources.resource import Resource
+from frontend.plan_gen.plan.resources.hardware import ComputationHardware,\
+    CPUHardware, GPUHardware
 
 
 class Server(Resource):

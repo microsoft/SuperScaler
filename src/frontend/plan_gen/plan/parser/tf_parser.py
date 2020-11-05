@@ -1,9 +1,10 @@
 import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format
-from .DAG_parser import DAGParser
-from .profiler.profiler import TFProfiler
-from .profiler.database_backend import DatabaseBackendLocalFile
+from frontend.plan_gen.plan.parser.DAG_parser import DAGParser
+from frontend.plan_gen.plan.parser.profiler.profiler import TFProfiler
+from frontend.plan_gen.plan.parser.profiler.database_backend import \
+     DatabaseBackendLocalFile
 
 
 class ParserError(Exception):

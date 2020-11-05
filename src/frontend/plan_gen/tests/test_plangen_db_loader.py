@@ -1,10 +1,17 @@
+import os
 import pytest
 import json
-from plan.parser.profiler.database_loader import DatabaseLoader
-from plan.parser.profiler.database_backend import DatabaseBackendException
+from frontend.plan_gen.plan.parser.profiler.database_loader import \
+     DatabaseLoader
+from frontend.plan_gen.plan.parser.profiler.database_backend import \
+     DatabaseBackendException
 
-TEST_NODELIST_FILE = 'tests/data/tf_parser_testbench/db_nodelist.json'
-TEST_DB_FILE = 'tests/data/tf_parser_testbench/db_test.json'
+TEST_NODELIST_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'data/tf_parser_testbench/db_nodelist.json')
+TEST_DB_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'data/tf_parser_testbench/db_test.json')
 
 
 def test_database_loader():

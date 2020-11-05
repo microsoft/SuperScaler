@@ -1,4 +1,4 @@
-from .device import Device
+from frontend.ai_simulator.simulator.device import Device
 
 
 class FIFODevice(Device):

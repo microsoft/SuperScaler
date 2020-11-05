@@ -1,5 +1,5 @@
-from .adapter import Adapter
-from ..node_list import NodeList
+from frontend.plan_gen.plan.adapter.adapter import Adapter
+from frontend.plan_gen.plan.node_list import NodeList
 
 
 class AISimulatorAdapter(Adapter):

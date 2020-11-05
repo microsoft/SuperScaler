@@ -1,4 +1,4 @@
-from plan.resources.link import Link, PCIE, RDMA
+from frontend.plan_gen.plan.resources.link import Link, PCIE, RDMA
 
 
 def test_link():

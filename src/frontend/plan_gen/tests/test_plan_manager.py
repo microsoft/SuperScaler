@@ -1,11 +1,11 @@
 import json
 import os
 import pytest
-from plan.resources.resource_pool import ResourcePool
-from plan.plan_mapper import GPURoundRobinMapper
-from plan.plan_pool import PlanPool
-from plan.plan import Plan
-from plan.plan_manager import PlanManager
+from frontend.plan_gen.plan.resources.resource_pool import ResourcePool
+from frontend.plan_gen.plan.plan_mapper import GPURoundRobinMapper
+from frontend.plan_gen.plan.plan_pool import PlanPool
+from frontend.plan_gen.plan.plan import Plan
+from frontend.plan_gen.plan.plan_manager import PlanManager
 
 
 def test_plan_manager():

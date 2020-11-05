@@ -1,6 +1,7 @@
 import json
 import os
-from plan.recursive_halving_plan import RecursiveHalvingAllreducePlan
+from frontend.plan_gen.plan.recursive_halving_plan import \
+     RecursiveHalvingAllreducePlan
 
 
 def test_recursive_halving_plan():

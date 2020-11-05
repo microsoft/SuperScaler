@@ -1,9 +1,9 @@
 import pytest
 
-from plan.resources.router import Router
-from plan.resources.link import PCIE, RDMA
-from plan.resources.hardware import CPUHardware, GPUHardware,\
-    NetworkSwitchHardware
+from frontend.plan_gen.plan.resources.router import Router
+from frontend.plan_gen.plan.resources.link import PCIE, RDMA
+from frontend.plan_gen.plan.resources.hardware import CPUHardware,\
+    GPUHardware, NetworkSwitchHardware
 
 
 def test_router():

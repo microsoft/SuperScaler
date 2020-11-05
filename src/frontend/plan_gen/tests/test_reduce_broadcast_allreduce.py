@@ -1,6 +1,7 @@
 import json
 import os
-from plan.reduce_broadcast_allreduce_plan import ReduceBroadcastAllreducePlan
+from frontend.plan_gen.plan.reduce_broadcast_allreduce_plan import \
+     ReduceBroadcastAllreducePlan
 
 
 def test_reduce_broadcast_allreduce_plan():

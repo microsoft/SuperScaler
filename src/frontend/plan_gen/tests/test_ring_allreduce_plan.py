@@ -1,6 +1,6 @@
 import json
 import os
-from plan import ring_allreduce_plan
+from frontend.plan_gen.plan import ring_allreduce_plan
 
 
 def test_ring_allreduce_plan():

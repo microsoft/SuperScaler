@@ -1,5 +1,5 @@
 import pytest
-from simulator.tensor import Tensor, TensorException
+from frontend.ai_simulator.simulator.tensor import Tensor, TensorException
 
 
 def test_tensor_module():

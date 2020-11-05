@@ -1,6 +1,7 @@
 import pytest
 
-from simulator.network_simulator.link_manager import LinkManager
+from frontend.ai_simulator.simulator.network_simulator.link_manager import \
+     LinkManager
 
 
 def test_link_manager():

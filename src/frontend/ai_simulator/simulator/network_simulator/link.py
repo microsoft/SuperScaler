@@ -1,5 +1,5 @@
-from .flow import Flow
-from ..utility import transfer_rate_to_bps
+from frontend.ai_simulator.simulator.network_simulator.flow import Flow
+from frontend.ai_simulator.simulator.utility import transfer_rate_to_bps
 
 
 class Link():

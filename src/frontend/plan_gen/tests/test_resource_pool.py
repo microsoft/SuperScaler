@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from plan.resources.resource_pool import ResourcePool
+from frontend.plan_gen.plan.resources.resource_pool import ResourcePool
 
 
 def test_resource_pool_functionality():

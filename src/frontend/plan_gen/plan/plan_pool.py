@@ -1,4 +1,4 @@
-from .plan import Plan
+from frontend.plan_gen.plan.plan import Plan
 
 
 class PlanPool(object):

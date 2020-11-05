@@ -1,7 +1,7 @@
 import os
 import json
-from plan.node_list import Node
-from plan.node_list import NodeList
+from frontend.plan_gen.plan.node_list import Node
+from frontend.plan_gen.plan.node_list import NodeList
 
 
 def test_node_list():

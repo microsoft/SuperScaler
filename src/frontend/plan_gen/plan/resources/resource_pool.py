@@ -1,9 +1,10 @@
 import yaml
 
-from .hardware import CPUHardware, GPUHardware, NetworkSwitchHardware
-from .server import Server
-from .link import PCIE, RDMA
-from .router import Router
+from frontend.plan_gen.plan.resources.hardware import CPUHardware,\
+    GPUHardware, NetworkSwitchHardware
+from frontend.plan_gen.plan.resources.server import Server
+from frontend.plan_gen.plan.resources.link import PCIE, RDMA
+from frontend.plan_gen.plan.resources.router import Router
 
 
 class ResourcePool():

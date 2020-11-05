@@ -1,5 +1,5 @@
-from .plan_mapper import PlanMapper
-from .plan_pool import PlanPool
+from frontend.plan_gen.plan.plan_mapper import PlanMapper
+from frontend.plan_gen.plan.plan_pool import PlanPool
 
 
 class PlanManager(object):

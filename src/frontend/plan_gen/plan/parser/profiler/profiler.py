@@ -1,5 +1,7 @@
-from .database_loader import DatabaseLoader
-from .database_backend import DatabaseBackendLocalFile
+from frontend.plan_gen.plan.parser.profiler.database_loader import \
+     DatabaseLoader
+from frontend.plan_gen.plan.parser.profiler.database_backend import \
+     DatabaseBackendLocalFile
 
 
 class Profiler(object):

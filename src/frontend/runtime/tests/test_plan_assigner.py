@@ -1,6 +1,6 @@
 import os
 import json
-from plan_assigner import PlanAssigner
+from frontend.runtime.plan_assigner import PlanAssigner
 
 
 def get_communication_plan(path, device_count):

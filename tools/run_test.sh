@@ -59,23 +59,25 @@ echo "Executor test success!"
 
 # Test for frontend
 echo "Running test for frontend:"
-exe cd $ROOT_PATH/src/frontend/
+exe cd $ROOT_PATH/src/frontend
 exe $PYTHON -m flake8
-exe $PYTHON -m pytest -v tests
+exe cd $ROOT_PATH/src/
+exe $PYTHON -m pytest -v frontend/tests
 echo "Frontend test success"
 
 # Test for plan_gen
 echo "Running test for plan_gen:"
-exe cd $ROOT_PATH/src/frontend/plan_gen
-exe $PYTHON -m flake8
-exe $PYTHON -m pytest -v
+exe cd $ROOT_PATH/src/
+exe $PYTHON -m flake8 frontend/plan_gen
+exe $PYTHON -m pytest -v frontend/plan_gen
 echo "Plan_gen test success"
 
 # Test for ai_simulator
 echo "Running test for ai_simulator:"
 exe cd $ROOT_PATH/src/frontend/ai_simulator
 exe $PYTHON -m flake8
-exe $PYTHON -m pytest -v
+exe cd $ROOT_PATH/src/ 
+exe $PYTHON -m pytest -v frontend/ai_simulator
 echo "Ai_simulator test success"
 
 # Test for runtime
@@ -89,9 +91,9 @@ else
     echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
 fi
 
-exe cd $ROOT_PATH/src/frontend/runtime
-exe $PYTHON -m flake8
-exe $PYTHON -m pytest -v
+exe cd $ROOT_PATH/src/
+exe $PYTHON -m flake8 frontend/runtime
+exe $PYTHON -m pytest -v frontend/runtime
 echo "Runtime test success"
 
 # Test for scaler_graph

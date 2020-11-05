@@ -1,6 +1,6 @@
 import os
 import json
-from plan.allreduce_plan import AllreducePlan
+from frontend.plan_gen.plan.allreduce_plan import AllreducePlan
 
 
 def test_allreduce_plan():

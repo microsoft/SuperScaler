@@ -1,7 +1,7 @@
 import abc
 import copy
-from .node_list import NodeList
-from .resources.resource_pool import ResourcePool
+from frontend.plan_gen.plan.node_list import NodeList
+from frontend.plan_gen.plan.resources.resource_pool import ResourcePool
 
 
 class PlanMapper(abc.ABC):

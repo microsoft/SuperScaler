@@ -4,8 +4,8 @@ import copy
 import json
 import pytest
 
-from simulator import Simulator
-from simulator.computation_device import GPU, CPU
+from frontend.ai_simulator.simulator import Simulator
+from frontend.ai_simulator.simulator.computation_device import GPU, CPU
 
 
 def test_simulator_error_handling():

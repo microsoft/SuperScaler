@@ -1,6 +1,6 @@
 import json
 import os
-from plan import plan
+from frontend.plan_gen.plan import plan
 
 
 def test_plan():

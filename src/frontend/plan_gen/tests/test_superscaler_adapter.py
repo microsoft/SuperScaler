@@ -1,6 +1,7 @@
 import json
 import os
-from plan.adapter.superscaler_adapter import SuperScalerAdapter
+from frontend.plan_gen.plan.adapter.superscaler_adapter import \
+     SuperScalerAdapter
 
 
 def test_plan_adapter_for_superscaler():

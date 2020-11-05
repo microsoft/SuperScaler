@@ -1,5 +1,5 @@
-from .fifo_device import FIFODevice
-from .utility import transfer_rate_to_bps
+from frontend.ai_simulator.simulator.fifo_device import FIFODevice
+from frontend.ai_simulator.simulator.utility import transfer_rate_to_bps
 
 
 class ComputationDevice(FIFODevice):

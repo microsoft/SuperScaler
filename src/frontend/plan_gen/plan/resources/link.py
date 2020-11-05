@@ -1,5 +1,5 @@
 import humanreadable as hr
-from .resource import Resource
+from frontend.plan_gen.plan.resources.resource import Resource
 
 
 class Link(Resource):

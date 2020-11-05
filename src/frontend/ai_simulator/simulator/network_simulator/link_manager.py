@@ -1,4 +1,4 @@
-from .link import Link
+from frontend.ai_simulator.simulator.network_simulator.link import Link
 
 
 class LinkManager():

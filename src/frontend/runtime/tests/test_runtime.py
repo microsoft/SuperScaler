@@ -2,7 +2,7 @@ import os
 import pytest
 import multiprocessing
 import traceback
-from runtime import Runtime
+from frontend.runtime.runtime import Runtime
 
 father_path = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
 lib_path = father_path + \

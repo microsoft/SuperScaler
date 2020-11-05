@@ -1,9 +1,9 @@
 import pytest
 
-from simulator.tensor import Tensor
-from simulator.fifo_device import FIFODevice
-from simulator.node import Node, NodeMetadata
-from simulator.network_simulator.flow import Flow
+from frontend.ai_simulator.simulator.tensor import Tensor
+from frontend.ai_simulator.simulator.fifo_device import FIFODevice
+from frontend.ai_simulator.simulator.node import Node, NodeMetadata
+from frontend.ai_simulator.simulator.network_simulator.flow import Flow
 
 
 def test_flow():

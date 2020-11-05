@@ -1,6 +1,7 @@
-from .flow import Flow
-from .link_manager import LinkManager
-from ..device import Device
+from frontend.ai_simulator.simulator.network_simulator.flow import Flow
+from frontend.ai_simulator.simulator.network_simulator.link_manager import \
+     LinkManager
+from frontend.ai_simulator.simulator.device import Device
 
 
 class NetworkSimulator(Device):

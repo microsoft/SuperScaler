@@ -1,7 +1,8 @@
 import pytest
 
-from plan.resources.server import Server
-from plan.resources.hardware import GPUHardware, CPUHardware, Hardware
+from frontend.plan_gen.plan.resources.server import Server
+from frontend.plan_gen.plan.resources.hardware import GPUHardware,\
+    CPUHardware, Hardware
 
 
 def test_server():

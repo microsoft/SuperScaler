@@ -1,8 +1,10 @@
 import pytest
 
-from plan.resources.link import PCIE
-from plan.resources.hardware import Hardware, ComputationHardware, CPUHardware
-from plan.resources.hardware import GPUHardware, NetworkSwitchHardware
+from frontend.plan_gen.plan.resources.link import PCIE
+from frontend.plan_gen.plan.resources.hardware import Hardware,\
+    ComputationHardware, CPUHardware
+from frontend.plan_gen.plan.resources.hardware import GPUHardware,\
+    NetworkSwitchHardware
 
 
 def test_hardware():

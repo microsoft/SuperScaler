@@ -1,8 +1,9 @@
 import pytest
 
-from simulator.tensor import Tensor
-from simulator.node import Node, NodeMetadata
-from simulator.network_simulator.network_simulator import NetworkSimulator
+from frontend.ai_simulator.simulator.tensor import Tensor
+from frontend.ai_simulator.simulator.node import Node, NodeMetadata
+from frontend.ai_simulator.simulator.network_simulator.network_simulator\
+    import NetworkSimulator
 
 
 def test_network_simulator_functionality():

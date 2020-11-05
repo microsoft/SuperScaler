@@ -1,6 +1,6 @@
 import humanreadable as hr
-from .resource import Resource
-from .link import Link
+from frontend.plan_gen.plan.resources.resource import Resource
+from frontend.plan_gen.plan.resources.link import Link
 
 
 class Hardware(Resource):

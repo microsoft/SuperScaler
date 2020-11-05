@@ -1,4 +1,4 @@
-from ..utility import data_size_to_bit
+from frontend.ai_simulator.simulator.utility import data_size_to_bit
 
 
 class Flow():

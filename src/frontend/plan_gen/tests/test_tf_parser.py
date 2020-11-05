@@ -3,9 +3,11 @@ import json
 import pytest
 import tensorflow as tf
 from google.protobuf import text_format
-from plan.parser.tf_parser import TFNodeAttrParser, TFParser, ParserError
+from frontend.plan_gen.plan.parser.tf_parser import TFNodeAttrParser,\
+    TFParser, ParserError
 
-TEST_DB_FILE = 'tests/data/tf_parser_testbench/db_test.json'
+TEST_DB_FILE = os.path.join(
+    os.path.dirname(__file__), 'data/tf_parser_testbench/db_test.json')
 
 
 class InputError(Exception):
@@ -48,30 +50,44 @@ def test_tf_attr_parser():
         parser.parse_node(None)
     with pytest.raises(InputError):
         "Node with non-bool value"
-        path = "tests/data/tf_parser_testbench/node_wrong_bool_value"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_bool_value")
         test_node(path)
     with pytest.raises(InputError):
         "Node with wrong type"
-        path = "tests/data/tf_parser_testbench/node_wrong_type"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_type")
         test_node(path)
     with pytest.raises(InputError):
         "Node with non-str value"
-        path = "tests/data/tf_parser_testbench/node_wrong_str"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_str")
         test_node(path)
     with pytest.raises(InputError):
         "Node with non-float value"
-        path = "tests/data/tf_parser_testbench/node_wrong_float"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_float")
         test_node(path)
     with pytest.raises(InputError):
         "Node with empty shapes"
-        path = "tests/data/tf_parser_testbench/node_wrong_shape"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_shape")
         test_node(path)
     with pytest.raises(InputError):
         "Node with error tensor"
-        path = "tests/data/tf_parser_testbench/node_wrong_tensor"
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "data/tf_parser_testbench/node_wrong_tensor")
         test_node(path)
 
-    standard_path = "tests/data/tf_parser_testbench/node_standard"
+    standard_path = os.path.join(
+        os.path.dirname(__file__),
+        "data/tf_parser_testbench/node_standard")
     "standard test, pass pytest"
     attr = test_node(standard_path)
     assert(attr['T'] == 1)
@@ -147,7 +163,9 @@ def test_TFParser():
         "data/DataParallelismPlan2GPUsIn2Hosts", device_count)
     parser = TFParser(db_file_path=TEST_DB_FILE)
     nodelist = parser.parse_graphs(graph_paths, devices)
-    ref_path = "tests/data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json"
+    ref_path = os.path.join(
+        os.path.dirname(__file__),
+        "data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json")
 
     ref_nodelist = json.load(open(ref_path, "r"))
     assert(nodelist == ref_nodelist)
@@ -164,7 +182,9 @@ def test_TFParser():
             graphs.append(f.read())
     parser = TFParser(db_file_path=TEST_DB_FILE)
     nodelist = parser.parse_graphs(graphs, devices, load_from_memory=True)
-    ref_path = "tests/data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json"
+    ref_path = os.path.join(
+        os.path.dirname(__file__),
+        "data/DataParallelismPlan2GPUsIn2Hosts/Nodes.json")
 
     ref_nodelist = json.load(open(ref_path, "r"))
     assert(nodelist == ref_nodelist)

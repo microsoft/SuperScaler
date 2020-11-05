@@ -2,7 +2,8 @@ import json
 import os
 import copy
 
-from plan.adapter.ai_simulator_adapter import AISimulatorAdapter
+from frontend.plan_gen.plan.adapter.ai_simulator_adapter import \
+     AISimulatorAdapter
 
 
 def test_ai_simulator_adapter():

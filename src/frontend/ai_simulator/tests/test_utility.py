@@ -2,7 +2,8 @@ import random
 import pytest
 import humanreadable
 
-from simulator.utility import transfer_rate_to_bps, data_size_to_bit
+from frontend.ai_simulator.simulator.utility import \
+     transfer_rate_to_bps, data_size_to_bit
 
 
 def test_transfer_rate_converter():

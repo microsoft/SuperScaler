@@ -1,6 +1,6 @@
 import copy
-from .node_list import NodeList
-from .node_list import Node
+from frontend.plan_gen.plan.node_list import NodeList
+from frontend.plan_gen.plan.node_list import Node
 
 
 class Plan(object):

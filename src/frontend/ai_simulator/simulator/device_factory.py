@@ -1,5 +1,6 @@
-from .computation_device import CPU, GPU
-from .network_simulator.network_simulator import NetworkSimulator
+from frontend.ai_simulator.simulator.computation_device import CPU, GPU
+from frontend.ai_simulator.simulator.network_simulator.network_simulator \
+    import NetworkSimulator
 
 
 class DeviceFactory():

@@ -1,7 +1,7 @@
 import os
 import pytest
 import shutil
-from superscaler import Superscaler, SuperscalerError
+from frontend.superscaler import Superscaler, SuperscalerError
 
 
 def test_superscaler():

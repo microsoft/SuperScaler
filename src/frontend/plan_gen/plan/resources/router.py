@@ -1,6 +1,7 @@
 import copy
 
-from .hardware import Hardware, ComputationHardware
+from frontend.plan_gen.plan.resources.hardware import Hardware,\
+    ComputationHardware
 
 
 class Router():

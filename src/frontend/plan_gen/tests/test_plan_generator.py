@@ -2,9 +2,14 @@
 
 import os
 import json
-from plan.parser.tf_parser import TFParser
-from plan.resources.resource_pool import ResourcePool
-from plan.plan_generator import PlanGenerator
+from frontend.plan_gen.plan.parser.tf_parser import TFParser
+from frontend.plan_gen.plan.resources.resource_pool import ResourcePool
+from frontend.plan_gen.plan.plan_generator import PlanGenerator
+
+TEST_DB = os.path.join(
+    os.path.dirname(__file__), 'data/tf_parser_testbench/profile_db.json')
+example_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../examples"))
 
 
 def test_plan_generator():
@@ -25,13 +30,16 @@ def test_plan_generator():
     # Init nodelist
     device_count = 2
     parser = TFParser(
-        db_file_path='tests/data/tf_parser_testbench/profile_db.json')
+        db_file_path=TEST_DB)
     devices = get_device(device_count)
+
     graph_paths = get_graph_paths(
-        "examples/CNN_vgg16_imagenet/PureDataParallelismPlan2GPUsIn1Hosts/",
+        os.path.join(
+            example_path,
+            "CNN_vgg16_imagenet/PureDataParallelismPlan2GPUsIn1Hosts/"),
         device_count)
     parser = TFParser(
-        db_file_path='tests/data/tf_parser_testbench/profile_db.json')
+        db_file_path=TEST_DB)
     nodelist = parser.parse_graphs(graph_paths, devices)
 
     # Init ResourcePool
@@ -98,7 +106,9 @@ def test_tensorflow_graph():
     parser = TFParser()
     devices = get_device(device_count)
     graph_paths = get_graph_paths(
-        "tests/data/DataParallelismPlan2GPUsIn2Hosts",
+        os.path.join(
+            os.path.dirname(__file__),
+            "data/DataParallelismPlan2GPUsIn2Hosts"),
         device_count)
     parser = TFParser()
     nodelist = parser.parse_graphs(graph_paths, devices)
@@ -138,7 +148,9 @@ def test_nnfusion_graph_using_BERT():
     parser = TFParser()
     devices = get_device(device_count)
     graph_paths = get_graph_paths(
-        "examples/BERT_NNfusion/PureDataParallelismPlan2GPUsIn1Hosts/",
+        os.path.join(
+            example_path,
+            "BERT_NNfusion/PureDataParallelismPlan2GPUsIn1Hosts/"),
         device_count)
     parser = TFParser()
     nodelist = parser.parse_graphs(graph_paths, devices)
