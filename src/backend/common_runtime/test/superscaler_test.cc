@@ -48,11 +48,15 @@ template <typename DataType>
 void process_func(TestProcessContext<DataType> ctx)
 {
     superscaler::Session sess;
+
+    // sess.Create(planPath.c_str());
     sess.Create(ctx.plan);
-    printf("-- [Grank: %d Lrank: %d] is running\n", sess.GetGlobalRank(), sess.GetLocalRank());
+
+    // std::string planPath = std::to_string(grank) + ".json";
+    printf("-- [Host: %d Device: %d] is running\n", sess.GetHostId(), sess.GetDeviceId());
 
     DataType* sendbuff = NULL;
-    cudaSetDevice(sess.GetLocalRank());
+    cudaSetDevice(sess.GetDeviceId());
     cudaMalloc((void**)(&sendbuff), ctx.size * sizeof(DataType));
     cudaMemset(sendbuff, 0, ctx.size * sizeof(DataType));
     cudaMemcpy(sendbuff, ctx.ioput, ctx.size * sizeof(DataType), cudaMemcpyHostToDevice);
@@ -85,7 +89,7 @@ void process_func(TestProcessContext<DataType> ctx)
     display_buffer_content(ctx.ioput, 8);
 #endif
 
-    cudaSetDevice(sess.GetLocalRank());
+    cudaSetDevice(sess.GetDeviceId());
     cudaFree(sendbuff);
     sess.Close();
     printf("-- Test Done!\n");

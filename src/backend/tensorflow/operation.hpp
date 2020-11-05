@@ -14,11 +14,11 @@ void sc_finalize();
 //c interface to check the number of participants in this session
 void sc_get_world_size(int*);
 
-//c interface to get current process uniq process id of all the participants in this session
-void sc_get_global_rank(int*);
+//c interface to get current process uniq host id  of all the participants in this session
+void sc_get_host_id(int*);
 
 //c interface to get current process uniq device id of all the participants in this session
-void sc_get_local_rank(int*);
+void sc_get_device_id(int*);
 
 // in-place allreduce, which means data's contents will change after allreduce
 // tensor_name is used to index plans for this tensor

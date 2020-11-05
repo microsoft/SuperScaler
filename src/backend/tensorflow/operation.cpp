@@ -35,14 +35,14 @@ void sc_get_world_size(int* size)
     *size = sess.GetWorldSize();
 }
 
-void sc_get_local_rank(int* lrank)
+void sc_get_device_id(int* device_id)
 {
-    *lrank = sess.GetLocalRank();
+    *device_id = sess.GetDeviceId();
 }
 
-void sc_get_global_rank(int* grank)
+void sc_get_host_id(int* host_id)
 {
-    *grank = sess.GetGlobalRank();
+    *host_id = sess.GetHostId();
 }
 
 // in-place allreduce

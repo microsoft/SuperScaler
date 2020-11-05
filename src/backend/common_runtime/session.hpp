@@ -29,9 +29,9 @@ namespace superscaler
         void Send(const char* tensor_name, unsigned char* input, size_t size);
         void Recv(const char* tensor_name, unsigned char** output, size_t* size);
 
-        inline int GetWorldSize() { return num_ranks_; }
-        inline int GetLocalRank() { return local_rank_; }
-        inline int GetGlobalRank() { return global_rank_; }
+        inline int GetWorldSize() { return num_participants_; }
+        inline int GetDeviceId() { return device_id_; }
+        inline int GetHostId() { return host_id_; }
     private:
         //parse plan from json format
         void ParsePlan(util::json);
@@ -39,9 +39,9 @@ namespace superscaler
         template <class DataType>
         bool is_expected_type(DataType* ptr, std::string op);
 
-        uint local_rank_;
-        uint global_rank_;
-        uint num_ranks_;
+        uint device_id_;
+        uint host_id_;
+        uint num_participants_;
 
         std::vector<uint> pcie_targets_;
         std::vector<uint> rdma_targets_;
@@ -51,8 +51,8 @@ namespace superscaler
         std::unordered_map<std::string, std::vector<util::json>> table_;
 
         //each sess will have a staging buffer for receiving data
-        void* cuda_recv_buf_;
-        size_t cuda_recv_buf_sze_;
+        void* recv_buf_;
+        size_t recv_buf_sze_;
         std::mutex sc_mu_;
         SC_DISABLE_COPY(Session);
     };
