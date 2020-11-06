@@ -390,16 +390,22 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
     return graph_pbtxt
 
 
-def import_tensorflow_model(apply_gradient_op, loss):
-    # TODO(gbxu): find a more elegant importing way.
-    if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys(
-    ) or "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys():
-        raise Exception(
-            '''We cannot get the tensorflow graph. Users should set \
-TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
-and TF_CPP_MIN_VLOG_LEVEL=4 before importing tensorflow, \
+def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
+    if dir_path is None:
+        if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys():
+            raise Exception(
+                "dir_path cann't be None if not setting TF_DUMP_GRAPH_PREFIX.")
+    else:
+        if os.path.isdir(dir_path):
+            os.environ["TF_DUMP_GRAPH_PREFIX"] = dir_path
+        else:
+            raise Exception("dir_path is not correct.")
+    if "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys():
+        raise Exception('''The environment variable TF_CPP_MIN_VLOG_LEVEL \
+is not set or too small. Users should set TF_CPP_MIN_VLOG_LEVEL=3 \
+before importing tensorflow, \
 e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
-TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
+TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
 
     def dump_pbtxts():
         options = tf.RunOptions(output_partition_graphs=True)
@@ -425,11 +431,10 @@ TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
         file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
         if len(file_names) == 0:
             raise Exception(
-                '''We cannot get the tensorflow graph. Users should set \
-TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
-and TF_CPP_MIN_VLOG_LEVEL=4 before importing tensorflow, \
-e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
-TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
+                '''We cannot get the tensorflow graph from %s. Users should set \
+TF_CPP_MIN_VLOG_LEVEL=3 before importing tensorflow, \
+e.g.: ` TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''' %
+                (os.environ["TF_DUMP_GRAPH_PREFIX"]))
         id_file = {}
         for file_name in file_names:
             obj = re.match(r"^placer_input(_(\d+))?\.pbtxt$", file_name)
@@ -439,8 +444,8 @@ TF_CPP_MIN_VLOG_LEVEL=4 python your_script.py`''')
                 else:
                     id_file[int(obj.group(2))] = file_name
         if len(id_file) != 2:
-            raise Exception(
-                "Clean up the directory TF_DUMP_GRAPH_PREFIX first.")
+            raise Exception("Clean up the directory %s first." %
+                            (os.environ["TF_DUMP_GRAPH_PREFIX"]))
         return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[0], \
             os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[1]
 

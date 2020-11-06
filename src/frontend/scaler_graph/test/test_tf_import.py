@@ -1,11 +1,9 @@
-import tempfile
 import os
 from pathlib import Path
 import json
+import tempfile
 import google.protobuf.text_format
-WORKDIR_HANDLER = tempfile.TemporaryDirectory()
-os.environ["TF_DUMP_GRAPH_PREFIX"] = WORKDIR_HANDLER.name
-os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "4"
+os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "3"
 from frontend.scaler_graph.IR.conversion import tf_adapter
 from frontend.scaler_graph.test.tf_example import dummy_model
 from frontend.scaler_graph.util.log import logger
@@ -28,8 +26,9 @@ def is_cuda_available():
 def test_tf_import():
     # import sc graph from tf model;
     apply_gradient_op, loss = dummy_model.SimpleCNN()
+    WORKDIR_HANDLER = tempfile.TemporaryDirectory()
     merged_sc_graph = tf_adapter.import_tensorflow_model(
-        apply_gradient_op, loss)
+        apply_gradient_op, loss, WORKDIR_HANDLER.name)
     assert (merged_sc_graph is not None)
     # test: get tf runtime config
     config = tf_adapter.get_tf_runtime_config(merged_sc_graph)
@@ -49,5 +48,4 @@ def test_tf_import():
         diff = pywrap_tensorflow.EqualGraphDefWrapper(
             test_tf_graph_def.SerializeToString(),  # expected
             curr_tf_graph_def.SerializeToString())  # actual
-        print(diff)
         assert (len(diff) == 0)
