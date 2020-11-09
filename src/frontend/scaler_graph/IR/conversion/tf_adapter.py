@@ -116,7 +116,18 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
             Path(run_path).read_text(), tf_graph_def)
     sc_graph = Graph()
     tf_graph = tf.Graph()
-    name_to_node = {node.name: node for node in tf_graph_def.node}
+
+    def add_sc_before_underscore(name):
+        # tf.import_graph_def() cann't parse nodes with prefix "_".
+        obj = re.match("^_.*$", name)
+        if obj is not None:
+            name = "sc" + name
+        return name
+
+    name_to_node = {}
+    for node in tf_graph_def.node:
+        node.name = add_sc_before_underscore(node.name)
+        name_to_node[node.name] = node
 
     def add_sc_node(tf_node: tf.NodeDef):
         if sc_graph.get_node_by_name(node.name) is not None:
@@ -125,6 +136,8 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
         for input in tf_node.input:
             if input.startswith("^"):
                 input_node_name = input[1:]
+                # check control edge name
+                input_node_name = add_sc_before_underscore(input_node_name)
                 if sc_graph.get_node_by_name(input_node_name) is not None:
                     input_node = sc_graph.get_node_by_name(input_node_name)
                 else:
@@ -134,6 +147,8 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
             else:
                 names = input.split(":")
                 assert len(names) == 1 or len(names) == 2
+                # check data edge name
+                names[0] = add_sc_before_underscore(names[0])
                 if sc_graph.get_node_by_name(names[0]) is not None:
                     input_node = sc_graph.get_node_by_name(names[0])
                 else:
@@ -154,10 +169,7 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
             tf_node.name, tf_op_map_to_sc_op(tf_graph._get_op_def(tf_node.op)),
             input_node_idxes, len(dtypes), attrs)
         sc_node.attrs["tf"] = {}
-        if tf_node.op == "_Retval":
-            sc_node.attrs["tf"]["device"] = tf_node.device
-        else:
-            sc_node.attrs["tf"]["device"] = ""
+        sc_node.attrs["tf"]["device"] = ""
         sc_node.attrs["tf"]["dtypes"] = dtypes
         if tf_node.HasField("experimental_debug_info"):
             sc_node.attrs["tf"][
@@ -179,11 +191,14 @@ def get_tf_runtime_config(sc_graph):
     tf_runtime_config = {}
     tf_runtime_config["inits"] = []  # for all assign op
     tf_runtime_config["feeds"] = []  # no need now. it's for training data.
-    tf_runtime_config["fetches"] = []  # retval
+    tf_runtime_config["fetches"] = []  # the successor node of _Retval
     tf_runtime_config["targets"] = []  # send or final
     for sc_node in graph_util.get_output_nodes(sc_graph):
         if sc_node.op.original_name == "_Retval":
-            tf_runtime_config["fetches"].append(sc_node.name)
+            assert (len(sc_node.in_edges) == 1)
+            fetch_name = sc_node.in_edges[0].src_node.name + ":%d" % (
+                sc_node.in_edges[0].src_idx)
+            tf_runtime_config["fetches"].append(fetch_name)
         elif sc_node.name == "init" and sc_node.op.original_name == "NoOp":
             tf_runtime_config["inits"].append(sc_node.name)
         elif sc_node.op.original_name == "NoOp":
@@ -356,10 +371,6 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
             for name, value in sc_node.attrs.items() if name != "tf"
         }
         tf_node = graph_def.node.add()
-        # TODO(gbxu): we have to rename op with prefix "_" now.
-        obj = re.match("^_.*$", sc_node.name)
-        if obj is not None:
-            sc_node.name = "sc" + sc_node.name
         tf_node.name = sc_node.name
         tf_node.op = sc_node.op.original_name
         tf_node.device = sc_node.attrs["tf"]["device"]
@@ -395,6 +406,9 @@ def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
         if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys():
             raise Exception(
                 "dir_path cann't be None if not setting TF_DUMP_GRAPH_PREFIX.")
+        elif not os.path.isdir(os.environ["TF_DUMP_GRAPH_PREFIX"]):
+            raise Exception("TF_DUMP_GRAPH_PREFIX: %s is incorrect." %
+                            (os.environ["TF_DUMP_GRAPH_PREFIX"]))
     else:
         if os.path.isdir(dir_path):
             os.environ["TF_DUMP_GRAPH_PREFIX"] = dir_path
@@ -402,8 +416,7 @@ def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
             raise Exception("dir_path is not correct.")
     if "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys():
         raise Exception('''The environment variable TF_CPP_MIN_VLOG_LEVEL \
-is not set or too small. Users should set TF_CPP_MIN_VLOG_LEVEL=3 \
-before importing tensorflow, \
+should be set before importing tensorflow, \
 e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
 TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
 

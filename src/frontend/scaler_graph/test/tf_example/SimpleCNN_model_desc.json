@@ -1,7 +1,7 @@
 {
     "feeds": [],
     "fetches": [
-        "_retval_cross_entropy_0_0"
+        "cross_entropy:0"
     ],
     "inits": [
         "init"

@@ -6238,7 +6238,7 @@ node {
   name: "sc_retval_cross_entropy_0_0"
   op: "_Retval"
   input: "cross_entropy"
-  device: "/job:localhost/replica:0/task:0/device:CPU:0"
+  device: ""
   attr {
     key: "T"
     value {

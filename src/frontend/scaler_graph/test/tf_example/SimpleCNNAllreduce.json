@@ -308,23 +308,6 @@
         {
             "attrs": {
                 "T": null,
-                "index": 0,
-                "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:CPU:0",
-                    "dtypes": []
-                }
-            },
-            "in_edges": [
-                "cross_entropy"
-            ],
-            "name": "_retval_cross_entropy_0_0",
-            "op": "Operator",
-            "original_op": "_Retval",
-            "output_size": 0
-        },
-        {
-            "attrs": {
-                "T": null,
                 "data_format": null,
                 "tf": {
                     "device": "",
@@ -3360,6 +3343,23 @@
             "op": "Operator",
             "original_op": "Const",
             "output_size": 1
+        },
+        {
+            "attrs": {
+                "T": null,
+                "index": 0,
+                "tf": {
+                    "device": "",
+                    "dtypes": []
+                }
+            },
+            "in_edges": [
+                "cross_entropy"
+            ],
+            "name": "sc_retval_cross_entropy_0_0",
+            "op": "Operator",
+            "original_op": "_Retval",
+            "output_size": 0
         },
         {
             "attrs": {

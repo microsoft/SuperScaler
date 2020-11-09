@@ -33,14 +33,14 @@
                 "T": null,
                 "index": 0,
                 "tf": {
-                    "device": "/job:localhost/replica:0/task:0/device:CPU:0",
+                    "device": "",
                     "dtypes": []
                 }
             },
             "in_edges": [
                 "MatMul"
             ],
-            "name": "_retval_MatMul_0_0",
+            "name": "sc_retval_MatMul_0_0",
             "op": "Operator",
             "original_op": "_Retval",
             "output_size": 0
