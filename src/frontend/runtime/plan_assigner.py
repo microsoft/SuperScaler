@@ -43,3 +43,37 @@ class PlanAssigner(object):
             plan['ip'] = deployment_setting[plan['host_id']]
 
         return assigned_communication_plan
+
+    def get_deployment_config(self, assigned_communication_plan):
+        """ A function that extract deployment_config from assigned
+            communication plan
+
+            Returns None if assigned_communication_plan is not legal
+            Otherwise, returns  deployment_config together with rank2ip
+
+        Args:
+          assigned_communication_plan: communication plan description assigned
+            to specific IP address
+        """
+
+        # if assigned_communication_plan is illegal, return None
+        if not isinstance(assigned_communication_plan, list):
+            return None
+
+        deployment_config = {}
+        rank2ip = []
+
+        for plan in assigned_communication_plan:
+
+            # the assigned_communication_plan is illegal without host_id
+            if 'ip' not in plan:
+                return None
+
+            if plan['ip'] not in deployment_config:
+                deployment_config[plan['ip']] = 1
+            else:
+                deployment_config[plan['ip']] += 1
+
+            rank2ip.append(plan['ip'])
+
+        return deployment_config, rank2ip

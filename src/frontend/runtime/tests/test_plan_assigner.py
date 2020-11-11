@@ -16,12 +16,12 @@ def get_communication_plan(path, device_count):
 def test_plan_assigner():
 
     # Init PlanAssigner class
-    pb = PlanAssigner()
+    pa = PlanAssigner()
 
     # Wrong test
-    assert(pb.assign(None, None) is None)
+    assert(pa.assign(None, None) is None)
     # Empty test
-    assert(pb.assign(None, {}) is None)
+    assert(pa.assign(None, {}) is None)
 
     # Init inputs of PlanAssigner
     deployment_setting = {"1": "10.0.0.21"}
@@ -29,7 +29,7 @@ def test_plan_assigner():
         os.path.dirname(__file__), 'data'), 2)
 
     assigned_communication_plan =\
-        pb.assign(communication_plan, deployment_setting)
+        pa.assign(communication_plan, deployment_setting)
 
     # Check the correctness of output
     output_path = os.path.join(
@@ -38,3 +38,16 @@ def test_plan_assigner():
     assigned_communication_plan_ref = json.load(open(output_path, 'r'))
 
     assert(assigned_communication_plan == assigned_communication_plan_ref)
+
+    # Check the get_deployment_config function
+
+    # Test for wrong input
+    assert(pa.get_deployment_config(None) is None)
+
+    # functional test
+    deployment_config, rank2ip = pa.get_deployment_config(
+        assigned_communication_plan
+    )
+
+    assert(deployment_config == {"10.0.0.21": 2})
+    assert(rank2ip == ["10.0.0.21", "10.0.0.21"])
