@@ -7,6 +7,7 @@ class Runtime(object):
         """A function that initializes Runtime.
         Args:
           plan_path: string specifying the path where communication plan is.
+          libsc_path: string specifying the path where runtime library is.
         """
         # Check for the existence of plan_path
         if not os.path.exists(plan_path):

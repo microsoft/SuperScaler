@@ -2,9 +2,11 @@ import os
 import pytest
 import multiprocessing
 import traceback
+import subprocess
 from frontend.runtime.runtime import Runtime
 
-father_path = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
+father_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../../.."))
 lib_path = father_path + \
     "/lib/libtfadaptor.so"
 
@@ -21,10 +23,10 @@ def test_runtime_import():
         rt.shutdown()
 
     # Init path location
-    plan_path_0 = "plan_0.json"
+    plan_path_0 = "data/plan_0.json"
     plan_path_0 = os.path.join(os.path.dirname(__file__),
                                plan_path_0)
-    plan_path_1 = "plan_1.json"
+    plan_path_1 = "data/plan_1.json"
     plan_path_1 = os.path.join(os.path.dirname(__file__),
                                plan_path_1)
 
@@ -68,20 +70,26 @@ class Process(multiprocessing.Process):
         return self._exception
 
 
-def is_cuda_available():
+def is_gpu_available():
     """
         Check NVIDIA with nvidia-smi command
-        Returning code 0 if no error, it means NVIDIA is installed
-        Other codes mean not installed
+        Returning code == 0 and count > 0, it means NVIDIA is installed
+        and GPU is available for running
+        Other means not installed
     """
     code = os.system('nvidia-smi')
-    return code == 0
+    if code == 0:
+        cmd = "nvidia-smi --query-gpu=name --format=csv,noheader | wc -l"
+        count = subprocess.check_output(cmd, shell=True)
+        return int(count) > 0
+    else:
+        return False
 
 
 def test_runtime():
     def func(rank):
         try:
-            plan_path = 'plan_' + rank + '.json'
+            plan_path = 'data/plan_' + rank + '.json'
             plan_path = os.path.join(os.path.dirname(__file__),
                                      plan_path)
 
@@ -95,7 +103,7 @@ def test_runtime():
             raise Exception
 
     # All backend codes must run on gpu environment with cuda support
-    if is_cuda_available is True:
+    if is_gpu_available() is True:
         p0 = Process(target=func, args=('0', ))
         p0.start()
         p0.join()

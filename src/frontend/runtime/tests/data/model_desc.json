@@ -1,0 +1,12 @@
+{
+    "feeds": [],
+    "fetches": [
+        "cross_entropy:0"
+    ],
+    "inits": [
+        "init"
+    ],
+    "targets": [
+        "GradientDescent"
+    ]
+}

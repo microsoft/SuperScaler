@@ -1,0 +1,1029 @@
+{
+    "device_id": "0",
+    "device_type": "GPU",
+    "host_id": "1",
+    "ip": "10.0.0.25",
+    "num_peers": "2",
+    "peer_device_names": [
+        "/server/hostname1/GPU/0/",
+        "/server/hostname1/GPU/1/"
+    ],
+    "tasks": [
+        {
+            "index": 0,
+            "input_ids": [],
+            "key": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_0",
+            "name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    3,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 2400,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 1,
+            "input_ids": [
+                0
+            ],
+            "key": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_1",
+            "name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 2400,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    3,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 2400,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 2,
+            "input_ids": [
+                1
+            ],
+            "key": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_2",
+            "name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 2400,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    3,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 2400,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 3,
+            "input_ids": [
+                2
+            ],
+            "key": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_3",
+            "name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    3,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 2400,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 4,
+            "input_ids": [],
+            "key": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_4",
+            "name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 5,
+            "input_ids": [
+                4
+            ],
+            "key": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_5",
+            "name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 32,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 6,
+            "input_ids": [
+                5
+            ],
+            "key": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_6",
+            "name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 32,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 7,
+            "input_ids": [
+                6
+            ],
+            "key": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_7",
+            "name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv1_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 8,
+            "input_ids": [],
+            "key": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_8",
+            "name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    64,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 51200,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 9,
+            "input_ids": [
+                8
+            ],
+            "key": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_9",
+            "name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 51200,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    64,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 51200,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 10,
+            "input_ids": [
+                9
+            ],
+            "key": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_10",
+            "name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 51200,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    64,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 51200,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 11,
+            "input_ids": [
+                10
+            ],
+            "key": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_11",
+            "name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    5,
+                    5,
+                    64,
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 51200,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 12,
+            "input_ids": [],
+            "key": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_12",
+            "name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 13,
+            "input_ids": [
+                12
+            ],
+            "key": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_13",
+            "name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 32,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 14,
+            "input_ids": [
+                13
+            ],
+            "key": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_14",
+            "name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 32,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 15,
+            "input_ids": [
+                14
+            ],
+            "key": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_15",
+            "name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    64
+                ]
+            ],
+            "parent": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 32,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/conv2_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 16,
+            "input_ids": [],
+            "key": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_16",
+            "name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    4096,
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 786432,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 17,
+            "input_ids": [
+                16
+            ],
+            "key": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_17",
+            "name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 786432,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    4096,
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 786432,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 18,
+            "input_ids": [
+                17
+            ],
+            "key": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_18",
+            "name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 786432,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    4096,
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 786432,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 19,
+            "input_ids": [
+                18
+            ],
+            "key": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_19",
+            "name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    4096,
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 786432,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 20,
+            "input_ids": [],
+            "key": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_20",
+            "name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 192,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 21,
+            "input_ids": [
+                20
+            ],
+            "key": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_21",
+            "name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 192,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 192,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 22,
+            "input_ids": [
+                21
+            ],
+            "key": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_22",
+            "name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 192,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 192,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 23,
+            "input_ids": [
+                22
+            ],
+            "key": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_23",
+            "name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    384
+                ]
+            ],
+            "parent": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 192,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense3_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 24,
+            "input_ids": [],
+            "key": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_24",
+            "name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    384,
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 36864,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 25,
+            "input_ids": [
+                24
+            ],
+            "key": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_25",
+            "name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 36864,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    384,
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 36864,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 26,
+            "input_ids": [
+                25
+            ],
+            "key": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_26",
+            "name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 36864,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    384,
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 36864,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 27,
+            "input_ids": [
+                26
+            ],
+            "key": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_27",
+            "name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    384,
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 36864,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 28,
+            "input_ids": [],
+            "key": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_28",
+            "name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 96,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 29,
+            "input_ids": [
+                28
+            ],
+            "key": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_29",
+            "name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 96,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 96,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 30,
+            "input_ids": [
+                29
+            ],
+            "key": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_30",
+            "name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 96,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 96,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 31,
+            "input_ids": [
+                30
+            ],
+            "key": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_31",
+            "name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    192
+                ]
+            ],
+            "parent": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 96,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/dense4_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 32,
+            "input_ids": [],
+            "key": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_32",
+            "name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    192,
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 960,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 33,
+            "input_ids": [
+                32
+            ],
+            "key": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_33",
+            "name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 960,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    192,
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 960,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 34,
+            "input_ids": [
+                33
+            ],
+            "key": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_34",
+            "name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 960,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    192,
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 960,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 35,
+            "input_ids": [
+                34
+            ],
+            "key": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_35",
+            "name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    192,
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 960,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_matmul_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 36,
+            "input_ids": [],
+            "key": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_36",
+            "name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_scatter_send_0",
+            "offset": 0,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 5,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 37,
+            "input_ids": [
+                36
+            ],
+            "key": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_37",
+            "name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_scatter_recv_0",
+            "offset": 5,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "sum",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 5,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 38,
+            "input_ids": [
+                37
+            ],
+            "key": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_38",
+            "name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_allgather_send_0",
+            "offset": 5,
+            "op": "Send",
+            "output_shapes": [
+                [
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 5,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        },
+        {
+            "index": 39,
+            "input_ids": [
+                38
+            ],
+            "key": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_39",
+            "name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce_allgather_recv_0",
+            "offset": 0,
+            "op": "Recv",
+            "output_shapes": [
+                [
+                    10
+                ]
+            ],
+            "parent": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "reduction": "copy",
+            "route_index": 0,
+            "route_type": "PCIE",
+            "size": 5,
+            "target_device_id": "1",
+            "target_device_type": "GPU",
+            "target_host_id": "1",
+            "tensor_name": "gradients/softmax_add_grad/tuple/control_dependency_1_allreduce",
+            "tensor_type": "DT_FLOAT"
+        }
+    ]
+}
