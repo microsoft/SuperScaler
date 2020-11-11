@@ -3,3 +3,4 @@ exclude = plan_gen
           ai_simulator
           runtime
           scaler_graph/test/
+          __init__.py

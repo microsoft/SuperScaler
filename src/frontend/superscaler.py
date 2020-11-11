@@ -143,17 +143,17 @@ class Superscaler(object):
         if not isinstance(deployment_setting, dict):
             raise SuperscalerError("deployment_setting must be dict")
 
-        self._plan_assigner.assign(self._communication_plan,
-                                   deployment_setting)
+        self._assigned_plan = self._plan_assigner.assign(
+            self._communication_plan, deployment_setting)
 
         # Dump runtime file into self._working_dir
         for i in range(self._graph_count):
             tmp_rank_dir = os.path.join(self._working_dir, str(i))
             os.mkdir(tmp_rank_dir)
 
-            communication_plan_path = os.path.join(tmp_rank_dir, 'plan.json')
-            json.dump(self._communication_plan[i],
-                      open(communication_plan_path, 'w'),
+            plan_path = os.path.join(tmp_rank_dir, 'plan.json')
+            json.dump(self._assigned_plan[i],
+                      open(plan_path, 'w'),
                       indent=4,
                       sort_keys=True)
 
