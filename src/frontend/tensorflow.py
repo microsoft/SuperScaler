@@ -3,6 +3,7 @@ from frontend.scaler_graph import tf_adapter, Parallelizer, DataParallelism
 from frontend.plan_gen import TFParser, PlanGenerator, SuperScalerAdapter
 from frontend.runtime.util import distribute_resources, launch
 import tensorflow as tf
+import argparse
 
 
 class tensorflow(Superscaler):
@@ -30,7 +31,7 @@ class tensorflow(Superscaler):
 
         # run_parallelisms
         merged_sc_graph = tf_adapter.import_tensorflow_model(
-            apply_gradient_op, loss, self._working_dir)
+            apply_gradient_op, loss)
         parallelizer = Parallelizer(merged_sc_graph)
         parallelizer.register_parallelism(strategy)
         parallelizer.run_parallelisms()
@@ -72,20 +73,37 @@ class tensorflow(Superscaler):
         self._plan_adapter.set_plan(plan)
         self._communication_plan = self._plan_adapter.adapt_plan()
 
-    def run(self):
+    def run(self, args):
         """ A function that performs distributed training.
             This function is avaliable when self.is_initialized() is True
         """
 
         if self.is_initialized() is True:
+            if not isinstance(args, argparse.Namespace) or\
+               not isinstance(args.steps, int) or\
+               not isinstance(args.interval, int) or\
+               not isinstance(args.print_info, bool) or\
+               not isinstance(args.print_fetches_targets, bool):
+                raise SuperscalerError("Superscaler runtime argument illegal")
+
             deployment_config, rank2ip =\
                 self._plan_assigner.get_deployment_config(self._assigned_plan)
             remote_resource_dir = distribute_resources(deployment_config,
                                                        self._working_dir)
+            print(remote_resource_dir)
             cmd_per_worker = [
                 'python -m frontend.runtime.tensorflow.runner '
-                '{resource_dir}/{grank}'
-                .format(resource_dir=remote_resource_dir, grank=grank)
+                '--model_dir_prefix {resource_dir}/{grank} '
+                '--steps {steps} '
+                '--interval {interval} '
+                '--print_info {print_info} '
+                '--print_fetches_targets {print_fetches_targets} '
+                .format(resource_dir=remote_resource_dir,
+                        grank=grank,
+                        steps=args.steps,
+                        interval=args.interval,
+                        print_info=args.print_info,
+                        print_fetches_targets=args.print_fetches_targets)
                 for grank, _ in enumerate(rank2ip)
             ]
             launch(rank2ip, cmd_per_worker)

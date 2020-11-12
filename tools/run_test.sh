@@ -49,13 +49,22 @@ else
     echo "nvcc not found, skip the backend build and test"
 fi
 
+# Build library
+if [ -f "$BUILD_PATH/lib/libtfadaptor.so" ]
+then
+    exe mkdir -p $ROOT_PATH/lib
+    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/lib/libtfadaptor.so
+else
+    echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
+fi
+
 # Test for executor
-echo "Running test for executor:"
-exe cd $ROOT_PATH/src/backend/common_runtime/executor/
-exe rm -rf build && exe mkdir build && exe cd build
-exe cmake .. -DDO_TEST=true
-exe make -j $(nproc) gtest_parallel
-echo "Executor test success!"
+#echo "Running test for executor:"
+#exe cd $ROOT_PATH/src/backend/common_runtime/executor/
+#exe rm -rf build && exe mkdir build && exe cd build
+#exe cmake .. -DDO_TEST=true
+#exe make -j $(nproc) gtest_parallel
+#echo "Executor test success!"
 
 # Test for frontend
 echo "Running test for frontend:"
@@ -82,15 +91,6 @@ echo "Ai_simulator test success"
 
 # Test for runtime
 echo "Running test for runtime:"
-
-if [ -f "$BUILD_PATH/lib/libtfadaptor.so" ]
-then
-    exe mkdir -p $ROOT_PATH/lib
-    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/lib/libtfadaptor.so
-else
-    echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
-fi
-
 exe cd $ROOT_PATH/src/
 exe $PYTHON -m flake8 frontend/runtime
 exe $PYTHON -m pytest -v frontend/runtime

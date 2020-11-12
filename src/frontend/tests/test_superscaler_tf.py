@@ -2,6 +2,7 @@ import os
 import json
 import pytest
 import subprocess
+import argparse
 from frontend.scaler_graph import DataParallelism
 from frontend.tests.data import dummy_model
 import frontend.tensorflow as superscaler
@@ -36,6 +37,15 @@ def test_superscaler_tf():
     communication_DSL = "ring"
     resource_pool = os.path.join(
         os.path.dirname(__file__), 'data', 'resource_pool.yaml')
+
+    # Init rutime argument
+    parser = argparse.ArgumentParser(description='Test Runner')
+
+    args, _ = parser.parse_known_args()
+    args.steps = 100
+    args.interval = 100
+    args.print_info = True
+    args.print_fetches_targets = True
 
     if is_gpu_available():
         # Check for wrong input
@@ -96,5 +106,23 @@ def test_superscaler_tf():
             graph_ref = open(graph_path, 'r').read()
             assert(graph_ref == sc._partition_graphs[i])
 
-    # TODO provide run support
-    # sc.run()
+        # illegal args input
+        with pytest.raises(SuperscalerError):
+            args.steps = None
+            sc.run(args)
+        with pytest.raises(SuperscalerError):
+            args.print_info = None
+            sc.run(args)
+        with pytest.raises(SuperscalerError):
+            args.interval = None
+            sc.run(args)
+        with pytest.raises(SuperscalerError):
+            args.print_fetches_targets = None
+            sc.run(args)
+
+        # final run
+        args.steps = 10
+        args.interval = 5
+        args.print_info = True
+        args.print_fetches_targets = True
+        sc.run(args)

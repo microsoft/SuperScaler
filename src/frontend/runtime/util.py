@@ -40,6 +40,9 @@ def distribute_resources(deployment_setting,
         run_shell_cmd('rsync -az %s %s:%s' %
                       (local_resource_dir, ip, remote_resource_dir))
 
+    return os.path.join(remote_resource_dir,
+                        os.path.basename(local_resource_dir))
+
 
 def launch(rank2ip, rank2cmd, remote_wdir='/tmp'):
     """
