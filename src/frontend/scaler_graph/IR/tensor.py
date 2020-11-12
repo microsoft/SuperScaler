@@ -4,8 +4,7 @@ Implementation of Tensor
 
 
 class Tensor:
-    '''
-    tensor
+    '''Tensor, created by src node, as output.
     '''
     def __init__(self):
         self._shape = None

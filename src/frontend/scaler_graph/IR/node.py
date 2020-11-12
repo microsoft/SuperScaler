@@ -7,8 +7,7 @@ import json
 
 
 class Node:
-    '''
-    Node
+    '''Node
     '''
     _ID = 0
 
@@ -104,6 +103,8 @@ class Node:
                     attrs=dict(self.attrs))
 
     def json(self):
+        '''serialize node
+        '''
         return json.dumps(self.dict(),
                           indent=4,
                           cls=serialization.AttrEnconding,
@@ -111,9 +112,8 @@ class Node:
 
 
 class CompositeNode(Node):
-    '''
-    CompositeNode contains a few ops.
+    '''CompositeNode contains a few nodes.
     '''
     def __init__(self, nodes):
         # TODO(gbxu): define CompositeNode
-        raise Exception("We cann't support CompositeNode now.")
+        raise Exception("We can't support CompositeNode now.")

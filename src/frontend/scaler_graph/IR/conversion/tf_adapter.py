@@ -7,6 +7,7 @@ from tensorflow.core.framework import tensor_pb2
 from tensorflow.core.framework.op_def_pb2 import OpDef
 import tensorflow as tf
 from tensorflow.python.util import compat
+from tensorflow.python.framework.ops import Operation, Tensor
 from tensorflow.python.framework.op_def_library import (
     _IsListValue,
     _MakeBool,
@@ -54,6 +55,8 @@ def get_dtype_proto(node_def, op_def, output_arg):
 
 
 def get_dtypes(tf_graph, node_def):
+    '''parse tf dtypes.
+    '''
     op_def = tf_graph._get_op_def(node_def.op)
     dtypes = [
         get_dtype_proto(node_def, op_def, output_arg)
@@ -65,6 +68,8 @@ def get_dtypes(tf_graph, node_def):
 
 
 def from_attr_proto(attr_value):
+    '''parse tf node attributions.
+    '''
     field_name = attr_value.WhichOneof("value")
     if field_name == "s":
         return attr_value.s
@@ -107,6 +112,12 @@ def from_attr_proto(attr_value):
 
 
 def import_graph_from_tf_file(init_path=None, run_path=None):
+    '''convert tf graphs to sc graph.
+    1. merge tf init graph and run graph into tf_graph_def;
+    2. conver tf_graph_def to sc graph
+    Return:
+        SC graph
+    '''
     tf_graph_def = tf.GraphDef()
     if init_path is not None:
         google.protobuf.text_format.Parse(
@@ -118,7 +129,9 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
     tf_graph = tf.Graph()
 
     def add_sc_before_underscore(name):
-        # tf.import_graph_def() cann't parse nodes with prefix "_".
+        '''tf.import_graph_def() can't parse nodes with prefix "_",
+        Add "sc" before "_".
+        '''
         obj = re.match("^_.*$", name)
         if obj is not None:
             name = "sc" + name
@@ -188,6 +201,12 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
 
 
 def get_tf_runtime_config(sc_graph):
+    '''find some specific nodes for tf runtime.
+    inits: nodes for backtracing all initialization nodes of variables.
+    feeds: nodes without input, providing training data.
+    fetches: feedback tensors for users, e.g. loss.
+    targets: nodes without output, for backtracing all nodes needed to perform.
+    '''
     tf_runtime_config = {}
     tf_runtime_config["inits"] = []  # for all assign op
     tf_runtime_config["feeds"] = []  # no need now. it's for training data.
@@ -207,7 +226,8 @@ def get_tf_runtime_config(sc_graph):
 
 
 def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
-    # Convert attr values to AttrValue protos.
+    '''Convert attr values to AttrValue protos
+    '''
     attr_protos = {}
     attr_defs = {attr_def.name: attr_def for attr_def in op_def.attr}
     for key, value in attrs.items():
@@ -351,7 +371,9 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
 
 
 def export_graph_to_tf_file(sc_graph, file_path=None):
-    # TODO(gbxu): the library file path should be configurable.
+    '''convert sc graph to tf graph
+    TODO(gbxu): the library file path should be configurable.
+    '''
     proj_path = os.path.abspath(
         os.path.join(os.path.abspath(__file__), "../../../../../../"))
     lib_path = proj_path + "/lib/libtfadaptor.so"
@@ -402,10 +424,25 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
 
 
 def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
+    '''import tensorflow graph according to apply_gradient_op, loss
+        1. get tensorflow model via apply_gradient_op and loss;
+        2. dump graph from tensorflow model.
+    Args:
+        apply_gradient_op: An Operation that applies the specified gradients,
+            get it by call `tf.train.Optimizer.apply_gradients()`.
+        loss: A Tensor containing the value to minimize, it's the first input
+            argument of `tf.train.Optimizer.compute_gradients()`.
+        dir_path: Optional. A temp directory for dumping tf graph.
+    Returns:
+        A SC Graph.
+    '''
+    if not (isinstance(apply_gradient_op, Operation)
+            and isinstance(loss, Tensor)):
+        raise Exception("apply_gradient_op or loss is incorrect.")
     if dir_path is None:
         if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys():
             raise Exception(
-                "dir_path cann't be None if not setting TF_DUMP_GRAPH_PREFIX.")
+                "dir_path can't be None if not setting TF_DUMP_GRAPH_PREFIX.")
         elif not os.path.isdir(os.environ["TF_DUMP_GRAPH_PREFIX"]):
             raise Exception("TF_DUMP_GRAPH_PREFIX: %s is incorrect." %
                             (os.environ["TF_DUMP_GRAPH_PREFIX"]))
@@ -421,6 +458,10 @@ e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
 TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
 
     def dump_pbtxts():
+        '''we dumps tf graph via TF_DUMP_GRAPH_PREFIX and
+        TF_CPP_MIN_VLOG_LEVEL. It's a tf log mechanism and
+        setting TF_CPP_MIN_VLOG_LEVEL before importing tensorflow is required.
+        '''
         options = tf.RunOptions(output_partition_graphs=True)
         run_metadata = tf.RunMetadata()
         run_config = tf.ConfigProto()
@@ -434,6 +475,10 @@ TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
         tf.reset_default_graph()
 
     def get_dumped_pbtxts():
+        '''dumping tf graph will generate 2 files:
+        init pbtxt for initialization of variables
+        run pbtxt for running graph.
+        '''
         if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
             dump_pbtxts()
         else:

@@ -3,17 +3,22 @@ from frontend.scaler_graph.IR.node import CompositeNode
 
 
 def get_output_nodes(graph):
-    upstream_ops = set(
+    '''get the nodes which have no output.
+    They can be "fetch node".
+    '''
+    upstream_nodes = set(
         itertools.chain.from_iterable(
             map(
-                lambda node: get_input_nodes(node),
+                lambda node: get_upstream_nodes(node),
                 graph.nodes,
             )))
-    output_nodes = set(graph.nodes) - upstream_ops
+    output_nodes = set(graph.nodes) - upstream_nodes
     return output_nodes
 
 
 def reverse_DFS(graph):
+    '''get the orderd nodes via topological sort.
+    '''
     output_nodes = get_output_nodes(graph)
     temp_nodes = set()
     ordered_nodes = []
@@ -26,7 +31,7 @@ def reverse_DFS(graph):
                             (current_node.name))
         else:
             temp_nodes.add(current_node)
-            for input_node in get_input_nodes(current_node):
+            for input_node in get_upstream_nodes(current_node):
                 visit(input_node)
             temp_nodes.remove(current_node)
             ordered_nodes.append(current_node)
@@ -37,9 +42,11 @@ def reverse_DFS(graph):
     return ordered_nodes
 
 
-def get_input_nodes(node):
+def get_upstream_nodes(node):
+    '''get all input nodes of current node.
+    '''
     if isinstance(node, CompositeNode):
-        raise Exception("We cann't support CompositeNode now.")
+        raise Exception("We can't support CompositeNode now.")
     upstream_nodes = set()
     for edge in node.in_edges:
         upstream_nodes.add(edge.src_node)

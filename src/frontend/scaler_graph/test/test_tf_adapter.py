@@ -2,11 +2,12 @@ import os
 from pathlib import Path
 import json
 import tempfile
+import subprocess
 import google.protobuf.text_format
 os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "3"
+from frontend.scaler_graph.util.log import logger
 from frontend.scaler_graph.IR.conversion import tf_adapter
 from frontend.scaler_graph.test.tf_example import dummy_model
-from frontend.scaler_graph.util.log import logger
 import tensorflow as tf
 from tensorflow.python import pywrap_tensorflow
 
@@ -17,24 +18,23 @@ def is_cuda_available():
     Other codes mean not installed
     """
     code = os.system('nvidia-smi')
-    if code != 0:
+    if code == 0:
+        cmd = "nvidia-smi --query-gpu=name --format=csv,noheader | wc -l"
+        count = subprocess.check_output(cmd, shell=True)
+        return int(count) > 0
+    else:
         logger("scaler_graph_test").warning(
             "It is not a CUDA-enable environment.")
-    return code == 0
+        return False
 
 
-def test_tf_import():
+def test_tf_adapter():
     # import sc graph from tf model;
     apply_gradient_op, loss = dummy_model.SimpleCNN()
     WORKDIR_HANDLER = tempfile.TemporaryDirectory()
     merged_sc_graph = tf_adapter.import_tensorflow_model(
         apply_gradient_op, loss, WORKDIR_HANDLER.name)
     assert (merged_sc_graph is not None)
-    # test: get tf runtime config
-    config = tf_adapter.get_tf_runtime_config(merged_sc_graph)
-    config_file = "test/tf_example/SimpleCNN_model_desc.json"
-    file = Path(config_file)
-    assert (file.read_text() == json.dumps(config, indent=4, sort_keys=True))
     # export sc graph to tf model;
     if is_cuda_available():
         tf_pbtxt_path = "test/tf_example/SimpleCNN.pbtxt"

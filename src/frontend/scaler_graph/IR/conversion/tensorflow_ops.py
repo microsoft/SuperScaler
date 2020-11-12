@@ -3,6 +3,8 @@ from frontend.scaler_graph.util.log import logger
 
 
 def parse_info(sc_op, tf_op_def):
+    '''parse op info when importing graphs from other frameworks.
+    '''
     if isinstance(sc_op, operator.ApplyOp):
         for index, input_arg in enumerate(tf_op_def.input_arg):
             if input_arg.name == "var":
@@ -18,6 +20,10 @@ def parse_info(sc_op, tf_op_def):
 
 
 def tf_op_map_to_sc_op(tf_op_def):
+    '''mapping tf op to sc op.
+    We need to define some specific ops for superscaler, e.g. conv2d, matmul.
+    Trival ops could be mapped to general sc op.
+    '''
     mapping = {
         # ElementWiseOp
         "Tanh": operator.ElementWiseOp,

@@ -1,6 +1,5 @@
 class Edge:
-    '''
-    The edge
+    '''Edge
     '''
     _ID = 0
 
@@ -15,4 +14,6 @@ class Edge:
         self.dest_idx = dest_idx  # slot index
 
     def is_control_edge(self):
+        '''src_idx is -1 for control edges
+        '''
         return self.src_idx == -1

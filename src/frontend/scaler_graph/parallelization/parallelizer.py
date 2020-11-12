@@ -6,6 +6,9 @@ class Operation:
 
 
 class Parallelizer:
+    '''parallelizer: a tool to optimize and apply the parallelisms.
+    #TODO(gbxu): re-design the workflow of Parallelizer.
+    '''
     def __init__(self, sc_graph):
         self.parallelisms = []
         self.graphs = [
@@ -14,6 +17,8 @@ class Parallelizer:
         self.support_operations = {}
 
     def register_parallelism(self, parallelism):
+        '''register parallelism into parallelizer
+        '''
         self.parallelisms.append(parallelism)
 
     def run_parallelisms(self):
@@ -29,7 +34,8 @@ class Parallelizer:
         self.finalize()
 
     def finalize(self):
-        # TODO(gbxu): lazy graph modification
+        '''optimize tags and apply graph manipulations.
+        '''
         pass
 
     def register_operation(self, customized_operation):

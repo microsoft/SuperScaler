@@ -2,9 +2,9 @@ from frontend.scaler_graph.IR import operator
 
 
 class Parallelism:
-    """A abstract class for parallelism.
+    '''A abstract class for parallelism.
     parallelism will modify DNN graphs to implement parallel training.
-    """
+    '''
     def __init__(self, devices):
         self.devices = devices
 
@@ -13,12 +13,13 @@ class Parallelism:
 
 
 class DataParallelism(Parallelism):
-    """duplicate the whole graph, insert allreduce between gradient and apply.
-    """
+    '''duplicate the whole graph, insert allreduce between gradient and apply.
+    '''
     def __init__(self, devices):
         super().__init__(devices)
 
     def run_on_graph(self, graph):
+        # TODO(gbxu): add tags, delay graph manipulations
         for node in graph.nodes:
             if not isinstance(node.op, operator.ApplyOp):
                 continue

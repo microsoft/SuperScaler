@@ -12,8 +12,7 @@ import sys
 
 
 class Graph:
-    '''
-    The intermediate graph
+    '''The intermediate graph
     '''
     _ID = 0
 
@@ -142,6 +141,8 @@ class Graph:
         )
 
     def json(self):
+        '''serialize graph
+        '''
         return json.dumps(self.dict(),
                           indent=4,
                           cls=serialization.AttrEnconding,
