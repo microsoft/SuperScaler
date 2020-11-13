@@ -61,8 +61,12 @@ class DatabaseBackendLocalFile(DatabaseBackend):
         Finalize the database backend. Save all new records into the
         new_record_file.
         '''
-        with open(self.__db_file_path, 'w') as fd_out:
-            json.dump(self.__database, fd_out, indent=4)
+        # except a situation where __init__ function is not called
+        try:
+            with open(self.__db_file_path, 'w') as fd_out:
+                json.dump(self.__database, fd_out, indent=4)
+        except Exception:
+            return
 
     def __loadDatabaseFile(self):
         '''
