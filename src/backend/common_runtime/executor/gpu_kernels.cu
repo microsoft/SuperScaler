@@ -29,8 +29,10 @@ __global__ static void SumKernel(const T* buffer, T* memory, size_t num_elements
 }
 
 template <class T>
-void SumKernelGPUImpl::operator()(const T* buffer, T* memory, size_t num_elements) {
-    SumKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, 0>>>(buffer, memory, num_elements);
+void SumKernelGPUImpl::operator()(const T* buffer, T* memory,
+    size_t num_elements, cudaStream_t stream) {
+    SumKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, stream>>>(
+        buffer, memory, num_elements);
 }
 
 template <class T>
@@ -47,8 +49,10 @@ __global__ static void ScaleKernel(T* memory, T scale, size_t num_elements)
 }
 
 template <class T>
-void ScaleKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements) {
-    ScaleKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, 0>>>(memory, scale, num_elements);
+void ScaleKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements,
+    cudaStream_t stream) {
+    ScaleKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, stream>>>(
+        memory, scale, num_elements);
 }
 
 template <class T>
@@ -60,21 +64,23 @@ __global__ static void DivKernel(T* memory, T scale, size_t num_elements)
 }
 
 template <class T>
-void DivKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements) {
-    DivKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, 0>>>(memory, scale, num_elements);
+void DivKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements,
+    cudaStream_t stream) {
+    DivKernel<T><<<cuda_gridsize_1d(num_elements), BLOCK, 0, stream>>>(
+        memory, scale, num_elements);
 }
 
-template void SumKernelGPUImpl::operator()(const float* buffer, float* memory, size_t num_elements);
-template void SumKernelGPUImpl::operator()(const double* buffer, double* memory, size_t num_elements);
-template void SumKernelGPUImpl::operator()(const int* buffer, int* memory, size_t num_elements);
+template void SumKernelGPUImpl::operator()(const float* buffer, float* memory, size_t num_elements, cudaStream_t stream);
+template void SumKernelGPUImpl::operator()(const double* buffer, double* memory, size_t num_elements, cudaStream_t stream);
+template void SumKernelGPUImpl::operator()(const int* buffer, int* memory, size_t num_elements, cudaStream_t stream);
 template void SynchronizedCopyKernelImpl::operator()(const float* buffer, float* memory, size_t num_elements);
 template void SynchronizedCopyKernelImpl::operator()(const double* buffer, double* memory, size_t num_elements);
 template void SynchronizedCopyKernelImpl::operator()(const int* buffer, int* memory, size_t num_elements);
-template void ScaleKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements);
-template void ScaleKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements);
-template void ScaleKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements);
-template void DivKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements);
-template void DivKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements);
-template void DivKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements);
+template void ScaleKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements, cudaStream_t stream);
+template void ScaleKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements, cudaStream_t stream);
+template void ScaleKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements, cudaStream_t stream);
+template void DivKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements, cudaStream_t stream);
+template void DivKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements, cudaStream_t stream);
+template void DivKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements, cudaStream_t stream);
 
 #endif

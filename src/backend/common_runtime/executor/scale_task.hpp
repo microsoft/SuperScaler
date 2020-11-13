@@ -22,7 +22,7 @@ private:
     T m_scale;			// scale factor
     ScaleImplement m_impl;	// scale Implement
     size_t m_num_elements;	// number of elements in memory
-}; 
+};
 
 
 template <class T, class ScaleImplement>
@@ -35,8 +35,9 @@ ScaleTask<T, ScaleImplement>::ScaleTask(Executor *exec, task_callback_t callback
 }
 
 template <class T, class ScaleImplement>
-TaskState ScaleTask<T, ScaleImplement>::execute(Executor *) {
-    m_impl(m_memory, m_scale, m_num_elements);
+TaskState ScaleTask<T, ScaleImplement>::execute(Executor *exec) {
+    m_impl(m_memory, m_scale, m_num_elements,
+        exec->get_context()->compute_dev_stream);
     return TaskState::e_success;
 }
 

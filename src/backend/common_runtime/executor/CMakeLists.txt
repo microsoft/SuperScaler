@@ -17,7 +17,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cuda_ipc)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/samples)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++11 -O2")
 
 # Include directories
 set(INCLUDE_DIRS ${INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/channel)

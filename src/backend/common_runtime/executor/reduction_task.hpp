@@ -19,7 +19,7 @@ private:
     T *m_memory;
     Func m_func;
     size_t m_num_elements;
-}; 
+};
 
 
 template <class T, class Func>
@@ -32,7 +32,8 @@ ReductionTask<T, Func>::ReductionTask(Executor *exec, task_callback_t callback,
 }
 
 template <class T, class Func>
-TaskState ReductionTask<T, Func>::execute(Executor *) {
-    m_func(m_buffer, m_memory, m_num_elements);
+TaskState ReductionTask<T, Func>::execute(Executor *exec) {
+    m_func(m_buffer, m_memory, m_num_elements,
+        exec->get_context()->compute_dev_stream);
     return TaskState::e_success;
 }

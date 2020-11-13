@@ -81,7 +81,9 @@ int ring_allreduce_worker(compute_dev_id_t self_compute_dev,
                  num_compute_devs) * num_chunk_elements;
             reduce_task_id =
                 exec.create_task<ReductionTask<DataType, ReduceKernel>>(
-                    &exec, nullptr,
+                    &exec,
+                    [&](TaskState) { cudaStreamSynchronize(
+                        exec.get_context()->compute_dev_stream); },
                     cuda_recv_buf,
                     cuda_data_buf + reduce_data_offset,
                     ReduceKernel(), num_chunk_elements);
@@ -170,13 +172,14 @@ int main(int argc, char** argv)
 {
     constexpr uint64_t num_cuda_devs = 8;
     compute_dev_id_t cuda_dev_ids[num_cuda_devs] = {0, 1, 2, 3, 4, 5, 6, 7};
-    uint64_t num_elements = 128;
-    uint64_t num_loop = 1;
+    uint64_t num_elements = 64 * 1024 * 1024;
+    uint64_t num_loop = 10;
     std::vector<float> cpu_data_buf;
     std::vector<float> expected_results;
     size_t i = 0;
     pid_t pid = 0;
     uint64_t self_compute_dev_idx = 0;
+    float expected_result = 1.;
     int ret = 0;
 
     for (i = 1; i < num_cuda_devs; i++) {
@@ -189,9 +192,12 @@ int main(int argc, char** argv)
 
     cpu_data_buf.resize(num_elements);
     expected_results.resize(num_elements);
+    for (i = 0; i < num_loop; i++) {
+        expected_result *= num_cuda_devs;
+    }
     for (i = 0; i < num_elements; i++) {
-        cpu_data_buf[i] = static_cast<double>(i);
-        expected_results[i] = static_cast<double>(i * num_cuda_devs);
+        cpu_data_buf[i] = 1;
+        expected_results[i] = expected_result;
     }
 
     ret = ring_allreduce_worker<float, SumKernelGPUImpl>(
@@ -213,11 +219,12 @@ int main(int argc, char** argv)
 
     // Should disable result checking if num_loop > 1
     for (i = 0; i < num_elements; i++) {
-        if (std::abs(cpu_data_buf[i] - expected_results[i]) > 1e-6) {
+        if (cpu_data_buf[i] != expected_results[i]) {
             fprintf(stderr,
                 "[Peer %lu] %lu-th data error, "
                 "expected: %g, actual: %g\n",
                 self_compute_dev_idx, i, expected_results[i], cpu_data_buf[i]);
+            return -1;
         }
     }
     fprintf(stdout, "[Peer %lu] Success\n", self_compute_dev_idx);
