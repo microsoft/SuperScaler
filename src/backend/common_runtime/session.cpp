@@ -47,7 +47,6 @@ namespace superscaler
     {
         // if (stream)
         //     throw std::runtime_error("not supported yet!");
-        std::lock_guard<std::mutex> lck{sc_mu_};
 #ifndef NDEBUG
         LOG(INFO) << "[" << host_id_ << ":" << device_id_ << "]: allreduce" << tensor_name << " @ "
                   << ioput << " with size: " << size;
@@ -166,6 +165,11 @@ namespace superscaler
                 throw std::runtime_error("unknown route type, not supported yet!");
             }
         }
+        //avg
+        ScaleTask<DataType, DivKernelGPUImpl> scale_task(nullptr, nullptr, ioput, num_participants_, DivKernelGPUImpl(), size);
+        scale_task();
+        if (scale_task.get_state() != TaskState::e_success)
+            fprintf(stderr, "[Peer %d] Div error\n", device_id_);
 #ifndef NDEBUG
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
         LOG(INFO) << " with time elapsed: "
@@ -231,8 +235,8 @@ namespace superscaler
         device_id_ = static_cast<uint>(std::stoi(device_id));
         num_participants_ = static_cast<uint>(std::stoi(num_peers));
 
-        //TODO: configurable thru plan or env var, defaults to 16MB
-        recv_buf_sze_ = 16 * 1024 * 1024;
+        //TODO: configurable thru plan or env var, defaults to 128MB
+        recv_buf_sze_ = 128 * 1024 * 1024;
 
         for (auto element : j["tasks"])
         {

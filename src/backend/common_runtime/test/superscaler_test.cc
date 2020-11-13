@@ -334,7 +334,7 @@ TEST(TwoPeerAllReduceTest, PCIE_RING)
     {
         tensor_0[i] = rand() * 1.0;
         tensor_1[i] = rand() * 1.0;
-        expected[i] = tensor_0[i] + tensor_1[i];
+        expected[i] = (tensor_0[i] + tensor_1[i])/2;
     }
     pid_t pid = fork();
     int status;
