@@ -66,40 +66,40 @@ fi
 #exe make -j $(nproc) gtest_parallel
 #echo "Executor test success!"
 
-# Test for frontend
-echo "Running test for frontend:"
-exe cd $ROOT_PATH/src/frontend
+# Test for superscaler
+echo "Running test for superscaler:"
+exe cd $ROOT_PATH/src/superscaler
 exe $PYTHON -m flake8
 exe cd $ROOT_PATH/src/
-exe $PYTHON -m pytest -v frontend/tests
+exe $PYTHON -m pytest -v superscaler/tests
 echo "Frontend test success"
 
 # Test for plan_gen
 echo "Running test for plan_gen:"
 exe cd $ROOT_PATH/src/
-exe $PYTHON -m flake8 frontend/plan_gen
-exe $PYTHON -m pytest -v frontend/plan_gen
+exe $PYTHON -m flake8 superscaler/plan_gen
+exe $PYTHON -m pytest -v superscaler/plan_gen
 echo "Plan_gen test success"
 
 # Test for ai_simulator
 echo "Running test for ai_simulator:"
-exe cd $ROOT_PATH/src/frontend/ai_simulator
+exe cd $ROOT_PATH/src/superscaler/ai_simulator
 exe $PYTHON -m flake8
 exe cd $ROOT_PATH/src/ 
-exe $PYTHON -m pytest -v frontend/ai_simulator
+exe $PYTHON -m pytest -v superscaler/ai_simulator
 echo "Ai_simulator test success"
 
 # Test for runtime
 echo "Running test for runtime:"
 exe cd $ROOT_PATH/src/
-exe $PYTHON -m flake8 frontend/runtime
-exe $PYTHON -m pytest -v frontend/runtime
+exe $PYTHON -m flake8 superscaler/runtime
+exe $PYTHON -m pytest -v superscaler/runtime
 echo "Runtime test success"
 
 # Test for scaler_graph
 echo "Running test for scaler_graph:"
 exe export PYTHONPATH=$ROOT_PATH/src
-exe cd $ROOT_PATH/src/frontend/scaler_graph
+exe cd $ROOT_PATH/src/superscaler/scaler_graph
 exe $PYTHON -m flake8
 exe $PYTHON -m pytest -v
 echo "Scaler_graph test success"

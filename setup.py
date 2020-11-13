@@ -72,8 +72,7 @@ class InstallLib(install_lib.install_lib):
 
 if __name__ == '__main__':
 
-    packages = [i.replace('frontend', 'superscaler')
-                for i in find_packages('src')]
+    packages = find_packages('src')
 
     tensorflow_requires = ['tensorflow>=1.15,<2']
     tensorflow_cpu_requires = ['tensorflow-cpu>=1.15,<2']
@@ -110,7 +109,7 @@ if __name__ == '__main__':
             'install_lib': InstallLib,
         },
         packages=packages,
-        package_dir={'superscaler': 'src/frontend'},
+        package_dir={'superscaler': 'src/superscaler'},
         license='MIT License',
         classifiers=[
             "License :: OSI Approved :: MIT License",
