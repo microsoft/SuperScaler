@@ -1,26 +1,19 @@
 # SuperScaler
 
-SuperScaler is an open-source distributed training platform for deep learning, which is designed to enable and accelerate the distributed and parallel training of deep neural networks (DNN). SuperScaler will support multiple deep learning frameworks. [TensorFlow](https://www.tensorflow.org/) and [NNFusion](https://github.com/microsoft/nnfusion) is supported now.
+**SuperScaler** is an open-source distributed platform for deep learning training.
+SuperScaler aims to provide transparent distributed training support for different platforms with highly adaption to new emerging parallelism algorithms and optimizations.
+By leveraging existing deep learning frameworks like [TensorFlow](https://www.tensorflow.org/) and [NNFusion](https://github.com/microsoft/nnfusion) for local execution while supporting efficient distributed training with highly-optimized communication stacks, SuperScaler is exploring the new oppotunities of parallel deep learning training.
 
-## Features of SuperScaler
+## Status
+(alpha preview)
 
-- Use data parallel (model and pipeline parallel comming soon) to achieve parallel training.
-
-- Use collective communication to accelerate distributed training.
-
-- Solve `AllReduce` to optimal `Send` and `Receive` to improve communication performance.
-
-- Schedule the computing plan according to different computing and communication capabilities of different devices.
-
-- Dynamically reschedule the computing plan during executing.
-
-- Highly-optimized computation and communication kernels.
-
-- Broad support for different deep learning frameworks and different hardware platforms.
+- Data-parallelism enabled for multi-GPU parallel training
+- Support flexible communication, e.g., building `AllReduce` with primitives `Send` and `Receive` 
+- TensorFlow 1.x and NNFusion supported
 
 ## Install
 
-### Install on Native Machines
+### Install on a Bare-metal Machine
 
 - Install dependencies
   ```bash
@@ -100,3 +93,5 @@ xxx
 [SuperScaler User Manuals](https://github.com/microsoft/)
 
 [SuperScaler Internals](https://github.com/microsoft/)
+
+
