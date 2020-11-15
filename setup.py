@@ -77,7 +77,7 @@ if __name__ == '__main__':
     tensorflow_requires = ['tensorflow>=1.15,<2']
     tensorflow_cpu_requires = ['tensorflow-cpu>=1.15,<2']
     tensorflow_gpu_requires = ['tensorflow-gpu>=1.15,<2']
-    
+
     all_frameworks_requires = tensorflow_requires
 
     setup(

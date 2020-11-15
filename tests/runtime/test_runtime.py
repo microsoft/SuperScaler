@@ -6,7 +6,7 @@ import subprocess
 from superscaler.runtime.runtime import Runtime
 
 father_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../../.."))
+    os.path.join(os.path.dirname(__file__), "../../"))
 lib_path = father_path + \
     "/lib/libtfadaptor.so"
 

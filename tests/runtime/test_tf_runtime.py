@@ -1,8 +1,8 @@
 import os
 import pytest
 import subprocess
-import tensorflow as tf
 from superscaler.runtime.tensorflow.runtime import TFRuntime
+import tensorflow as tf
 
 
 def is_gpu_available():
@@ -45,9 +45,8 @@ def test_tfruntime():
         plan_path = os.path.join(os.path.dirname(__file__),
                                  "data/plan.json")
         father_path = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../../.."))
-        lib_path = father_path + \
-            "/lib/libtfadaptor.so"
+            os.path.join(os.path.dirname(__file__), "../.."))
+        lib_path = os.path.join(father_path, "lib/libtfadaptor.so")
 
         # Init TFRuntime
         rt = TFRuntime(graph_path, graph_config_path, plan_path, lib_path)

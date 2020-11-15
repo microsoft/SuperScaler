@@ -9,7 +9,7 @@ from superscaler.plan_gen.plan.plan_generator import PlanGenerator
 TEST_DB = os.path.join(
     os.path.dirname(__file__), 'data/tf_parser_testbench/profile_db.json')
 example_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../examples"))
+    os.path.join(os.path.dirname(__file__), "data/examples"))
 
 
 def test_plan_generator():

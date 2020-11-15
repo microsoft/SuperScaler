@@ -4,7 +4,7 @@ import pytest
 import subprocess
 import argparse
 from superscaler.scaler_graph import DataParallelism
-from superscaler.tests.data import dummy_model
+from scaler_graph.tf_example import dummy_model
 import superscaler.tensorflow as superscaler
 from superscaler.superscaler import SuperscalerError
 
@@ -36,7 +36,7 @@ def test_superscaler_tf():
     deployment_setting = {"1": "10.0.0.25"}
     communication_DSL = "ring"
     resource_pool = os.path.join(
-        os.path.dirname(__file__), 'data', 'resource_pool.yaml')
+        os.path.dirname(__file__), 'plan_gen', 'data', 'resource_pool.yaml')
 
     # Init rutime argument
     parser = argparse.ArgumentParser(description='Test Runner')
