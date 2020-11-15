@@ -77,4 +77,4 @@ class TFRuntime(Runtime):
 
     @property
     def targets(self):
-        return self._fetches
+        return self._targets
