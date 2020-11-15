@@ -67,7 +67,7 @@ void process_func(TestProcessContext<DataType> ctx)
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 #endif
 
-    int steps = 1;
+    int steps = 100;
     for (int i = 0; i < steps; ++i)
     {
         sess.AllReduce("AllReduce_0", sendbuff, ctx.size, nullptr);
@@ -95,7 +95,7 @@ void process_func(TestProcessContext<DataType> ctx)
     printf("-- Test Done!\n");
 }
 
-TEST(TwoPeerAllReduceTest, PCIE_RING)
+TEST(TwoPeerSingleAllReduceTest, PCIE_RING)
 {
     auto plan0 = R"(
 {
@@ -332,9 +332,9 @@ TEST(TwoPeerAllReduceTest, PCIE_RING)
     srand(time(0));
     for (int i = 0; i < test_size; i++)
     {
-        tensor_0[i] = rand() * 1.0;
-        tensor_1[i] = rand() * 1.0;
-        expected[i] = (tensor_0[i] + tensor_1[i])/2;
+        tensor_0[i] = rand()%10000 * 0.33;
+        tensor_1[i] = rand()%10000 * 0.33;
+        expected[i] = (tensor_0[i] + tensor_1[i]) / 2;
     }
     pid_t pid = fork();
     int status;
@@ -347,10 +347,4 @@ TEST(TwoPeerAllReduceTest, PCIE_RING)
         process_func(TestProcessContext<float>{tensor_1, expected, test_size, plan1});
         wait(&status);
     }
-}
-
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

@@ -113,8 +113,9 @@ namespace superscaler
                         reduce_task_id =
                             exec_->create_task<ReductionTask<DataType, SumKernelGPUImpl>>(
                                 exec_.get(),
-                                nullptr,
-                                (const DataType*)recv_buf_,
+                                [&](TaskState) { cudaStreamSynchronize(
+                                                     exec_->get_context()->compute_dev_stream); },
+                                (const DataType *)recv_buf_,
                                 ioput + offset,
                                 SumKernelGPUImpl(),
                                 sze);
@@ -166,7 +167,10 @@ namespace superscaler
             }
         }
         //avg
-        ScaleTask<DataType, DivKernelGPUImpl> scale_task(nullptr, nullptr, ioput, num_participants_, DivKernelGPUImpl(), size);
+        ScaleTask<DataType, DivKernelGPUImpl> scale_task(
+            exec_.get(),
+            [&](TaskState) { cudaStreamSynchronize(
+                                 exec_->get_context()->compute_dev_stream); }, ioput, num_participants_, DivKernelGPUImpl(), size);
         scale_task();
         if (scale_task.get_state() != TaskState::e_success)
             fprintf(stderr, "[Peer %d] Div error\n", device_id_);
@@ -235,8 +239,8 @@ namespace superscaler
         device_id_ = static_cast<uint>(std::stoi(device_id));
         num_participants_ = static_cast<uint>(std::stoi(num_peers));
 
-        //TODO: configurable thru plan or env var, defaults to 128MB
-        recv_buf_sze_ = 128 * 1024 * 1024;
+        //TODO: configurable thru plan or env var, defaults to 256MB
+        recv_buf_sze_ = 256 * 1024 * 1024;
 
         for (auto element : j["tasks"])
         {

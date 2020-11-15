@@ -43,6 +43,7 @@ then
     exe make -j $(nproc)
 
     echo "Build success! Running test for backend:"
+    exe $BUILD_PATH/src/backend/common_runtime/test/superscaler_op_test
     exe $BUILD_PATH/src/backend/common_runtime/test/superscaler_rt_test
     echo "Backend test success!"
 else
