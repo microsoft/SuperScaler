@@ -1,16 +1,13 @@
-'''
 import os
-from pathlib import Path
-import json
 import tempfile
 import subprocess
 import google.protobuf.text_format
 os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "3"
-from superscaler.scaler_graph.util.log import logger
-from superscaler.scaler_graph.IR.conversion import tf_adapter
-from tf_example import dummy_model
-import tensorflow as tf
-from tensorflow.python import pywrap_tensorflow
+from superscaler.scaler_graph.util.log import logger  # noqa: E402
+from superscaler.scaler_graph.IR.conversion import tf_adapter  # noqa: E402
+from tf_example import dummy_model  # noqa: E402
+import tensorflow as tf  # noqa: E402
+from tensorflow.python import pywrap_tensorflow  # noqa: E402
 
 
 def is_cuda_available():
@@ -30,6 +27,7 @@ def is_cuda_available():
 
 
 def test_tf_adapter():
+    tf.reset_default_graph()
     # import sc graph from tf model;
     apply_gradient_op, loss = dummy_model.SimpleCNN()
     WORKDIR_HANDLER = tempfile.TemporaryDirectory()
@@ -51,4 +49,3 @@ def test_tf_adapter():
             test_tf_graph_def.SerializeToString(),  # expected
             curr_tf_graph_def.SerializeToString())  # actual
         assert (len(diff) == 0)
-'''

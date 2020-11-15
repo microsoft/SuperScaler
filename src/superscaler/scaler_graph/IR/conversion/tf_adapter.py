@@ -482,10 +482,11 @@ TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
         if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
             dump_pbtxts()
         else:
-            logger("TF_conversion").warning(
+            logger("TF_conversion").error(
                 "The directory %s contains pbtxt files \
                     before running scaler_graph." %
                 (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            raise RuntimeError
         file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
         if len(file_names) == 0:
             raise Exception(
@@ -493,19 +494,17 @@ TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
 TF_CPP_MIN_VLOG_LEVEL=3 before importing tensorflow, \
 e.g.: ` TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''' %
                 (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-        id_file = {}
+        input_pbtxts = []
         for file_name in file_names:
-            obj = re.match(r"^placer_input(_(\d+))?\.pbtxt$", file_name)
+            obj = re.match(r"^placer_input(_\d+)?\.pbtxt$", file_name)
             if obj is not None:
-                if obj.group(2) is None:
-                    id_file[0] = file_name
-                else:
-                    id_file[int(obj.group(2))] = file_name
-        if len(id_file) != 2:
+                input_pbtxts.append(file_name)
+        input_pbtxts.sort()
+        if len(input_pbtxts) != 2:
             raise Exception("Clean up the directory %s first." %
                             (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-        return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[0], \
-            os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + id_file[1]
+        return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[0], \
+            os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[1]
 
     init_path, run_path = get_dumped_pbtxts()
     sc_graph = import_graph_from_tf_file(init_path, run_path)
