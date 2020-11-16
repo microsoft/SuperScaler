@@ -65,4 +65,4 @@ def test_tfruntime():
             assert(isinstance(fetch, tf.Tensor))
         targets = rt.targets
         for target in targets:
-            assert(isinstance(target, tf.Tensor))
+            assert(isinstance(target, tf.Operation))
