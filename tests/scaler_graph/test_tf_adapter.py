@@ -3,7 +3,6 @@ import tempfile
 import subprocess
 import google.protobuf.text_format
 os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "3"
-from superscaler.scaler_graph.util.log import logger  # noqa: E402
 from superscaler.scaler_graph.IR.conversion import tf_adapter  # noqa: E402
 from tf_example import dummy_model  # noqa: E402
 import tensorflow as tf  # noqa: E402
@@ -21,8 +20,6 @@ def is_cuda_available():
         count = subprocess.check_output(cmd, shell=True)
         return int(count) > 0
     else:
-        logger("scaler_graph_test").warning(
-            "It is not a CUDA-enable environment.")
         return False
 
 

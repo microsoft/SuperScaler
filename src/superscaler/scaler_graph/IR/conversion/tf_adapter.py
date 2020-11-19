@@ -35,7 +35,7 @@ def get_dtype_proto(node_def, op_def, output_arg):
             for attr in op_def.attr:
                 if attr.name == output_arg.number_attr:
                     return [dtype] * node_def.attr[attr.name].i
-            raise AssertionError()
+            raise AssertionError
         else:
             return dtype
 
@@ -43,12 +43,12 @@ def get_dtype_proto(node_def, op_def, output_arg):
         for attr in op_def.attr:
             if attr.name == output_arg.type_attr:
                 return with_number_attr(node_def.attr[attr.name].type)
-        raise AssertionError()
+        raise AssertionError
     elif len(output_arg.type_list_attr) != 0:
         for attr in op_def.attr:
             if attr.name == output_arg.type_list_attr:
                 return list(node_def.attr[attr.name].list.type)
-        raise AssertionError()
+        raise AssertionError
     else:
         assert output_arg.type != types_pb2.DT_INVALID
         return with_number_attr(output_arg.type)
@@ -281,26 +281,29 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
                     value[0], tensor_pb2.TensorProto):
                 attr_def.type = "list(tensor)"
             else:
-                raise AssertionError(f"{value} has unsupported type")
+                logger().error(f"{value} has unsupported type")
+                raise RuntimeError
         if attr_def.HasField("default_value") and value is None:
             attr_value.CopyFrom(attr_def.default_value)
             attr_protos[key] = attr_value
             continue
         if attr_def.type.startswith("list("):
             if not _IsListValue(value):
-                raise TypeError("Expected list for attr " + key)
+                logger().error("Expected list for attr " + key)
+                raise TypeError
             if attr_def.has_minimum:
                 if len(value) < attr_def.minimum:
-                    raise ValueError(
+                    logger().error(
                         "Attr '%s' of '%s' Op passed list of length %d "
                         "less than minimum %d." %
                         (key, op_type_name, len(value), attr_def.minimum))
+                    raise ValueError
             attr_value.list.SetInParent()
         if attr_def.type == "string":
             attr_value.s = _MakeStr(value, key)
             if attr_def.HasField("allowed_values"):
                 if attr_value.s not in attr_def.allowed_values.list.s:
-                    raise ValueError(
+                    logger().error(
                         "Attr '%s' of '%s' Op passed string '%s' not \
                             in: \"%s\"." % (
                             key,
@@ -310,12 +313,13 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
                                 map(compat.as_text,
                                     attr_def.allowed_values.list.s)),
                         ))
+                    raise ValueError
         elif attr_def.type == "list(string)":
             attr_value.list.s.extend([_MakeStr(x, key) for x in value])
             if attr_def.HasField("allowed_values"):
                 for x in attr_value.list.s:
                     if x not in attr_def.allowed_values.list.s:
-                        raise ValueError(
+                        logger().error(
                             "Attr '%s' of '%s' Op passed string '%s' not \
                                 in: \"%s\"." % (
                                 key,
@@ -325,13 +329,15 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
                                     map(compat.as_text,
                                         attr_def.allowed_values.list.s)),
                             ))
+                        raise ValueError
         elif attr_def.type == "int":
             attr_value.i = _MakeInt(value, key)
             if attr_def.has_minimum:
                 if attr_value.i < attr_def.minimum:
-                    raise ValueError(
+                    logger().error(
                         "Attr '%s' of '%s' Op passed %d less than minimum %d."
                         % (key, op_type_name, attr_value.i, attr_def.minimum))
+                    raise ValueError
         elif attr_def.type == "list(int)":
             attr_value.list.i.extend([_MakeInt(x, key) for x in value])
         elif attr_def.type == "float":
@@ -364,7 +370,8 @@ def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
                 value.add_to_graph(tf.get_default_graph())
                 attr_value.func.name = value.name
         else:
-            raise TypeError("Unrecognized Attr type " + attr_def.type)
+            logger().error("Unrecognized Attr type " + attr_def.type)
+            raise TypeError
 
         attr_protos[key] = attr_value
     return attr_protos
@@ -380,7 +387,8 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
     if os.path.exists(lib_path):
         tf.load_library(lib_path)
     else:
-        raise Exception("The library file %s does not exist." % (lib_path))
+        logger().error("The library file %s does not exist." % (lib_path))
+        raise RuntimeError
     tf_graph = tf.Graph()
     graph_def = tf_graph.as_graph_def(add_shapes=True)
     for key in ["versions", "library"]:
@@ -438,24 +446,31 @@ def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
     '''
     if not (isinstance(apply_gradient_op, Operation)
             and isinstance(loss, Tensor)):
-        raise Exception("apply_gradient_op or loss is incorrect.")
+        logger().error("apply_gradient_op or loss is incorrect.")
+        raise RuntimeError
     if dir_path is None:
         if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys():
-            raise Exception(
+            logger().error(
                 "dir_path can't be None if not setting TF_DUMP_GRAPH_PREFIX.")
+            raise RuntimeError
         elif not os.path.isdir(os.environ["TF_DUMP_GRAPH_PREFIX"]):
-            raise Exception("TF_DUMP_GRAPH_PREFIX: %s is incorrect." %
-                            (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            logger().error("TF_DUMP_GRAPH_PREFIX is incorrect: %s" %
+                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            raise RuntimeError
     else:
         if os.path.isdir(dir_path):
             os.environ["TF_DUMP_GRAPH_PREFIX"] = dir_path
+            logger().info("dumping dir path: %s" % (dir_path))
         else:
-            raise Exception("dir_path is not correct.")
-    if "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys():
-        raise Exception('''The environment variable TF_CPP_MIN_VLOG_LEVEL \
+            logger().error("dumping dir path is not correct: %s" % (dir_path))
+            raise RuntimeError
+    if "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys() or int(
+            os.environ["TF_CPP_MIN_VLOG_LEVEL"]) < 3:
+        logger().error('''The environment variable TF_CPP_MIN_VLOG_LEVEL \
 should be set before importing tensorflow, \
 e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
 TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
+        raise RuntimeError
 
     def dump_pbtxts():
         '''we dumps tf graph via TF_DUMP_GRAPH_PREFIX and
@@ -482,18 +497,18 @@ TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
         if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
             dump_pbtxts()
         else:
-            logger("TF_conversion").error(
-                "The directory %s contains pbtxt files \
+            logger().error("The directory %s contains pbtxt files \
                     before running scaler_graph." %
-                (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
             raise RuntimeError
         file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
         if len(file_names) == 0:
-            raise Exception(
+            logger().error(
                 '''We cannot get the tensorflow graph from %s. Users should set \
 TF_CPP_MIN_VLOG_LEVEL=3 before importing tensorflow, \
 e.g.: ` TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''' %
                 (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            raise RuntimeError
         input_pbtxts = []
         for file_name in file_names:
             obj = re.match(r"^placer_input(_\d+)?\.pbtxt$", file_name)
@@ -501,8 +516,9 @@ e.g.: ` TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''' %
                 input_pbtxts.append(file_name)
         input_pbtxts.sort()
         if len(input_pbtxts) != 2:
-            raise Exception("Clean up the directory %s first." %
-                            (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            logger().error("Clean up the directory %s first." %
+                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
+            raise RuntimeError
         return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[0], \
             os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[1]
 

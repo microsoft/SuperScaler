@@ -8,6 +8,7 @@ import copy
 from superscaler.scaler_graph.IR.node import Node
 from superscaler.scaler_graph.IR.edge import Edge
 from superscaler.scaler_graph.IR.util import graph_util, serialization
+from superscaler.scaler_graph.util.log import logger
 import sys
 
 
@@ -61,7 +62,8 @@ class Graph:
         '''Add a node into this graph, including all edges to it.
         '''
         if self.get_node_by_name(node_name) is not None:
-            raise Exception("node %s is exising." % (node_name))
+            logger().error("node %s is exising." % (node_name))
+            raise RuntimeError
         self._STALE_COLLECTIONS = True
         self._STALE_ORDERED_NODES = True
         node = Node(node_name, op, input_node_idxes, output_size, attrs)

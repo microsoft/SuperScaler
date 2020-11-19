@@ -14,7 +14,7 @@ def parse_info(sc_op, tf_op_def):
             elif input_arg.is_ref:
                 pass
     else:
-        logger("TF_conversion").info(
+        logger().debug(
             "op: %s of tensorflow uses default operator, OpDef structure:\n%s"
             % (tf_op_def.name, tf_op_def))
 

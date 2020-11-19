@@ -1,5 +1,6 @@
 import itertools
 from superscaler.scaler_graph.IR.node import CompositeNode
+from superscaler.scaler_graph.util.log import logger
 
 
 def get_output_nodes(graph):
@@ -27,8 +28,9 @@ def reverse_DFS(graph):
         if current_node in ordered_nodes:
             return
         elif current_node in temp_nodes:
-            raise Exception("there is a cycle in graph: %s" %
-                            (current_node.name))
+            logger().error("there is a cycle in graph: %s" %
+                           (current_node.name))
+            raise RuntimeError
         else:
             temp_nodes.add(current_node)
             for input_node in get_upstream_nodes(current_node):
@@ -46,7 +48,8 @@ def get_upstream_nodes(node):
     '''get all input nodes of current node.
     '''
     if isinstance(node, CompositeNode):
-        raise Exception("We can't support CompositeNode now.")
+        logger().error("We can't support CompositeNode now.")
+        raise RuntimeError
     upstream_nodes = set()
     for edge in node.in_edges:
         upstream_nodes.add(edge.src_node)

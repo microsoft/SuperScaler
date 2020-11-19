@@ -3,6 +3,7 @@ Implementation of Node, CompositeNode
 '''
 from superscaler.scaler_graph.IR.tensor import Tensor
 from superscaler.scaler_graph.IR.util import serialization
+from superscaler.scaler_graph.util.log import logger
 import json
 
 
@@ -116,4 +117,5 @@ class CompositeNode(Node):
     '''
     def __init__(self, nodes):
         # TODO(gbxu): define CompositeNode
-        raise Exception("We can't support CompositeNode now.")
+        logger().error("We can't support CompositeNode now.")
+        raise RuntimeError

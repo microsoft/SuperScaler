@@ -35,7 +35,8 @@ def save(filepath=None,
 
 
 def logger(logger_name=LOGGER_NAME.DEFAULT):
-    logger = logging.getLogger(logger_name)
+    assert (logger_name in LOGGER_NAME)
+    logger = logging.getLogger(logger_name.value)
     handler = logging.StreamHandler()
     handler.setFormatter(_format)
     logger.addHandler(handler)
