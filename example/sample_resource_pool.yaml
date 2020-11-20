@@ -1,0 +1,72 @@
+Server:
+    hostname1:
+        CPU:
+            0:
+                properties:
+                    average_performance: "12Gibps"
+                links:
+                    -
+                        dest: "/server/hostname1/CPU/1/"
+                        type: "RDMA"
+                        rate: "100Gibps"
+                        propagation_latency: "20us"
+                        scheduler: 'FairSharing'
+            1:
+                properties:
+                    average_performance: "12Gibps"
+                links:
+                    -
+                        dest: "/server/hostname1/CPU/0/"
+                        type: "RDMA"
+                        rate: "100Gibps"
+                        propagation_latency: "20us"
+                        scheduler: 'FairSharing'
+        GPU:
+            0:
+              properties:
+                  average_performance: "12Tibps"
+              links:
+                  -
+                      dest: "/switch/switch0/"
+                      type: "PCIE"
+                      rate: "80bit/s"
+                      propagation_latency: "2us"
+                      scheduler: 'FIFO'
+                  -
+                      dest: "/server/hostname1/GPU/1/"
+                      type: "RDMA"
+                      rate: "100bit/s"
+                      propagation_latency: "2us"
+                      scheduler: 'FIFO'
+            1:
+              properties:
+                  average_performance: "12Tibps"
+              links:
+                  -
+                      dest: "/switch/switch0/"
+                      type: "PCIE"
+                      rate: "80bit/s"
+                      propagation_latency: "2us"
+                      scheduler: 'FIFO'
+                  -
+                      dest: "/server/hostname1/GPU/0/"
+                      type: "RDMA"
+                      rate: "100bit/s"
+                      propagation_latency: "2us"
+                      scheduler: 'FIFO'
+ 
+Switch:
+    switch0:
+        links:
+            -
+                dest: "/server/hostname1/GPU/0/"
+                type: "PCIE"
+                rate: "80bit/s"
+                propagation_latency: "2us"
+                scheduler: 'FIFO'
+            -
+                dest: "/server/hostname1/GPU/1/"
+                type: "PCIE"
+                rate: "80bit/s"
+                propagation_latency: "2us"
+                scheduler: 'FIFO'
