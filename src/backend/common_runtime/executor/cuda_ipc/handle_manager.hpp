@@ -11,7 +11,7 @@ namespace std {
     {
         size_t operator()(const cudaIpcMemHandle_t &handle) const
         {
-            return hash<std::string>()(handle.reserved);
+            return hash<string>()(string(handle.reserved, CUDA_IPC_HANDLE_SIZE));
         }
     };
 
