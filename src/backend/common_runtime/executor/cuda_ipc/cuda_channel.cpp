@@ -1,7 +1,8 @@
 #include <string>
 #include <sched.h>
 #include <iostream>
-#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
 
 #include "cuda_channel.hpp"
 
@@ -11,12 +12,12 @@ constexpr char CUDA_CHANNEL_PREFIX[] = "CudaChan_";
 
 inline std::string cuda_get_semaphore_name(const std::string &channel_id)
 {
-    return std::string(CUDA_SEMAPHORE_PREFIX) + getlogin() +  channel_id;
+    return std::string(CUDA_SEMAPHORE_PREFIX) + getpwuid(getuid())->pw_name +  channel_id;
 }
 
 inline std::string cuda_get_shared_memory_name(const std::string &channel_id)
 {
-    return std::string(CUDA_SHAREDMEMORY_PREFIX) + getlogin() + channel_id;
+    return std::string(CUDA_SHAREDMEMORY_PREFIX) + getpwuid(getuid())->pw_name + channel_id;
 }
 
 QueueAligner::QueueAligner(Mode mode, void *ptr, size_t receiver_buffer_size,
@@ -301,7 +302,7 @@ CudaChannelStatus CudaChannelReceiver::get_status() const
 static std::string get_cuda_channel_name(int send_device, int recv_device)
 {
     // Default name: PREFIX_USERNAME_sendDevice_recvDevice
-    return std::string(CUDA_CHANNEL_PREFIX) + getlogin() + std::to_string(send_device) +
+    return std::string(CUDA_CHANNEL_PREFIX) + getpwuid(getuid())->pw_name + std::to_string(send_device) +
            std::string("_") + std::to_string(recv_device);
 }
 
