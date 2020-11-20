@@ -191,6 +191,7 @@ class SuperScalerAdapter(Adapter):
                          'device_id': node['device_id'],
                          'num_peers': 1,
                          'peer_device_names': [node['device']],
+                         'recv_buffer_size': 0,
                          'tasks': []
                         })
 
@@ -203,6 +204,15 @@ class SuperScalerAdapter(Adapter):
         for node in node_list:
             node_dict = multi_node_dict[devices.index(node['device'])]
             node_dict['tasks'].append(node)
+
+            # store the maximum recv buffer size
+            if "size" in node and "op" in node and node["op"] == "Recv":
+                tensor_size = node["size"]
+                if "tensor_type" in node and\
+                   node["tensor_type"] == "DT_FLOAT":
+                    tensor_size *= 4
+                node_dict['recv_buffer_size'] =\
+                    max(tensor_size, node_dict['recv_buffer_size'])
 
             # Count the peers for communication
             if 'target' in node and \
