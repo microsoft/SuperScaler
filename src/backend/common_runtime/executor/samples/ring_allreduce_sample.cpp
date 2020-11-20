@@ -127,16 +127,11 @@ int ring_allreduce_worker(compute_dev_id_t self_compute_dev,
             recv_data_offset =
                 ((self_compute_dev_idx + num_compute_devs - j) %
                  num_compute_devs) * num_chunk_elements;
-            // Use MemBlock here to make sure both base address and offset
-            // are passed in.
-            // TODO: refactor RecvTask interface to make it aware of non-base
-            // CUDA addresses.
             recv_task_id = exec.create_task<RecvTask>(
                 &exec, nullptr, cuda_channel, prev_peer_compute_dev,
                 recv_msg_id,
-                MemBlock(
-                    cuda_data_buf, recv_data_offset * sizeof(DataType),
-                    num_chunk_elements * sizeof(DataType)));
+                cuda_data_buf + recv_data_offset,
+                num_chunk_elements * sizeof(DataType));
 
             exec.add_task(send_task_id);
             exec.add_task(recv_task_id);

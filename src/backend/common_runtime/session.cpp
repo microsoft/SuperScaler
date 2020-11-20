@@ -145,7 +145,8 @@ namespace superscaler
                             cuda_channel_,
                             target_id,
                             msg_id,
-                            MemBlock(ioput, offset * sizeof(DataType), sze * sizeof(DataType)));
+                            ioput + offset,
+                            sze * sizeof(DataType));
 
                         exec_->add_task(send_task_id);
                         exec_->add_task(recv_task_id);

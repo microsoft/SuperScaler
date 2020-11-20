@@ -32,9 +32,8 @@ void SenderProcess()
 		checkCudaErrors(cudaMemcpy(cuda_input + n * test_size, input_datas[n].data(), test_size,
 								   cudaMemcpyDefault));
 
-		MemBlock send_blk(cuda_input, n * test_size, test_size);
-		auto send_task = std::make_shared<SendTask>(nullptr, nullptr,
-													chan, 1, n, send_blk);
+		auto send_task = std::make_shared<SendTask>(
+			nullptr, nullptr, chan, 1, n, cuda_input + n * test_size, test_size);
 
 		(*send_task)();
 		if (send_task->get_state() != TaskState::e_success) {
@@ -51,15 +50,14 @@ void ReceiverProcess()
 {
 	auto chan = std::make_shared<CudaChannel>(1, devices);
 	std::vector<std::array<uint8_t, test_size> > output_datas(num_test);
-	
+
 	uint8_t *cuda_output;
 	checkCudaErrors(cudaMalloc(&cuda_output, test_size * num_test));
 	checkCudaErrors(cudaMemset(cuda_output, 0, test_size * num_test));
 
 	for (int n = 0; n < num_test; ++n) {
-		MemBlock recv_blk(cuda_output, n * test_size, test_size);
-		auto recv_task = std::make_shared<RecvTask>(nullptr, nullptr,
-													chan, 0, n, recv_blk);
+		auto recv_task = std::make_shared<RecvTask>(
+			nullptr, nullptr, chan, 0, n, cuda_output + n * test_size, test_size);
 
 		(*recv_task)();
 		if (recv_task->get_state() != TaskState::e_success) {

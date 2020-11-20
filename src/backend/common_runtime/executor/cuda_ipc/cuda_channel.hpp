@@ -176,13 +176,13 @@ public:
      * @brief Send data to receiver synchronously. Will block if recv meta is not posted
      * by receiver.
      */
-    bool send(const message_id_t message_id, const MemBlock &buffer);
+    bool send(const message_id_t message_id, const void *buffer, size_t length);
 
     /**
      * @brief Post receive meta and receive data from sender synchronously.
      * Will block if sender doesn't send data.
      */
-    bool receive(const message_id_t message_id, MemBlock &buffer);
+    bool receive(const message_id_t message_id, void *buffer, size_t length);
 
 private:
     /**
@@ -218,8 +218,8 @@ public:
      * @param call_back
      * @return True if send success. False if receiver with rank \p to_rank does not exist
      */
-    bool send(const MemBlock &buffer, rank_t to_rank, message_id_t message_id,
-              std::function<void(bool success, const MemBlock &buffer)> call_back) override;
+    bool send(const void *buffer, size_t length, rank_t to_rank, message_id_t message_id,
+              std::function<void(bool success, const void *buffer, size_t length)> call_back) override;
 
     /**
      * @brief Receive data from sender \p from_rank synchronously. Including post recv meta and wait for
@@ -230,8 +230,8 @@ public:
      * @param call_back
      * @return True if receive success. False if sender with rank \p from_rank does not exist
      */
-    bool receive(MemBlock &buffer, rank_t from_rank, message_id_t message_id,
-                 std::function<void(bool success, MemBlock &buffer)> call_back) override;
+    bool receive(void *buffer, size_t length, rank_t from_rank, message_id_t message_id,
+                 std::function<void(bool success, void *buffer, size_t length)> call_back) override;
 
 private:
     std::map<rank_t, std::shared_ptr<CudaSingleChannel> > m_channels;

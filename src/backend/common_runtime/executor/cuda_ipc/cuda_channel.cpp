@@ -327,29 +327,37 @@ CudaSingleChannel::~CudaSingleChannel()
     CudaChannelReceiverManager::get_manager().remove_channel(m_recv_channel_name);
 }
 
-bool CudaSingleChannel::send(const message_id_t message_id, const MemBlock &buffer)
+bool CudaSingleChannel::send(const message_id_t message_id, const void *buffer, size_t length)
 {
     init_connection();
 
     bool send_result = false;
     do {
-        send_result = m_sender->send(message_id, buffer.get_address(), buffer.get_length());
+        send_result = m_sender->send(message_id, buffer, length);
     } while (!send_result);
 
     return true;
 }
 
-bool CudaSingleChannel::receive(const message_id_t message_id, MemBlock &buffer)
+bool CudaSingleChannel::receive(const message_id_t message_id, void *buffer, size_t length)
 {
     init_connection();
 
     cudaIpcMemHandle_t handler;
-    checkCudaErrors(cudaIpcGetMemHandle(&handler, buffer.get_base()));
+    checkCudaErrors(cudaIpcGetMemHandle(&handler, buffer));
+
+    // Get offset of buffer's corresponding CUDA allocation
+    void *base_ptr = nullptr;
+    checkCuErrors(cuMemGetAddressRange(
+        reinterpret_cast<CUdeviceptr *>(&base_ptr),
+        nullptr, reinterpret_cast<CUdeviceptr>(buffer)));
+    size_t offset = reinterpret_cast<ptrdiff_t>(buffer) -
+              reinterpret_cast<ptrdiff_t>(base_ptr);
 
     bool receive_result = false;
     bool wait_result = false;
     do {
-        receive_result = m_receiver->receive(message_id, handler, buffer.get_offset(), buffer.get_length());
+        receive_result = m_receiver->receive(message_id, handler, offset, length);
     } while (!receive_result);
 
     do {
@@ -391,34 +399,34 @@ CudaChannel::CudaChannel(const rank_t self_device, const std::vector<rank_t> &de
     }
 }
 
-bool CudaChannel::send(const MemBlock &buffer, rank_t to_rank, message_id_t message_id,
-                       std::function<void(bool success, const MemBlock &buffer)> call_back)
+bool CudaChannel::send(const void *buffer, size_t length, rank_t to_rank, message_id_t message_id,
+                       std::function<void(bool success, const void *buffer, size_t length)> call_back)
 {
     auto it = m_channels.find(to_rank);
     bool ret;
     if (it == m_channels.end()) {
         ret = false;
     } else {
-        it->second->send(message_id, buffer);
+        it->second->send(message_id, buffer, length);
         ret = true;
     }
     if (call_back)
-        call_back(ret, buffer);
+        call_back(ret, buffer, length);
     return ret;
 }
 
-bool CudaChannel::receive(MemBlock &buffer, rank_t from_rank, message_id_t message_id,
-                          std::function<void(bool success, MemBlock &buffer)> call_back)
+bool CudaChannel::receive(void *buffer, size_t length, rank_t from_rank, message_id_t message_id,
+                          std::function<void(bool success, void *buffer, size_t length)> call_back)
 {
     auto it = m_channels.find(from_rank);
     bool ret;
     if (it == m_channels.end()) {
         ret = false;
     } else {
-        it->second->receive(message_id, buffer);
+        it->second->receive(message_id, buffer, length);
         ret = true;
     }
     if (call_back)
-        call_back(ret, buffer);
+        call_back(ret, buffer, length);
     return ret;
 }

@@ -31,78 +31,74 @@ public:
         }
     }
 
-    bool send(const MemBlock &buffer, rank_t to_rank, message_id_t,
-              std::function<void(bool success, const MemBlock &buffer)>
+    bool send(const void *buffer, size_t length, rank_t to_rank, message_id_t,
+              std::function<void(bool success, const void *buffer, size_t length)>
                   call_back) override
     {
         auto it = m_buffers.find(to_rank);
         if (it == m_buffers.end()) {
             if (call_back)
-                call_back(false, buffer);
+                call_back(false, buffer, length);
             return false;
         }
-        it->second.push(buffer.get_address(), buffer.get_length());
+        it->second.push(buffer, length);
         if (call_back)
-            call_back(true, buffer);
+            call_back(true, buffer, length);
         return true;
     }
 
-    bool send(const void *buffer, size_t buffer_length, rank_t to_rank, message_id_t message_id,
-              std::function<void(bool success, const void *buffer, size_t buffer_length)>
+    bool send(const void *buffer, size_t length, rank_t to_rank, message_id_t message_id,
+              std::function<void(bool success, const void *buffer, size_t length)>
                   callback = nullptr)
     {
-        MemBlock mem_blk(buffer, buffer_length);
-
         if (callback) {
-            auto bind_callback = [callback](bool success, const MemBlock &buffer) {
-                callback(success, buffer.get_address(), buffer.get_length());
+            auto bind_callback = [callback](bool success, const void *buffer, size_t length) {
+                callback(success, buffer, length);
             };
-            return send(mem_blk, to_rank, message_id, bind_callback);
+            return send(buffer, length, to_rank, message_id, bind_callback);
         } else {
-            return send(mem_blk, to_rank, message_id, nullptr);
+            return send(buffer, length, to_rank, message_id, nullptr);
         }
     }
 
     /**
      * @brief receive a tensor
-     * 
+     *
      * @param tensor tensor buffer
-     * @param buffer_length 
+     * @param length
      * @param tensor_length [out] received lenght or needed length if failed
      * @param rank yourself
      * @param call_back call_back function, will be called if received successfully
      * @return if received successfully
      */
     bool receive(
-        MemBlock &buffer, rank_t rank, message_id_t,
-        std::function<void(bool success, MemBlock &buffer)>
+        void *buffer, size_t length, rank_t rank, message_id_t,
+        std::function<void(bool success, void *buffer, size_t length)>
             call_back) override
     {
         auto it = m_buffers.find(rank);
         if (it == m_buffers.end()) {
             if (call_back)
-                call_back(false, buffer);
+                call_back(false, buffer, length);
             return false;
         }
-        it->second.pop(buffer.get_address(), buffer.get_length());
+        it->second.pop(buffer, length);
         if (call_back)
-            call_back(true, buffer);
+            call_back(true, buffer, length);
         return true;
     }
 
-    bool receive(void *buffer, size_t buffer_length, rank_t rank, message_id_t message_id,
-                 std::function<void(bool success, void *buffer, size_t buffer_length)>
+    bool receive(void *buffer, size_t length, rank_t rank, message_id_t message_id,
+                 std::function<void(bool success, void *buffer, size_t length)>
                      callback = nullptr)
     {
-        MemBlock mem_blk(buffer, buffer_length);
-        
         if (callback) {
-            auto bind_callback = [callback](bool success, MemBlock &buffer) {
-                callback(success, buffer.get_address(), buffer.get_length());
+            auto bind_callback = [callback](bool success, void *buffer, size_t length) {
+                callback(success, buffer, length);
             };
-            return receive(mem_blk, rank, message_id, bind_callback);
+            return receive(buffer, length, rank, message_id, bind_callback);
         } else {
-            return receive(mem_blk, rank, message_id, nullptr);
+            return receive(buffer, length, rank, message_id, nullptr);
         }
     }
 

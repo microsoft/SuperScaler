@@ -10,11 +10,37 @@
 #define checkCudaErrors(err) __checkCudaErrors(err, __FILE__, __LINE__)
 inline void __checkCudaErrors(cudaError_t err, const char *file, const int line) {
   if (cudaSuccess != err) {
-    char buffer[1024] = {0};      
-    sprintf(buffer,
-            "checkCudaErrors() Driver API error = %04d \"%s\" from file <%s>, "
-            "line %i.\n",
-            err, cudaGetErrorString(err), file, line);
+    constexpr uint64_t buffer_len = 1024;
+    char buffer[buffer_len] = {0};
+    snprintf(buffer, buffer_len,
+             "checkCudaErrors() Runtime API error = %04d \"%s\" from file <%s>, "
+             "line %i.\n",
+             err, cudaGetErrorString(err), file, line);
+    throw std::runtime_error(std::string(buffer));
+  }
+}
+#endif
+
+
+#ifndef checkCuErrors
+#define checkCuErrors(err) __checkCuErrors(err, __FILE__, __LINE__)
+inline void __checkCuErrors(CUresult err, const char *file, const int line) {
+  if (CUDA_SUCCESS != err) {
+    constexpr uint64_t buffer_len = 1024;
+    char buffer[buffer_len] = {0};
+    const char *err_name = nullptr;
+    const char *err_str = nullptr;
+    const char *invalid_value_str = "[Invalid Value]";
+    if (CUDA_ERROR_INVALID_VALUE == cuGetErrorName(err, &err_name)) {
+        err_name = invalid_value_str;
+    }
+    if (CUDA_ERROR_INVALID_VALUE == cuGetErrorString(err, &err_str)) {
+        err_str = invalid_value_str;
+    }
+    snprintf(buffer, buffer_len,
+             "checkCuErrors() Driver API error = %04d \"%s: %s\" from file <%s>, "
+             "line %i.\n",
+             err, err_name, err_str, file, line);
     throw std::runtime_error(std::string(buffer));
   }
 }
@@ -23,9 +49,9 @@ inline void __checkCudaErrors(cudaError_t err, const char *file, const int line)
 
 #ifndef __FUNCTION_NAME__
     #ifdef __linux__
-        #define __FUNCTION_NAME__   __func__ 
+        #define __FUNCTION_NAME__   __func__
     #else
-        #define __FUNCTION_NAME__   __FUNCTION__  
+        #define __FUNCTION_NAME__   __FUNCTION__
     #endif
 #endif
 
@@ -39,10 +65,10 @@ public:
     }
     void lock() {
         if (flock(m_fd, LOCK_EX) < 0) {
-            throw std::runtime_error(std::string() 
-            + "Cannot exclusively lock " 
-            + get_lock_name() 
-            + " at " 
+            throw std::runtime_error(std::string()
+            + "Cannot exclusively lock "
+            + get_lock_name()
+            + " at "
             + __FUNCTION_NAME__);
         }
     }
@@ -68,10 +94,10 @@ private:
             m_fd = open(get_lock_name(), O_CREAT | O_RDONLY, S_IRUSR | S_IWUSR);
             if (m_fd < 0) {
                 throw std::runtime_error(
-                    std::string() 
-                    + "Cannot open the lock file " 
-                    + get_lock_name() 
-                    + " at " 
+                    std::string()
+                    + "Cannot open the lock file "
+                    + get_lock_name()
+                    + " at "
                     + __FUNCTION_NAME__);
             }
         }

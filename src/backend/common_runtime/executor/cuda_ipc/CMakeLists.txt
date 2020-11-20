@@ -13,9 +13,10 @@ if(CUDA_FOUND)
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CUDA_INCLUDE_DIRS}
         PARENT_SCOPE)
-        
+
     set(LIBRARIES
         ${CUDA_LIBRARIES}
+        -lcuda
         ${LIBRARIES}
         PARENT_SCOPE)
 endif()
