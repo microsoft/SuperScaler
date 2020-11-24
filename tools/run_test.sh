@@ -53,8 +53,8 @@ fi
 # Build library
 if [ -f "$BUILD_PATH/lib/libtfadaptor.so" ]
 then
-    exe mkdir -p $ROOT_PATH/lib
-    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/lib/libtfadaptor.so
+    exe mkdir -p $ROOT_PATH/src/superscaler/lib
+    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/src/superscaler/lib/libtfadaptor.so
 else
     echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
 fi

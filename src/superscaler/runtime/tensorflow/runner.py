@@ -25,8 +25,7 @@ def main():
     pbtxt_path = os.path.join(args.model_dir_prefix, 'graph.pbtxt')
     desc_path = os.path.join(args.model_dir_prefix, 'model_desc.json')
     plan_path = os.path.join(args.model_dir_prefix, 'plan.json')
-    lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                            "../../../..",
+    lib_path = os.path.abspath(os.path.join(os.environ["SUPERSCLAR_PATH"],
                                             "lib/libtfadaptor.so"))
 
     # Superscaler: initialize runtime library.

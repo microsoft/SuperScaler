@@ -381,8 +381,7 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
     '''convert sc graph to tf graph
     TODO(gbxu): the library file path should be configurable.
     '''
-    proj_path = os.path.abspath(
-        os.path.join(os.path.abspath(__file__), "../../../../../../"))
+    proj_path = os.environ["SUPERSCLAR_PATH"]
     lib_path = proj_path + "/lib/libtfadaptor.so"
     if os.path.exists(lib_path):
         tf.load_library(lib_path)
