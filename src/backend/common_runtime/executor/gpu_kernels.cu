@@ -36,7 +36,7 @@ void SumKernelGPUImpl::operator()(const T* buffer, T* memory,
 }
 
 template <class T>
-void SynchronizedCopyKernelImpl::operator()(const T* buffer, T* memory, size_t num_elements) {
+void SynchronizedCopyKernelImpl::operator()(const T* buffer, T* memory, size_t num_elements, cudaStream_t) {
     cudaMemcpy(memory, buffer, num_elements * sizeof(T), cudaMemcpyDeviceToDevice);
 }
 
@@ -73,9 +73,9 @@ void DivKernelGPUImpl::operator()(T* memory, T scale, size_t num_elements,
 template void SumKernelGPUImpl::operator()(const float* buffer, float* memory, size_t num_elements, cudaStream_t stream);
 template void SumKernelGPUImpl::operator()(const double* buffer, double* memory, size_t num_elements, cudaStream_t stream);
 template void SumKernelGPUImpl::operator()(const int* buffer, int* memory, size_t num_elements, cudaStream_t stream);
-template void SynchronizedCopyKernelImpl::operator()(const float* buffer, float* memory, size_t num_elements);
-template void SynchronizedCopyKernelImpl::operator()(const double* buffer, double* memory, size_t num_elements);
-template void SynchronizedCopyKernelImpl::operator()(const int* buffer, int* memory, size_t num_elements);
+template void SynchronizedCopyKernelImpl::operator()(const float* buffer, float* memory, size_t num_elements, cudaStream_t);
+template void SynchronizedCopyKernelImpl::operator()(const double* buffer, double* memory, size_t num_elements, cudaStream_t);
+template void SynchronizedCopyKernelImpl::operator()(const int* buffer, int* memory, size_t num_elements, cudaStream_t);
 template void ScaleKernelGPUImpl::operator()(float* memory, float scale, size_t num_elements, cudaStream_t stream);
 template void ScaleKernelGPUImpl::operator()(double* memory, double scale, size_t num_elements, cudaStream_t stream);
 template void ScaleKernelGPUImpl::operator()(int* memory, int scale, size_t num_elements, cudaStream_t stream);

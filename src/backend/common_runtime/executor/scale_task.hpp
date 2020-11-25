@@ -1,5 +1,6 @@
 #pragma once
 
+#include "executor.hpp"
 #include "task.hpp"
 #include "cpu_kernels.hpp"
 #include "gpu_kernels.hpp"
@@ -36,8 +37,9 @@ ScaleTask<T, ScaleImplement>::ScaleTask(Executor *exec, task_callback_t callback
 
 template <class T, class ScaleImplement>
 TaskState ScaleTask<T, ScaleImplement>::execute(Executor *exec) {
+    // Use default stream 0 if no exec specified.
     m_impl(m_memory, m_scale, m_num_elements,
-        exec->get_context()->compute_dev_stream);
+        exec == nullptr ? 0 : exec->get_context()->compute_dev_stream);
     return TaskState::e_success;
 }
 

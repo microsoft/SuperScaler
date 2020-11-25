@@ -33,7 +33,7 @@ public:
 
     bool send(const void *buffer, size_t length, rank_t to_rank, message_id_t,
               std::function<void(bool success, const void *buffer, size_t length)>
-                  call_back) override
+                  call_back = nullptr) override
     {
         auto it = m_buffers.find(to_rank);
         if (it == m_buffers.end()) {
@@ -45,20 +45,6 @@ public:
         if (call_back)
             call_back(true, buffer, length);
         return true;
-    }
-
-    bool send(const void *buffer, size_t length, rank_t to_rank, message_id_t message_id,
-              std::function<void(bool success, const void *buffer, size_t length)>
-                  callback = nullptr)
-    {
-        if (callback) {
-            auto bind_callback = [callback](bool success, const void *buffer, size_t length) {
-                callback(success, buffer, length);
-            };
-            return send(buffer, length, to_rank, message_id, bind_callback);
-        } else {
-            return send(buffer, length, to_rank, message_id, nullptr);
-        }
     }
 
     /**
@@ -74,7 +60,7 @@ public:
     bool receive(
         void *buffer, size_t length, rank_t rank, message_id_t,
         std::function<void(bool success, void *buffer, size_t length)>
-            call_back) override
+            call_back = nullptr) override
     {
         auto it = m_buffers.find(rank);
         if (it == m_buffers.end()) {
@@ -86,20 +72,6 @@ public:
         if (call_back)
             call_back(true, buffer, length);
         return true;
-    }
-
-    bool receive(void *buffer, size_t length, rank_t rank, message_id_t message_id,
-                 std::function<void(bool success, void *buffer, size_t length)>
-                     callback = nullptr)
-    {
-        if (callback) {
-            auto bind_callback = [callback](bool success, void *buffer, size_t length) {
-                callback(success, buffer, length);
-            };
-            return receive(buffer, length, rank, message_id, bind_callback);
-        } else {
-            return receive(buffer, length, rank, message_id, nullptr);
-        }
     }
 
 private:

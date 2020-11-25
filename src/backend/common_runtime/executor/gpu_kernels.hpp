@@ -11,7 +11,7 @@ struct SumKernelGPUImpl
 
 struct SynchronizedCopyKernelImpl {
     template <class T>
-    void operator()(const T* buffer, T* memory, size_t num_elements);
+    void operator()(const T* buffer, T* memory, size_t num_elements, compute_dev_stream_t);
 };
 
 struct ScaleKernelGPUImpl {

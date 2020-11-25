@@ -1,5 +1,6 @@
 #pragma once
 
+#include "executor.hpp"
 #include "task.hpp"
 #include "cpu_kernels.hpp"
 #include "gpu_kernels.hpp"
@@ -33,7 +34,8 @@ ReductionTask<T, Func>::ReductionTask(Executor *exec, task_callback_t callback,
 
 template <class T, class Func>
 TaskState ReductionTask<T, Func>::execute(Executor *exec) {
+    // Use default stream 0 if no exec specified.
     m_func(m_buffer, m_memory, m_num_elements,
-        exec->get_context()->compute_dev_stream);
+        exec == nullptr ? 0 : exec->get_context()->compute_dev_stream);
     return TaskState::e_success;
 }
