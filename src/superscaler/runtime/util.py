@@ -1,7 +1,6 @@
+#! /usr/bin/env python
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
-
-#! /usr/bin/env python
 
 import os
 import subprocess
