@@ -60,12 +60,12 @@ else
 fi
 
 # Test for executor
-#echo "Running test for executor:"
-#exe cd $ROOT_PATH/src/backend/common_runtime/executor/
-#exe rm -rf build && exe mkdir build && exe cd build
-#exe cmake .. -DDO_TEST=true
-#exe make -j $(nproc) gtest_parallel
-#echo "Executor test success!"
+echo "Running test for executor:"
+exe cd $ROOT_PATH/src/backend/common_runtime/executor/
+exe rm -rf build && exe mkdir build && exe cd build
+exe cmake .. -DDO_TEST=true
+exe make -j $(nproc) gtest_parallel
+echo "Executor test success!"
 
 # Test for flake8
 echo "running flake8 check:"
