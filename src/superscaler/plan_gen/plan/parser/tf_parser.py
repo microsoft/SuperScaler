@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import tensorflow as tf
 from tensorflow.core.framework import node_def_pb2
 from google.protobuf import text_format

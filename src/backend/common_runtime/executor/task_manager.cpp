@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "task_manager.hpp"
 
 TaskManager::TaskManager(task_id_t max_task_id)

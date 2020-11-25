@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 if(CUDA_FOUND)
     file(GLOB CUDA_IPC_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 

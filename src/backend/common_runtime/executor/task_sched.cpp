@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "task_sched.hpp"
 #include "worker_sched.hpp"
 #include "task_manager.hpp"

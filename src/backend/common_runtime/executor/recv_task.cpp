@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "recv_task.hpp"
 
 RecvTask::RecvTask(Executor *exec, task_callback_t callback,

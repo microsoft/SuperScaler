@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 /**
  * @file cpu_channel.hpp
  * @author Wenhao Shi(v-wenhsh@microsoft.com)

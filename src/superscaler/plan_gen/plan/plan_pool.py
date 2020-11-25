@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.plan.plan import Plan
 
 

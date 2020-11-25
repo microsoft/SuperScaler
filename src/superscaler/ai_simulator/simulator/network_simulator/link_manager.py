@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.network_simulator.link import Link
 
 

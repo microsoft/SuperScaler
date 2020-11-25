@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import yaml
 
 from superscaler.plan_gen.plan.resources.hardware import CPUHardware,\

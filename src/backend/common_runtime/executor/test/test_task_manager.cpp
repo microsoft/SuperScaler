@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include <string>
 #include <vector>
 #include <gtest/gtest.h>

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 '''
 Use graph as intermediate representation for parallelizer.
 You can utilize adapters to convert tensorflow graph, nnfusion graph, etc.

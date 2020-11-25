@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.network_simulator.flow import Flow
 from superscaler.ai_simulator.simulator.utility import transfer_rate_to_bps
 

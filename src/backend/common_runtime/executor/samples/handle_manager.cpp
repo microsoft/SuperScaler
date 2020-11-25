@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 /**
  * @Author: Xuhao Luo
  * This code shows a simple usage of HandleManager. The parent process will create

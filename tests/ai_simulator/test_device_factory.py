@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import pytest
 from superscaler.ai_simulator.simulator.device_factory import DeviceFactory
 

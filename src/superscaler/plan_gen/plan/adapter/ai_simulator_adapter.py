@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.plan.adapter.adapter import Adapter
 from superscaler.plan_gen.plan.node_list import NodeList
 

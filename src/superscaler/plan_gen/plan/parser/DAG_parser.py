@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 class DAGParser():
     def __init__(self, parser_type):
         self.type = parser_type

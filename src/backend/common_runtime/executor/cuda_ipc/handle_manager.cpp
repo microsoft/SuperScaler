@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "handle_manager.hpp"
 #include "cuda_ipc_internal.hpp"
 

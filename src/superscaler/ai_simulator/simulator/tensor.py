@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 class TensorException(Exception):
     def __init__(self, error_info):
         self.error_info = error_info

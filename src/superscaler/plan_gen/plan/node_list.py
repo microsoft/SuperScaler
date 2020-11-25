@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 class NodeList(object):
 
     def __init__(self, node_list=[]):

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 cmake_minimum_required(VERSION 3.9.0)
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.scaler_graph.parallelization.parallelism import Parallelism
 from superscaler.scaler_graph.parallelization.parallelism import \
      DataParallelism

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.utility import data_size_to_bit
 
 

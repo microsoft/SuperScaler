@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.superscaler import Superscaler, SuperscalerError
 from superscaler.scaler_graph import tf_adapter, Parallelizer, DataParallelism
 from superscaler.plan_gen import TFParser, PlanGenerator, SuperScalerAdapter

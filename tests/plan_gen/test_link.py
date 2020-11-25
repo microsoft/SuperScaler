@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.plan.resources.link import Link, PCIE, RDMA
 
 

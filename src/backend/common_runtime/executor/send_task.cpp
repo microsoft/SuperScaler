@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "send_task.hpp"
 
 SendTask::SendTask(Executor *exec, task_callback_t callback,

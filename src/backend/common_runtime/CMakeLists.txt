@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 project(superscaler_rt LANGUAGES CUDA CXX)
 
 add_library(util OBJECT)

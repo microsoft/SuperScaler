@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.computation_device import CPU, GPU
 from superscaler.ai_simulator.simulator.network_simulator.network_simulator \
     import NetworkSimulator

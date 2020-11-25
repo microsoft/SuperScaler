@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.fifo_device import FIFODevice
 from superscaler.ai_simulator.simulator.utility import transfer_rate_to_bps
 

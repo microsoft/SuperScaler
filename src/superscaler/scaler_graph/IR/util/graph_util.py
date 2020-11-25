@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import itertools
 from superscaler.scaler_graph.IR.node import CompositeNode
 from superscaler.scaler_graph.util.log import logger

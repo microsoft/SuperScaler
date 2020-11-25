@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.ai_simulator.simulator.device import Device
 from superscaler.ai_simulator.simulator.fifo_device import FIFODevice
 from superscaler.ai_simulator.simulator.node import Node, NodeMetadata

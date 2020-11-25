@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import os
 import json
 from superscaler.plan_gen.plan.allreduce_plan import AllreducePlan

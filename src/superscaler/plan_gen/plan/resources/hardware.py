@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import humanreadable as hr
 from superscaler.plan_gen.plan.resources.resource import Resource
 from superscaler.plan_gen.plan.resources.link import Link

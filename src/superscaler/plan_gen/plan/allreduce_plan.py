@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import copy
 from superscaler.plan_gen.plan.plan import Plan
 from superscaler.plan_gen.plan.node_list import NodeList

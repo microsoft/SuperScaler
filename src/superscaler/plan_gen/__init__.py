@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.plan.plan_generator import PlanGenerator
 from superscaler.plan_gen.plan.resources.resource_pool import ResourcePool
 from superscaler.plan_gen.plan.parser.tf_parser import TFParser

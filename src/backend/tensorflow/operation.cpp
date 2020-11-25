@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #include "operation.hpp"
 #include "session.hpp"
 #include "tensorflow/core/framework/common_shape_fns.h"

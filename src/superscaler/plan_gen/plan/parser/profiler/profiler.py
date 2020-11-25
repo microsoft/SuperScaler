@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.plan.parser.profiler.database_loader import \
      DatabaseLoader
 from superscaler.plan_gen.plan.parser.profiler.database_backend import \
