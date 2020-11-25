@@ -1,5 +1,0 @@
-[flake8]
-exclude = plan_gen 
-          ai_simulator
-          runtime
-          __init__.py
