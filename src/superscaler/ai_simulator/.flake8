@@ -1,3 +1,0 @@
-[flake8]
-# Exclude tools for gpu simulator
-exclude = simulator/gpu_simulator/tools/
