@@ -58,27 +58,6 @@ size_t QueueAligner::get_shared_memory_size(size_t receiver_buffer_size,
     return receiver_use + sender_buffer_size;
 }
 
-void EnableCudaDeviceAccess()
-{
-    int device_count = 0;
-    checkCudaErrors(cudaGetDeviceCount(&device_count));
-    for (int i = 0; i < device_count; ++i) {
-        for (int j = i + 1; j < device_count; ++j) {
-            int can_access;
-            checkCudaErrors(cudaDeviceCanAccessPeer(&can_access, i, j));
-            if (can_access) {
-                DeviceContextGuard guard(i);
-                checkCudaErrors(cudaDeviceEnablePeerAccess(j, 0));
-            }
-            checkCudaErrors(cudaDeviceCanAccessPeer(&can_access, j, i));
-            if (can_access) {
-                DeviceContextGuard guard(j);
-                checkCudaErrors(cudaDeviceEnablePeerAccess(i, 0));
-            }
-        }
-    }
-}
-
 CudaChannelSender::CudaChannelSender(const std::string &channel_id,
                                      int receiver_device_id,
                                      int sender_device_id,
@@ -389,7 +368,8 @@ void CudaSingleChannel::init_connection()
 
 CudaChannel::CudaChannel(const rank_t self_device, const std::vector<rank_t> &devices)
 {
-    EnableCudaDeviceAccess();
+    enable_cuda_p2p_access(self_device, devices);
+
     checkCudaErrors(cudaSetDevice(self_device));
 
     // Create a channel between self and every other device
@@ -433,4 +413,22 @@ bool CudaChannel::receive(void *buffer, size_t length, rank_t from_rank, message
     if (call_back)
         call_back(ret, buffer, length);
     return ret;
+}
+
+void CudaChannel::enable_cuda_p2p_access(const rank_t self_device,
+                                         const std::vector<rank_t> &devices)
+{
+    cudaError_t err = cudaSuccess;
+    DeviceContextGuard guard(self_device);
+    for (auto device : devices) {
+        int can_access;
+        checkCudaErrors(cudaDeviceCanAccessPeer(
+            &can_access, self_device, device));
+        if (can_access) {
+            err = cudaDeviceEnablePeerAccess(device, 0);
+            if (err != cudaErrorPeerAccessAlreadyEnabled) {
+                checkCudaErrors(err);
+            }
+        }
+    }
 }

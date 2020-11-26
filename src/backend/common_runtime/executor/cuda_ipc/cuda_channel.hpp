@@ -19,8 +19,6 @@
 #include "channel_manager.hpp"
 #include "handle_manager.hpp"
 
-void EnableCudaDeviceAccess();
-
 using ReceiverQueue = RingBufferQueue<CudaTransferMeta>;
 using SenderQueue = RingBufferQueue<CudaTransferAck>;
 using SemaphoreLock = std::lock_guard<SemaphoreMutex>;
@@ -237,5 +235,11 @@ public:
                  std::function<void(bool success, void *buffer, size_t length)> call_back) override;
 
 private:
+    /**
+     * @brief Enable CUDA P2P access from self device to all specified devices.
+     */
+    void enable_cuda_p2p_access(const rank_t self_device,
+                                const std::vector<rank_t> &devices);
+
     std::map<rank_t, std::shared_ptr<CudaSingleChannel> > m_channels;
 };

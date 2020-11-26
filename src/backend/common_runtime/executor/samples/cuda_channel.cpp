@@ -19,8 +19,6 @@ constexpr int receiver_device = 1;
 
 void SenderProcess()
 {
-    // Enable device access to get better performance
-    EnableCudaDeviceAccess();
     // Parper data
     std::array<char, test_size> input_data;
     for (int i = 0; i < test_size; ++i) {
@@ -65,8 +63,6 @@ void SenderProcess()
 
 void ReceiverProcess()
 {
-    // Enable device access to get better performance
-    EnableCudaDeviceAccess();
     // Parper data
     std::array<char, test_size> output_data;
     void *cuda_output;

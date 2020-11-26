@@ -13,6 +13,31 @@
  * Cuda Channel cannot works in single process, so here is only simple tests for channel manager
  */
 
+TEST(CudaChannel, EnableP2PAccess)
+{
+    int fake_self_device = 0;
+    std::vector<rank_t> fake_peer_devices = { 1 };
+
+    ASSERT_EQ(
+        cudaErrorPeerAccessNotEnabled,
+        cudaDeviceDisablePeerAccess(static_cast<int>(fake_peer_devices[0])));
+
+    int num_loop = 2;
+    std::unique_ptr<CudaChannel> cuda_channel = nullptr;
+    for (int i = 0; i < num_loop; i++) {
+        cuda_channel.reset(new CudaChannel(
+            static_cast<rank_t>(fake_self_device), fake_peer_devices));
+        cuda_channel.reset(nullptr);
+    }
+
+    ASSERT_EQ(
+        cudaErrorPeerAccessAlreadyEnabled,
+        cudaDeviceEnablePeerAccess(static_cast<int>(fake_peer_devices[0]), 0));
+    ASSERT_EQ(
+        cudaSuccess,
+        cudaDeviceDisablePeerAccess(static_cast<int>(fake_peer_devices[0])));
+}
+
 TEST(CudaChannel, ChannelReceiverManager)
 {
     const std::string channel_id =
