@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 # because 'docker build' cannot call GPU, so you need to run like this:

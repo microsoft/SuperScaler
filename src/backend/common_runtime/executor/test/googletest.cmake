@@ -1,3 +1,7 @@
+# Copyright (c) Microsoft Corporation - All rights reserved
+# Licensed under the MIT License
+
+
 find_package(GTest)
 if(NOT GTest_FOUND)
     configure_file(googletest.cmake.in googletest-download/CMakeLists.txt)

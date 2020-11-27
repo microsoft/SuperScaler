@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation - All rights reserved
+# Licensed under the MIT License
+
 set(GTEST_PARALLEL_DIR gtest-parallel-download)
 configure_file(gtest-parallel.cmake.in ${GTEST_PARALLEL_DIR}/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .

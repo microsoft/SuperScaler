@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation - All rights reserved
+# Licensed under the MIT License
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 wget -c https://github.com/tensorflow/models/archive/v2.3.0.zip -O models.zip

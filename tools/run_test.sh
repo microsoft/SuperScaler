@@ -1,6 +1,9 @@
 #!/bin/bash
-# execute this script at the root dir of SuperScaler project
 
+# Copyright (c) Microsoft Corporation - All rights reserved
+# Licensed under the MIT License
+
+# execute this script at the root dir of SuperScaler project
 # function to display commands
 exe() { echo "\$ ${@/eval/}" ; "$@" ; }
 

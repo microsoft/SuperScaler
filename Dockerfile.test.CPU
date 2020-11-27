@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 FROM ubuntu:18.04
 
 # run test cases (skip gpu parts) automately:
