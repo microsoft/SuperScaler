@@ -17,6 +17,7 @@ TEST(CudaChannel, EnableP2PAccess)
 {
     int fake_self_device = 0;
     std::vector<rank_t> fake_peer_devices = { 1 };
+    int can_access = 0;
 
     ASSERT_EQ(
         cudaErrorPeerAccessNotEnabled,
@@ -31,11 +32,16 @@ TEST(CudaChannel, EnableP2PAccess)
     }
 
     ASSERT_EQ(
-        cudaErrorPeerAccessAlreadyEnabled,
-        cudaDeviceEnablePeerAccess(static_cast<int>(fake_peer_devices[0]), 0));
-    ASSERT_EQ(
         cudaSuccess,
-        cudaDeviceDisablePeerAccess(static_cast<int>(fake_peer_devices[0])));
+        cudaDeviceCanAccessPeer(&can_access, fake_self_device, fake_peer_devices[0]));
+    if (can_access) {
+        ASSERT_EQ(
+            cudaErrorPeerAccessAlreadyEnabled,
+            cudaDeviceEnablePeerAccess(static_cast<int>(fake_peer_devices[0]), 0));
+        ASSERT_EQ(
+            cudaSuccess,
+            cudaDeviceDisablePeerAccess(static_cast<int>(fake_peer_devices[0])));
+    }
 }
 
 TEST(CudaChannel, ChannelReceiverManager)
