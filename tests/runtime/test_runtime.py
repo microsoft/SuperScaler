@@ -10,8 +10,8 @@ from superscaler.runtime.runtime import Runtime
 
 father_path = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../../"))
-lib_path = father_path + \
-    "/lib/libtfadaptor.so"
+lib_path = os.path.abspath(os.path.join(os.environ["SUPERSCLAR_PATH"],
+                                        "lib/libtfadaptor.so"))
 
 
 def test_runtime_import():

@@ -47,9 +47,8 @@ def test_tfruntime():
                                          "data/model_desc.json")
         plan_path = os.path.join(os.path.dirname(__file__),
                                  "data/plan.json")
-        father_path = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../.."))
-        lib_path = os.path.join(father_path, "lib/libtfadaptor.so")
+        lib_path = os.path.abspath(os.path.join(os.environ["SUPERSCLAR_PATH"],
+                                                "lib/libtfadaptor.so"))
 
         # Init TFRuntime
         rt = TFRuntime(graph_path, graph_config_path, plan_path, lib_path)
