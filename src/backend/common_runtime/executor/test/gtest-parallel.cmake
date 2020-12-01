@@ -22,5 +22,13 @@ set(GTEST_PARALLEL ${CMAKE_CURRENT_BINARY_DIR}/gtest-parallel/gtest-parallel)
 add_custom_target(gtest_parallel COMMAND ${GTEST_PARALLEL} 
     ${CMAKE_CURRENT_BINARY_DIR}/${TEST_PROJECT}
     -r${REPEAT_TIMES}
-    -w${TEST_WORKERS})
+    -w${TEST_WORKERS}
+    --gtest_filter=-*EnableP2PAccess*)
+# The UT EnableP2PAccess cannot be executed parallel
+add_custom_target(enable_p2p_access COMMAND ${GTEST_PARALLEL} 
+    ${CMAKE_CURRENT_BINARY_DIR}/${TEST_PROJECT}
+    -r5
+    -w1
+    --gtest_filter=*EnableP2PAccess*)
 add_dependencies(gtest_parallel ${TEST_PROJECT})
+add_dependencies(enable_p2p_access ${TEST_PROJECT})

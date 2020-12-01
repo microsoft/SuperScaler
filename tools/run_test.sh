@@ -68,6 +68,7 @@ exe cd $ROOT_PATH/src/backend/common_runtime/executor/
 exe rm -rf build && exe mkdir build && exe cd build
 exe cmake .. -DDO_TEST=true
 exe make -j $(nproc) gtest_parallel
+exe make -j 1 enable_p2p_access
 echo "Executor test success!"
 
 # Test for flake8
