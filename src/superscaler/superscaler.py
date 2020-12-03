@@ -95,6 +95,15 @@ class Superscaler(object):
           resource_pool: JSON file specifying hardware description and network
             topology.
         """
+        # apply_gradient_op, loss and strategy are platform-specified,
+        # Checking is done on self._init_partition_graphs function
+        if not isinstance(resource_pool, str):
+            raise SuperscalerError("resource_pool should be inited from file")
+        if not isinstance(communication_DSL, str):
+            raise SuperscalerError("communication_DSL should be str")
+        if not isinstance(deployment_setting, dict):
+            raise SuperscalerError("deployment_setting must be dict")
+
         try:
             self._create_cache_dir(self._cache_dir)
             self._tempfile = tempfile.TemporaryDirectory(

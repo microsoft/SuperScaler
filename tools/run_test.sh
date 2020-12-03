@@ -87,10 +87,9 @@ exe export TF_CPP_MIN_VLOG_LEVEL=3
 
 # Hotfix for remaining bugs:
 # --------------------------
-echo "Skipping runtime and test_superscaler_tf.py for remaining bugs"
+echo "Skipping runtime for remaining bugs"
 exe python -m pytest ../tests \
                      --ignore=../tests/runtime \
-                     --ignore=../tests/test_superscaler_tf.py \
 
 echo "Run test for runtime seperately, for remaining bugs which cause failure if Runtime being executed multi-times."
 exe python -m pytest ../tests/runtime
