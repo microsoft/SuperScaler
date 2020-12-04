@@ -33,15 +33,19 @@ def distribute_resources(deployment_setting,
                         (local_resource_dir))
 
     for ip in deployment_setting.keys():
-        # TODO chgrp "/tmp/." failed: Operation not permitted
-        run_shell_cmd('rsync -az %s %s:%s' %
-                      (local_resource_dir, ip, remote_resource_dir))
+        if ip == "localhost":
+            run_shell_cmd('rsync -az %s %s' %
+                          (local_resource_dir, remote_resource_dir))
+        else:
+            # Remote sync runtime files
+            run_shell_cmd('rsync -az %s %s:%s' %
+                          (local_resource_dir, ip, remote_resource_dir))
 
     return os.path.join(remote_resource_dir,
                         os.path.basename(local_resource_dir))
 
 
-def launch(rank2ip, rank2cmd, remote_wdir='/tmp'):
+def launch(rank2ip, rank2cmd):
     """
     this helper function helps to launch cmds in a MPMD manner,\
         and it's assumed all the ssh passwdless connections are\
@@ -60,9 +64,7 @@ def launch(rank2ip, rank2cmd, remote_wdir='/tmp'):
 
     mpirun_command = (
         'mpirun --allow-run-as-root --tag-output '
-        '-wdir {wdir} '
         '{cmds} '.format(
-            wdir=remote_wdir,
             cmds=' : '.join('-np 1 -host {ip_slots} {cmd}'.format(
                 ip_slots=ip + ':' + str(hosts_and_slots[ip]), cmd=(cmd))
                 for ip, cmd in zip(rank2ip, rank2cmd))))
