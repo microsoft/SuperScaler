@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install --no-install-recommends --allow-downgrades
     build-essential \
     git \
     wget \
+    rsync \
     python${PYTHON_VERSION} \
     python${PYTHON_VERSION}-dev \
     python3-pip

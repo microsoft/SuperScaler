@@ -8,12 +8,7 @@ from collections import defaultdict
 
 
 def run_shell_cmd(cmd):
-    p = subprocess.Popen(cmd,
-                         shell=True,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
-    out, err = p.communicate()
-    return out
+    subprocess.check_output(cmd, shell=True)
 
 
 def distribute_resources(deployment_setting,
@@ -71,4 +66,5 @@ def launch(rank2ip, rank2cmd, remote_wdir='/tmp'):
             cmds=' : '.join('-np 1 -host {ip_slots} {cmd}'.format(
                 ip_slots=ip + ':' + str(hosts_and_slots[ip]), cmd=(cmd))
                 for ip, cmd in zip(rank2ip, rank2cmd))))
-    subprocess.call(mpirun_command, shell=True)
+
+    run_shell_cmd(mpirun_command)

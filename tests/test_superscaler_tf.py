@@ -36,7 +36,7 @@ def test_superscaler_tf():
     # Init parameters
     apply_gradient_op, loss = dummy_model.SimpleCNN()
     strategy = DataParallelism(range(2))
-    deployment_setting = {"1": "10.0.0.25"}
+    deployment_setting = {"1": "localhost"}
     communication_DSL = "ring"
     resource_pool = os.path.join(
         os.path.dirname(__file__), 'plan_gen', 'data', 'resource_pool.yaml')
