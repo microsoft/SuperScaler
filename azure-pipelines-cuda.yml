@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+- dev
 
 resources:
 - repo: self
@@ -13,13 +13,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Build
-  jobs:  
-  - job: BuildDocker
+- stage: BuildAndRun
+  jobs:
+  - job: BuildAndRun
     steps:
     - script: docker build -t superscaler_cuda -f Dockerfile.test.CUDA . 
-- stage: Run
-  jobs:
-  - job: RunUniTest
-    steps:
     - script: docker run --runtime=nvidia --rm superscaler_cuda
