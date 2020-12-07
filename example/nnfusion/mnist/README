@@ -1,0 +1,15 @@
+
+[deps]
+git clone msrasrg@vs-ssh.visualstudio.com:v3/msrasrg/SuperScaler/SuperScaler && cd SuperScaler  && pip install . && cd - && rm -fr SuperScaler
+
+[data]
+put ur [input model file] and [resource_pool file] inside ./data folder
+
+[compile]
+../../../tools/nnfusion_dp_single_host.sh   data/mnist_mlp.onnx "-f onnx -p \"batch:3\" -fautodiff -ftraining_mode -fextern_result_memory=True" 10.0.0.25:2  data/resource_pool.yaml
+
+[build]
+cd build && cmake . > /dev/null && make -j > /dev/null || make
+
+[run]
+bash launch.sh
