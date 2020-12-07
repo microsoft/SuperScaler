@@ -142,7 +142,7 @@ std::unordered_map<std::string, size_t> parse_json(superscaler::util::json j)
             len *= i;
         if (ops.find(tensor_name) == ops.end())
         {
-            LOG(INFO) << tensor_name << ": " << len;
+            VLOG(1)<< tensor_name << ": " << len;
             ops[tensor_name] = (len);
         }
     }

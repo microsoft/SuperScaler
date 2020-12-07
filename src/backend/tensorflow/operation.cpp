@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#include "operation.hpp"
-#include "session.hpp"
 #include "tensorflow/core/framework/common_shape_fns.h"
 #include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/op_kernel.h"
@@ -15,58 +13,9 @@
 #include "tensorflow/stream_executor/stream.h"
 // #endif
 #include "gpu_util.hpp"
+#include "session.hpp"
 
-superscaler::Session sess;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-//sess is shared global per tf process
-void sc_init(const char* plan_path)
-{
-    sess.Create(plan_path);
-}
-
-void sc_finalize()
-{
-    sess.Close();
-}
-
-void sc_get_world_size(int* size)
-{
-    *size = sess.GetWorldSize();
-}
-
-void sc_get_device_id(int* device_id)
-{
-    *device_id = sess.GetDeviceId();
-}
-
-void sc_get_host_id(int* host_id)
-{
-    *host_id = sess.GetHostId();
-}
-
-// in-place allreduce
-void sc_allreduce(const char* tensor_name, float* data, size_t size, void* stream)
-{
-    sess.AllReduce(tensor_name, data, size, stream);
-}
-
-void sc_send(const char* tensor_name, unsigned char* input, size_t size, void* stream)
-{
-    sess.Send(tensor_name, input, size);
-}
-
-void sc_recv(const char* tensor_name, unsigned char** output, size_t* size, void* stream)
-{
-    sess.Recv(tensor_name, output, size);
-}
-
-#ifdef __cplusplus
-}
-#endif
+extern superscaler::Session sess;
 
 namespace tensorflow
 {
@@ -158,7 +107,7 @@ namespace tensorflow
             auto* out_cudaptr = output.data();
             auto size = output.size();
 
-            DCHECK_EQ(in_cudaptr, out_cudaptr);
+            // DCHECK_EQ(in_cudaptr, out_cudaptr);
 
             // allreduce
             VLOG(1) << reduction_ << " superscaler async allreduce " << collective_prefix_
@@ -170,7 +119,7 @@ namespace tensorflow
                 done();
             };
 
-            sc_allreduce(collective_prefix_.c_str(), out_cudaptr, size, nullptr);
+            sess.AllReduce(collective_prefix_.c_str(), out_cudaptr, size, nullptr);
             auto st = Status::OK();
             cb(Status::OK());
         }
@@ -234,10 +183,10 @@ namespace tensorflow
             std::string send;
             val_proto.SerializeToString(&send);
             VLOG(1) << "sc send got size: " << send.size();
-            sc_send(key_prefix_.c_str(),
-                    (unsigned char*)const_cast<char*>(send.c_str()),
-                    send.size(),
-                    nullptr);
+            sess.Send(key_prefix_.c_str(),
+                      (unsigned char*)const_cast<char*>(send.c_str()),
+                      send.size(),
+                      nullptr);
             auto st = Status::OK();
             cb(st);
         }
@@ -292,7 +241,7 @@ namespace tensorflow
             // OP_REQUIRES_OK_ASYNC(c, c->allocate_output(0, shape, &output), done);
             char* buff;
             size_t size;
-            sc_recv(key_prefix_.c_str(), (unsigned char**)&buff, &size, nullptr);
+            sess.Recv(key_prefix_.c_str(), (unsigned char**)&buff, &size, nullptr);
             auto st = Status::OK();
 
             string recv(buff);

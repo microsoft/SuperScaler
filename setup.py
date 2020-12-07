@@ -15,7 +15,7 @@ CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 # set the (lib name, src dir from build, dst dir to install) during install_lib
 global LIB_INSTALL_LIST
 LIB_INSTALL_LIST = [
-    ('libtfadaptor.so', 'lib/', 'superscaler/lib/')
+    ('libsuperscaler_pywrap.so', 'lib/', 'superscaler/lib/')
 ]
 
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
             'tensorflow-gpu': tensorflow_gpu_requires,
             'all-frameworks': all_frameworks_requires
         },
-        ext_modules=[CMakeExtension('libtfadpter')],
+        ext_modules=[CMakeExtension('libsuperscaler_pywrap')],
         cmdclass={
             'build_ext': BuildExt,
             'install_lib': InstallLib,

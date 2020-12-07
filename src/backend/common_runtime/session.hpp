@@ -9,11 +9,6 @@
 #include <vector>
 #include "executor_pub.hpp"
 #include "util.hpp"
-
-#define SC_DISABLE_COPY(Class)                                                                     \
-    Class(const Class&);                                                                           \
-    Class& operator=(const Class&);
-
 namespace superscaler
 {
     class Session
@@ -29,12 +24,19 @@ namespace superscaler
                        size_t size,
                        void* stream = nullptr);
 
-        void Send(const char* tensor_name, unsigned char* input, size_t size);
-        void Recv(const char* tensor_name, unsigned char** output, size_t* size);
+        void Send(const char* tensor_name,
+                  unsigned char* input,
+                  size_t size,
+                  void* stream = nullptr);
+        void Recv(const char* tensor_name,
+                  unsigned char** output,
+                  size_t* size,
+                  void* stream = nullptr);
 
         inline int GetWorldSize() { return num_participants_; }
         inline int GetDeviceId() { return device_id_; }
         inline int GetHostId() { return host_id_; }
+
     private:
         //parse plan from json format
         void ParsePlan(util::json);
@@ -57,7 +59,7 @@ namespace superscaler
         void* recv_buf_;
         size_t recv_buf_sze_;
         std::mutex sc_mu_;
-        SC_DISABLE_COPY(Session);
+        SC_DISALLOW_COPY_AND_ASSIGN(Session);
     };
 
 }; // namespace superscaler

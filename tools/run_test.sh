@@ -54,12 +54,12 @@ else
 fi
 
 # Build library
-if [ -f "$BUILD_PATH/lib/libtfadaptor.so" ]
+if [ -f "$BUILD_PATH/lib/libsuperscaler_pywrap.so" ]
 then
     exe mkdir -p $ROOT_PATH/src/superscaler/lib
-    exe ln -sf $BUILD_PATH/lib/libtfadaptor.so $ROOT_PATH/src/superscaler/lib/libtfadaptor.so
+    exe ln -sf $BUILD_PATH/lib/libsuperscaler_pywrap.so $ROOT_PATH/src/superscaler/lib/libsuperscaler_pywrap.so
 else
-    echo 'libtfadaptor.so not found, skip some tests rely on libtfadptor.so'
+    echo 'libsuperscaler_pywrap.so not found, skip some tests rely on libsuperscaler_pywrap.so'
 fi
 
 # Test for executor

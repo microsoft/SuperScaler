@@ -29,7 +29,7 @@ def main():
     desc_path = os.path.join(args.model_dir_prefix, 'model_desc.json')
     plan_path = os.path.join(args.model_dir_prefix, 'plan.json')
     lib_path = os.path.abspath(os.path.join(os.environ["SUPERSCLAR_PATH"],
-                                            "lib/libtfadaptor.so"))
+                                            "lib/libsuperscaler_pywrap.so"))
 
     # Superscaler: initialize runtime library.
     sc = rt.TFRuntime(pbtxt_path, desc_path, plan_path, lib_path)

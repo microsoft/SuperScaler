@@ -67,7 +67,7 @@ void process_func(TestProcessContext<DataType> ctx)
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 #endif
 
-    int steps = 100;
+    int steps = 10000;
     for (int i = 0; i < steps; ++i)
     {
         sess.AllReduce("AllReduce_0", sendbuff, ctx.size, nullptr);
@@ -103,6 +103,7 @@ TEST(TwoPeerSingleAllReduceTest, PCIE_RING)
     "device_id": "0",
     "device_type": "GPU",
     "num_peers": "2",
+    "recv_buffer_size": 61440,
     "tasks": [
         {
             "index": 0,
@@ -216,6 +217,7 @@ TEST(TwoPeerSingleAllReduceTest, PCIE_RING)
     "device_id": "1",
     "device_type": "GPU",
     "num_peers": "2",
+    "recv_buffer_size": 61440,
     "tasks": [
         {
             "index": 4,
@@ -332,8 +334,8 @@ TEST(TwoPeerSingleAllReduceTest, PCIE_RING)
     srand(time(0));
     for (int i = 0; i < test_size; i++)
     {
-        tensor_0[i] = rand()%10000 * 0.33;
-        tensor_1[i] = rand()%10000 * 0.33;
+        tensor_0[i] = rand() % 10000 * 0.33;
+        tensor_1[i] = rand() % 10000 * 0.33;
         expected[i] = (tensor_0[i] + tensor_1[i]) / 2;
     }
     pid_t pid = fork();

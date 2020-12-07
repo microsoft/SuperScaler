@@ -4,13 +4,13 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(
-  tfadaptor
+  tf_comm_ops
   VERSION 0.1
-  DESCRIPTION "superscaler plugin for tensorflow"
+  DESCRIPTION "superscaler communication ops for tensorflow"
   LANGUAGES CUDA CXX)
 
-add_library(${PROJECT_NAME} SHARED)
-target_sources(${PROJECT_NAME} PRIVATE operation.hpp operation.cpp gpu_util.hpp)
+add_library(${PROJECT_NAME} OBJECT)
+target_sources(${PROJECT_NAME} PRIVATE operation.cpp gpu_util.hpp)
 target_compile_definitions(${PROJECT_NAME} PRIVATE -D_GLIBCXX_USE_CXX11_ABI=0
                                                    -DNDEBUG)
 target_include_directories(
@@ -19,7 +19,4 @@ target_include_directories(
             $<INSTALL_INTERFACE:.>
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC superscaler_rt)
-target_link_libraries(${PROJECT_NAME} PUBLIC tf_lib)
+target_link_libraries(${PROJECT_NAME} PUBLIC tf_lib superscaler_rt)

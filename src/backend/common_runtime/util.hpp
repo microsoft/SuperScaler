@@ -6,6 +6,10 @@
 #include <sstream>
 #include "nlohmann/json.hpp"
 
+#define SC_DISALLOW_COPY_AND_ASSIGN(TypeName)                                                      \
+    TypeName(const TypeName&) = delete;                                                            \
+    void operator=(const TypeName&) = delete
+
 namespace superscaler
 {
     enum
@@ -18,22 +22,39 @@ namespace superscaler
 
     namespace util
     {
-        class Logger
+        class NullLogger
         {
         public:
-            Logger(const char* fname, int line, int severity);
+            NullLogger(const char* fname, int line, int severity)
+                : fname_(fname)
+                , line_(line)
+                , severity_(severity)
+            {
+            }
+            ~NullLogger() {}
             std::ostream& stream() { return sstream_; }
-            ~Logger();
-            static int MinLogLevelFromEnv();
 
         protected:
-            void GenerateLogMessage();
-
-        private:
             const char* fname_;
             int line_;
             int severity_;
             std::stringstream sstream_;
+        };
+
+        class Logger : public NullLogger
+        {
+        public:
+            Logger(const char* fname, int line, int severity)
+                : NullLogger(fname, line, severity)
+            {
+            }
+            ~Logger();
+            static int MinLogLevelFromEnv();
+            static int MinVLogLevelFromEnv();
+            static bool VlogActivated(const char*, int level);
+
+        protected:
+            void GenerateLogMessage();
         };
 
         using json = nlohmann::json;
@@ -53,3 +74,15 @@ namespace superscaler
 #define _SC_LOG_ERROR ::superscaler::util::Logger(__FILE__, __LINE__, ::superscaler::ERROR).stream()
 
 #define LOG(severity) _SC_LOG_##severity
+
+#define VLOG_IS_ON(lvl)                                                                            \
+    (([](int level, const char* fname) -> bool {                                                   \
+        static const bool vlog_activated =                                                         \
+            ::superscaler::util::Logger::VlogActivated(fname, level);                              \
+        return vlog_activated;                                                                     \
+    })(lvl, __FILE__))
+
+#define VLOG(level)                                                                                \
+    (!VLOG_IS_ON(level))                                                                           \
+        ? ::superscaler::util::NullLogger(__FILE__, __LINE__, ::superscaler::INFO).stream()        \
+        : ::superscaler::util::Logger(__FILE__, __LINE__, ::superscaler::INFO).stream()

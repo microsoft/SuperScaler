@@ -24,12 +24,20 @@ namespace superscaler
                 return 0;
         }
 
-        Logger::Logger(const char* fname, int line, int severity)
-            : fname_(fname)
-            , line_(line)
-            , severity_(severity)
+        int Logger::MinVLogLevelFromEnv()
         {
+            const char* sc_env_var_val = getenv("SC_MIN_VLOG_LEVEL");
+            if (sc_env_var_val)
+                return std::stoi(sc_env_var_val);
+            else
+                return 0;
         }
+
+        bool Logger::VlogActivated(const char* fname, int level)
+        {
+            return (level <= MinVLogLevelFromEnv());
+        }
+
         Logger::~Logger()
         {
             if (severity_ >= Logger::MinLogLevelFromEnv())

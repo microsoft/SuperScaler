@@ -47,8 +47,9 @@ def test_tfruntime():
                                          "data/model_desc.json")
         plan_path = os.path.join(os.path.dirname(__file__),
                                  "data/plan.json")
-        lib_path = os.path.abspath(os.path.join(os.environ["SUPERSCLAR_PATH"],
-                                                "lib/libtfadaptor.so"))
+        lib_path = os.path.abspath(os.path.join(
+            os.environ["SUPERSCLAR_PATH"],
+            "lib/libsuperscaler_pywrap.so"))
 
         # Init TFRuntime
         rt = TFRuntime(graph_path, graph_config_path, plan_path, lib_path)

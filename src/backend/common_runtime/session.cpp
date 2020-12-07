@@ -15,7 +15,7 @@ namespace superscaler
 {
     void Session::Create(const char* plan_fpath)
     {
-        LOG(INFO) << "superscaler session is created from " << std::string(plan_fpath);
+        VLOG(1) << "superscaler session is created from " << std::string(plan_fpath);
         auto plan = util::JsonParser::load_from(plan_fpath);
         Create(plan);
     }
@@ -42,22 +42,20 @@ namespace superscaler
         checkCudaErrors(cudaSetDevice(device_id_));
         if (recv_buf_)
             checkCudaErrors(cudaFree(recv_buf_));
-        LOG(INFO) << "superscaler session is destoryed";
+        VLOG(1) << "superscaler session is destoryed";
     }
 
     template <class DataType>
     void Session::AllReduce(const char* tensor_name, DataType* ioput, size_t size, void* stream)
     {
-        // if (stream)
-        //     throw std::runtime_error("not supported yet!");
 #ifndef NDEBUG
-        LOG(INFO) << "[" << host_id_ << ":" << device_id_ << "]: allreduce" << tensor_name << " @ "
-                  << ioput << " with size: " << size;
+        VLOG(1) << "[" << host_id_ << ":" << device_id_ << "]: allreduce " << tensor_name << " @ "
+                << ioput << " with size: " << size;
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 #endif
         auto tasks = table_[tensor_name];
         // #ifndef NDEBUG
-        LOG(INFO) << tensor_name << " got " << tasks.size() << " plans to run";
+        VLOG(1) << tensor_name << " got " << tasks.size() << " plans to run";
         // #endif
         for (auto& element : tasks)
         {
@@ -84,8 +82,8 @@ namespace superscaler
                 if (op == "Send")
                 {
                     uint target_id = std::stoi(target_device_id);
-                    LOG(INFO) << "[" << host_id_ << "/" << device_id_ << "]: send " << msg_id
-                              << " @ " << ioput << " with size: " << sze << " to " << target_id;
+                    VLOG(1) << "[" << host_id_ << "/" << device_id_ << "]: send " << msg_id << " @ "
+                            << ioput + offset << " with size: " << sze << " to " << target_id;
                     send_task_id = exec_->create_task<SendTask>(exec_.get(),
                                                                 nullptr,
                                                                 cuda_channel_,
@@ -97,13 +95,15 @@ namespace superscaler
                 else if (op == "Recv")
                 {
                     uint target_id = std::stoi(target_device_id);
-                    LOG(INFO) << "[" << host_id_ << "/" << device_id_ << "]: recv " << msg_id
-                              << " @ " << ioput << " with size: " << sze << " from " << target_id;
-                    ;
+
                     std::string reduction_op = element["reduction"];
 
                     if (reduction_op == "sum")
                     {
+                        VLOG(1) << "[" << host_id_ << "/" << device_id_ << "]: recv " << msg_id
+                                << " @ " << recv_buf_ << " with size: " << sze << " from "
+                                << target_id;
+                        ;
                         recv_task_id = exec_->create_task<RecvTask>(exec_.get(),
                                                                     nullptr,
                                                                     cuda_channel_,
@@ -111,14 +111,16 @@ namespace superscaler
                                                                     msg_id,
                                                                     recv_buf_,
                                                                     sze * sizeof(DataType));
-                        LOG(INFO) << "[" << host_id_ << "/" << device_id_ << "]: reduce " << msg_id
-                                  << " @ " << ioput + offset << " with size: " << sze;
+
+                        VLOG(1) << "[" << host_id_ << "/" << device_id_ << "]: reduce " << msg_id
+                                << " @ " << ioput + offset << " with size: " << sze;
                         reduce_task_id =
                             exec_->create_task<ReductionTask<DataType, SumKernelGPUImpl>>(
                                 exec_.get(),
-                                [&](TaskState) { cudaStreamSynchronize(
-                                                     exec_->get_context()->compute_dev_stream); },
-                                (const DataType *)recv_buf_,
+                                [&](TaskState) {
+                                    cudaStreamSynchronize(exec_->get_context()->compute_dev_stream);
+                                },
+                                (const DataType*)recv_buf_,
                                 ioput + offset,
                                 SumKernelGPUImpl(),
                                 sze);
@@ -142,14 +144,17 @@ namespace superscaler
                     }
                     else
                     {
-                        recv_task_id = exec_->create_task<RecvTask>(
-                            exec_.get(),
-                            nullptr,
-                            cuda_channel_,
-                            target_id,
-                            msg_id,
-                            ioput + offset,
-                            sze * sizeof(DataType));
+                        VLOG(1) << "[" << host_id_ << "/" << device_id_ << "]: recv " << msg_id
+                                << " @ " << ioput + offset << " with size: " << sze << " from "
+                                << target_id;
+                        ;
+                        recv_task_id = exec_->create_task<RecvTask>(exec_.get(),
+                                                                    nullptr,
+                                                                    cuda_channel_,
+                                                                    target_id,
+                                                                    msg_id,
+                                                                    ioput + offset,
+                                                                    sze * sizeof(DataType));
 
                         exec_->add_task(send_task_id);
                         exec_->add_task(recv_task_id);
@@ -173,64 +178,33 @@ namespace superscaler
         //avg
         ScaleTask<DataType, DivKernelGPUImpl> scale_task(
             exec_.get(),
-            [&](TaskState) { cudaStreamSynchronize(
-                                 exec_->get_context()->compute_dev_stream); }, ioput, num_participants_, DivKernelGPUImpl(), size);
+            [&](TaskState) { cudaStreamSynchronize(exec_->get_context()->compute_dev_stream); },
+            ioput,
+            num_participants_,
+            DivKernelGPUImpl(),
+            size);
         scale_task();
         if (scale_task.get_state() != TaskState::e_success)
             fprintf(stderr, "[Peer %d] Div error\n", device_id_);
+
 #ifndef NDEBUG
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-        LOG(INFO) << " with time elapsed: "
-                  << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
-                  << " [µs]";
+        VLOG(1) << " with time elapsed: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+                << " [µs]";
 #endif
     }
 
-    template void Session::AllReduce(const char* tensor_name,
-                                     float* ioput,
-                                     size_t size,
-                                     void* stream = nullptr);
-    template void Session::AllReduce(const char* tensor_name,
-                                     int* ioput,
-                                     size_t size,
-                                     void* stream = nullptr);
-
-    void Session::Send(const char* tensor_name, unsigned char* input, size_t size)
+    void Session::Send(const char* tensor_name, unsigned char* input, size_t size, void* stream)
     {
         //TODO: add send implementation
-        //         std::string tensor(tensor_name);
-        //         std::hash<std::string> hasher;
-        //         int tag = static_cast<long long>(hasher(tensor)) & 0x7FFFFFFF;
-        //         int sendTarget = (host_id_ + 1) % 2;
-        // #ifndef NDEBUG
-        //         LOG(INFO) << "[" << host_id_ << "]: send to " << sendTarget
-        //                   << " with tag: " << tag;
-        // #endif
-        //         int ret = MPI_Send(input, size, MPI_UNSIGNED_CHAR, sendTarget, tag, MPI_COMM_WORLD);
+        throw std::runtime_error("not supported yet!");
     }
 
-    void Session::Recv(const char* tensor_name, unsigned char** output, size_t* size)
+    void Session::Recv(const char* tensor_name, unsigned char** output, size_t* size, void* stream)
     {
         //TODO: add recv implementation
-        //         std::string tensor(tensor_name);
-        //         std::hash<std::string> hasher;
-        //         int tag = static_cast<long long>(hasher(tensor)) & 0x7FFFFFFF;
-        //         int receiveTarget = (host_id_ + 1) % 2;
-        // #ifndef NDEBUG
-        //         LOG(INFO) << "[" << host_id_ << "]: recv from " << receiveTarget
-        //                   << " with tag: " << tag;
-        // #endif
-        //         MPI_Status recv_status;
-        //         MPI_Probe(receiveTarget, tag, MPI_COMM_WORLD, &recv_status);
-        //         MPI_Get_count(&recv_status, MPI_UNSIGNED_CHAR, (int*)size);
-        //         *output = new unsigned char[*size];
-        //         int ret = MPI_Recv(*output,
-        //                            *size,
-        //                            MPI_UNSIGNED_CHAR,
-        //                            receiveTarget,
-        //                            tag,
-        //                            MPI_COMM_WORLD,
-        //                            MPI_STATUS_IGNORE);
+        throw std::runtime_error("not supported yet!");
     }
 
     void Session::ParsePlan(util::json j)
@@ -243,12 +217,13 @@ namespace superscaler
         device_id_ = static_cast<uint>(std::stoi(device_id));
         num_participants_ = static_cast<uint>(std::stoi(num_peers));
 
-        //TODO: configurable thru plan or env var, defaults to 256MB
-        recv_buf_sze_ = 256 * 1024 * 1024;
+        //configurable thru plan or env var, defaults to 256MB
+        recv_buf_sze_ = j.contains("recv_buffer_size") ? j["recv_buffer_size"].get<size_t>()
+                                                       : 256 * 1024 * 1024;
+        VLOG(1) << "recv_buf_sze_ : " << recv_buf_sze_;
 
         for (auto element : j["tasks"])
         {
-            // LOG(INFO)<< element << '\n';
             std::string target_host_id = element["target_host_id"];
             std::string target_device_id = element["target_device_id"];
             std::string tensor_name = element["tensor_name"];
@@ -281,5 +256,18 @@ namespace superscaler
         else
             return false;
     }
+
+    template void Session::AllReduce(const char* tensor_name,
+                                     double* ioput,
+                                     size_t size,
+                                     void* stream = nullptr);
+    template void Session::AllReduce(const char* tensor_name,
+                                     float* ioput,
+                                     size_t size,
+                                     void* stream = nullptr);
+    template void Session::AllReduce(const char* tensor_name,
+                                     int* ioput,
+                                     size_t size,
+                                     void* stream = nullptr);
 
 }; // namespace superscaler

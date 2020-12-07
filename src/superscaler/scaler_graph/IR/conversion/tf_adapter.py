@@ -385,7 +385,7 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
     TODO(gbxu): the library file path should be configurable.
     '''
     proj_path = os.environ["SUPERSCLAR_PATH"]
-    lib_path = proj_path + "/lib/libtfadaptor.so"
+    lib_path = proj_path + "/lib/libsuperscaler_pywrap.so"
     if os.path.exists(lib_path):
         tf.load_library(lib_path)
     else:
