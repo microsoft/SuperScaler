@@ -19,3 +19,4 @@ stages:
     steps:
     - script: docker build -t superscaler_cuda -f Dockerfile.test.CUDA . 
     - script: docker run --runtime=nvidia --rm superscaler_cuda
+

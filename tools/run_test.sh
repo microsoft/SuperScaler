@@ -77,7 +77,7 @@ exe cd $ROOT_PATH
 exe $PYTHON -m flake8
 echo "flake8 check succeed"
 
-# Test for superscaler
+# Test for superscaler source code
 echo "Running test for superscaler:"
 exe cd $ROOT_PATH/src
 exe export TF_CPP_MIN_VLOG_LEVEL=3 
