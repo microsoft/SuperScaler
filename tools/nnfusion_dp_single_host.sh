@@ -28,7 +28,7 @@ echo "-- Creating build dir for compiling NNFusion model"
 rm -fr build && mkdir build && cd build && cp -r ../nnf_py . 
 pushd . > /dev/null
 echo "-- Cloning NNFusion repo"
-rm -fr NNFusion && git clone --quiet sysdnn@vs-ssh.visualstudio.com:v3/sysdnn/NNFusion/NNFusion && cd NNFusion
+rm -fr NNFusion && git clone --quiet https://sysdnn.visualstudio.com/NNFusion/_git/NNFusion && cd NNFusion && bash ./maint/script/install_dependency.sh
 echo "-- Building NNFusion"
 git checkout  v-zegao/superscaler-rc  --quiet && mkdir build && cd build && cmake .. > /dev/null
 make -j > /dev/null || make
@@ -71,8 +71,8 @@ do
     fi
 done
 
-echo "-- Writing launch command into launch.sh "
-echo $LAUNCH_CMD > launch.sh && chmod +x launch.sh
+echo "-- Writing launch command into train.sh "
+echo $LAUNCH_CMD > train.sh && chmod +x train.sh
 echo "-- Compile successfully"
 
 
