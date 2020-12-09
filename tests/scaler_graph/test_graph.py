@@ -1,15 +1,11 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-import tempfile
 import os
 import json
 from pathlib import Path
-WORKDIR_HANDLER = tempfile.TemporaryDirectory()
-os.environ["TF_DUMP_GRAPH_PREFIX"] = WORKDIR_HANDLER.name
-os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "4"
-from superscaler.scaler_graph.IR.conversion import tf_adapter  # noqa: E402
-from superscaler.scaler_graph.IR import operator  # noqa: E402
+from superscaler.scaler_graph.IR.conversion import tf_adapter
+from superscaler.scaler_graph.IR import operator
 
 
 def test_graph_io():
@@ -17,14 +13,18 @@ def test_graph_io():
         import sc graph from tf pbtxt file;
         export sc graph into tf pbtxt file;
     '''
-    tf_pbtxt_path = os.path.join(os.path.dirname(__file__), "data",
-                                 "SimpleCNNRun.pbtxt")
-    sc_graph = tf_adapter.import_graph_from_tf_file(tf_pbtxt_path)
+    tf_pbtxt_path = os.path.join(os.path.dirname(__file__), "data/matmul",
+                                 "MatmulRun.pbtxt")
+    config_file = os.path.join(os.path.dirname(__file__), "data/matmul",
+                               "MatmulRun_model_desc.json")
+    tf_runtime_config = json.loads(Path(config_file).read_text())
+    sc_graph = tf_adapter.import_graph_from_tf_pbtxts([tf_pbtxt_path],
+                                                      tf_runtime_config)
     sc_graph_serialization_file = \
         os.path.join(os.path.dirname(__file__),
-                     "data", "SimpleCNNRun.json")
+                     "data/matmul", "MatmulRun.json")
     file = Path(sc_graph_serialization_file)
-    assert (len(sc_graph.nodes) == 130)
+    assert (len(sc_graph.nodes) == 6)
     assert (json.loads(file.read_text()) == json.loads(sc_graph.json()))
 
 
@@ -32,9 +32,13 @@ def test_remove_nodes():
     '''test:
         remove node and edge
     '''
-    tf_pbtxt_path = os.path.join(os.path.dirname(__file__),
-                                 "data", "MatmulRun.pbtxt")
-    sc_graph = tf_adapter.import_graph_from_tf_file(tf_pbtxt_path)
+    tf_pbtxt_path = os.path.join(os.path.dirname(__file__), "data/matmul",
+                                 "MatmulRun.pbtxt")
+    config_file = os.path.join(os.path.dirname(__file__), "data/matmul",
+                               "MatmulRun_model_desc.json")
+    tf_runtime_config = json.loads(Path(config_file).read_text())
+    sc_graph = tf_adapter.import_graph_from_tf_pbtxts([tf_pbtxt_path],
+                                                      tf_runtime_config)
     node_names = [node.name for node in sc_graph.nodes]
     for node_name in node_names:
         node = sc_graph.get_node_by_name(node_name)
@@ -43,9 +47,13 @@ def test_remove_nodes():
 
 
 def test_insert_node():
-    tf_pbtxt_path = os.path.join(os.path.dirname(__file__),
-                                 "data", "MatmulRun.pbtxt")
-    sc_graph = tf_adapter.import_graph_from_tf_file(tf_pbtxt_path)
+    tf_pbtxt_path = os.path.join(os.path.dirname(__file__), "data/matmul",
+                                 "MatmulRun.pbtxt")
+    config_file = os.path.join(os.path.dirname(__file__), "data/matmul",
+                               "MatmulRun_model_desc.json")
+    tf_runtime_config = json.loads(Path(config_file).read_text())
+    sc_graph = tf_adapter.import_graph_from_tf_pbtxts([tf_pbtxt_path],
+                                                      tf_runtime_config)
     edge = sc_graph.get_node_by_name("MatMul").in_edges[0]  # x --> matmul
     sc_graph.remove_edge(edge)
 
@@ -64,6 +72,6 @@ def test_insert_node():
 
     inserted_allreduce_file = \
         os.path.join(os.path.dirname(__file__),
-                     "data", "MatmulRunAllreduce.json")
+                     "data/matmul", "MatmulRunAllreduce.json")
     file = Path(inserted_allreduce_file)
     assert (file.read_text() == sc_graph.json())

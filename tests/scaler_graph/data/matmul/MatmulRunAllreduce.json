@@ -1,0 +1,185 @@
+{
+    "attrs": {
+        "initialized_variables": {},
+        "library": null,
+        "lower_name_func": null,
+        "meta_graph": null,
+        "versions": null
+    },
+    "nodes": [
+        {
+            "attrs": {
+                "T": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": [
+                        null
+                    ]
+                },
+                "transpose_a": false,
+                "transpose_b": false
+            },
+            "in_edges": [
+                "x_allreduce",
+                "w"
+            ],
+            "name": "MatMul",
+            "op": "Operator",
+            "original_op": "MatMul",
+            "output_size": 1
+        },
+        {
+            "attrs": {
+                "T": null,
+                "index": 0,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [
+                            -1
+                        ],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": []
+                }
+            },
+            "in_edges": [
+                "MatMul"
+            ],
+            "name": "sc_retval_MatMul_0_0",
+            "op": "Operator",
+            "original_op": "_Retval",
+            "output_size": 0
+        },
+        {
+            "attrs": {
+                "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": [
+                        null
+                    ]
+                },
+                "value": "Unsupport type: TensorProto"
+            },
+            "in_edges": [],
+            "name": "w",
+            "op": "Operator",
+            "original_op": "Const",
+            "output_size": 1
+        },
+        {
+            "attrs": {
+                "T": null,
+                "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": [
+                        null
+                    ]
+                }
+            },
+            "in_edges": [
+                "x/shape_as_tensor",
+                "x/Const"
+            ],
+            "name": "x",
+            "op": "Operator",
+            "original_op": "Fill",
+            "output_size": 1
+        },
+        {
+            "attrs": {
+                "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": [
+                        null
+                    ]
+                },
+                "value": "Unsupport type: TensorProto"
+            },
+            "in_edges": [],
+            "name": "x/Const",
+            "op": "Operator",
+            "original_op": "Const",
+            "output_size": 1
+        },
+        {
+            "attrs": {
+                "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
+                "tf": {
+                    "device": "",
+                    "dtypes": [
+                        null
+                    ]
+                },
+                "value": "Unsupport type: TensorProto"
+            },
+            "in_edges": [],
+            "name": "x/shape_as_tensor",
+            "op": "Operator",
+            "original_op": "Const",
+            "output_size": 1
+        },
+        {
+            "attrs": {
+                "T": null,
+                "num_devices": "2",
+                "reduction": "sum",
+                "tensor_name": "x_allreduce"
+            },
+            "in_edges": [
+                "x"
+            ],
+            "name": "x_allreduce",
+            "op": "AllreduceOp",
+            "original_op": null,
+            "output_size": 1
+        }
+    ]
+}

@@ -32,8 +32,7 @@ def test_superscaler():
 
     # We didn't do any real job on the virtual Superscaler,
     # Therefore we just use fake input for testing.
-    apply_gradient_op = "No check for apply_gradient_op on Superscaler"
-    loss = "No check for loss on Superscaler"
+    session_run_params = "No check for session_run_params on Superscaler"
     strategy = "No check for strategy on Superscaler"
 
     # We can test the deployment_setting and resource_pool here.
@@ -44,18 +43,18 @@ def test_superscaler():
 
     # Test wrong deployment_setting input
     with pytest.raises(SuperscalerError):
-        sc.init(apply_gradient_op, loss, None, strategy,
+        sc.init(session_run_params, None, strategy,
                 communication_DSL, resource_pool)
     # Test wrong communication_DSL input
     with pytest.raises(SuperscalerError):
-        sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+        sc.init(session_run_params, deployment_setting, strategy,
                 None, resource_pool)
     # Test wrong resource_pool input
     with pytest.raises(SuperscalerError):
-        sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+        sc.init(session_run_params, deployment_setting, strategy,
                 communication_DSL, None)
 
-    sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+    sc.init(session_run_params, deployment_setting, strategy,
             communication_DSL, resource_pool)
 
     # Check whether cache_dir is created

@@ -34,7 +34,7 @@ def test_superscaler_tf():
     sc = superscaler()
 
     # Init parameters
-    apply_gradient_op, loss = dummy_model.SimpleCNN()
+    session_run_params = dummy_model.SimpleCNN()
     strategy = DataParallelism(range(2))
     deployment_setting = {"1": "localhost"}
     communication_DSL = "ring"
@@ -53,32 +53,28 @@ def test_superscaler_tf():
     if is_gpu_available():
         # Check for wrong input
         with pytest.raises(SuperscalerError):
-            # Wrong apply_gradient_op
-            sc.init(None, loss, deployment_setting, strategy,
-                    communication_DSL, resource_pool)
-        with pytest.raises(SuperscalerError):
-            # Wrong loss
-            sc.init(apply_gradient_op, None, deployment_setting, strategy,
+            # Wrong session_run_params
+            sc.init(None, deployment_setting, strategy,
                     communication_DSL, resource_pool)
         with pytest.raises(SuperscalerError):
             # Wrong deployment_setting
-            sc.init(apply_gradient_op, loss, None, strategy,
+            sc.init(session_run_params, None, strategy,
                     communication_DSL, resource_pool)
         with pytest.raises(SuperscalerError):
             # Wrong strategy
-            sc.init(apply_gradient_op, loss, deployment_setting, None,
+            sc.init(session_run_params, deployment_setting, None,
                     communication_DSL, resource_pool)
         with pytest.raises(SuperscalerError):
             # Wrong communication_DSL
-            sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+            sc.init(session_run_params, deployment_setting, strategy,
                     None, resource_pool)
         with pytest.raises(SuperscalerError):
             # Wrong resource_pool
-            sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+            sc.init(session_run_params, deployment_setting, strategy,
                     communication_DSL, None)
 
         # Init Superscaler_TF class
-        sc.init(apply_gradient_op, loss, deployment_setting, strategy,
+        sc.init(session_run_params, deployment_setting, strategy,
                 communication_DSL, resource_pool)
 
         cache_dir = sc.get_cache_dir()

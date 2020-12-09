@@ -81,13 +81,17 @@ class Superscaler(object):
         """ Returns True if Superscaler is initialized """
         return self._is_initialized
 
-    def init(self, apply_gradient_op, loss, deployment_setting,
-             strategy, communication_DSL, resource_pool):
+    def init(self, session_run_params, deployment_setting, strategy,
+             communication_DSL, resource_pool):
         """ A function that initializes Superscaler.
 
         Args:
-          apply_gradient_op: apply_gradient_op operator from the given graph
-          loss: loss tensor from the given graph
+          session_run_params: a dict holds operators from the given graph
+            e.g.:
+                session_run_params = {
+                    "init_params": [tf.global_variables_initializer()],
+                    "run_params": [apply_gradient_op, loss]
+                }
           deployment_setting: List specifying for distributed deployment.
           strategy: distributed training strategy including data parallelism,
             model parallelism and pipeline parallelism.
@@ -111,19 +115,23 @@ class Superscaler(object):
             self._working_dir = self._tempfile.name
             self._logger.info("Creates a cache directory at %s \
                 for storing tmp files." % (self._working_dir))
-            self._init_partition_graphs(apply_gradient_op, loss, strategy)
+            self._init_partition_graphs(session_run_params, strategy)
             self._init_communication_plan(resource_pool, communication_DSL)
             self._init_runtime_setting(deployment_setting)
             self._is_initialized = True
         except SuperscalerError:
             raise SuperscalerError("Superscaler initialization failed")
 
-    def _init_partition_graphs(self, apply_gradient_op, loss, strategy):
+    def _init_partition_graphs(self, session_run_params, strategy):
         """ A function that partitions graph by parallelism strategy.
 
         Args:
-          apply_gradient_op: apply_gradient_op operator from the given graph
-          loss: loss tensor from the given graph
+          session_run_params: a dict holds operators from the given graph
+            e.g.:
+                session_run_params = {
+                    "init_params": [tf.global_variables_initializer()],
+                    "run_params": [apply_gradient_op, loss]
+                }
           strategy: distributed training strategy including data parallelism,
             model parallelism and pipeline parallelism.
         """

@@ -2,14 +2,12 @@
 # Licensed under the MIT License.
 
 import os
-import tempfile
 import subprocess
 import google.protobuf.text_format
-os.environ["TF_CPP_MIN_VLOG_LEVEL"] = "3"
-from superscaler.scaler_graph.IR.conversion import tf_adapter  # noqa: E402
-from tf_example import dummy_model  # noqa: E402
-import tensorflow as tf  # noqa: E402
-from tensorflow.python import pywrap_tensorflow  # noqa: E402
+from superscaler.scaler_graph.IR.conversion import tf_adapter
+from tf_example import dummy_model
+import tensorflow as tf
+from tensorflow.python import pywrap_tensorflow
 
 
 def is_cuda_available():
@@ -29,15 +27,13 @@ def is_cuda_available():
 def test_tf_adapter():
     tf.reset_default_graph()
     # import sc graph from tf model;
-    apply_gradient_op, loss = dummy_model.SimpleCNN()
-    WORKDIR_HANDLER = tempfile.TemporaryDirectory()
-    merged_sc_graph = tf_adapter.import_tensorflow_model(
-        apply_gradient_op, loss, WORKDIR_HANDLER.name)
+    session_run_params = dummy_model.SimpleCNN()
+    merged_sc_graph = tf_adapter.import_tensorflow_model(session_run_params)
     assert (merged_sc_graph is not None)
     # export sc graph to tf model;
     if is_cuda_available():
         tf_pbtxt_path = os.path.join(os.path.dirname(__file__),
-                                     "data", "SimpleCNN.pbtxt")
+                                     "data/simple_cnn", "SimpleCNN.pbtxt")
         test_tf_graph_def = tf.GraphDef()
         google.protobuf.text_format.Parse(
             open(tf_pbtxt_path).read(), test_tf_graph_def)

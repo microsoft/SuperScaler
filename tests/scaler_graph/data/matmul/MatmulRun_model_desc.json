@@ -1,0 +1,8 @@
+{
+    "feeds": [],
+    "fetches": [
+        "sc_retval_MatMul_0_0"
+    ],
+    "inits": [],
+    "targets": []
+}

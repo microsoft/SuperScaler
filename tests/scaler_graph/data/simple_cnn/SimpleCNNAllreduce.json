@@ -1,7 +1,6 @@
 {
     "attrs": {
         "initialized_variables": {},
-        "library": null,
         "lower_name_func": null,
         "meta_graph": null,
         "versions": null
@@ -9,7 +8,18 @@
     "nodes": [
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -26,6 +36,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": true
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -50,7 +68,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -71,6 +100,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -95,6 +135,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -119,6 +170,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -143,6 +205,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -167,6 +240,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -191,6 +275,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -215,6 +310,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -239,6 +345,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -263,6 +380,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -287,6 +415,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -308,7 +447,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -330,8 +480,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -353,6 +514,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -376,7 +548,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -397,6 +580,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -415,6 +609,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -424,6 +621,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -450,6 +655,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -470,8 +686,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -493,6 +720,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -517,7 +755,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -539,7 +788,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -559,7 +819,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -580,6 +851,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -598,7 +880,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -620,8 +913,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -643,6 +947,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -666,7 +981,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -687,6 +1013,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -705,6 +1042,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -714,6 +1054,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -740,6 +1088,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -760,8 +1119,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -783,6 +1153,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -807,7 +1188,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -829,7 +1221,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -849,7 +1252,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -870,6 +1284,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -889,7 +1314,20 @@
             "attrs": {
                 "T": null,
                 "Tidx": null,
+                "_output_shapes": [
+                    null
+                ],
                 "keep_dims": false,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [
+                            0
+                        ],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -910,6 +1348,18 @@
             "attrs": {
                 "T": null,
                 "Tlabels": null,
+                "_output_shapes": [
+                    null,
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -930,7 +1380,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -952,8 +1413,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -975,6 +1447,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -998,7 +1481,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1019,6 +1513,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1037,6 +1542,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1058,6 +1574,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1078,8 +1605,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -1101,6 +1639,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1125,7 +1674,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1147,7 +1707,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1167,7 +1738,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1188,6 +1770,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1206,7 +1799,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1228,8 +1832,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -1251,6 +1866,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1274,7 +1900,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1295,6 +1932,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1313,6 +1961,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1334,6 +1993,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1354,8 +2024,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -1377,6 +2058,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1401,7 +2093,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1423,7 +2126,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1443,7 +2157,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1464,6 +2189,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1482,7 +2218,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1501,7 +2248,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1519,7 +2277,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1541,6 +2310,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1563,6 +2343,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1596,6 +2387,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -1613,6 +2412,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -1622,6 +2424,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -1649,6 +2459,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -1658,6 +2471,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -1686,7 +2507,19 @@
             "attrs": {
                 "N": 2,
                 "T": null,
+                "_output_shapes": [
+                    null,
+                    null
+                ],
                 "out_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1710,6 +2543,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1743,6 +2587,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -1760,6 +2612,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1779,7 +2642,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1801,6 +2675,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1823,6 +2708,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1856,6 +2752,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -1873,6 +2777,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -1882,6 +2789,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -1909,6 +2824,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "dilations": [
                     1,
@@ -1918,6 +2836,14 @@
                 ],
                 "explicit_paddings": [],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     1,
@@ -1946,7 +2872,19 @@
             "attrs": {
                 "N": 2,
                 "T": null,
+                "_output_shapes": [
+                    null,
+                    null
+                ],
                 "out_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1970,6 +2908,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -1992,6 +2941,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2025,6 +2985,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2042,6 +3010,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2060,7 +3039,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2077,7 +3067,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2096,6 +3097,17 @@
             "attrs": {
                 "T": null,
                 "Tshape": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2114,7 +3126,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2133,6 +3156,17 @@
             "attrs": {
                 "T": null,
                 "Tmultiples": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2152,6 +3186,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2172,6 +3217,17 @@
             "attrs": {
                 "T": null,
                 "Tdim": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2190,7 +3246,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2208,7 +3275,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "message": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2227,6 +3305,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2246,7 +3335,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2268,6 +3368,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2290,6 +3401,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2323,6 +3445,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2340,6 +3470,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2361,6 +3502,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2385,6 +3537,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2407,6 +3570,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2440,6 +3614,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2457,6 +3639,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2476,7 +3669,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2498,6 +3702,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2520,6 +3735,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2553,6 +3779,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2570,6 +3804,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2591,6 +3836,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2615,6 +3871,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2637,6 +3904,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2670,6 +3948,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2687,6 +3973,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2705,7 +4002,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2723,10 +4031,21 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "alpha": 0.00011111111234640703,
                 "beta": 0.75,
                 "bias": 1.0,
                 "depth_radius": 4,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2747,10 +4066,21 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "alpha": 0.00011111111234640703,
                 "beta": 0.75,
                 "bias": 1.0,
                 "depth_radius": 4,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2771,6 +4101,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "ksize": [
                     1,
@@ -2779,6 +4112,14 @@
                     1
                 ],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     2,
@@ -2805,6 +4146,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "ksize": [
                     1,
@@ -2813,6 +4157,14 @@
                     1
                 ],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     2,
@@ -2840,6 +4192,17 @@
             "attrs": {
                 "T": null,
                 "Tshape": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2858,7 +4221,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2876,7 +4250,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2898,6 +4283,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2920,6 +4316,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2953,6 +4360,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -2970,6 +4385,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -2991,6 +4417,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3015,6 +4452,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3037,6 +4485,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3070,6 +4529,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -3087,7 +4554,18 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3106,7 +4584,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3123,7 +4612,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3140,6 +4640,14 @@
         },
         {
             "attrs": {
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": true,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -3164,7 +4672,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3184,6 +4703,17 @@
                 "DstT": null,
                 "SrcT": null,
                 "Truncate": false,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3202,10 +4732,21 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "alpha": 0.00011111111234640703,
                 "beta": 0.75,
                 "bias": 1.0,
                 "depth_radius": 4,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3224,10 +4765,21 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "alpha": 0.00011111111234640703,
                 "beta": 0.75,
                 "bias": 1.0,
                 "depth_radius": 4,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3246,6 +4798,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "ksize": [
                     1,
@@ -3254,6 +4809,14 @@
                     1
                 ],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     2,
@@ -3278,6 +4841,9 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
                 "ksize": [
                     1,
@@ -3286,6 +4852,14 @@
                     1
                 ],
                 "padding": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "strides": [
                     1,
                     2,
@@ -3311,6 +4885,17 @@
             "attrs": {
                 "T": null,
                 "Tshape": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3329,7 +4914,18 @@
         },
         {
             "attrs": {
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3347,24 +4943,18 @@
         {
             "attrs": {
                 "T": null,
-                "index": 0,
-                "tf": {
-                    "device": "",
-                    "dtypes": []
-                }
-            },
-            "in_edges": [
-                "cross_entropy"
-            ],
-            "name": "sc_retval_cross_entropy_0_0",
-            "op": "Operator",
-            "original_op": "_Retval",
-            "output_size": 0
-        },
-        {
-            "attrs": {
-                "T": null,
+                "_output_shapes": [
+                    null
+                ],
                 "data_format": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3386,8 +4976,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -3409,6 +5010,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3432,7 +5044,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3453,6 +5076,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3473,8 +5107,19 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "container": null,
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "shape": null,
                 "shared_name": null,
                 "tf": {
@@ -3496,6 +5141,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3520,7 +5176,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3542,7 +5209,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3562,7 +5240,18 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3583,6 +5272,17 @@
                 "_class": [
                     null
                 ],
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -3601,6 +5301,17 @@
         {
             "attrs": {
                 "T": null,
+                "_output_shapes": [
+                    null
+                ],
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [

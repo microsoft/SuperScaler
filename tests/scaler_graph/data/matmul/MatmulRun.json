@@ -10,6 +10,14 @@
         {
             "attrs": {
                 "T": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -20,7 +28,7 @@
                 "transpose_b": false
             },
             "in_edges": [
-                "x_allreduce",
+                "x",
                 "w"
             ],
             "name": "MatMul",
@@ -32,6 +40,16 @@
             "attrs": {
                 "T": null,
                 "index": 0,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [
+                            -1
+                        ],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": []
@@ -48,6 +66,14 @@
         {
             "attrs": {
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -66,6 +92,14 @@
             "attrs": {
                 "T": null,
                 "index_type": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -85,6 +119,14 @@
         {
             "attrs": {
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -102,6 +144,14 @@
         {
             "attrs": {
                 "dtype": null,
+                "sc_metadata": {
+                    "runtime_config": {
+                        "feed": false,
+                        "fetch": [],
+                        "init": false,
+                        "target": false
+                    }
+                },
                 "tf": {
                     "device": "",
                     "dtypes": [
@@ -114,21 +164,6 @@
             "name": "x/shape_as_tensor",
             "op": "Operator",
             "original_op": "Const",
-            "output_size": 1
-        },
-        {
-            "attrs": {
-                "T": null,
-                "num_devices": "2",
-                "reduction": "sum",
-                "tensor_name": "x_allreduce"
-            },
-            "in_edges": [
-                "x"
-            ],
-            "name": "x_allreduce",
-            "op": "AllreduceOp",
-            "original_op": null,
             "output_size": 1
         }
     ]

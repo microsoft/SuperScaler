@@ -27,12 +27,12 @@ from superscaler.scaler_graph.IR.conversion.tensorflow_ops \
 from superscaler.scaler_graph.IR.util import graph_util
 from superscaler.scaler_graph.util.log import logger
 __all__ = [
-    "import_graph_from_tf_file", "get_tf_runtime_config",
+    "import_graph_from_tf_pbtxts", "get_tf_runtime_config",
     "export_graph_to_tf_file", "import_tensorflow_model"
 ]
 
 
-def get_dtype_proto(node_def, op_def, output_arg):
+def __get_dtype_proto(node_def, op_def, output_arg):
     def with_number_attr(dtype):
         if len(output_arg.number_attr) != 0:
             for attr in op_def.attr:
@@ -57,12 +57,12 @@ def get_dtype_proto(node_def, op_def, output_arg):
         return with_number_attr(output_arg.type)
 
 
-def get_dtypes(tf_graph, node_def):
+def __get_dtypes(tf_graph, node_def):
     '''parse tf dtypes.
     '''
     op_def = tf_graph._get_op_def(node_def.op)
     dtypes = [
-        get_dtype_proto(node_def, op_def, output_arg)
+        __get_dtype_proto(node_def, op_def, output_arg)
         for output_arg in op_def.output_arg
     ]
     if len(dtypes) == 1 and isinstance(dtypes[0], list):
@@ -70,7 +70,7 @@ def get_dtypes(tf_graph, node_def):
     return [tf.as_dtype(dtype) for dtype in dtypes]
 
 
-def from_attr_proto(attr_value):
+def __from_attr_proto(attr_value):
     '''parse tf node attributions.
     '''
     field_name = attr_value.WhichOneof("value")
@@ -114,22 +114,56 @@ def from_attr_proto(attr_value):
             return []
 
 
-def import_graph_from_tf_file(init_path=None, run_path=None):
-    '''convert tf graphs to sc graph.
-    1. merge tf init graph and run graph into tf_graph_def;
-    2. conver tf_graph_def to sc graph
+def import_graph_from_tf_pbtxts(file_paths, tf_runtime_config):
+    '''convert tf pbtxts to sc graph.
+    1. merge tf pbtxts into tf_graph_def;
+    2. convert tf_graph_def to sc graph
     Return:
         SC graph
     '''
     tf_graph_def = tf.GraphDef()
-    if init_path is not None:
-        google.protobuf.text_format.Parse(
-            Path(init_path).read_text(), tf_graph_def)
-    if run_path is not None:
+    assert (len(file_paths) > 0)
+    google.protobuf.text_format.Parse(
+        Path(file_paths[0]).read_text(), tf_graph_def)
+    for file_path in file_paths[1:]:
         google.protobuf.text_format.Merge(
-            Path(run_path).read_text(), tf_graph_def)
-    sc_graph = Graph()
-    tf_graph = tf.Graph()
+            Path(file_path).read_text(), tf_graph_def)
+    sc_graph = __import_graph_from_tf_graph_def(tf_graph_def,
+                                                tf_runtime_config)
+    return sc_graph
+
+
+def __import_graph_from_tf_graph_def(tf_graph_def, tf_runtime_config):
+    def mark_runtime_info(sc_node, tf_runtime_config):
+        if "sc_metadata" not in sc_node.attrs:
+            sc_node.attrs["sc_metadata"] = {}
+        if "runtime_config" not in sc_node.attrs["sc_metadata"]:
+            sc_node.attrs["sc_metadata"]["runtime_config"] = {}
+        node_runtime_config = sc_node.attrs["sc_metadata"]["runtime_config"]
+        if sc_node.name in tf_runtime_config["inits"]:
+            node_runtime_config["init"] = True
+            tf_runtime_config["inits"].remove(sc_node.name)
+        else:
+            node_runtime_config["init"] = False
+        if sc_node.name in tf_runtime_config["feeds"]:
+            node_runtime_config["feed"] = True
+            tf_runtime_config["feeds"].remove(sc_node.name)
+        else:
+            node_runtime_config["feed"] = False
+        node_runtime_config["fetch"] = []
+        for curr in tf_runtime_config["fetches"]:
+            if sc_node.name == curr.split(":")[0]:
+                if len(curr.split(":")) == 1:
+                    node_runtime_config["fetch"].append(-1)
+                else:
+                    node_runtime_config["fetch"].append(int(
+                        curr.split(":")[1]))
+                tf_runtime_config["fetches"].remove(curr)
+        if sc_node.name in tf_runtime_config["targets"]:
+            node_runtime_config["target"] = True
+            tf_runtime_config["targets"].remove(sc_node.name)
+        else:
+            node_runtime_config["target"] = False
 
     def add_sc_before_underscore(name):
         '''tf.import_graph_def() can't parse nodes with prefix "_",
@@ -140,12 +174,7 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
             name = "sc" + name
         return name
 
-    name_to_node = {}
-    for node in tf_graph_def.node:
-        node.name = add_sc_before_underscore(node.name)
-        name_to_node[node.name] = node
-
-    def add_sc_node(tf_node: tf.NodeDef):
+    def add_sc_node(sc_graph, tf_node, name_to_node):
         if sc_graph.get_node_by_name(node.name) is not None:
             return
         input_node_idxes = []
@@ -175,24 +204,37 @@ def import_graph_from_tf_file(init_path=None, run_path=None):
                 else:
                     index = int(names[1])
             input_node_idxes.append((input_node, index))
-
         attrs = {
-            attr_name: from_attr_proto(tf_node.attr[attr_name])
+            attr_name: __from_attr_proto(tf_node.attr[attr_name])
             for attr_name in tf_node.attr
         }
-        dtypes = get_dtypes(tf_graph, tf_node)
+        dtypes = __get_dtypes(tf_graph, tf_node)
         sc_node = sc_graph.add_node_and_edge(
             tf_node.name, tf_op_map_to_sc_op(tf_graph._get_op_def(tf_node.op)),
             input_node_idxes, len(dtypes), attrs)
         sc_node.attrs["tf"] = {}
         sc_node.attrs["tf"]["device"] = ""
         sc_node.attrs["tf"]["dtypes"] = dtypes
+        mark_runtime_info(sc_node, tf_runtime_config)
         if tf_node.HasField("experimental_debug_info"):
             sc_node.attrs["tf"][
                 "experimental_debug_info"] = node.experimental_debug_info
 
+    sc_graph = Graph()
+    tf_graph = tf.Graph()
+    name_to_node = {}
     for node in tf_graph_def.node:
-        add_sc_node(node)
+        node.name = add_sc_before_underscore(node.name)
+        name_to_node[node.name] = node
+
+    for tf_node in tf_graph_def.node:
+        add_sc_node(sc_graph, tf_node, name_to_node)
+
+    for key in tf_runtime_config.keys():
+        for remaining in tf_runtime_config[key]:
+            logger().error(f"{remaining} is not found in tf graph.")
+        if len(tf_runtime_config[key]) > 0:
+            raise RuntimeError
 
     for key in ["versions", "library"]:
         if tf_graph_def.HasField(key):
@@ -209,6 +251,7 @@ def get_tf_runtime_config(sc_graph):
     feeds: nodes without input, providing training data.
     fetches: feedback tensors for users, e.g. loss.
     targets: nodes without output, for backtracing all nodes needed to perform.
+        e.g.: all applygradient ops, send op
     '''
     tf_runtime_config = {}
     tf_runtime_config["inits"] = []  # for all assign op
@@ -216,19 +259,23 @@ def get_tf_runtime_config(sc_graph):
     tf_runtime_config["fetches"] = []  # the successor node of _Retval
     tf_runtime_config["targets"] = []  # send or final
     for sc_node in graph_util.get_output_nodes(sc_graph):
-        if sc_node.op.original_name == "_Retval":
-            assert (len(sc_node.in_edges) == 1)
-            fetch_name = sc_node.in_edges[0].src_node.name + ":%d" % (
-                sc_node.in_edges[0].src_idx)
-            tf_runtime_config["fetches"].append(fetch_name)
-        elif sc_node.name == "init" and sc_node.op.original_name == "NoOp":
+        node_runtime_config = sc_node.attrs["sc_metadata"]["runtime_config"]
+        if node_runtime_config["init"]:
             tf_runtime_config["inits"].append(sc_node.name)
-        elif sc_node.op.original_name == "NoOp":
+        if node_runtime_config["feed"]:
+            tf_runtime_config["feeds"].append(sc_node.name)
+        if node_runtime_config["target"]:
             tf_runtime_config["targets"].append(sc_node.name)
+        for idx in node_runtime_config["fetch"]:
+            if idx == -1:
+                tf_runtime_config["fetches"].append(sc_node.name)
+            else:
+                tf_runtime_config["fetches"].append(sc_node.name + ":%d" %
+                                                    (idx))
     return tf_runtime_config
 
 
-def sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
+def __sc_attrs_to_tf_attrs_proto(op_def, op_type_name, attrs):
     '''Convert attr values to AttrValue protos
     '''
     attr_protos = {}
@@ -400,7 +447,8 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
         convert_to_tf_node(sc_node)
         attrs = {
             name: value
-            for name, value in sc_node.attrs.items() if name != "tf"
+            for name, value in sc_node.attrs.items()
+            if name != "tf" and name != "sc_metadata"
         }
         tf_node = graph_def.node.add()
         tf_node.name = sc_node.name
@@ -409,7 +457,7 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
         if "experimental_debug_info" in sc_node.attrs["tf"]:
             tf_node.experimental_debug_info.CopyFrom(
                 sc_node.attrs["experimental_debug_info"])
-        for name, attr_value in sc_attrs_to_tf_attrs_proto(
+        for name, attr_value in __sc_attrs_to_tf_attrs_proto(
                 tf_graph._get_op_def(tf_node.op), tf_node.op, attrs).items():
             tf_node.attr[name].CopyFrom(attr_value)
 
@@ -433,97 +481,56 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
     return graph_pbtxt
 
 
-def import_tensorflow_model(apply_gradient_op, loss, dir_path=None):
-    '''import tensorflow graph according to apply_gradient_op, loss
-        1. get tensorflow model via apply_gradient_op and loss;
+def import_tensorflow_model(session_run_params,
+                            graph=None,
+                            reset_default_graph=True):
+    '''import tensorflow graph according to init_params, run_params
+        1. run tensorflow model via init_params, run_params in session;
         2. dump graph from tensorflow model.
     Args:
-        apply_gradient_op: An Operation that applies the specified gradients,
-            get it by call `tf.train.Optimizer.apply_gradients()`.
-        loss: A Tensor containing the value to minimize, it's the first input
-            argument of `tf.train.Optimizer.compute_gradients()`.
-        dir_path: Optional. A temp directory for dumping tf graph.
+        session_run_params: dict.
+            The key "init_params" maps to a list of ops to initilizaton.
+            The key "run_params" maps to a list of ops to training.
+            example: session_run_params = {
+                "init_params" = [iterator.initializer,
+                    tf.global_variables_initializer()],
+                "run_params" = [optimizer.minimize(loss_op), loss_op]
+            }
+        graph: the model graph. If None, tf.get_default_graph() will be called.
+        reset_default_graph: A flag to clean the default graph each time.
+            It's set True by default.
     Returns:
         A SC Graph.
     '''
-    if not (isinstance(apply_gradient_op, Operation)
-            and isinstance(loss, Tensor)):
-        logger().error("apply_gradient_op or loss is incorrect.")
-        raise RuntimeError
-    if dir_path is None:
-        if "TF_DUMP_GRAPH_PREFIX" not in os.environ.keys():
-            logger().error(
-                "dir_path can't be None if not setting TF_DUMP_GRAPH_PREFIX.")
-            raise RuntimeError
-        elif not os.path.isdir(os.environ["TF_DUMP_GRAPH_PREFIX"]):
-            logger().error("TF_DUMP_GRAPH_PREFIX is incorrect: %s" %
-                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-            raise RuntimeError
-    else:
-        if os.path.isdir(dir_path):
-            os.environ["TF_DUMP_GRAPH_PREFIX"] = dir_path
-            logger().info("dumping dir path: %s" % (dir_path))
+    tf_runtime_config = {}
+    tf_runtime_config["inits"] = []  # all assign op, dataset initializer
+    tf_runtime_config["feeds"] = []  # no need now. it's for training data.
+    tf_runtime_config["fetches"] = []  # the successor node of _Retval
+    tf_runtime_config["targets"] = []  # send or final
+    for init_op in session_run_params["init_params"]:
+        if isinstance(init_op, Operation) or isinstance(init_op, Tensor):
+            tf_runtime_config["inits"].append(
+                init_op.name.split(":")[0])  # op_name only
         else:
-            logger().error("dumping dir path is not correct: %s" % (dir_path))
             raise RuntimeError
-    if "TF_CPP_MIN_VLOG_LEVEL" not in os.environ.keys() or int(
-            os.environ["TF_CPP_MIN_VLOG_LEVEL"]) < 3:
-        logger().error('''The environment variable TF_CPP_MIN_VLOG_LEVEL \
-should be set before importing tensorflow, \
-e.g.: `TF_DUMP_GRAPH_PREFIX=path_to_empty_directory \
-TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''')
-        raise RuntimeError
+    for run_op in session_run_params["run_params"]:
+        if isinstance(run_op, Operation):
+            tf_runtime_config["targets"].append(run_op.name)  # op_name
+        elif isinstance(run_op, Tensor):
+            tf_runtime_config["fetches"].append(run_op.name)  # op_name:index
+        else:
+            raise RuntimeError
 
-    def dump_pbtxts():
-        '''we dumps tf graph via TF_DUMP_GRAPH_PREFIX and
-        TF_CPP_MIN_VLOG_LEVEL. It's a tf log mechanism and
-        setting TF_CPP_MIN_VLOG_LEVEL before importing tensorflow is required.
-        '''
-        options = tf.RunOptions(output_partition_graphs=True)
-        run_metadata = tf.RunMetadata()
-        run_config = tf.ConfigProto()
-        run_config.gpu_options.allow_growth = True
-        run_config.graph_options.place_pruned_graph = True
-        with tf.Session(config=run_config) as sess:
-            sess.run(tf.global_variables_initializer())
-            sess.run([apply_gradient_op, loss],
-                     options=options,
-                     run_metadata=run_metadata)
+    if graph is None:
+        graph = tf.get_default_graph()
+    graph_def = graph.as_graph_def(add_shapes=True)
+    pruned_graph_def = tf.compat.v1.graph_util.extract_sub_graph(
+        graph_def, [
+            op.name.split(":")[0] for op in session_run_params["init_params"] +
+            session_run_params["run_params"]
+        ])
+    if reset_default_graph:
         tf.reset_default_graph()
-
-    def get_dumped_pbtxts():
-        '''dumping tf graph will generate 2 files:
-        init pbtxt for initialization of variables
-        run pbtxt for running graph.
-        '''
-        if len(os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])) == 0:
-            dump_pbtxts()
-        else:
-            logger().error("The directory %s contains pbtxt files \
-                    before running scaler_graph." %
-                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-            raise RuntimeError
-        file_names = os.listdir(os.environ["TF_DUMP_GRAPH_PREFIX"])
-        if len(file_names) == 0:
-            logger().error(
-                '''We cannot get the tensorflow graph from %s. Users should set \
-TF_CPP_MIN_VLOG_LEVEL=3 before importing tensorflow, \
-e.g.: ` TF_CPP_MIN_VLOG_LEVEL=3 python your_script.py`''' %
-                (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-            raise RuntimeError
-        input_pbtxts = []
-        for file_name in file_names:
-            obj = re.match(r"^placer_input(_\d+)?\.pbtxt$", file_name)
-            if obj is not None:
-                input_pbtxts.append(file_name)
-        input_pbtxts.sort()
-        if len(input_pbtxts) != 2:
-            logger().error("Clean up the directory %s first." %
-                           (os.environ["TF_DUMP_GRAPH_PREFIX"]))
-            raise RuntimeError
-        return os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[0], \
-            os.environ["TF_DUMP_GRAPH_PREFIX"] + "/" + input_pbtxts[1]
-
-    init_path, run_path = get_dumped_pbtxts()
-    sc_graph = import_graph_from_tf_file(init_path, run_path)
+    sc_graph = __import_graph_from_tf_graph_def(pruned_graph_def,
+                                                tf_runtime_config)
     return sc_graph

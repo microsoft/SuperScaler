@@ -6234,24 +6234,6 @@ node {
   input: "^GradientDescent/update_softmax_linear_biases/ApplyGradientDescent"
   input: "^GradientDescent/update_softmax_linear_weights/ApplyGradientDescent"
 }
-node {
-  name: "sc_retval_cross_entropy_0_0"
-  op: "_Retval"
-  input: "cross_entropy"
-  device: ""
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "index"
-    value {
-      i: 0
-    }
-  }
-}
 versions {
   producer: 134
 }

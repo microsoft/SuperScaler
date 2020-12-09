@@ -16,25 +16,38 @@ class tensorflow(Superscaler):
         super().__init__()
         self._plan_parser = TFParser()
 
-    def _init_partition_graphs(self, apply_gradient_op, loss, strategy):
+    def _init_partition_graphs(self, session_run_params, strategy):
         """ A function that partition tensorflow graph by parallelism strategy.
 
         Args:
-          apply_gradient_op: apply_gradient_op operator of tensorflow graph
-          loss: loss tensor of tensorflow graph
+          session_run_params: a dict contains "init_params" and "run_params"
+            operator of tensorflow graph
           strategy: distributed training strategy including data parallelism,
             model parallelism and pipeline parallelism.
         """
-        if not isinstance(apply_gradient_op, tf.Operation):
-            raise SuperscalerError("apply_gradient_op must be tf.Operation")
-        if not isinstance(loss, tf.Tensor):
-            raise SuperscalerError("loss must be tf.Tensor")
+        if not isinstance(
+                session_run_params,
+                dict) or "init_params" not in session_run_params.keys(
+                ) or "run_params" not in session_run_params.keys():
+            raise SuperscalerError('session_run_params must be a dict with \
+                    keys "init_params" and "run_params".')
+        for node in session_run_params["init_params"]:
+            if not isinstance(node, tf.Operation):
+                raise SuperscalerError(
+                    'nodes in session_run_params["init_params"] \
+                        must be tf.Operation')
+        for node in session_run_params["run_params"]:
+            if not isinstance(node, tf.Operation) and not isinstance(
+                    node, tf.Tensor):
+                raise SuperscalerError(
+                    'nodes in session_run_params["run_params"] must be \
+                    tf.Operation or tf.Tensor')
         if not isinstance(strategy, DataParallelism):
             raise SuperscalerError("Unsupport parallelism strategy")
 
         # run_parallelisms
         merged_sc_graph = tf_adapter.import_tensorflow_model(
-            apply_gradient_op, loss)
+            session_run_params)
         parallelizer = Parallelizer(merged_sc_graph)
         parallelizer.register_parallelism(strategy)
         parallelizer.run_parallelisms()
