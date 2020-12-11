@@ -43,7 +43,7 @@ RUN wget --progress=dot:mega -O /tmp/openmpi-3.0.0-bin.tar.gz https://github.com
             echo "mpirun -allow-run-as-root -np 2 -H localhost:2 -bind-to none -map-by slot -mca mpi_abort_print_stack 1" > /mpirun_command;
 
 # Install OpenSSH for MPI to communicate between containers
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-client openssh-server && \
     mkdir -p /var/run/sshd
 
 # Allow OpenSSH to talk to containers without asking for confirmation
