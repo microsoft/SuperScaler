@@ -192,8 +192,6 @@ class SuperScalerAdapter(Adapter):
                          'host_id': node['host_id'],
                          'device_type': node['device_type'],
                          'device_id': node['device_id'],
-                         'num_peers': 1,
-                         'peer_device_names': [node['device']],
                          'recv_buffer_size': 0,
                          'tasks': []
                         })
@@ -217,18 +215,13 @@ class SuperScalerAdapter(Adapter):
                 node_dict['recv_buffer_size'] =\
                     max(tensor_size, node_dict['recv_buffer_size'])
 
-            # Count the peers for communication
-            if 'target' in node and \
-               node['target'] not in node_dict['peer_device_names']:
-                node_dict['num_peers'] += 1
-                node_dict['peer_device_names'].append(node['target'])
-
             # pop unused device infos
             node.pop('device')
             node.pop('target')
 
         # Using str format
         for node_dict in multi_node_dict:
-            node_dict['num_peers'] = str(node_dict['num_peers'])
+            node_dict['num_peers'] = str(len(devices))
+            node_dict['peer_device_names'] = devices
 
         return multi_node_dict

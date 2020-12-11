@@ -4,8 +4,8 @@
     "host_id": "1",
     "num_peers": "2",
     "peer_device_names": [
-        "/server/hostname1/GPU/1/",
-        "/server/hostname1/GPU/0/"
+        "/server/hostname1/GPU/0/",
+        "/server/hostname1/GPU/1/"
     ],
     "recv_buffer_size": 61440,
     "tasks": [
