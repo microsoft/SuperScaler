@@ -110,6 +110,11 @@ private:
 
 class DeviceContextGuard {
 public:
+    DeviceContextGuard() {}
+    void guard(int device) {
+        checkCudaErrors(cudaGetDevice(&m_device));
+        checkCudaErrors(cudaSetDevice(device));
+    }
     DeviceContextGuard(int device) {
         checkCudaErrors(cudaGetDevice(&m_device));
         checkCudaErrors(cudaSetDevice(device));

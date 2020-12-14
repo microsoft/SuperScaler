@@ -42,7 +42,8 @@ public:
      * @param dev_id Cuda device ID
      * @return The mapped address.
      */
-    void *get_address(const cudaIpcMemHandle_t &handle, int dev_id);
+    void *get_address(const cudaIpcMemHandle_t &handle, int receiver_dev_id,
+                                 int sender_dev_id, bool p2p_enable);
 
     /**
      * @brief Remove the handle->address mapping from the cache and unmap the ipc

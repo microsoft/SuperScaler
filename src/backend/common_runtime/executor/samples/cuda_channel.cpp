@@ -16,6 +16,7 @@ constexpr size_t test_size = 1024;
 constexpr message_id_t message_id = 255;
 constexpr int sender_device = 0;
 constexpr int receiver_device = 1;
+constexpr bool p2p_enable = false;
 
 void SenderProcess()
 {
@@ -35,7 +36,7 @@ void SenderProcess()
         CudaChannelSenderManager::get_manager();
     CudaChannelSender *sender = sender_manager.create_channel(
         CHANNEL_NAME,
-        receiver_device, sender_device,
+        receiver_device, sender_device, p2p_enable,
         receiver_buffer_size, sender_buffer_size);
     if (sender == nullptr) {
         std::cerr << "[Sender Error] Cannot open cuda channel sender\n";
@@ -76,7 +77,7 @@ void ReceiverProcess()
     // Create ChannelReceiver
     CudaChannelReceiver *receiver = receiver_manager.create_channel(
         CHANNEL_NAME,
-        receiver_device, sender_device,
+        receiver_device, sender_device, p2p_enable,
         receiver_buffer_size, sender_buffer_size);
     // Get connect
     receiver->listen();

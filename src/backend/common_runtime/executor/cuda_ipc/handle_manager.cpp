@@ -16,14 +16,19 @@ HandleManager::~HandleManager()
     }
 }
 
-void *HandleManager::get_address(const cudaIpcMemHandle_t &handle, int dev_id)
+void *HandleManager::get_address(const cudaIpcMemHandle_t &handle, int receiver_dev_id,
+                                 int sender_dev_id, bool p2p_enable)
 {
     auto itr = m_handle_cache.find(handle);
     if (itr == m_handle_cache.end()) {
         void *buffer = nullptr;
-        DeviceContextGuard guard(dev_id);
+        DeviceContextGuard context_guarder;
+        if (p2p_enable)
+            context_guarder.guard(sender_dev_id);
+        else
+            context_guarder.guard(receiver_dev_id);
         checkCudaErrors(cudaIpcOpenMemHandle(&buffer, handle, cudaIpcMemLazyEnablePeerAccess));
-        m_handle_cache.emplace(handle, HandleInfo{buffer, dev_id});
+        m_handle_cache.emplace(handle, HandleInfo{buffer, receiver_dev_id});
         return buffer;
     } else {
         return itr->second.dev_ptr;

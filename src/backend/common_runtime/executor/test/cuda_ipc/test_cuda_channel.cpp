@@ -52,11 +52,12 @@ TEST(CudaChannel, ChannelReceiverManager)
     const size_t sender_buffer_size = 1024;
     int fake_send_device = 0;
     int fake_recv_device = 0;
+    bool p2p_enable = false;
     CudaChannelReceiverManager &manager =
         CudaChannelReceiverManager::get_manager();
     // Create a channel receiver;
     auto create_ptr = manager.create_channel(channel_id,
-                                             fake_send_device, fake_recv_device,
+                                             fake_send_device, fake_recv_device, p2p_enable,
                                              receiver_buffer_size, sender_buffer_size);
     ASSERT_NE(create_ptr, nullptr);
     // Get the channel receiver by channel id
@@ -76,10 +77,11 @@ TEST(CudaChannel, ChannelSenderManager)
     const size_t sender_buffer_size = 1024;
     int fake_send_device = 0;
     int fake_recv_device = 0;
+    bool p2p_enable = false;
     CudaChannelSenderManager &manager = CudaChannelSenderManager::get_manager();
     // Create a channel receiver;
     auto create_ptr = manager.create_channel(channel_id,
-                                             fake_send_device, fake_recv_device,
+                                             fake_send_device, fake_recv_device, p2p_enable,
                                              receiver_buffer_size, sender_buffer_size);
     ASSERT_NE(create_ptr, nullptr);
     // Get the channel receiver by channel id

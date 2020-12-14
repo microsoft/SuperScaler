@@ -76,7 +76,7 @@ public:
 
 private:
     CudaChannelSender(const std::string &channel_id,
-                      int receiver_device_id, int sender_device_id,
+                      int receiver_device_id, int sender_device_id, bool p2p_enable,
                       size_t receiver_buffer_size, size_t sender_buffer_size);
 
     /**
@@ -104,6 +104,7 @@ private:
     const std::string m_channel_id;
     int m_receiver_device;
     int m_sender_device;
+    bool m_p2p_enable;
     std::unique_ptr<SemaphoreMutex> m_semaphore;
     std::unique_ptr<SemaphoreLock> m_semaphore_lock;
     std::unique_ptr<SharedMemory> m_shared_memory;
@@ -149,13 +150,14 @@ public:
 
 private:
     CudaChannelReceiver(const std::string &channel_id,
-                        int receiver_device_id, int sender_device_id,
+                        int receiver_device_id, int sender_device_id, bool p2p_enable,
                         size_t receive_buffer_size, size_t sender_buffer_size);
 
     CudaChannelStatus m_status;
     const std::string m_channel_id;
     int m_receiver_device;
     int m_sender_device;
+    bool m_p2p_enable;
     std::unique_ptr<SemaphoreMutex> m_semaphore;
     std::unique_ptr<SharedMemory> m_shared_memory;
     ReceiverQueue *m_receiver_fifo;
@@ -168,7 +170,7 @@ private:
  */
 class CudaSingleChannel {
 public:
-    CudaSingleChannel(int self_device, int peer_device,
+    CudaSingleChannel(int self_device, int peer_device, std::map<rank_t, bool> m_channel_p2p,
                       size_t receiver_buffer_size=512 * sizeof(CudaTransferMeta),
                       size_t sender_buffer_size=512 * sizeof(CudaTransferAck));
     ~CudaSingleChannel();
@@ -239,7 +241,9 @@ private:
      * @brief Enable CUDA P2P access from self device to all specified devices.
      */
     void enable_cuda_p2p_access(const rank_t self_device,
-                                const std::vector<rank_t> &devices);
+                                const std::vector<rank_t> &devices,
+                                std::map<rank_t, bool> &m_channel_p2p);
 
     std::map<rank_t, std::shared_ptr<CudaSingleChannel> > m_channels;
+    std::map<rank_t, bool> m_channel_p2p;
 };

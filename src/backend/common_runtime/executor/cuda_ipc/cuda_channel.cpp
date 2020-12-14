@@ -61,11 +61,13 @@ size_t QueueAligner::get_shared_memory_size(size_t receiver_buffer_size,
 CudaChannelSender::CudaChannelSender(const std::string &channel_id,
                                      int receiver_device_id,
                                      int sender_device_id,
+                                     bool p2p_enable,
                                      size_t receiver_buffer_size,
                                      size_t sender_buffer_size)
     : m_status(CudaChannelStatus::e_unconnected), m_channel_id(channel_id),
       m_receiver_device(receiver_device_id),
       m_sender_device(sender_device_id),
+      m_p2p_enable(p2p_enable),
       m_semaphore(nullptr), m_shared_memory(nullptr), m_receiver_fifo(nullptr),
       m_sender_fifo(nullptr), m_receiver_buffer_size(receiver_buffer_size),
       m_sender_buffer_size(sender_buffer_size)
@@ -144,8 +146,8 @@ bool CudaChannelSender::send(const message_id_t &message_id, const void *data,
     bool get_result = get_receiver_meta(message_id, meta);
     if (!get_result)
         return false;
-    transfer((char *)m_handle_manager.get_address(meta.handler, m_receiver_device) +
-        meta.offset, data, length);
+    transfer((char *)m_handle_manager.get_address(meta.handler, m_receiver_device, 
+                     m_sender_device, m_p2p_enable) + meta.offset, data, length);
     // TODO: Optimize performance by asynchronously sending acks
     bool ret = false;
     CudaTransferAck ack{ message_id };
@@ -194,11 +196,13 @@ void CudaChannelSender::transfer(void *dst, const void *src, size_t size)
 CudaChannelReceiver::CudaChannelReceiver(const std::string &channel_id,
                                          int receiver_device_id,
                                          int sender_device_id,
+                                         bool p2p_enable,
                                          size_t receiver_buffer_size,
                                          size_t sender_buffer_size)
     : m_status(CudaChannelStatus::e_unconnected), m_channel_id(channel_id),
       m_receiver_device(receiver_device_id),
-      m_sender_device(sender_device_id)
+      m_sender_device(sender_device_id),
+      m_p2p_enable(p2p_enable)
 {
     if (channel_id.empty())
         throw std::invalid_argument(std::string() + "Empty channel id");
@@ -288,19 +292,25 @@ static std::string get_cuda_channel_name(int send_device, int recv_device)
            std::string("_") + std::to_string(recv_device);
 }
 
-CudaSingleChannel::CudaSingleChannel(int self_device, int peer_device,
+CudaSingleChannel::CudaSingleChannel(int self_device, int peer_device, std::map<rank_t, bool> m_channel_p2p,
                                      size_t receiver_buffer_size, size_t sender_buffer_size)
     : m_status(CudaChannelStatus::e_unconnected),
       m_send_channel_name(get_cuda_channel_name(self_device, peer_device)),
       m_recv_channel_name(get_cuda_channel_name(peer_device, self_device))
 {
+    
+    bool p2p_enable = false;
+    auto it = m_channel_p2p.find(peer_device);
+    if (it != m_channel_p2p.end())
+        p2p_enable = it->second;
+
     m_sender = CudaChannelSenderManager::get_manager().create_channel(
-        m_send_channel_name,
-        peer_device, self_device,
+        m_send_channel_name, 
+        peer_device, self_device, p2p_enable,
         receiver_buffer_size, sender_buffer_size);
     m_receiver = CudaChannelReceiverManager::get_manager().create_channel(
         m_recv_channel_name,
-        self_device, peer_device,
+        self_device, peer_device, p2p_enable,
         receiver_buffer_size, sender_buffer_size);
 }
 
@@ -368,7 +378,7 @@ void CudaSingleChannel::init_connection()
 
 CudaChannel::CudaChannel(const rank_t self_device, const std::vector<rank_t> &devices)
 {
-    enable_cuda_p2p_access(self_device, devices);
+    enable_cuda_p2p_access(self_device, devices, m_channel_p2p);
 
     checkCudaErrors(cudaSetDevice(self_device));
 
@@ -379,7 +389,7 @@ CudaChannel::CudaChannel(const rank_t self_device, const std::vector<rank_t> &de
         auto it = m_channels.find(dev);
         if (it != m_channels.end())
             continue;
-        m_channels.emplace(dev, std::make_shared<CudaSingleChannel>(self_device, dev));
+        m_channels.emplace(dev, std::make_shared<CudaSingleChannel>(self_device, dev, m_channel_p2p));
     }
 }
 
@@ -416,7 +426,8 @@ bool CudaChannel::receive(void *buffer, size_t length, rank_t from_rank, message
 }
 
 void CudaChannel::enable_cuda_p2p_access(const rank_t self_device,
-                                         const std::vector<rank_t> &devices)
+                                         const std::vector<rank_t> &devices,
+                                         std::map<rank_t, bool> &m_channel_p2p)
 {
     cudaError_t err = cudaSuccess;
     DeviceContextGuard guard(self_device);
@@ -429,6 +440,9 @@ void CudaChannel::enable_cuda_p2p_access(const rank_t self_device,
             if (err != cudaErrorPeerAccessAlreadyEnabled) {
                 checkCudaErrors(err);
             }
+            m_channel_p2p.emplace(device, true);
+        } else {
+            m_channel_p2p.emplace(device, false);
         }
     }
 }

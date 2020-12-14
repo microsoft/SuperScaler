@@ -29,6 +29,7 @@
 constexpr char shm_name[] = "ipcShm";
 constexpr size_t test_size = 1024;
 constexpr size_t queue_size = 10;
+constexpr bool p2p_enable = false;
 
 SharedMemory *parent_process()
 {
@@ -82,9 +83,9 @@ void child_process()
         ;
 
     // Get address from handle for the first time
-    addr1 = (char *)mgr.get_address(handle, 0);
+    addr1 = (char *)mgr.get_address(handle, 0, 0, p2p_enable);
     // Should get the same address from the same handle
-    addr2 = (char *)mgr.get_address(handle, 0);
+    addr2 = (char *)mgr.get_address(handle, 0, 0, p2p_enable);
 
     if (addr1 != addr2) {
         std::cout << "[Child] Get address error" << std::endl;
