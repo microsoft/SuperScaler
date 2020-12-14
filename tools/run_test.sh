@@ -82,16 +82,8 @@ echo "Running test for superscaler:"
 exe cd $ROOT_PATH/src
 exe export TF_CPP_MIN_VLOG_LEVEL=3 
 
-# Origin Pytest:
-# exe python -m pytest ../tests -v
-
-# Hotfix for remaining bugs:
-# --------------------------
-echo "Skipping runtime for remaining bugs"
+# Runtime tests are executed separately because they will create multiple processes.
+# CUDA context cannot be shared between multiple processes
 exe python -m pytest ../tests \
-                     --ignore=../tests/runtime \
-
-echo "Run test for runtime seperately, for remaining bugs which cause failure if Runtime being executed multi-times."
-exe python -m pytest ../tests/runtime
-# --------------------------
-echo "Test for superscaler succeed"
+                    --ignore=../tests/runtime ;\
+                    python -m pytest ../tests/runtime
