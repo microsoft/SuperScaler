@@ -57,5 +57,5 @@ WORKDIR /SuperScaler
 # Install SuperScaler package
 RUN python3 -m pip install .
 
-CMD "/SuperScaler/tools/run_test.sh"; \
-    "/SuperScaler/tools/packaged_test.sh"
+CMD ./tools/run_test.sh && \
+    ./tools/packaged_test.sh
