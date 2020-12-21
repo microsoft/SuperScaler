@@ -227,9 +227,9 @@ class TFParser(DAGParser):
         '''
         if 'allreduce' in op.lower():
             return 'Allreduce'
-        elif 'send' in op.lower():
+        elif 'send' == op.lower():
             return 'Send'
-        elif 'recv' in op.lower():
+        elif 'recv' == op.lower():
             return 'Recv'
         else:
             return op
