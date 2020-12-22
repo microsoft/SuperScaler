@@ -6,105 +6,14 @@ AI Simulator provides a python package named *ai_simulator*.
 
 ## Install
 
-### Install by Dockerfile
+You can use AI Simulator as a sub-module of SuperScaler project.
 
-Using AI Simulator at Docker environment is the easiest method.
-
-```bash
-# Build AI Simulator
-sudo docker build -t ai-simulator .
-
-# Run AI Simulator experiment
-sudo docker run ai-simulator
-```
-
-### Install on Native Machine
-
-Please install Python before running the AI Simulator. The recommended setting is as follows:
-
-```text
-    python: 3.6–3.7 (64 bit)
-    pip: >= 19.0
-    protobuf: 3.8
-    pytest: 5.3.2
-    setuptools: 41.0.0
-    bitmath: 1.3.3.1
-    humanreadable: 0.1.0
-    pyYAML: 5.1.2
-```
-
-- Python
-
-    Because TensorFlow on Windows only supports Python 3.x (64-bit), we highly recommend to install Python 3.x (64-bit). You can download and install Python from [Python Website](https://www.python.org/). You can update the pip to the latest version.
-
-    ```bash
-    # Install python on Ubuntu
-    apt-get -y install python3-dev python3-pip
-
-    # Install pip3
-    python3 -m pip install --upgrade pip
-
-    # Check your version
-    python3 --version
-    pip3 --version
-    ```
-
-- Python Virtual Environment (Optional, Recommended)
-
-    Python virtual environments are used to isolate package installation from the system.
-
-    ```bash
-    # Install virtualenv
-    pip3 install -U pip virtualenv
-    virtualenv --version
-
-    # Create a new virtual environment under .\venv directory
-    virtualenv --system-site-packages -p python3 ./venv
-
-    # Activate the environment
-    # For Windows
-    .\venv\Scripts\activate
-    # For Ubuntu
-    source ./venv/bin/activate
-
-    # Deactivate the environment
-    deactivate
-    ```
-
-#### Using ai_simulator source code and installing dependencies manually
-
-Goto the ai_simulator folder, and run:
-
-```bash
-# Install TensorFlow, Protobuf, and Pytest
-python3 -m pip install -r requirements.txt
-
-# Verify the installation
-python3 -m pytest -v
-```
-
-#### Installing ai_simulator by setuptools
-
-Using setuptools to install *superscaler* which includes not only *ai_simulator* :
-
-Goto path *SuperScaler/* first and run:
-
-```bash
-# Install superscaler package using setuptools
-python3 setup.py install
-
-# Verify the installation
-python3 -m pytest -s tests/test_integration.py
-```
-
-Currently tensorflow==1.15 may be required by plan_gen package of superscaler.
-
-Manually install it by `python3 -m pip install tensorflow==1.15` if error reported.
+See [how to install SuperScaler project](../../../README.md).
 
 ## Run your first AI Simulator!
 
 ```python
-from ai_simulator import Simulator
+from superscaler.ai_simulator import Simulator
 
 # generate example node_list and device_list
 node_list = [
@@ -131,30 +40,32 @@ timeuse, start_time, finish_time = sim.run()
 print('The total time is: %.1f' % timeuse)
 ```
 
-See how ai_simulator work with plan_gen at [test_integration.py](../tests/test_integration.py)
-
 ## Run Test
 
-You can go to ai_simulator folder, and run test:
+You can go to SuperScaler project's root folder, and run test:
 
 ```bash
-python3 -m pytest -v
+python3 -m pytest -v tests/ai_simulator
 ```
+
+## Run Simulator Benchmark
+
+See how to use [Simulator Benchmark](../../../tools/simulator_benchmark/README.md)
+
+Simulator Benchmark can generate database coverage and simulator accuracy using 8 typical models and in 4 different environments including 1/2/4 GPU and 2 Host X 4 GPU.
 
 ## For Developers
 
 ### Project Organization
 
-- `./doc/`: The detailed document of the AI Simulator.
 - `./simulator/`: The source code of the simulator module.
-- `./tests/`: The unit test files used in the AI Simulator.
-- `./Dockerfile`: The Dockerfile used to build the docker environment for the AI Simulator.
-- `./requirements.txt`: The prerequisite Python packages for the AI Simulator.
 - `./READEME.md`: The README file.
+
+You can get the design document of AI Simulator at `SuperScaler/docs/simulator_design.docx` 
 
 ### AI Simulator development
 
-There is a interface that users will call
+There is an interface that users will call
 
 - In package `ai_simulator`
   - `Simulator`: input json of *node_list* and *device_list* and use `Simulator.run()` to get the final result.
