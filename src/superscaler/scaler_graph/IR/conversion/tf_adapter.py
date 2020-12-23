@@ -21,6 +21,7 @@ from tensorflow.python.framework.op_def_library import (
     _MakeTensor,
     _MakeType,
 )
+from tensorflow.python.framework import kernels
 from superscaler.scaler_graph.IR.graph import Graph
 from superscaler.scaler_graph.IR.conversion.tensorflow_ops \
     import tf_op_map_to_sc_op, convert_to_tf_node
@@ -28,8 +29,60 @@ from superscaler.scaler_graph.IR.util import graph_util
 from superscaler.scaler_graph.util.log import logger
 __all__ = [
     "import_graph_from_tf_pbtxts", "get_tf_runtime_config",
-    "export_graph_to_tf_file", "import_tensorflow_model"
+    "export_graph_to_tf_file", "import_tensorflow_model", "set_dataset_paths"
 ]
+
+
+def __set_device_info(graph_def):
+    '''
+    1. return CPU device info if no GPU kernel
+    2. Heuristic A: prefer to place "generators" with their only
+       consumers. If this is a node with no inputs and one output
+       , we save this for a second pass, so that the consumer's
+       placement is chosen.
+    '''
+    def support_GPU(tf_node):
+        special_ops = ["MakeIterator", "IteratorV2", "IteratorGetNext"]
+        if tf_node.op in special_ops:
+            return False
+        ignore_ops = ["NoOp"]
+        if tf_node.op in ignore_ops:
+            return True
+        support_GPU = False
+        kernel_list = kernels.get_registered_kernels_for_op(tf_node.op)
+        if len(kernel_list.kernel) < 1:
+            logger().error("no kernel for operator: %s" % (tf_node.op))
+            raise RuntimeError
+        for kernel in kernel_list.kernel:
+            is_suitable = True
+            for constraint in kernel.constraint:
+                if constraint.HasField("allowed_values"):
+                    allowed_list = constraint.allowed_values.list.type
+                    if tf_node.attr[constraint.name].type not in allowed_list:
+                        is_suitable = False
+                        break
+            if is_suitable and kernel.device_type == "GPU":
+                support_GPU = True
+        return support_GPU
+
+    no_input_nodes = []
+    name_to_node = {}
+    # rule 1
+    for tf_node in graph_def.node:
+        if not support_GPU(tf_node):
+            tf_node.device = "/device:CPU:0"
+        name_to_node[tf_node.name] = tf_node
+        if len(tf_node.input) == 0:
+            no_input_nodes.append(tf_node)
+    # Heuristic A
+    for tf_node in graph_def.node:
+        for input in tf_node.input:
+            if input.startswith("^"):
+                name = input[1:]
+            else:
+                name = input.split(":")[0]
+            if name_to_node[name] in no_input_nodes:
+                name_to_node[name].device = tf_node.device
 
 
 def __get_dtype_proto(node_def, op_def, output_arg):
@@ -469,11 +522,14 @@ def export_graph_to_tf_file(sc_graph, file_path=None):
             else:
                 in_edge_str = f"{in_edge.src_node.name}:{in_edge.src_idx}"
             tf_node.input.append(in_edge_str)
-
+    # add devices info
+    __set_device_info(graph_def)
+    # add shapes
     output_graph = tf.Graph()
     with output_graph.as_default():
         tf.import_graph_def(graph_def, name="")
     graph_def = output_graph.as_graph_def(add_shapes=True)
+    # dump graph as pbtxt
     graph_pbtxt = google.protobuf.text_format.MessageToString(graph_def)
     if file_path is not None:
         file = Path(file_path)
@@ -534,3 +590,30 @@ def import_tensorflow_model(session_run_params,
     sc_graph = __import_graph_from_tf_graph_def(pruned_graph_def,
                                                 tf_runtime_config)
     return sc_graph
+
+
+def set_dataset_paths(graph, paths):
+    '''
+    1. convert tf_graph string to sc graph.
+    2. set dataset paths.
+    Return:
+        is_successed
+    '''
+    tf_graph_def = tf.GraphDef()
+    google.protobuf.text_format.Parse(graph, tf_graph_def)
+    count = 0
+    for tf_node in tf_graph_def.node:
+        if tf_node.op == "Const" and "value" in tf_node.attr:
+            path_flag = tf_node.attr["value"].tensor.string_val
+            if len(path_flag) != 1:
+                continue
+            path_flag = path_flag[0]
+            if len(path_flag.split(b':')) > 1 and path_flag.split(
+                    b':')[0] == b'DATASET_PATH':
+                idx = int(path_flag.split(b':')[1])
+                tf_node.attr["value"].tensor.string_val[0] = _MakeStr(
+                    paths[idx], 'string_val')
+                count += 1
+    assert (count == len(paths))
+    graph_pbtxt = google.protobuf.text_format.MessageToString(tf_graph_def)
+    return graph_pbtxt

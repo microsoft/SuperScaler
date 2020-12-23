@@ -7,6 +7,19 @@ from superscaler.plan_gen import TFParser, PlanGenerator, SuperScalerAdapter
 from superscaler.runtime.util import distribute_resources, launch
 import tensorflow as tf
 import argparse
+from functools import wraps
+
+
+@wraps(tf.data.TFRecordDataset)
+def TFRecordDataset(*args, **kwargs):
+    if "filenames" in kwargs:
+        for i, _ in enumerate(kwargs["filenames"]):
+            kwargs["filenames"][i] = "DATASET_PATH:" + str(i)
+    else:
+        assert (len(args) > 0)
+        args_copy = list(args)
+        args_copy[0] = "DATASET_PATH:0"
+    return tf.data.TFRecordDataset(*args_copy, **kwargs)
 
 
 class tensorflow(Superscaler):
@@ -88,6 +101,17 @@ class tensorflow(Superscaler):
         self._plan_adapter = SuperScalerAdapter()
         self._plan_adapter.set_plan(plan)
         self._communication_plan = self._plan_adapter.adapt_plan()
+
+    def _set_dataset_paths(self, dataset_paths):
+        """
+        update dataset path in graph
+        """
+        for i, (graph, plan) in enumerate(
+                zip(self._partition_graphs, self._assigned_plan)):
+            if plan['ip'] in dataset_paths.keys():
+                paths = dataset_paths[plan['ip']].pop()
+                new_graph = tf_adapter.set_dataset_paths(graph, paths)
+                self._partition_graphs[i] = new_graph
 
     def run(self, args):
         """ A function that performs distributed training.

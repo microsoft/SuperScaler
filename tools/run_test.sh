@@ -77,10 +77,13 @@ exe cd $ROOT_PATH
 exe $PYTHON -m flake8
 echo "flake8 check succeed"
 
+# prepare cifar10 dataset
+exe cd $ROOT_PATH/example/tensorflow/dataset/
+exe bash $ROOT_PATH/example/tensorflow/dataset/download_cifar10.sh
+
 # Test for superscaler source code
 echo "Running test for superscaler:"
 exe cd $ROOT_PATH/src
-exe export TF_CPP_MIN_VLOG_LEVEL=3 
 
 # Runtime tests are executed separately because they will create multiple processes.
 # CUDA context cannot be shared between multiple processes

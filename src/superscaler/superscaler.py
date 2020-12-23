@@ -82,7 +82,7 @@ class Superscaler(object):
         return self._is_initialized
 
     def init(self, session_run_params, deployment_setting, strategy,
-             communication_DSL, resource_pool):
+             communication_DSL, resource_pool, dataset_paths=None):
         """ A function that initializes Superscaler.
 
         Args:
@@ -117,6 +117,7 @@ class Superscaler(object):
                 for storing tmp files." % (self._working_dir))
             self._init_partition_graphs(session_run_params, strategy)
             self._init_communication_plan(resource_pool, communication_DSL)
+            self._dataset_paths = dataset_paths
             self._init_runtime_setting(deployment_setting)
             self._is_initialized = True
         except SuperscalerError:
@@ -154,6 +155,24 @@ class Superscaler(object):
 
         self._communication_plan = []
 
+    def _set_dataset_paths(self, dataset_paths):
+        """ pass dataset paths to graphs.
+        dictionary format:
+        {
+            "ip": [
+                [datasetA_path1,datasetA_path2...],
+                [datasetB_path1,datasetB_path2...],
+                ...
+            ]
+            ...
+        }
+        """
+        if self._partition_graphs is None:
+            raise SuperscalerError(
+                "_init_partition_graphs() should be called.")
+        if self._assigned_plan is None:
+            raise SuperscalerError("self._assigned_plan should be assigned.")
+
     def _init_runtime_setting(self, deployment_setting):
         """ A function that create runtime_setting files.
 
@@ -165,7 +184,9 @@ class Superscaler(object):
 
         self._assigned_plan = self._plan_assigner.assign(
             self._communication_plan, deployment_setting)
-
+        # set dataset paths before dumping runtime graph
+        if self._dataset_paths is not None:
+            self._set_dataset_paths(self._dataset_paths)
         # Dump runtime file into self._working_dir
         for i in range(self._graph_count):
             tmp_rank_dir = os.path.join(self._working_dir, str(i))

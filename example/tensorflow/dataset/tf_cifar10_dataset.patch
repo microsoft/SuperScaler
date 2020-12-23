@@ -1,0 +1,100 @@
+diff -aurN models-2.3.0/research/slim/datasets/download_and_convert_cifar10.py models-2.3.0-change/research/slim/datasets/download_and_convert_cifar10.py
+--- models-2.3.0/research/slim/datasets/download_and_convert_cifar10.py	2020-07-31 11:42:11.000000000 +0800
++++ models-2.3.0-change/research/slim/datasets/download_and_convert_cifar10.py	2020-11-23 22:54:35.050065884 +0800
+@@ -33,7 +33,7 @@
+ import numpy as np
+ from six.moves import cPickle
+ from six.moves import urllib
+-import tensorflow.compat.v1 as tf
++import tensorflow as tf
+ 
+ from datasets import dataset_utils
+ 
+@@ -43,6 +43,9 @@
+ # The number of training files.
+ _NUM_TRAIN_FILES = 5
+ 
++# The number of training tfrecords.
++_NUM_SHARD_FILES = 2
++
+ # The height and width of each image.
+ _IMAGE_SIZE = 32
+ 
+@@ -61,7 +64,7 @@
+ ]
+ 
+ 
+-def _add_to_tfrecord(filename, tfrecord_writer, offset=0):
++def _add_to_tfrecord(filename, tfrecord_writer, offset=0, SHARD_ID=-1):
+   """Loads data from the cifar10 pickle files and writes files to a TFRecord.
+ 
+   Args:
+@@ -88,9 +91,13 @@
+     image_placeholder = tf.placeholder(dtype=tf.uint8)
+     encoded_image = tf.image.encode_png(image_placeholder)
+ 
++    PER_SHARD = num_images//_NUM_SHARD_FILES
+     with tf.Session('') as sess:
+-
+-      for j in range(num_images):
++      if SHARD_ID == -1:
++        images_range = range(num_images)
++      else:
++        images_range = range(PER_SHARD*SHARD_ID, PER_SHARD*(SHARD_ID+1))
++      for j in images_range:
+         sys.stdout.write('\r>> Reading file [%s] image %d/%d' % (
+             filename, offset + j + 1, offset + num_images))
+         sys.stdout.flush()
+@@ -165,23 +172,31 @@
+   if not tf.gfile.Exists(dataset_dir):
+     tf.gfile.MakeDirs(dataset_dir)
+ 
+-  training_filename = _get_output_filename(dataset_dir, 'train')
++  training_filenames = []
++  for i in range(_NUM_SHARD_FILES):
++     training_filenames.append(_get_output_filename(dataset_dir, 'train_%d'%(i)))
+   testing_filename = _get_output_filename(dataset_dir, 'test')
+ 
+-  if tf.gfile.Exists(training_filename) and tf.gfile.Exists(testing_filename):
+-    print('Dataset files already exist. Exiting without re-creating them.')
+-    return
++  all_existing = True
++  for training_filename in training_filenames:
++    if not tf.gfile.Exists(training_filename):
++      all_existing = False
++      break
++  if all_existing and tf.gfile.Exists(testing_filename):
++      print('Dataset files already exist. Exiting without re-creating them.')
++      return
+ 
+   dataset_utils.download_and_uncompress_tarball(_DATA_URL, dataset_dir)
+ 
+   # First, process the training data:
+-  with tf.python_io.TFRecordWriter(training_filename) as tfrecord_writer:
+-    offset = 0
+-    for i in range(_NUM_TRAIN_FILES):
+-      filename = os.path.join(dataset_dir,
+-                              'cifar-10-batches-py',
+-                              'data_batch_%d' % (i + 1))  # 1-indexed.
+-      offset = _add_to_tfrecord(filename, tfrecord_writer, offset)
++  for SHARD_ID, training_filename in enumerate(training_filenames):
++    with tf.python_io.TFRecordWriter(training_filename) as tfrecord_writer:
++      offset = 0
++      for i in range(_NUM_TRAIN_FILES):
++        filename = os.path.join(dataset_dir,
++                                'cifar-10-batches-py',
++                                'data_batch_%d' % (i + 1))  # 1-indexed.
++        offset = _add_to_tfrecord(filename, tfrecord_writer, offset, SHARD_ID)
+ 
+   # Next, process the testing data:
+   with tf.python_io.TFRecordWriter(testing_filename) as tfrecord_writer:
+@@ -196,3 +211,8 @@
+ 
+   _clean_up_temporary_files(dataset_dir)
+   print('\nFinished converting the Cifar10 dataset!')
++
++if __name__ == "__main__":
++    if len(sys.argv) > 1:
++      _NUM_SHARD_FILES = int(sys.argv[1])
++    run(sys.argv[2])
+\ No newline at end of file
