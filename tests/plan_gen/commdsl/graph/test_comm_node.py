@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.commdsl.graph.node import Node, CompNode, TransNode
 from superscaler.plan_gen.commdsl.graph.meta import TransNodeType
 from superscaler.plan_gen.commdsl.graph.meta import CompNodeType

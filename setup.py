@@ -98,7 +98,11 @@ if __name__ == '__main__':
             'protobuf',
             'bitmath',
             'humanreadable',
-            'PyYAML'
+            'PyYAML',
+            'scipy',
+            'networkx',
+            'matplotlib',
+            'numpy',
         ],
         extras_require={
             'tensorflow': tensorflow_requires,

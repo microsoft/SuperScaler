@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from superscaler.plan_gen.commdsl.graph.meta import TransNodeType
 from superscaler.plan_gen.commdsl.graph.meta import CompNodeType
 from superscaler.plan_gen.commdsl.graph.segment import DataSegment
@@ -312,13 +315,12 @@ class TransNode(Node):
             None
 
         Returns:
-            rank (int)
+            rank (int) for send-op, None for other cases
         """
         if self.op == TransNodeType.SEND:
             return self.__dst
         else:
-            raise CommDSLRuntimeError(
-                "Try to access dst val from a non-send node")
+            return None
 
     @dst.setter
     def dst(self, rank):
@@ -347,13 +349,12 @@ class TransNode(Node):
             None
 
         Returns:
-            rank (int)
+            rank (int) for recv-op, None for other cases
         """
         if self.op == TransNodeType.RECV:
-            return self.__dst
+            return self.__src
         else:
-            raise CommDSLRuntimeError(
-                "Try to access src val from a non-recv node")
+            return None
 
     @src.setter
     def src(self, rank):
