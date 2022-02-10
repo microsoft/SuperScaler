@@ -1,4 +1,4 @@
-tensorflow==1.15  # currently used by plan_gen
+tensorflow==2.5.3  # currently used by plan_gen
 pytest==5.3.2
 protobuf==3.8
 setuptools==41.0.0
