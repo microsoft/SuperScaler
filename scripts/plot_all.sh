@@ -1,0 +1,11 @@
+python3 scripts/plot_fig7a.py
+python3 scripts/plot_fig7b.py
+python3 scripts/plot_fig7c.py
+python3 scripts/plot_fig8a.py
+python3 scripts/plot_fig8b.py
+python3 scripts/plot_fig9a.py
+python3 scripts/plot_fig9b.py
+python3 scripts/plot_fig15a.py
+python3 scripts/plot_fig15b.py
+python3 scripts/plot_fig16a.py
+python3 scripts/plot_fig16b.py
