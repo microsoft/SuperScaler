@@ -19,6 +19,7 @@ In this artifact evaluation, we will check the functionality of Aceso, by workin
     cd external/Megatron-LM
     cp ../aceso_ae_megatron.patch ./
     git apply --whitespace=nowarn aceso_ae_megatron.patch
+    cd ../..
     ```
 - **Install dependencies:**
     - **Option 1: docker (recommended)**
@@ -49,13 +50,16 @@ In this artifact evaluation, we will check the functionality of Aceso, by workin
             cd external/apex
             pip3 install -r requirements.txt
             pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext"  ./
+            cd ../..
             ```
         - Alpa 0.1.5 (Baseline system): 
             ```
             cd external/alpa
             pip3 install -r requirements.txt
-            pip3 install https://github.com/alpa-projects/alpa/releases/download/v0.2.3/jaxlib-0.3.5%2Bcuda113.cudnn820-cp37-none-manylinux2010_x86_64.whl
-            sudo apt-get update && apt install coinor-cbc -y
+            pip3 install https://github.com/alpa-projects/alpa/releases/download/v0.1.5/jaxlib-0.3.5%2Bcuda113.cudnn820-cp37-none-manylinux2010_x86_64.whl
+            sudo apt-get update 
+            sudo apt install coinor-cbc -y
+            cd ../..
             ```
         - Parallel-ssh: (for distributed training)
             ```
