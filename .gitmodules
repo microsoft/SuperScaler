@@ -1,0 +1,6 @@
+[submodule "external/Megatron-LM"]
+	path = external/Megatron-LM
+	url = https://github.com/NVIDIA/Megatron-LM.git
+[submodule "external/apex"]
+	path = external/apex
+	url = https://github.com/NVIDIA/apex.git
