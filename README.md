@@ -467,6 +467,19 @@ For the other arguments, please refer to Megatron-LM's documentation.
 
     However, in some machines with complex GPU topology, the adjacent GPUs may not be connected via the highest bandwidth. You can manually change the GPU order using the environment `CUDA_VISIBLE_DEVICES`.
 
+## Reference
+
+Please cite Aceso in your publications if it helps your research:
+
+```
+@inproceedings{liu2024aceso,
+  title={Aceso: Efficient Parallel DNN Training through Iterative Bottleneck Alleviation},
+  author={Guodong Liu and Youshan Miao and Zhiqi Lin and Xiaoxiang Shi and Saeed Maleki and Fan Yang and Yungang Bao and Sa Wang},
+  booktitle={Proceedings of the Nineteenth European Conference on Computer Systems},
+  year={2024}
+}
+```
+
 ## Microsoft Open Source Code of Conduct
 
   This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
